@@ -758,7 +758,6 @@ public class TimekeepingController {
             }
         }
 
-
         for (Entry<Integer, Integer> entry : handleMap.entrySet()) {
             List<Date> dateList = getTimeOfWork(entry.getKey(), timekeeping);
             timekeeping.setTimeend(dateList.get(0));
@@ -788,33 +787,34 @@ public class TimekeepingController {
 
         for (int i = 0; i < shiftCodeList.size(); i++) {
             for (int j = 0; j < tempList.size(); j++) {
-                if(tempList.get(j).getShiftCode() == shiftCodeList.get(i)){
+                if (tempList.get(j).getShiftCode() == shiftCodeList.get(i)) {
                     List<Date> dateList = getTimeOfWork(shiftCodeList.get(i), timekeeping);
-                    if(i == 0){
-                        tempList.get(j).setTimeend(dateList.get(0));
-                    }else{
+                    if (j == tempList.size() - 1) {
                         tempList.get(j).setTimestart(dateList.get(0));
+                        tempList.get(j).setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
+                        timeHandle(tempList.get(j).getId(), response);
+                    } else {
                         tempList.get(j).setTimestart(dateList.get(0));
-                        
-                        viewList.add(simpleDateFormat.format(dateList.get(0)));
-                        viewList.add(simpleDateFormat.format(dateList.get(1)));
+                        tempList.get(j).setTimeend(dateList.get(1));
+                        timeHandle(tempList.get(j).getId(), response);
+                        Long time = dateList.get(1).getTime() - dateList.get(0).getTime();
                     }
-                    
-                    Long time = dateList.get(1).getTime() - dateList.get(0).getTime();
-                    int workingHours = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;
-                    if(tempList.get(j).getTime() > workingHours){
-                        tempList.get(j).setTime(workingHours);
-                    }
-                    
-                    //timeHandle(tempList.get(i).getId(), response);
+
+//                    int workingHours = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;
+//                    viewList.add(String.valueOf(tempList.get(j).getTime()));
+//                    if (tempList.get(j).getTime() > workingHours) {
+//                        tempList.get(j).setTime(workingHours);
+//                    }else{
+//                        
+//                    }
                 }
             }
         }
 
         //timekeepingServices.checkout(timekeeping);
         JsonServices.dd(JsonServices.ParseToJson(viewList.toString()), response);
-        timekeeping.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
-        timeHandle(timekeeping.getId(), response);
+        //timekeeping.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
+        //timeHandle(timekeeping.getId(), response);
         return new ResponseEntity<>(timekeeping, HttpStatus.OK);
     }
 
