@@ -758,47 +758,48 @@ public class TimekeepingController {
             }
         }
 
-        for (Entry<Integer, Integer> entry : handleMap.entrySet()) {
-            List<Date> dateList = getTimeOfWork(entry.getKey(), timekeeping);
-            timekeeping.setTimeend(dateList.get(0));
-            timeHandle(timekeeping.getId(), response);
-            Timekeeping item = new Timekeeping();
-            item.setMail(timekeeping.getMail());
-            item.setIdTimeline(timekeeping.getIdTimeline());
-            item.setShiftCode(entry.getKey());
-            item.setTimestart(dateList.get(1));
-            item.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
-            item.setTime(entry.getValue());
-            timekeepingServices.checkin(item);
-            timeHandle(timekeeping.getId(), response);
-            //viewList.add(String.valueOf(entry.getKey()) + " " + String.valueOf(entry.getValue()));
-            //JsonServices.dd(JsonServices.ParseToJson(dateList.toString()), response);
-        }
+        if (handleMap.size() >= 1) {
+            for (Entry<Integer, Integer> entry : handleMap.entrySet()) {
+                List<Date> dateList = getTimeOfWork(entry.getKey(), timekeeping);
+                timekeeping.setTimeend(dateList.get(0));
+                timeHandle(timekeeping.getId(), response);
+                Timekeeping item = new Timekeeping();
+                item.setMail(timekeeping.getMail());
+                item.setIdTimeline(timekeeping.getIdTimeline());
+                item.setShiftCode(entry.getKey());
+                item.setTimestart(dateList.get(1));
+                item.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
+                item.setTime(entry.getValue());
+                timekeepingServices.checkin(item);
+                timeHandle(timekeeping.getId(), response);
+                //viewList.add(String.valueOf(entry.getKey()) + " " + String.valueOf(entry.getValue()));
+                //JsonServices.dd(JsonServices.ParseToJson(dateList.toString()), response);
+            }
 
-        List<Timekeeping> timekeepings = timekeepingServices.findAll();
-        List<Timekeeping> tempList = new ArrayList<>();
-        for (int i = 0; i < timekeepings.size(); i++) {
-            for (int j = 0; j < shiftCodeList.size(); j++) {
-                if (timekeepings.get(i).getMail().equals(timekeeping.getMail()) && timekeepings.get(i).getIdTimeline().equals(timekeeping.getIdTimeline()) && timekeepings.get(i).getShiftCode() == shiftCodeList.get(j)) {
-                    tempList.add(timekeepings.get(i));
+            List<Timekeeping> timekeepings = timekeepingServices.findAll();
+            List<Timekeeping> tempList = new ArrayList<>();
+            for (int i = 0; i < timekeepings.size(); i++) {
+                for (int j = 0; j < shiftCodeList.size(); j++) {
+                    if (timekeepings.get(i).getMail().equals(timekeeping.getMail()) && timekeepings.get(i).getIdTimeline().equals(timekeeping.getIdTimeline()) && timekeepings.get(i).getShiftCode() == shiftCodeList.get(j)) {
+                        tempList.add(timekeepings.get(i));
+                    }
                 }
             }
-        }
 
-        for (int i = 0; i < shiftCodeList.size(); i++) {
-            for (int j = 0; j < tempList.size(); j++) {
-                if (tempList.get(j).getShiftCode() == shiftCodeList.get(i)) {
-                    List<Date> dateList = getTimeOfWork(shiftCodeList.get(i), timekeeping);
-                    if (j == tempList.size() - 1) {
-                        tempList.get(j).setTimestart(dateList.get(0));
-                        tempList.get(j).setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
-                        timeHandle(tempList.get(j).getId(), response);
-                    } else {
-                        tempList.get(j).setTimestart(dateList.get(0));
-                        tempList.get(j).setTimeend(dateList.get(1));
-                        timeHandle(tempList.get(j).getId(), response);
-                        Long time = dateList.get(1).getTime() - dateList.get(0).getTime();
-                    }
+            for (int i = 0; i < shiftCodeList.size(); i++) {
+                for (int j = 0; j < tempList.size(); j++) {
+                    if (tempList.get(j).getShiftCode() == shiftCodeList.get(i)) {
+                        List<Date> dateList = getTimeOfWork(shiftCodeList.get(i), timekeeping);
+                        if (j == tempList.size() - 1) {
+                            tempList.get(j).setTimestart(dateList.get(0));
+                            tempList.get(j).setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
+                            timeHandle(tempList.get(j).getId(), response);
+                        } else {
+                            tempList.get(j).setTimestart(dateList.get(0));
+                            tempList.get(j).setTimeend(dateList.get(1));
+                            timeHandle(tempList.get(j).getId(), response);
+                            Long time = dateList.get(1).getTime() - dateList.get(0).getTime();
+                        }
 
 //                    int workingHours = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;
 //                    viewList.add(String.valueOf(tempList.get(j).getTime()));
@@ -807,14 +808,15 @@ public class TimekeepingController {
 //                    }else{
 //                        
 //                    }
+                    }
                 }
             }
         }
 
         //timekeepingServices.checkout(timekeeping);
-        JsonServices.dd(JsonServices.ParseToJson(viewList.toString()), response);
+        JsonServices.dd(JsonServices.ParseToJson(String.valueOf(handleMap.size())), response);
         //timekeeping.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
-        //timeHandle(timekeeping.getId(), response);
+        timeHandle(timekeeping.getId(), response);
         return new ResponseEntity<>(timekeeping, HttpStatus.OK);
     }
 
