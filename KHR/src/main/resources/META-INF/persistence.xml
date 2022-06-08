@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="fpt.aptech_KHR_jar_1.0.0PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>fpt.aptech.KHR.Entities.AccountPosition</class>
+    <class>fpt.aptech.KHR.Entities.Position</class>
+    <class>fpt.aptech.KHR.Entities.OverTime</class>
+    <class>fpt.aptech.KHR.Entities.AccountNotification</class>
+    <class>fpt.aptech.KHR.Entities.UserTimeline</class>
+    <class>fpt.aptech.KHR.Entities.DayOff</class>
+    <class>fpt.aptech.KHR.Entities.Timeline</class>
+    <class>fpt.aptech.KHR.Entities.TimelineDetail</class>
+    <class>fpt.aptech.KHR.Entities.Notification</class>
+    <class>fpt.aptech.KHR.Entities.Timekeeping</class>
+    <class>fpt.aptech.KHR.Entities.Shift</class>
+    <class>fpt.aptech.KHR.Entities.Account</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://14.225.192.108:3306/khr?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="khareerserver"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="khareerdb2022"/>
+    </properties>
+  </persistence-unit>
+</persistence>
