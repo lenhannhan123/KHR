@@ -11,4 +11,6 @@ package fpt.aptech.KHR.Routes;
  */
 public class RouteWeb {
     
+   public static final String index ="/";
+    
 }

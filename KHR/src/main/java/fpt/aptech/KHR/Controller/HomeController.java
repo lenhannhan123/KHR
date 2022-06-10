@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.Controller;
 
+import fpt.aptech.KHR.Routes.RouteWeb;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
     
-    @RequestMapping("/")
+    @RequestMapping(RouteWeb.index)
     public String page(Model model) {
         
         return "index";
+    }
+
+
+      @RequestMapping("/index")
+    public String page1(Model model) {
+        
+        return "layout/layout";
     }
     
 }
