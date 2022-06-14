@@ -21,13 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
     @Autowired
     OverTimeService iots;
-    @RequestMapping(value = {RouteWeb.indexURL}, method = RequestMethod.GET)
-    public String AdminHome(Model model) {
-
-        return "layout/_layout";
-    }
-
-    @RequestMapping(value = {RouteWeb.index1URL}, method = RequestMethod.GET)
+   
+    @RequestMapping(value = {RouteWeb.AdminHomeURL}, method = RequestMethod.GET)
     public String Index(Model model) {
 
         return "index";

@@ -35,12 +35,17 @@ public class RouteWeb {
     
 
 //    Khu vuc khai bao Route    
-    public final static String indexURL = "/index";
-    String IndexControler = homeController.AdminHome(model.model);
+   
+    
+    public final static String AdminHomeURL = "/home/index";
+    String AdminHomeControler = homeController.Index(model.model);
     
     
       public final static String index1URL = "/";
     String Index1Controler = homeController.Index(model.model);
+    
+    
+    
      
     public final static String overtimeURL = "/overtime";
     String OverTimeControler = homeController.OverTime(model.model);
