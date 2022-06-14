@@ -54,7 +54,7 @@ public class RouteWeb {
     String NotificationControler = notificationController.Index(model.model);
     
     public final static String notificationAddURL = "/notification/add";
-//    String NotificationAddControler = notificationController.AddPage(model.model);
+    String NotificationAddControler = notificationController.AddPage();
     
     public final static String accountManageURL = "/account/index";
     String AccountControllerString = accountController.Index(model.model);
