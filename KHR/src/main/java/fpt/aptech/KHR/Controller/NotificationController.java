@@ -27,8 +27,7 @@ public class NotificationController {
         return "notification/index";
     }
     @RequestMapping(value = {RouteWeb.notificationAddURL}, method = RequestMethod.GET)
-    public String AddPage(Model model) {
-        model.addAttribute("notificationList", ns.findAll());
+    public String AddPage() {
         return "notification/add";
     }
     
