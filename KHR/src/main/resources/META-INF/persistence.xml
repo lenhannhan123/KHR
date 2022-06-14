@@ -10,10 +10,10 @@
     <class>fpt.aptech.KHR.Entities.DayOff</class>
     <class>fpt.aptech.KHR.Entities.Timeline</class>
     <class>fpt.aptech.KHR.Entities.TimelineDetail</class>
-    <class>fpt.aptech.KHR.Entities.Notification</class>
     <class>fpt.aptech.KHR.Entities.Timekeeping</class>
     <class>fpt.aptech.KHR.Entities.Shift</class>
     <class>fpt.aptech.KHR.Entities.Account</class>
+    <class>fpt.aptech.KHR.Entities.Notification</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://14.225.192.108:3306/khr?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="khareerserver"/>
