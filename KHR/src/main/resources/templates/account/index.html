@@ -1,0 +1,42 @@
+
+<html lang="en" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+    <head>
+        <title>Account Management System</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div th:align="center" style="color:red">
+            <h1>
+                List of Account
+            </h1>
+        </div>
+        <form th:align="center" th:action="@{/filter}" method="get">
+            Filter by price: <input type="text" name="min"> to <input type="text" name="max">
+        <input type="submit" value="Filter">
+        </form>
+        <div th:align="center">
+        <a th:href="@{/doCreate}">Add an account</a>
+        <table th:border="1">
+            <tr>
+                <th>Email</th>
+                <th>Full name</th>
+                <th>Phone</th>
+                <th>Action</th>
+            </tr>
+            
+            <tr th:each="a:${list}">
+                <td th:text="${a.getMail()}"></td>
+                <td th:text="${a.getFullname()}"></td>
+                <td th:text="${a.getPhone()}"></td>
+                <!--<td><a th:href="@{doUpdate/{id}(id=${a.getPlayercode()})}">Update</a>-->
+                <td><a th:href="@{delete/{id}(id=${a.getMail()})}">Delete</a>
+            </tr>
+        </table>
+        </div>
+    </body>
+
+</html>

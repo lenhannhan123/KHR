@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.Routes;
 
+import fpt.aptech.KHR.Controller.AccountController;
 import fpt.aptech.KHR.Controller.HomeController;
 import fpt.aptech.KHR.Controller.NotificationController;
 import fpt.aptech.KHR.Entities.ModelDemo;
@@ -12,6 +13,7 @@ import fpt.aptech.KHR.Entities.Notification;
 import fpt.aptech.KHR.Entities.RouteModel;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 /**
  *
  * @author Admin
@@ -23,8 +25,7 @@ public class RouteWeb {
 //    Khu vuc new Model
     HomeController homeController = new HomeController();
     NotificationController notificationController = new NotificationController();
-    
-    
+     AccountController accountController = new AccountController();
     
     
     
@@ -34,8 +35,6 @@ public class RouteWeb {
     
 
 //    Khu vuc khai bao Route    
-    
-    
     public final static String indexURL = "/index";
     String IndexControler = homeController.AdminHome(model.model);
     
@@ -52,6 +51,7 @@ public class RouteWeb {
     public final static String notificationAddURL = "/notification/add";
     String NotificationAddControler = notificationController.AddPage(model.model);
     
-
+    public final static String accountManageURL = "/account/index";
+    String AccountControllerString = accountController.Index(model.model);
 
 }
