@@ -15,19 +15,44 @@ and open the template in the editor.
 
     <body>
         <div layout:fragment="content">
-<!--                <table>
+            <from>
+                <table th:align="center">
                     <tr>
                         <td><label>Nhập tiêu đề</label></td>
-                        <td><input type="text" /></td>
-                        <td><label>Nhập nội dung</label></td>
-                        <td><input type="text" /></td>
-                        <td><label>Chọn kiểu gửi</label></td>
-                        <td><input type="text"  /></td>
-                        <td><label>Chọn người nhận</label></td>
-                        <td><input type="text"/></td>
-                        <td><input type="submit" value="Create"/></td>
                     </tr>
-                </table>-->
+                    <tr>
+                        <td><input type="text" /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Nhập nội dung</label></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" /></td>
+                    </tr>
+                    <tr>
+                        <td><label>Chọn kiểu gửi</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select>
+                                <option >Vui lòng chọn người gửi</option>
+                                <option >Tất cả</option>
+                                <option >Một vài người</option> 
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Chọn người nhận</label></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" /></td>
+                    </tr>
+                    <br>
+                    <tr>
+                        <td><button type="submit" value="Create">Create</button></td>
+                    </tr>
+                </table>
+                <form>
         </div>
     </body>
 

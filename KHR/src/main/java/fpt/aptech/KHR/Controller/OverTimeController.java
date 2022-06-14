@@ -15,14 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
- * @author Admin
+ * @author LÊ HỮU TÂM
  */
 @Controller
-public class HomeController {
-
-    @RequestMapping(value = {RouteWeb.AdminHomeURL}, method = RequestMethod.GET)
+public class OverTimeController {
+    @Autowired
+    OverTimeService iots;
+    @RequestMapping(value = {RouteWeb.overtimeURL}, method = RequestMethod.GET)
     public String Index(Model model) {
-
-        return "index";
+        model.addAttribute("overtimeList", iots.findAll());
+        return "overtime/index";
     }
+    
 }

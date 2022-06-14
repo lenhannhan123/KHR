@@ -4,7 +4,6 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-
 <html lang="en" 
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/_layout}">
@@ -31,26 +30,26 @@ and open the template in the editor.
                     <th>ID</th>
                     <th>Mail</th>
                     <th>Tên Nhân viên</th>
-                    <th>Ngày nghĩ</th>
-                    <th>Số ngày</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
                     <th>Lí do</th>
                     <th>Trạng thái</th>
                     <th>Hành động</th>
                 </tr>
-                <tr th:each="c:${overtimeList}">   
+<!--                <tr th:each="c:${overtimeList}">   
                     <th th:text="${c.getContent()}"></th>
                     <th th:text="${c.getMail().getMail()}"></th>
                     <th th:text="${c.getStatus()}"></th>
                     <th></th>
-                </tr>
+                </tr>-->
                 <tbody>
                     <tr>
                         <td>1</td>
                         <td>ThanhThanh@gmail.com</td>
                         <td>Thanh Thanh</td>
                         <td>22/12/2019</td>
-                        <td>03</td>
-                        <td>Đi du lịch</td>
+                        <td>23/12/2019</td>
+                        <td>Hoàn thành chỉ tiêu kế hoạch</td>
                         <td>Đã được duyệt</td>
                         <td><a>V</a>&nbsp;<a>X</a></td>
                     </tr>

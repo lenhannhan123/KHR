@@ -6,8 +6,10 @@
 package fpt.aptech.KHR.Routes;
 
 import fpt.aptech.KHR.Controller.AccountController;
+import fpt.aptech.KHR.Controller.DayOffController;
 import fpt.aptech.KHR.Controller.HomeController;
 import fpt.aptech.KHR.Controller.NotificationController;
+import fpt.aptech.KHR.Controller.OverTimeController;
 import fpt.aptech.KHR.Entities.ModelDemo;
 import fpt.aptech.KHR.Entities.Notification;
 import fpt.aptech.KHR.Entities.RouteModel;
@@ -26,8 +28,8 @@ public class RouteWeb {
     HomeController homeController = new HomeController();
     NotificationController notificationController = new NotificationController();
      AccountController accountController = new AccountController();
-    
-    
+    DayOffController dayOffController = new DayOffController();
+    OverTimeController overTimeController = new OverTimeController();
     
     
     
@@ -47,16 +49,24 @@ public class RouteWeb {
     
     
      
-    public final static String overtimeURL = "/overtime";
-    String OverTimeControler = homeController.OverTime(model.model);
+
     //Route Notification
     public final static String notificationURL = "/notification";
     String NotificationControler = notificationController.Index(model.model);
-    
+
     public final static String notificationAddURL = "/notification/add";
     String NotificationAddControler = notificationController.AddPage();
+    //
     
+    //Route DayOff
+    public final static String dayoffURL = "/dayoff";
+    String DayOffControler = dayOffController.Index(model.model);
+    //
+    //Route OverTime
+    public final static String overtimeURL = "/overtime";
+    String OverTimeControler = overTimeController.Index(model.model);
+    //
     public final static String accountManageURL = "/account/index";
     String AccountControllerString = accountController.Index(model.model);
-
+    
 }

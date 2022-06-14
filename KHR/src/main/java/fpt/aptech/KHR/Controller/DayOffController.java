@@ -5,8 +5,8 @@
  */
 package fpt.aptech.KHR.Controller;
 
-import fpt.aptech.KHR.ImpServices.OverTimeService;
 import fpt.aptech.KHR.Routes.RouteWeb;
+import fpt.aptech.KHR.Services.IDayOffServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,14 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
- * @author Admin
+ * @author LÊ HỮU TÂM
  */
 @Controller
-public class HomeController {
-
-    @RequestMapping(value = {RouteWeb.AdminHomeURL}, method = RequestMethod.GET)
+public class DayOffController {
+    @Autowired
+    IDayOffServices idos;
+    @RequestMapping(value = {RouteWeb.dayoffURL}, method = RequestMethod.GET)
     public String Index(Model model) {
-
-        return "index";
+        model.addAttribute("DayOffList", idos.findAll());
+        return "dayoff/index";
     }
+    
 }
