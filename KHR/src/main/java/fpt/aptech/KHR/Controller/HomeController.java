@@ -25,4 +25,9 @@ public class HomeController {
 
         return "index";
     }
+    @RequestMapping(value = {RouteWeb.index1URL}, method = RequestMethod.GET)
+    public String Login(Model model) {
+
+        return "login";
+    }
 }
