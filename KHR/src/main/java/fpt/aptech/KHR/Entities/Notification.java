@@ -6,9 +6,8 @@
 package fpt.aptech.KHR.Entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,12 +15,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,7 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Notification.findAll", query = "SELECT n FROM Notification n"),
     @NamedQuery(name = "Notification.findById", query = "SELECT n FROM Notification n WHERE n.id = :id"),
     @NamedQuery(name = "Notification.findByTitle", query = "SELECT n FROM Notification n WHERE n.title = :title"),
-    @NamedQuery(name = "Notification.findByContent", query = "SELECT n FROM Notification n WHERE n.content = :content")})
+    @NamedQuery(name = "Notification.findByContent", query = "SELECT n FROM Notification n WHERE n.content = :content"),
+    @NamedQuery(name = "Notification.findByDateCreate", query = "SELECT n FROM Notification n WHERE n.dateCreate = :dateCreate")})
 public class Notification implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,8 +53,11 @@ public class Notification implements Serializable {
     @Size(min = 1, max = 500)
     @Column(name = "Content")
     private String content;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idnotification")
-    private List<AccountNotification> accountNotificationList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "date_create")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreate;
 
     public Notification() {
     }
@@ -63,10 +66,11 @@ public class Notification implements Serializable {
         this.id = id;
     }
 
-    public Notification(Integer id, String title, String content) {
+    public Notification(Integer id, String title, String content, Date dateCreate) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.dateCreate = dateCreate;
     }
 
     public Integer getId() {
@@ -93,13 +97,12 @@ public class Notification implements Serializable {
         this.content = content;
     }
 
-    @XmlTransient
-    public List<AccountNotification> getAccountNotificationList() {
-        return accountNotificationList;
+    public Date getDateCreate() {
+        return dateCreate;
     }
 
-    public void setAccountNotificationList(List<AccountNotification> accountNotificationList) {
-        this.accountNotificationList = accountNotificationList;
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
     }
 
     @Override
