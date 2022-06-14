@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<html lang="en" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+    <head>
+        <title>AdminLTE 3 | Dashboard</title>
+
+    </head>
+
+    <body>
+        <div layout:fragment="content">
+            <table th:border="1">
+                <tr>
+                    <th>Nội dung</th>
+                    <th>Email</th>
+                    <th>Trạng Thái</th>
+                </tr>
+                <tr th:each="c:${overtimeList}">   
+                    <th th:text="${c.getContent()}"></th>
+                    <th th:text="${c.getMail().getMail()}"></th>
+                    <th th:text="${c.getStatus()}"></th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+    </body>
+
+</html>

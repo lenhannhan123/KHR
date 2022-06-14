@@ -5,7 +5,7 @@
  */
 package fpt.aptech.KHR.Controller;
 
-import fpt.aptech.KHR.ImpServices.OverTimeService;
+import fpt.aptech.KHR.ImpServices.NotificationService;
 import fpt.aptech.KHR.Routes.RouteWeb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,27 +15,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
- * @author Admin
+ * @author LÊ HỮU TÂM
  */
 @Controller
-public class HomeController {
+public class NotificationController {
     @Autowired
-    OverTimeService iots;
-    @RequestMapping(value = {RouteWeb.indexURL}, method = RequestMethod.GET)
-    public String AdminHome(Model model) {
-
-        return "layout/_layout";
-    }
-
-    @RequestMapping(value = {RouteWeb.index1URL}, method = RequestMethod.GET)
+    NotificationService ns;
+    @RequestMapping(value = {RouteWeb.notificationURL}, method = RequestMethod.GET)
     public String Index(Model model) {
-
-        return "index";
+        model.addAttribute("notificationList", ns.findAll());
+        return "notification/index";
     }
-    @RequestMapping(value = {RouteWeb.overtimeURL}, method = RequestMethod.GET)
-    public String OverTime(Model model) {
-        model.addAttribute("overtimeList", iots.findAll());
-        return "overtime/index";
+    @RequestMapping(value = {RouteWeb.notificationAddURL}, method = RequestMethod.GET)
+    public String AddPage(Model model) {
+        model.addAttribute("notificationList", ns.findAll());
+        return "notification/add";
     }
-
+    
+    
 }
