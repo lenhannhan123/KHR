@@ -30,106 +30,108 @@
                                                         <!-- Google Font: Source Sans Pro -->
                                                         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
                                                             <link href="/css/icon.css" rel="stylesheet">
-
-
-                                                                <style>
-                                                                    .main-sidebar {
-                                                                        background-color: #6667AB;
-                                                                    }
-
-                                                                    .nav-item-color {
-                                                                        color: white
-                                                                    }
-
-                                                                    .nav-item {
-                                                                        margin: 8% 0px;
-                                                                    }
-
-                                                                    .sd {
-                                                                        margin-left: 15%;
-                                                                        font-size: 14pt;
-                                                                    }
-
-                                                                    .active-link {
-                                                                        background-color: white;
-                                                                        border-radius: 20px;
-                                                                    }
-
-                                                                    .nav-item-color-active {
-                                                                        color: #6667AB;
-                                                                    }
-                                                                </style>
-
-                                                                </head>
-
-                                                                <body class="hold-transition sidebar-mini layout-fixed">
-                                                                    <div class="wrapper">
-
-                                                                        <!--        <div th:replace="navbar:: navbar"> </div>
-                                                                                <div th:replace="sidebar:: sidebar"> </div>
-                                                                                <div th:replace="content:: content"> </div>
-                                                                        
-                                                                                <div th:replace="footer:: footer"> </div>-->
-
-
-                                                                        <div th:replace="layout/navbar:: navbar"> </div>
-                                                                        <div th:replace="layout/sidebar:: sidebar"> </div>
+                                                                <link href="/css/khr.css" rel="stylesheet">
 
 
 
+                                                                    <style>
+                                                                        .main-sidebar {
+                                                                            background-color: #6667AB;
+                                                                        }
 
-                                                                        <div class="content-wrapper ">
-                                                                            <!-- Content Header (Page header) -->
-                                                                            <div class="content-header ">
-                                                                                <div class="container-fluid" layout:fragment="content">
+                                                                        .nav-item-color {
+                                                                            color: white
+                                                                        }
 
+                                                                        .nav-item {
+                                                                            margin: 8% 0px;
+                                                                        }
+
+                                                                        .sd {
+                                                                            margin-left: 15%;
+                                                                            font-size: 14pt;
+                                                                        }
+
+                                                                        .active-link {
+                                                                            background-color: white;
+                                                                            border-radius: 20px;
+                                                                        }
+
+                                                                        .nav-item-color-active {
+                                                                            color: #6667AB;
+                                                                        }
+                                                                    </style>
+
+                                                                    </head>
+
+                                                                    <body class="hold-transition sidebar-mini layout-fixed">
+                                                                        <div class="wrapper">
+
+                                                                            <!--        <div th:replace="navbar:: navbar"> </div>
+                                                                                    <div th:replace="sidebar:: sidebar"> </div>
+                                                                                    <div th:replace="content:: content"> </div>
+                                                                            
+                                                                                    <div th:replace="footer:: footer"> </div>-->
+
+
+                                                                            <div th:replace="layout/navbar:: navbar"> </div>
+                                                                            <div th:replace="layout/sidebar:: sidebar"> </div>
+
+
+
+
+                                                                            <div class="content-wrapper ">
+                                                                                <!-- Content Header (Page header) -->
+                                                                                <div class="content-header ">
+                                                                                    <div class="container-fluid" layout:fragment="content">
+
+                                                                                    </div>
+                                                                                    <!-- /.container-fluid -->
                                                                                 </div>
-                                                                                <!-- /.container-fluid -->
+
+                                                                                <!-- /.content -->
                                                                             </div>
 
-                                                                            <!-- /.content -->
+                                                                            <div th:replace="layout/footer:: footer"> </div>
+
+
                                                                         </div>
+                                                                        <!-- ./wrapper -->
 
-                                                                        <div th:replace="layout/footer:: footer"> </div>
+                                                                        <!-- jQuery -->
+                                                                        <script src="/plugins/jquery/jquery.min.js "></script>
+                                                                        <!-- jQuery UI 1.11.4 -->
+                                                                        <script src="/plugins/jquery-ui/jquery-ui.min.js "></script>
+                                                                        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+                                                                        <script>
+                                                                            $.widget.bridge('uibutton', $.ui.button)
+                                                                        </script>
+                                                                        <!-- Bootstrap 4 -->
+                                                                        <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js "></script>
+                                                                        <!-- ChartJS -->
+                                                                        <script src="/plugins/chart.js/Chart.min.js "></script>
+                                                                        <!-- Sparkline -->
+                                                                        <script src="/plugins/sparklines/sparkline.js "></script>
+                                                                        <!-- JQVMap -->
+                                                                        <script src="/plugins/jqvmap/jquery.vmap.min.js "></script>
+                                                                        <script src="/plugins/jqvmap/maps/jquery.vmap.usa.js "></script>
+                                                                        <!-- jQuery Knob Chart -->
+                                                                        <script src="/plugins/jquery-knob/jquery.knob.min.js "></script>
+                                                                        <!-- daterangepicker -->
+                                                                        <script src="/plugins/moment/moment.min.js "></script>
+                                                                        <script src="/plugins/daterangepicker/daterangepicker.js "></script>
+                                                                        <!-- Tempusdominus Bootstrap 4 -->
+                                                                        <script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js "></script>
+                                                                        <!-- Summernote -->
+                                                                        <script src="/plugins/summernote/summernote-bs4.min.js "></script>
+                                                                        <!-- overlayScrollbars -->
+                                                                        <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js "></script>
+                                                                        <!-- AdminLTE App -->
+                                                                        <script src="/dist/js/adminlte.js "></script>
+                                                                        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+                                                                        <script src="/dist/js/pages/dashboard.js "></script>
+                                                                        <!-- AdminLTE for demo purposes -->
+                                                                        <script src="/dist/js/demo.js "></script>
+                                                                    </body>
 
-
-                                                                    </div>
-                                                                    <!-- ./wrapper -->
-
-                                                                    <!-- jQuery -->
-                                                                    <script src="/plugins/jquery/jquery.min.js "></script>
-                                                                    <!-- jQuery UI 1.11.4 -->
-                                                                    <script src="/plugins/jquery-ui/jquery-ui.min.js "></script>
-                                                                    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-                                                                    <script>
-                                                                        $.widget.bridge('uibutton', $.ui.button)
-                                                                    </script>
-                                                                    <!-- Bootstrap 4 -->
-                                                                    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js "></script>
-                                                                    <!-- ChartJS -->
-                                                                    <script src="/plugins/chart.js/Chart.min.js "></script>
-                                                                    <!-- Sparkline -->
-                                                                    <script src="/plugins/sparklines/sparkline.js "></script>
-                                                                    <!-- JQVMap -->
-                                                                    <script src="/plugins/jqvmap/jquery.vmap.min.js "></script>
-                                                                    <script src="/plugins/jqvmap/maps/jquery.vmap.usa.js "></script>
-                                                                    <!-- jQuery Knob Chart -->
-                                                                    <script src="/plugins/jquery-knob/jquery.knob.min.js "></script>
-                                                                    <!-- daterangepicker -->
-                                                                    <script src="/plugins/moment/moment.min.js "></script>
-                                                                    <script src="/plugins/daterangepicker/daterangepicker.js "></script>
-                                                                    <!-- Tempusdominus Bootstrap 4 -->
-                                                                    <script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js "></script>
-                                                                    <!-- Summernote -->
-                                                                    <script src="/plugins/summernote/summernote-bs4.min.js "></script>
-                                                                    <!-- overlayScrollbars -->
-                                                                    <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js "></script>
-                                                                    <!-- AdminLTE App -->
-                                                                    <script src="/dist/js/adminlte.js "></script>
-                                                                    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-                                                                    <script src="/dist/js/pages/dashboard.js "></script>
-                                                                    <!-- AdminLTE for demo purposes -->
-                                                                    <script src="/dist/js/demo.js "></script>
-                                                                </body>
-
-                                                                </html>
+                                                                    </html>

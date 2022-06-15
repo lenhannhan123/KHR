@@ -1,0 +1,113 @@
+.main-sidebar {
+    background-color: #6667AB;
+}
+
+.nav-item-color {
+    color: white
+}
+
+.nav-item {
+    margin: 8% 0px;
+}
+
+.sd {
+    margin-left: 15%;
+    font-size: 14pt;
+}
+
+.active-link {
+    background-color: white;
+    border-radius: 20px;
+}
+
+.nav-item-color-active {
+    color: #6667AB;
+}
+
+.title-page {
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 3%;
+    font-weight: bold
+}
+
+.background-table {
+    background-color: white;
+    padding: 2%;
+    border-radius: 15px;
+}
+
+.input {
+    height: 2.5rem;
+    border-radius: 10px;
+    border-color: #6667AB;
+    color: black;
+}
+
+.button-defualt {
+    background-color: #6667AB;
+    border-color: #6667AB;
+}
+
+.button-defualt:hover {
+    background-color: #7879b6;
+    border-color: #7879b6;
+}
+
+.button-envent {
+    border: none;
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px #b9b8b8;
+}
+
+#dropdownMenuButton::after {
+    border-top: none;
+    content: none;
+}
+
+.modal-title {
+    margin: 0px auto;
+    padding-left: 15%;
+    font-weight: bold;
+}
+.modal-notification {
+    padding-left: 25%;
+}
+
+.error-text {
+    color: red;
+    font-style: italic;
+    font-size: 10pt;
+}
+
+.input-number {
+    height: 2.0rem;
+    width: 60%;
+    margin: 0px auto;
+}
+
+#status-not-add {
+    color: red;
+    background-color: #FFF5F5;
+    padding: 7%;
+    border-radius: 10px;
+}
+
+#status-add {
+    color: #56C456;
+    background-color: #F5FBF5;
+    padding: 7%;
+    border-radius: 10px;
+}
+
+.not-working {
+    background-color: #EC5555;
+}
+
+.not-working-text {
+    color: white;
+}
+
