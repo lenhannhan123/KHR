@@ -43,7 +43,7 @@ public class RouteWeb {
     String AdminHomeControler = homeController.Index(model.model);
     
     
-      public final static String index1URL = "/";
+      public final static String index1URL = "/login";
     String Index1Controler = homeController.Index(model.model);
     
     
