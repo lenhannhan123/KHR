@@ -5,10 +5,27 @@
  */
 package fpt.aptech.KHR.Services;
 
+import fpt.aptech.KHR.Entities.Position;
+import fpt.aptech.KHR.Entities.Timeline;
+import fpt.aptech.KHR.Entities.UserTimeline;
+
+import java.util.List;
+
 /**
- *
  * @author Admin
  */
 public interface IUserTimeServices {
-    
+
+
+    public List<UserTimeline> findAll();
+
+    public boolean Create(UserTimeline userTimeline);
+
+    public boolean Edit(UserTimeline userTimeline);
+
+
+    public String Delete(int id);
+
+    public UserTimeline FindOne(int id);
+
 }

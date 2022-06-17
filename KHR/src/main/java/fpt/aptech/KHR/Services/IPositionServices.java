@@ -5,10 +5,26 @@
  */
 package fpt.aptech.KHR.Services;
 
+import fpt.aptech.KHR.Entities.Position;
+import fpt.aptech.KHR.Entities.Timeline;
+
+import java.util.List;
+
 /**
- *
  * @author Admin
  */
 public interface IPositionServices {
-    
+
+
+    public List<Position> findAll();
+
+    public boolean Create(Position position);
+
+    public boolean Edit(Position position);
+
+
+    public String Delete(int id);
+
+    public Position FindOne(int id);
+
 }

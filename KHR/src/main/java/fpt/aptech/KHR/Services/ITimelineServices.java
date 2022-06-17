@@ -23,5 +23,5 @@ public interface ITimelineServices {
 
     public String Delete(int id);
 
-
+    public Timeline FindOne(int id);
 }

@@ -64,4 +64,8 @@ public class RouteWeb {
     public final static String TimelineIndexURL = "/timeline/index";
     String TimelineIndexControler = timelineController.IndexTimeline(model.model);
 
+
+    public final static String TimelineGetCreateURL = "/timeline/create";
+    String TimelineGetCreateControler = timelineController.GetCreate(model.model);
+
 }

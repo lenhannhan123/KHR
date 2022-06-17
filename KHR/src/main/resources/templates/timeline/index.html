@@ -51,10 +51,12 @@
                     <div class="row">
                         <div class="col-sm-5"></div>
                         <div class="col-sm-5" style="margin-top:4% ;">
+                            <a href="/timeline/create">
                             <input type="button" class="btn
                                                     btn-success form-control
                                                     button-defualt" value="Thêm
                                                     lịch làm việc">
+                            </a>
                         </div>
                     </div>
 
@@ -74,12 +76,20 @@
 
                 </tr>
                 </thead>
-                <tbody>
+                <tbody th:if="${check == false}">
                 <tr>
+                    <td colspan="5" style="text-align: center"> Không có dữ liệu </td>
+                </tr>
+
+                </tbody>
+
+                <tbody th:if="${check == true}">
+                <tr th:each="item:${list}">
+
                     <th scope="row">1</th>
-                    <td>Lịch làm việc tháng 5 tuần 1</td>
-                    <td>02/05/2022</td>
-                    <td>07/05/2022</td>
+                    <td th:text="${item.getTimename()}" ></td>
+                    <td th:text="${item.getStartdate()}"  ></td>
+                    <td th:text="${item.getEnddate()}" ></td>
                     <td>
 
                         <div class="dropdown">
@@ -121,144 +131,11 @@
                     </td>
 
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Lịch làm việc tháng 5 tuần 2</td>
-                    <td>09/05/2022</td>
-                    <td>14/05/2022</td>
-                    <td>
 
-                        <div class="dropdown">
-                            <button class="button-envent
-                                                        dropdown-toggle" style="margin-right:
-                                                        10px;" type="button" id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-edit"
-                                   style="color:
-                                                            #6667AB"></i>
-                            </button>
+                </tbody>
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Xem lịch
-                                    làm việc</a>
 
-                                <a class="dropdown-item" href="#">Timeline
-                                    nhân viên</a>
 
-                                <a class="dropdown-item" href="#">Chỉnh sửa
-                                    thông tin</a>
-
-                                <a class="dropdown-item" href="#">Chỉnh sửa
-                                    Timeline mẫu</a>
-                            </div>
-
-                            <a href="#">
-                                <button class="button-envent">
-                                    <i class="fas
-                                                                fa-trash"
-                                       style="color:
-                                                                #F26E6E"></i>
-                                </button>
-
-                            </a>
-
-                        </div>
-
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Lịch làm việc tháng 5 tuần 3</td>
-                    <td>16/05/2022</td>
-                    <td>21/05/2022</td>
-                    <td>
-
-                        <div class="dropdown">
-                            <button class="button-envent
-                                                        dropdown-toggle" style="margin-right:
-                                                        10px;" type="button" id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-edit"
-                                   style="color:
-                                                            #6667AB"></i>
-                            </button>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Xem lịch
-                                    làm việc</a>
-
-                                <a class="dropdown-item" href="#">Timeline
-                                    nhân viên</a>
-
-                                <a class="dropdown-item" href="#">Chỉnh sửa
-                                    thông tin</a>
-
-                                <a class="dropdown-item" href="#">Chỉnh sửa
-                                    Timeline mẫu</a>
-                            </div>
-
-                            <a href="#">
-                                <button class="button-envent">
-                                    <i class="fas
-                                                                fa-trash"
-                                       style="color:
-                                                                #F26E6E"></i>
-                                </button>
-
-                            </a>
-
-                        </div>
-
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Lịch làm việc tháng 5 tuần 3</td>
-                    <td>23/05/2022</td>
-                    <td>28/05/2022</td>
-                    <td>
-
-                        <div class="dropdown">
-                            <button class="button-envent
-                                                        dropdown-toggle" style="margin-right:
-                                                        10px;" type="button" id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-edit"
-                                   style="color:
-                                                            #6667AB"></i>
-                            </button>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Xem lịch
-                                    làm việc</a>
-
-                                <a class="dropdown-item" href="#">Timeline
-                                    nhân viên</a>
-
-                                <a class="dropdown-item" href="#">Chỉnh sửa
-                                    thông tin</a>
-
-                                <a class="dropdown-item" href="#">Chỉnh sửa
-                                    Timeline mẫu</a>
-                            </div>
-
-                            <a href="#">
-                                <button class="button-envent">
-                                    <i class="fas
-                                                                fa-trash"
-                                       style="color:
-                                                                #F26E6E"></i>
-                                </button>
-
-                            </a>
-
-                        </div>
-
-                    </td>
-
-                </tr>
                 </tbody>
             </table>
 

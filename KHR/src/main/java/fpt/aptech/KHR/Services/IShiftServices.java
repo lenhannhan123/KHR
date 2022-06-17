@@ -5,10 +5,30 @@
  */
 package fpt.aptech.KHR.Services;
 
+import fpt.aptech.KHR.Entities.Position;
+import fpt.aptech.KHR.Entities.Shift;
+import fpt.aptech.KHR.Entities.Timeline;
+
+import java.util.List;
+
 /**
- *
  * @author Admin
  */
 public interface IShiftServices {
-    
+
+
+    public List<Shift> findAll();
+
+    public boolean Create(Shift shift);
+
+    public boolean Edit(Shift shift);
+
+
+    public String Delete(int id);
+
+    public Shift FindOne(int id);
+
+
+    public Shift FindByIDTimeLine(int id);
+
 }
