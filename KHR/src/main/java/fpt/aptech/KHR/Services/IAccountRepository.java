@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fpt.aptech.KHR.Repository;
+package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Account;
 import java.util.List;

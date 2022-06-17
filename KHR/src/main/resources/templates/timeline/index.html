@@ -1,0 +1,275 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<head>
+    <title>Quản lý lịch làm việc</title>
+
+    <style>
+
+        .title-card {
+            padding-top: 11%;
+            padding-bottom: 11%;
+            margin-left: 4%;
+            font-weight: bold
+        }
+
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div layout:fragment="content">
+
+    <h3 class="title-page">Quản lý lịch làm việc</h3>
+
+
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col background-table">
+
+
+            <div class="row" style="margin-bottom:2% ;">
+                <div class="col-sm-3">
+                    <b style="margin-bottom:2% ;">Từ ngày</b>
+                    <input type="datetime-local" class="form-control input" id="">
+                </div>
+                <div class="col-sm-3">
+                    <b style="margin-bottom:2% ;">Đến ngày</b>
+                    <input type="datetime-local" class="form-control input" id="">
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-5"></div>
+                        <div class="col-sm-5" style="margin-top:4% ;">
+                            <input type="button" class="btn
+                                                    btn-success form-control
+                                                    button-defualt" value="Thêm
+                                                    lịch làm việc">
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Thời gian bắt đầu</th>
+                    <th scope="col">Thời gian kết thúc</th>
+                    <th scope="col">Hành động</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Lịch làm việc tháng 5 tuần 1</td>
+                    <td>02/05/2022</td>
+                    <td>07/05/2022</td>
+                    <td>
+
+                        <div class="dropdown">
+                            <button class="button-envent
+                                                        dropdown-toggle" style="margin-right:
+                                                        10px;" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-edit"
+                                   style="color:
+                                                            #6667AB"></i>
+                            </button>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Xem lịch
+                                    làm việc</a>
+
+                                <a class="dropdown-item" href="#">Timeline
+                                    nhân viên</a>
+
+                                <a class="dropdown-item" href="#">Chỉnh sửa
+                                    thông tin</a>
+
+                                <a class="dropdown-item" href="#">Chỉnh sửa
+                                    Timeline mẫu</a>
+                            </div>
+
+                            <a href="#">
+                                <button class="button-envent">
+                                    <i class="fas
+                                                                fa-trash"
+                                       style="color:
+                                                                #F26E6E"></i>
+                                </button>
+
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Lịch làm việc tháng 5 tuần 2</td>
+                    <td>09/05/2022</td>
+                    <td>14/05/2022</td>
+                    <td>
+
+                        <div class="dropdown">
+                            <button class="button-envent
+                                                        dropdown-toggle" style="margin-right:
+                                                        10px;" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-edit"
+                                   style="color:
+                                                            #6667AB"></i>
+                            </button>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Xem lịch
+                                    làm việc</a>
+
+                                <a class="dropdown-item" href="#">Timeline
+                                    nhân viên</a>
+
+                                <a class="dropdown-item" href="#">Chỉnh sửa
+                                    thông tin</a>
+
+                                <a class="dropdown-item" href="#">Chỉnh sửa
+                                    Timeline mẫu</a>
+                            </div>
+
+                            <a href="#">
+                                <button class="button-envent">
+                                    <i class="fas
+                                                                fa-trash"
+                                       style="color:
+                                                                #F26E6E"></i>
+                                </button>
+
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Lịch làm việc tháng 5 tuần 3</td>
+                    <td>16/05/2022</td>
+                    <td>21/05/2022</td>
+                    <td>
+
+                        <div class="dropdown">
+                            <button class="button-envent
+                                                        dropdown-toggle" style="margin-right:
+                                                        10px;" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-edit"
+                                   style="color:
+                                                            #6667AB"></i>
+                            </button>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Xem lịch
+                                    làm việc</a>
+
+                                <a class="dropdown-item" href="#">Timeline
+                                    nhân viên</a>
+
+                                <a class="dropdown-item" href="#">Chỉnh sửa
+                                    thông tin</a>
+
+                                <a class="dropdown-item" href="#">Chỉnh sửa
+                                    Timeline mẫu</a>
+                            </div>
+
+                            <a href="#">
+                                <button class="button-envent">
+                                    <i class="fas
+                                                                fa-trash"
+                                       style="color:
+                                                                #F26E6E"></i>
+                                </button>
+
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Lịch làm việc tháng 5 tuần 3</td>
+                    <td>23/05/2022</td>
+                    <td>28/05/2022</td>
+                    <td>
+
+                        <div class="dropdown">
+                            <button class="button-envent
+                                                        dropdown-toggle" style="margin-right:
+                                                        10px;" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-edit"
+                                   style="color:
+                                                            #6667AB"></i>
+                            </button>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Xem lịch
+                                    làm việc</a>
+
+                                <a class="dropdown-item" href="#">Timeline
+                                    nhân viên</a>
+
+                                <a class="dropdown-item" href="#">Chỉnh sửa
+                                    thông tin</a>
+
+                                <a class="dropdown-item" href="#">Chỉnh sửa
+                                    Timeline mẫu</a>
+                            </div>
+
+                            <a href="#">
+                                <button class="button-envent">
+                                    <i class="fas
+                                                                fa-trash"
+                                       style="color:
+                                                                #F26E6E"></i>
+                                </button>
+
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col-sm-1"></div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

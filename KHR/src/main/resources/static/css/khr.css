@@ -47,6 +47,8 @@
 .button-defualt {
     background-color: #6667AB;
     border-color: #6667AB;
+    border-radius: 10px;
+    font-weight: bolder;
 }
 
 .button-defualt:hover {
@@ -73,6 +75,7 @@
     padding-left: 15%;
     font-weight: bold;
 }
+
 .modal-notification {
     padding-left: 25%;
 }

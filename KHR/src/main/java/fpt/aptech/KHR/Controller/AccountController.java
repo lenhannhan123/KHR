@@ -6,7 +6,7 @@
 package fpt.aptech.KHR.Controller;
 
 import fpt.aptech.KHR.Entities.Account;
-import fpt.aptech.KHR.Repository.IAccountRepository;
+import fpt.aptech.KHR.Services.IAccountRepository;
 import fpt.aptech.KHR.Routes.RouteWeb;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
