@@ -1,0 +1,173 @@
+<%-- 
+    Document   : testjsp
+    Created on : Jun 18, 2022, 3:38:46 PM
+    Author     : jthie
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+    <head>
+        <title>Trang chủ</title>
+
+        <style>
+
+            .title-card{
+                padding-top: 11%; 
+                padding-bottom: 11%; 
+                margin-left: 4%; 
+                font-weight: bold
+            }
+            .title-page{
+                text-align: center; 
+                margin-top: 2%; 
+                margin-bottom: 3%;
+                font-weight: bold
+            }
+
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div layout:fragment="content">
+
+
+            <h2 class="title-page" >Trang quản trị</h2>
+
+            <div class="row">
+
+                <div class="col-lg-4 col-6" >
+
+                    <div class="small-box"  style="width: 18rem; margin: 0 auto; color: white ;background-color: #7CC3D2">
+                        <div class="inner" style="padding-top: 2%; padding-bottom: 3%">
+                            <h5 class="title-card" >Tài khoản</h5>
+
+
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-user" style="color: white"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Quản lý tài khoản <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+
+
+                </div>
+
+
+                <div class="col-lg-4 col-6" >
+
+                    <div class="small-box"  style="width: 18rem;margin: 0 auto;background-color: #56C456">
+                        <div class="inner" style="padding-top: 2%; padding-bottom: 3%">
+                            <h5 class="title-card" style="color: white" >Vị trí làm việc</h5>
+
+
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-user-plus" style="color: white"></i>
+                        </div>
+                        <a href="#" class="small-box-footer" style="color: white">Quản lý vị trí <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+
+
+                </div>
+
+
+                <div class="col-lg-4 col-6" >
+
+                    <div class="small-box"  style="width: 18rem;margin: 0 auto; ;background-color: #EE5B5B">
+                        <div class="inner" style="padding-top: 2%; padding-bottom: 3%">
+                            <h5 class="title-card" style="color: white" >Lịch làm việc</h5>
+
+
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-calendar" style="color: white"></i>
+                        </div>
+                        <a href="#" class="small-box-footer"  >Quản lý lịch làm việc <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+            <div class="row" style=" margin-top: 10%;">
+                <div class="col-lg-4 col-6" >
+
+                    <div class="small-box "  style="width: 18rem;margin: 0 auto;background-color: #C6D27C">
+                        <div class="inner" style="padding-top: 2%; padding-bottom: 3%">
+                            <h5 class="title-card" style="color: white" >Chấm công</h5>
+
+
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-clock" style="color: white" ></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Quản lý chấm công <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+
+
+                </div>
+
+
+                <div class="col-lg-4 col-6" >
+
+                    <div class="small-box"  style="width: 18rem;margin: 0 auto;background-color: #7CC3D2">
+                        <div class="inner" style="padding-top: 2%; padding-bottom: 3%">
+                            <h5 class="title-card" style="color: white" > Tiền lương</h5>
+
+
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-edit" style="color: white"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Quản lý lương <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+
+
+                </div>
+
+                <div class="col-lg-4 col-6" >
+
+                    <div class="small-box"  style="width: 18rem;margin: 0 auto;background-color: #56C456">
+                        <div class="inner" style="padding-top: 2%; padding-bottom: 3%">
+                            <h5 class="title-card" style="color: white" > Thông báo</h5>
+
+
+                        </div>
+                        <div class="icon" style="color: white">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Quản lý thông báo <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+    </body>
+
+</html>
