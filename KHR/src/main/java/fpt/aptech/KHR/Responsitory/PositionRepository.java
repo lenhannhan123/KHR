@@ -19,4 +19,8 @@ public interface PositionRepository extends JpaRepository<Position, Integer> {
     @Query("SELECT p FROM Position p WHERE p.id = :id")
     Position findID(@PathVariable("id") int id);
 
+    @Query(value = "SELECT  COUNT(p.id ) FROM Position p ", nativeQuery = true)
+    int CouPosition();
+
+
 }

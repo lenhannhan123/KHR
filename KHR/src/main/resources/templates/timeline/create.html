@@ -1,6 +1,9 @@
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/_layout}">
+      layout:decorate="~{/layout/_layout}"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
 
 <head>
     <title>Quản lý lịch làm việc</title>
@@ -36,154 +39,306 @@
         <div class="col-sm-3"></div>
         <div class="col background-table">
 
+            <form action="/timeline/create" method="POST"
+                  onsubmit="return checkvalidate()">
 
-            <b>Thông tin cơ bản</b>
-            <br>
+                <!--                <input type="hidden"-->
+                <!--                       th:name="${_csrf.parameterName}"-->
+                <!--                       th:value="${_csrf.token}"/>-->
+                <!--                  method="post" -->
+
+                <b>Thông tin cơ bản</b>
+                <br>
 
 
-            <div class="row" style="margin-top: 3%;">
-                <div class="col-sm-1"></div>
-                <div class="col">
-                    Lịch làm việc
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Lịch làm việc
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="row" style="margin-top: 1%;">
-                <div class="col-sm-1"></div>
-                <div class="col">
-                    <input type="text" class="form-control input" placeholder="Tên lịch làm việc" id="">
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="text" class="form-control input" placeholder="Tên lịch làm việc" id="TimelineName"
+                               name="TimelineName">
 
-                    <span hidden class="error-text">Vui lòng nhập tên lịch làm việc</span>
+                        <span hidden class="error-text" id="TimelineName-Eror">Vui lòng nhập tên lịch làm việc</span>
+                    </div>
+                    <div class="col-sm-1"></div>
                 </div>
-                <div class="col-sm-1"></div>
-            </div>
 
 
-            <div class="row" style="margin-top: 3%;">
-                <div class="col-sm-1"></div>
-                <div class="col">
-                    Ngày bắt đầu
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Ngày bắt đầu
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="row" style="margin-top: 1%;">
-                <div class="col-sm-1"></div>
-                <div class="col">
-                    <input type="date" class="form-control input" id="">
-                    <span hidden class="error-text">Vui lòng chọn ngày bắt đầu</span>
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="date" class="form-control input" id="TimelineStartDay"
+                               name="TimelineStartDay">
+                        <span hidden class="error-text" id="TimelineStartDay-Eror">Vui lòng chọn ngày bắt đầu</span>
+                    </div>
+                    <div class="col-sm-1"></div>
                 </div>
-                <div class="col-sm-1"></div>
-            </div>
 
 
-            <div class="row" style="margin-top: 3%;">
-                <div class="col-sm-1"></div>
-                <div class="col">
-                    Ngày kết thúc
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Ngày kết thúc
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="row" style="margin-top: 1%;">
-                <div class="col-sm-1"></div>
-                <div class="col">
-                    <input type="date" class="form-control input" id="">
-                    <span hidden class="error-text">Vui lòng chọn ngày kết thúc</span>
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="date" class="form-control input" id="TimelineEndDay"
+                               name="TimelineEndDay">
+                        <span hidden class="error-text" id="TimelineEndDay-Eror">Vui lòng chọn ngày kết thúc</span>
+                    </div>
+                    <div class="col-sm-1"></div>
                 </div>
-                <div class="col-sm-1"></div>
-            </div>
 
 
-            <div class="row" style="margin-top: 1%;">
-                <div class="col-sm-1"></div>
-                <div class="col" style="text-align:center ;">
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col" style="text-align:center ;">
 
-                    <span hidden class="error-text">Ngày bắt đầu phải là thứ 2 và kết thúc phải là thứ 7</span>
+                        <span hidden class="error-text" id="StartAndEnd-Error">Ngày bắt đầu phải là thứ 2 và kết thúc phải là thứ 7</span>
+                    </div>
+                    <div class="col-sm-1"></div>
                 </div>
-                <div class="col-sm-1"></div>
-            </div>
 
-            <br><br>
+                <br><br>
 
-            <b>Thông tin ca làm</b>
-            <br>
+                <b>Thông tin ca làm</b>
+                <br>
 
-            <div class="row" style="margin-top: 1%;">
-                <div class="col-sm-1"></div>
-                <div class="col" style="text-align:center ;">
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col" style="text-align:center ;">
 
-                    <span>Vui lòng chọn số nhân viên mặc định trong 1 ca làm</span>
+                        <span>Vui lòng chọn số nhân viên mặc định trong 1 ca làm</span>
+                    </div>
+                    <div class="col-sm-1"></div>
                 </div>
-                <div class="col-sm-1"></div>
-            </div>
 
 
-            <div class="row" style="margin-top: 4%;">
-                <div class="col-sm-1"></div>
-                <div class="col">
+                <div class="row" style="margin-top: 4%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
 
-                    <table class="table">
-                        <thead class="thead-light">
-                        <tr style="text-align: center ;">
-                            <th scope="col">Lựa chọn</th>
-                            <th scope="col">Vị trí</th>
-                            <th scope="col">Số lượng người/ca</th>
-
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="item,stt:${ListPosition}">
+                        <table class="table">
+                            <thead class="thead-light">
+                            <tr style="text-align: center ;">
+                                <th scope="col">Lựa chọn</th>
+                                <th scope="col">Vị trí</th>
+                                <th scope="col">Số lượng người/ca</th>
 
 
-                            <td style="text-align: center ;">
-                                <div class="pretty p-default p-curve">
-                                    <input type="checkbox" class="checkbox" th:value="${item.getId()}"
-                                           th:name="'check'+${stt.count}">
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item,stt:${ListPosition}">
 
-                                    <div class="state">
-                                        <label></label>
+
+                                <td style="text-align: center ;">
+                                    <div class="pretty p-default p-curve">
+                                        <input type="checkbox" class="checkbox" th:value="${item.getId()}"
+                                               th:name="'check'+${stt.count}">
+
+                                        <div class="state">
+                                            <label></label>
+                                        </div>
                                     </div>
-                                </div>
 
-                            </td>
-                            <td style="text-align: center ;" th:text="${item.getPositionname()}"></td>
-                            <td style="text-align: center ;">
+                                </td>
+                                <td style="text-align: center ;" th:text="${item.getPositionname()}"></td>
+                                <td style="text-align: center ;">
 
-                                <input type="number" class="form-control input input-number" min="0" value="0"
-                                       th:name="'value'+${stt.count}"></input>
+                                    <input type="number" class="form-control input input-number" min="0" value="0"
+                                           th:name="'value'+${stt.count}"></input>
 
-                            </td>
+                                </td>
 
-                        </tr>
-
-
-                        </tbody>
-                    </table>
-
-                    <div class="row">
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-6" style="text-align: center ;">
+                            </tr>
 
 
-                            <input type="button" class="btn btn-success form-control button-defualt" value="Tiếp theo">
+                            </tbody>
+                        </table>
+
+
+                        <!--                        <input type="text" th:value="+${stt}" name="number"/>-->
+
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6" style="text-align: center ;">
+
+
+                                <input type="submit" class="btn btn-success form-control button-defualt"
+                                       value="Tiếp theo">
+                            </div>
+                            <div class="col-sm-2"></div>
+
+
                         </div>
-                        <div class="col-sm-2"></div>
 
 
                     </div>
-
-
+                    <div class="col-sm-1"></div>
                 </div>
-                <div class="col-sm-1"></div>
-            </div>
 
-
+            </form>
         </div>
         <div class="col-sm-3"></div>
     </div>
+
+    <script th:src="@{/script/GetDayofWeek.js}"></script>
+    <script>
+        function checkvalidate() {
+
+            check = true;
+
+
+            TimelineName = document.getElementById("TimelineName").value;
+            TimelineStartDay = document.getElementById("TimelineStartDay").value;
+            TimelineEndDay = document.getElementById("TimelineEndDay").value;
+
+            // console.log(TimelineName);
+
+            const today = new Date()
+            const yesterday = new Date(today);
+
+            if (TimelineName.trim() == "" || TimelineName == null) {
+                document.getElementById("TimelineName-Eror").hidden = false;
+                check = false;
+            } else {
+                document.getElementById("TimelineName-Eror").hidden = true;
+            }
+
+
+            if (TimelineStartDay.trim() == "" || TimelineStartDay == null) {
+
+                document.getElementById("TimelineStartDay-Eror").innerText = "Vui lòng chọn ngày bắt đầu";
+                document.getElementById("TimelineStartDay-Eror").hidden = false;
+                check = false;
+            } else {
+                document.getElementById("TimelineStartDay-Eror").hidden = true;
+
+                StartDay = new Date(TimelineStartDay);
+
+                // console.log(StartDay);
+                // console.log(StartDay < yesterday);
+
+                if (StartDay < yesterday == true) {
+                    document.getElementById("TimelineStartDay-Eror").innerText = "Ngày bắt đầu phải lớn hơn hoặc bằng ngày hiện tại";
+                    document.getElementById("TimelineStartDay-Eror").hidden = false;
+                    check = false;
+                } else if (GetNumberDayofWeek(StartDay) < 1 || GetNumberDayofWeek(StartDay) > 1) {
+                    document.getElementById("TimelineStartDay-Eror").innerText = "Ngày bắt đầu phải là thứ 2";
+                    document.getElementById("TimelineStartDay-Eror").hidden = false;
+                    check = false;
+                }
+
+
+            }
+
+            if (TimelineEndDay.trim() == "" || TimelineEndDay == null) {
+
+                document.getElementById("TimelineEndDay-Eror").innerText = "Vui lòng chọn ngày kết thúc";
+                document.getElementById("TimelineEndDay-Eror").hidden = false;
+                check = false;
+            } else {
+                document.getElementById("TimelineEndDay-Eror").hidden = true;
+
+
+                if (TimelineStartDay.trim() == "" || TimelineStartDay == null) {
+                    check = false;
+                } else {
+                    StartDay = new Date(TimelineStartDay);
+
+                    EndDay = new Date(TimelineEndDay);
+
+
+                    if (StartDay > EndDay == true) {
+
+                        document.getElementById("TimelineEndDay-Eror").innerText = "Ngày bắt đầu phải nhỏ hơn ngày kết thúc";
+                        document.getElementById("TimelineEndDay-Eror").hidden = false;
+                        check = false;
+                    } else if (GetNumberDayofWeek(EndDay) < 6 || GetNumberDayofWeek(EndDay) > 6) {
+                        document.getElementById("TimelineEndDay-Eror").innerText = "Ngày kết thúc phải là thứ 7";
+                        document.getElementById("TimelineEndDay-Eror").hidden = false;
+                        check = false;
+                    }
+
+                }
+
+                // console.log(StartDay);
+                // console.log(StartDay < yesterday);
+
+
+                if (TimelineStartDay.trim() == "" || TimelineStartDay == null || TimelineEndDay.trim() == "" || TimelineEndDay == null) {
+
+
+                } else {
+                    StartDay = new Date(TimelineStartDay);
+                    EndDay = new Date(TimelineEndDay);
+
+                    // check2 = true;
+
+                    // if(){
+                    //
+                    //
+                    // }
+                    StartDay.setDate(StartDay.getDate() + 5);
+
+                    // console.log(StartDay);
+
+                    if (StartDay < EndDay || StartDay > EndDay) {
+                        document.getElementById("StartAndEnd-Error").innerText = "Ngày bắt đầu và kết thúc phải trong 1 tuần";
+                        document.getElementById("StartAndEnd-Error").hidden = false;
+                        check = false;
+                    } else {
+                        document.getElementById("StartAndEnd-Error").hidden = true;
+                    }
+
+                    // StartAndEnd-Error
+
+
+                }
+
+
+            }
+
+
+            console.log(check);
+            // return false;
+
+            if (check == true) {
+
+                return true;
+            } else {
+                return false;
+
+            }
+
+            // alert("check");
+
+        }
+
+
+    </script>
+
+
 </div>
 
 
