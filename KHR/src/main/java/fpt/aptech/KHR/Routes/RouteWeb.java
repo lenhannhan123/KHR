@@ -5,11 +5,7 @@
  */
 package fpt.aptech.KHR.Routes;
 
-import fpt.aptech.KHR.Controller.AccountController;
-import fpt.aptech.KHR.Controller.DayOffController;
-import fpt.aptech.KHR.Controller.HomeController;
-import fpt.aptech.KHR.Controller.NotificationController;
-import fpt.aptech.KHR.Controller.OverTimeController;
+import fpt.aptech.KHR.Controller.*;
 import fpt.aptech.KHR.Entities.ModelDemo;
 import fpt.aptech.KHR.Entities.Notification;
 import fpt.aptech.KHR.Entities.RouteModel;
@@ -17,38 +13,32 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- *
  * @author Admin
  */
 public class RouteWeb {
 
     ModelDemo model = new ModelDemo();
 
-//    Khu vuc new Model
+    //    Khu vuc new Model
     HomeController homeController = new HomeController();
     NotificationController notificationController = new NotificationController();
-     AccountController accountController = new AccountController();
+    AccountController accountController = new AccountController();
     DayOffController dayOffController = new DayOffController();
     OverTimeController overTimeController = new OverTimeController();
-    
-    
-    
-    
-    
 
-//    Khu vuc khai bao Route    
-   
-    
+    TimelineController timelineController = new TimelineController();
+
+
+//    Khu vuc khai bao Route
+
+
     public final static String AdminHomeURL = "/home/index";
     String AdminHomeControler = homeController.Index(model.model);
-    
-    
-      public final static String index1URL = "/login";
+
+
+    public final static String index1URL = "/login";
     String Index1Controler = homeController.Index(model.model);
-    
-    
-    
-     
+
 
     //Route Notification
     public final static String notificationURL = "/notification";
@@ -57,7 +47,7 @@ public class RouteWeb {
     public final static String notificationAddURL = "/notification/add";
     String NotificationAddControler = notificationController.AddPage();
     //
-    
+
     //Route DayOff
     public final static String dayoffURL = "/dayoff";
     String DayOffControler = dayOffController.Index(model.model);
@@ -68,5 +58,14 @@ public class RouteWeb {
     //
     public final static String accountManageURL = "/account/index";
     String AccountControllerString = accountController.Index(model.model);
-    
+
+
+    //Route Timeline
+    public final static String TimelineIndexURL = "/timeline/index";
+    String TimelineIndexControler = timelineController.IndexTimeline(model.model);
+
+
+    public final static String TimelineGetCreateURL = "/timeline/create";
+    String TimelineGetCreateControler = timelineController.GetCreate(model.model);
+
 }

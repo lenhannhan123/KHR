@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- *
  * @author Admin
  */
 @Controller
@@ -26,10 +25,13 @@ public class HomeController {
 
         return "index";
     }
+
     @RequestMapping(value = {RouteWeb.index1URL}, method = RequestMethod.GET)
 //    @GetMapping("/login")
     public String Login(Model model) {
 
         return "login";
     }
+
+
 }

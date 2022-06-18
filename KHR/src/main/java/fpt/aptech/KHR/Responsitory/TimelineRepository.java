@@ -3,20 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fpt.aptech.KHR.Repository;
+package fpt.aptech.KHR.Responsitory;
 
-import fpt.aptech.KHR.Entities.Account;
-import java.util.List;
+import fpt.aptech.KHR.Entities.Position;
+import fpt.aptech.KHR.Entities.Timeline;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- *
- * @author jthie
+ * @author Thành Nhân
  */
-public interface AccountRepository extends JpaRepository<Account, String> {
+public interface TimelineRepository extends JpaRepository<Timeline, Integer> {
+    @Query("SELECT t FROM Timeline t WHERE t.id = :id")
+    Timeline findID(@PathVariable("id") int id);
 
-    @Query("SELECT a FROM Account a WHERE a.mail = :mail")
-    Account findAccount(@PathVariable("mail") String mail);
 }
