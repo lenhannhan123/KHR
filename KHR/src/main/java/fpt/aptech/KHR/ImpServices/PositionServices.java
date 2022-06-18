@@ -49,4 +49,9 @@ public class PositionServices implements IPositionServices {
     public Position FindOne(int id) {
         return null;
     }
+
+    @Override
+    public int CountPosition() {
+        return positionRepository.CouPosition();
+    }
 }
