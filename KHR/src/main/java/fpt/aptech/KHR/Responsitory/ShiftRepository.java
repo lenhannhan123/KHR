@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Admin
@@ -22,10 +23,8 @@ public interface ShiftRepository extends JpaRepository<Shift, Integer> {
     Shift findID(@PathVariable("id") int id);
 
 
-    @Query(value = "SELECT TOP 1 * FROM Shift u WHERE u.Id_Timeline  = :IdTimeLine", nativeQuery = true)
-    Shift findIDTime(@PathVariable("IdTimeLine") int IdTimeLine);
+    @Query(value = "SELECT  * FROM Shift  WHERE Id_Timeline   = :Id_Timeline ", nativeQuery = true)
+    List<Shift> findIDTime(@PathVariable("Id_Timeline ") int Id_Timeline);
 
 
-    @Query(value = "INSER INTO Shift u (u.Id_Timeline , u.Id_Position , u.Number, u.Time_start , u.Is_OT, u.Time_end, u.Shift_code)  VALUES (:Id_Timeline , :Id_Position, :Number, :Time_start, :Is_OT, :Time_end,:Shift_code )", nativeQuery = true)
-    void CreateNewShift(@PathVariable("Id_Timeline") int Id_Timeline, @PathVariable("Id_Position") int Id_Position, @PathVariable("Number") int Number, @PathVariable("Time_start") Date Time_start, @PathVariable("Is_OT") boolean Is_OT, @PathVariable("Time_end") Date Time_end, @PathVariable("Shift_code") int Shift_code);
 }

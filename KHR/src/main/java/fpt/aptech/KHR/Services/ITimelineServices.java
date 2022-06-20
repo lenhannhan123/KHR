@@ -22,7 +22,7 @@ public interface ITimelineServices {
     public boolean Edit(Timeline timeline);
 
 
-    public String Delete(int id);
+    public Boolean Delete(int id);
 
     public Timeline FindOne(int id);
 

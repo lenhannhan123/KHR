@@ -91,7 +91,7 @@
                     <div class="col-sm-1"></div>
                     <div class="col">
                         <input type="date" class="form-control input" id="TimelineStartDay"
-                               name="TimelineStartDay">
+                               name="TimelineStartDay" onchange="checkStartDay()">
                         <span hidden class="error-text" id="TimelineStartDay-Eror">Vui lòng chọn ngày bắt đầu</span>
                     </div>
                     <div class="col-sm-1"></div>
@@ -110,7 +110,7 @@
                     <div class="col-sm-1"></div>
                     <div class="col">
                         <input type="date" class="form-control input" id="TimelineEndDay"
-                               name="TimelineEndDay">
+                               name="TimelineEndDay" onchange="checkEndDay()">
                         <span hidden class="error-text" id="TimelineEndDay-Eror">Vui lòng chọn ngày kết thúc</span>
                     </div>
                     <div class="col-sm-1"></div>
@@ -283,6 +283,8 @@
 
     <!--    Validate-->
     <script>
+        check = true;
+
         function checkvalidate() {
 
             check = true;
@@ -311,8 +313,13 @@
                 document.getElementById("TimelineStartDay-Eror").hidden = false;
                 check = false;
             } else {
-                document.getElementById("TimelineStartDay-Eror").hidden = true;
+                // if (check2 == true) {
+                //     document.getElementById("TimelineStartDay-Eror").hidden = true;
+                // } else {
+                //     check = false;
+                // }
 
+                document.getElementById("TimelineStartDay-Eror").hidden = true;
                 StartDay = new Date(TimelineStartDay);
 
                 // console.log(StartDay);
@@ -337,8 +344,13 @@
                 document.getElementById("TimelineEndDay-Eror").hidden = false;
                 check = false;
             } else {
-                document.getElementById("TimelineEndDay-Eror").hidden = true;
 
+                // if (check2 == true) {
+                //     document.getElementById("TimelineEndDay-Eror").hidden = true;
+                // } else {
+                //     check = false;
+                // }
+                document.getElementById("TimelineEndDay-Eror").hidden = true;
 
                 if (TimelineStartDay.trim() == "" || TimelineStartDay == null) {
                     check = false;
@@ -477,6 +489,84 @@
         }
     </script>
 
+
+    <!--    Check Day-->
+
+
+    <script>
+        function checkStartDay() {
+            check = true;
+            startDay = document.getElementById("TimelineStartDay").value;
+            url1 = location.href + "/../checkstartday"
+
+            let url = url1 + `?timelinedtartday=${startDay}`;
+
+            var request = new XMLHttpRequest();
+            request.open('POST', url, false);  // `false` makes the request synchronous
+            request.send(null);
+
+            if (request.status === 200) {// That's HTTP for 'ok'
+                // return request.responseText
+
+                result = parseInt(request.responseText);
+                // if (request.responseText == ) {
+                //     alert("nhan");
+                // }
+
+
+                if (result == 0
+                ) {
+
+                    document.getElementById("TimelineStartDay-Eror").innerText = "Ngày bắt đầu đã tồn tại!";
+                    document.getElementById("TimelineStartDay-Eror").hidden = false;
+                    check2 = false;
+                } else {
+                    document.getElementById("TimelineStartDay-Eror").hidden = true;
+                }
+
+
+            }
+
+
+        }
+
+
+        function checkEndDay() {
+            check = true;
+            endDay = document.getElementById("TimelineEndDay").value;
+            url1 = location.href + "/../checkendday"
+
+            let url = url1 + `?timelineendday=${endDay}`;
+
+            var request = new XMLHttpRequest();
+            request.open('POST', url, false);  // `false` makes the request synchronous
+            request.send(null);
+
+            if (request.status === 200) {// That's HTTP for 'ok'
+                // return request.responseText
+
+                result = parseInt(request.responseText);
+                // if (request.responseText == ) {
+                //     alert("nhan");
+                // }
+
+
+                if (result == 0
+                ) {
+
+                    document.getElementById("TimelineEndDay-Eror").innerText = "Ngày kêt thúc tồn tại";
+                    document.getElementById("TimelineEndDay-Eror").hidden = false;
+                    check2 = false;
+                } else {
+                    document.getElementById("TimelineEndDay-Eror").hidden = true;
+                }
+
+
+            }
+
+
+        }
+    </script>
 
 </div>
 

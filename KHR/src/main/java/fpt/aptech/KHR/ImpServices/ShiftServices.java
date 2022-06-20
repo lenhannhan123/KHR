@@ -57,7 +57,7 @@ public class ShiftServices implements IShiftServices {
     }
 
     @Override
-    public Shift FindByIDTimeLine(int id) {
+    public List<Shift> FindByIDTimeLine(int id) {
         return shiftRepository.findIDTime(id);
     }
 }

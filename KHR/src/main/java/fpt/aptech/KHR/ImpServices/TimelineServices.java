@@ -27,7 +27,7 @@ public class TimelineServices implements ITimelineServices {
 
     @Override
     public List<Timeline> findAll() {
-        return timelineRepository.findAll();
+        return timelineRepository.findAllByDelete((short) 0);
     }
 
     @Override
@@ -45,43 +45,30 @@ public class TimelineServices implements ITimelineServices {
     }
 
     @Override
-    public String Delete(int id) {
+    public Boolean Delete(int id) {
 
-        Timeline timeline = timelineRepository.findID(id);
+        Timeline timeline = timelineRepository.findID(id, (short) 0);
 
-        if (timeline.getId() == null) {
-            return "Không tìm thấy lịch làm việc";
 
-        } else {
+        timeline.setIsDelete((short) 1);
 
-            ShiftServices shiftServices = new ShiftServices();
-            Shift shift = shiftServices.FindByIDTimeLine(timeline.getId());
-
-            if (shift == null) {
-                timelineRepository.delete(timeline);
-                return "True";
-            } else {
-
-                return "False";
-            }
-
-        }
-
+        timelineRepository.save(timeline);
+        return true;
 
     }
 
     @Override
     public Timeline FindOne(int id) {
-        return timelineRepository.findID(id);
+        return timelineRepository.findID(id, (short) 0);
     }
 
     @Override
     public int countStartDay(Date StartDay) {
-        return timelineRepository.findStartDay(StartDay);
+        return timelineRepository.findStartDay(StartDay, (short) 0);
     }
 
     @Override
     public int countEndDay(Date EndDay) {
-        return timelineRepository.findEndDay(EndDay);
+        return timelineRepository.findEndDay(EndDay, (short) 0);
     }
 }
