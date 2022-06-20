@@ -54,7 +54,7 @@ public class Account implements Serializable {
     private String mail;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 250)
     @Column(name = "Password")
     private String password;
     @Basic(optional = false)
@@ -93,7 +93,7 @@ public class Account implements Serializable {
     private String recoverycode;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 250)
     @Column(name = "Token")
     private String token;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")

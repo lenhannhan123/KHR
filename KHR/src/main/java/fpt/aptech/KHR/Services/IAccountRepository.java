@@ -23,4 +23,8 @@ public interface IAccountRepository {
     public void delete(Account camera);
 
     public Account findByMail(String mail);
+
+    public List<Account> findAllAdminAccounts();
+
+    public List<Account> findAllUserAccounts();
 }
