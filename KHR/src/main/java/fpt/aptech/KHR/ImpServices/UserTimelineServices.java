@@ -6,10 +6,13 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.UserTimeline;
+import fpt.aptech.KHR.Responsitory.TimelineRepository;
+import fpt.aptech.KHR.Responsitory.UserTimeLineRepository;
 import fpt.aptech.KHR.Services.IUserTimeServices;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +20,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserTimelineServices implements IUserTimeServices {
+
+    @Autowired
+    private UserTimeLineRepository userTimeLineRepository;
 
     @Override
     public List<UserTimeline> findAll() {

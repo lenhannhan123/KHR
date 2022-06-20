@@ -11,6 +11,7 @@ import fpt.aptech.KHR.Responsitory.TimelineRepository;
 import fpt.aptech.KHR.Services.ITimelineServices;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -72,5 +73,15 @@ public class TimelineServices implements ITimelineServices {
     @Override
     public Timeline FindOne(int id) {
         return timelineRepository.findID(id);
+    }
+
+    @Override
+    public int countStartDay(Date StartDay) {
+        return timelineRepository.findStartDay(StartDay);
+    }
+
+    @Override
+    public int countEndDay(Date EndDay) {
+        return timelineRepository.findEndDay(EndDay);
     }
 }

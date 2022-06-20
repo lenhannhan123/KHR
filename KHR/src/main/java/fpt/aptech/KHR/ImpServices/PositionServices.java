@@ -30,23 +30,34 @@ public class PositionServices implements IPositionServices {
     }
 
     @Override
-    public boolean Create(Position position) {
-        return false;
+    public Position Create(Position position) {
+        return positionRepository.save(position);
     }
 
     @Override
     public boolean Edit(Position position) {
-        return false;
+
+        positionRepository.save(position);
+        return true;
     }
 
     @Override
     public String Delete(int id) {
-        return null;
+
+        Position position = FindOne(id);
+
+        if (position != null) {
+
+            positionRepository.delete(position);
+            return "true";
+        }
+
+        return "Không tìm thấy";
     }
 
     @Override
     public Position FindOne(int id) {
-        return null;
+        return positionRepository.findID(id);
     }
 
     @Override

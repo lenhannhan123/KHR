@@ -7,6 +7,7 @@ package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Timeline;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,4 +25,9 @@ public interface ITimelineServices {
     public String Delete(int id);
 
     public Timeline FindOne(int id);
+
+    public int countStartDay(Date StartDay);
+
+    public int countEndDay(Date EndDay);
+
 }

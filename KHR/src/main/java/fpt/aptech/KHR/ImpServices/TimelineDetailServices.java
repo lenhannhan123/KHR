@@ -6,10 +6,14 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.TimelineDetail;
+import fpt.aptech.KHR.Responsitory.ShiftRepository;
+import fpt.aptech.KHR.Responsitory.TimelineDetailRepository;
+import fpt.aptech.KHR.Responsitory.TimelineRepository;
 import fpt.aptech.KHR.Services.ITimelineDetailServices;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,28 +22,36 @@ import org.springframework.stereotype.Service;
 @Service
 public class TimelineDetailServices implements ITimelineDetailServices {
 
+
+    @Autowired
+    private TimelineDetailRepository timelineDetailRepository;
+
     @Override
     public List<TimelineDetail> findAll() {
-        return null;
+        return timelineDetailRepository.findAll();
     }
 
     @Override
     public boolean Create(TimelineDetail timelineDetail) {
-        return false;
+        timelineDetailRepository.save(timelineDetail);
+        return true;
     }
 
     @Override
     public boolean Edit(TimelineDetail timelineDetail) {
-        return false;
+        timelineDetailRepository.save(timelineDetail);
+        return true;
     }
 
     @Override
     public String Delete(int id) {
-        return null;
+
+        timelineDetailRepository.delete(new TimelineDetail(id));
+        return "true";
     }
 
     @Override
     public TimelineDetail FindOne(int id) {
-        return null;
+        return timelineDetailRepository.findID(id);
     }
 }
