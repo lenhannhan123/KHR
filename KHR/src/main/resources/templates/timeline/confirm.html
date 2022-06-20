@@ -7,7 +7,9 @@
 
 <head>
     <title>Xác nhận thông tin</title>
-
+    <!--CND VueJs-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js"></script>
     <style>
 
         .title-card {
@@ -32,398 +34,401 @@
 <body>
 
 <div layout:fragment="content">
+    <div id="myApp">
+        <h3 class="title-page">Xác nhận thông tin</h3>
 
-    <h3 class="title-page">Xác nhận thông tin</h3>
 
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col background-table">
 
-    <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col background-table">
+                <div class="row">
 
-            <div class="row">
 
-                <div class="col-sm-4" style="margin-top: 3%;">
+                    <div class="col-sm-4" style="margin-top: 3%;" v-for="(value,index) in dataDay" :key="index">
 
-                    <table class="table table-bordered" style="width:80% ; margin:0px auto">
-                        <thead>
-                        <tr>
-                            <th scope="col" style="text-align: center; padding:1.5rem">
+                        <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                            <thead>
+                            <tr>
+                                <th scope="col" style="text-align: center; padding:1.5rem">
 
-                                <b>Thứ 2</b>
-                                <br>
-                                <b> 06/06/2022</b>
+                                    <b>{{value.name}}</b>
+                                    <br>
+                                    <b> {{value.date}}</b>
 
 
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
 
-                        </tbody>
-                    </table>
+                            <tr id="" class="hover-click" v-for="(value1,index1) in data" :key="index1"
+                                v-if="value1.date == value.date">
+                                <td style="text-align:center ; padding:1.5rem">
+                                    {{value1.name}}
+                                    <br>
+                                    <a href="#" v-on:click="openform(index1)" data-toggle="modal"
+                                       data-target="#infomationform">Nhấn vào đây để sửa
+                                        thông
+                                        tin</a>
+                                </td>
+                            </tr>
 
-                </div>
 
+                            </tbody>
+                        </table>
 
-                <div class="col-sm-4" style="margin-top: 3%;">
-
-                    <table class="table table-bordered" style="width:80% ; margin:0px auto">
-                        <thead>
-                        <tr>
-                            <th scope="col" style="text-align: center; padding:1.5rem">
-
-                                <b>Thứ 3</b>
-                                <br>
-                                <b> 07/06/2022</b>
-
-
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-
-
-                        </tbody>
-                    </table>
-
-                </div>
-
-                <div class="col-sm-4" style="margin-top: 3%;">
-
-                    <table class="table table-bordered" style="width:80% ; margin:0px auto">
-                        <thead>
-                        <tr>
-                            <th scope="col" style="text-align: center; padding:1.5rem">
-
-                                <b>Thứ 4</b>
-                                <br>
-                                <b> 08/06/2022</b>
-
-
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-
-
-                        </tbody>
-                    </table>
-
-                </div>
-
-                <div class="col-sm-4" style="margin-top: 3%;">
-
-                    <table class="table table-bordered" style="width:80% ; margin:0px auto">
-                        <thead>
-                        <tr>
-                            <th scope="col" style="text-align: center; padding:1.5rem">
-
-                                <b>Thứ 5</b>
-                                <br>
-                                <b> 09/06/2022</b>
-
-
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-
-
-                        </tbody>
-                    </table>
-
-                </div>
-
-                <div class="col-sm-4" style="margin-top: 3%;">
-
-                    <table class="table table-bordered" style="width:80% ; margin:0px auto">
-                        <thead>
-                        <tr>
-                            <th scope="col" style="text-align: center; padding:1.5rem">
-
-                                <b>Thứ 6</b>
-                                <br>
-                                <b> 10/06/2022</b>
-
-
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-
-
-                        </tbody>
-                    </table>
-
-                </div>
-
-
-                <div class="col-sm-4" style="margin-top: 3%;">
-
-                    <table class="table table-bordered" style="width:80% ; margin:0px auto">
-                        <thead>
-                        <tr>
-                            <th scope="col" style="text-align: center; padding:1.5rem">
-
-                                <b>Thứ 7</b>
-                                <br>
-                                <b> 11/06/2022</b>
-
-
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-                        <tr id="" class="hover-click">
-                            <td style="text-align:center ; padding:1.5rem">
-                                Ca sáng (7:30 - 11:30)
-                                <br>
-                                <a href="#" data-toggle="modal" data-target="#infomationform">Nhấn vào đây để sửa thông
-                                    tin</a>
-                            </td>
-                        </tr>
-
-
-                        </tbody>
-                    </table>
-
-                </div>
-
-
-            </div>
-
-            <div class="row" style="margin-top: 5%;">
-                <div class="col-sm-5"></div>
-                <div class="col-sm-2" style="text-align: center ;">
-                    <input type="button" class="btn btn-success form-control button-defualt" value="Lưu dữ liệu"
-                    >
-                </div>
-                <div class="col-sm-5"></div>
-            </div>
-
-
-        </div>
-        <div class="col-sm-1"></div>
-
-    </div>
-
-
-    <div class="modal fade" id="infomationform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-
-
-                    <h5 class="modal-title modal-title " id="exampleModalLabel">THÔNG TIN CA LÀM VIỆC</h5>
-
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="row">
-                        <div class="col">
-                            <table class="table">
-                                <thead class="thead-light">
-                                <tr style="text-align: center ;">
-                                    <th scope="col">Lựa chọn</th>
-                                    <th scope="col">Vị trí</th>
-                                    <th scope="col" style="width:40%">Số lượng người/ca</th>
-
-
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-
-                                    <td style="text-align: center ;">
-                                        <div class="pretty p-default p-curve">
-                                            <input type="checkbox" class="checkbox" id="">
-
-                                            <div class="state">
-                                                <label></label>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                    <td style="text-align: center ;">Công nhân sản xuất</td>
-                                    <td style="text-align: center ;">
-
-                                        <input type="number" class="form-control input input-number input-number-form "
-                                               min="0" value="0" id=""></input>
-
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-
-                                    <td style="text-align: center ;">
-                                        <div class="pretty p-default p-curve">
-                                            <input type="checkbox" class="checkbox" id="">
-
-                                            <div class="state">
-                                                <label></label>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                    <td style="text-align: center ;">Quản lý kho</td>
-                                    <td style="text-align: center ;">
-
-                                        <input type="number" class="form-control input input-number input-number-form "
-                                               min="0" value="0" id=""></input>
-
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-
-                                    <td style="text-align: center ;">
-                                        <div class="pretty p-default p-curve">
-                                            <input type="checkbox" class="checkbox" id="">
-
-                                            <div class="state">
-                                                <label></label>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                    <td style="text-align: center ;">Kỹ sư cơ khí</td>
-                                    <td style="text-align: center ;">
-
-                                        <input type="number" class="form-control input input-number input-number-form "
-                                               min="0" value="0" id=""></input>
-
-                                    </td>
-
-                                </tr>
-
-                                </tbody>
-                            </table>
-
-                            <div style="text-align:center ;">
-                                <a href="#">Thêm vị trí</a>
-                            </div>
-
-
-                        </div>
                     </div>
 
 
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng bảng</button>
-                    <button type="button" class="btn btn-primary" style="background-color:#6667AB ;">Lưu dữ liệu
-                    </button>
+
+                <div class="row" style="margin-top: 5%;">
+                    <div class="col-sm-5"></div>
+                    <div class="col-sm-2" style="text-align: center ;">
+                        <input type="button" v-on:click="submit()" class="btn btn-success form-control button-defualt"
+                               value="Lưu dữ liệu"
+                        >
+                    </div>
+                    <div class="col-sm-5"></div>
+                </div>
+
+
+            </div>
+            <div class="col-sm-1"></div>
+
+        </div>
+
+
+        <div class="modal fade" id="infomationform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+
+                        <h5 class="modal-title modal-title " id="exampleModalLabel">THÔNG TIN CA LÀM VIỆC</h5>
+
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                    <tr style="text-align: center ;">
+                                        <th scope="col">Lựa chọn</th>
+                                        <th scope="col">Vị trí</th>
+                                        <th scope="col" style="width:40%">Số lượng người/ca</th>
+
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                    <tr v-for="(value2,index2) in FormPosition" :key="index">
+
+                                        <td style="text-align: center ;">
+                                            <div class="pretty p-default p-curve">
+                                                <input type="checkbox" v-model="value2.isCheck" class="checkbox" id="">
+
+                                                <div class="state">
+                                                    <label></label>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                        <td style="text-align: center ;">{{value2.positionname}}</td>
+                                        <td style="text-align: center ;">
+
+                                            <input type="number"
+                                                   class="form-control input input-number input-number-form "
+                                                   min="0" value="0" v-model="value2.number"
+                                                   :disabled="value2.isCheck ? disabled :'' " id=""></input>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng bảng</button>
+                        <button type="button" class="btn btn-primary" style="background-color:#6667AB ;"
+                                v-on:click="UpdatePositionData()" data-dismiss="modal">Lưu dữ liệu
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+
+
+        <textarea th:text="${itemsArray}" hidden id="Position"></textarea>
+        <textarea th:text="${Position}" hidden id="Positioncheck"></textarea>
+        <textarea th:text="${DayoffJson}" hidden id="DayoffJson"></textarea>
+        <textarea th:text="${TimelineStartDay}" hidden id="TimelineStartDay"></textarea>
+        <textarea th:text="${TimelineEndDay}" hidden id="TimelineEndDay"></textarea>
+
+
+        <form method="post" hidden>
+
+            <textarea name="data" id="submit-text"></textarea>
+            <input type="submit" id="btn-submit">
+
+        </form>
+
+
+        <!--    <script>-->
+
+        <!--        var array =  {!! json_encode($) !!};-->
+        <!--    </script>-->
+
     </div>
 
+    <script>
+        var App = new Vue({
+            el: "#myApp",
+            created() {
+                this.load();
+            },
+            data() {
+                return {
+                    data: [],
+                    dataDay: [],
+                    Position: [],
+                    CheckPosition: [],
+                    Dayoff: [],
+                    TimelineStartDay: "",
+                    TimelineEndDay: "",
+                    FormPosition: [],
+                    CurrentChoose: 0
 
-    <textarea th:text="${itemsArray}">
 
-    </textarea>
+                }
 
-    <!--    <script>-->
+            },
+            methods: {
+                load: function () {
 
-    <!--        var array =  {!! json_encode($) !!};-->
-    <!--    </script>-->
 
+                    Position = JSON.parse(document.getElementById("Position").value);
+                    CheckPosition = JSON.parse(document.getElementById("Positioncheck").value);
+
+                    if (document.getElementById("DayoffJson").value != null || document.getElementById("DayoffJson").value.trim() != "") {
+
+                        Dayoff = document.getElementById("DayoffJson").value;
+                        this.Dayoff = JSON.parse(Dayoff);
+                    }
+
+
+                    TimelineStartDay = document.getElementById("TimelineStartDay").value
+                    TimelineEndDay = document.getElementById("TimelineEndDay").value
+
+
+                    this.Position = Position;
+                    this.CheckPosition = CheckPosition;
+
+                    this.TimelineStartDay = TimelineStartDay;
+                    this.TimelineEndDay = TimelineEndDay;
+
+                    //
+                    // console.log(this.CheckPosition);
+                    // console.log("cách");
+                    // console.log(this.Position);
+
+                    // console.log(document.getElementById("Position").value);
+
+
+                    // alert("nhan");
+                    this.bindingdata();
+
+                },
+
+                bindingdata: function () {
+
+                    DateWork = {};
+
+                    DateStart = new Date(this.TimelineStartDay);
+
+                    j = 0;
+
+                    for (let i = 2; i <= 7; i++) {
+                        DateWork = {};
+                        tmpDate = DateStart;
+                        tmpDate.setDate(DateStart.getDate() + j);
+                        j += 1;
+
+                        DateWork.name = "Thứ " + i;
+                        DateWork.date = this.addzero(tmpDate.getDate()) + "/" + this.addzero(tmpDate.getMonth()) + "/" + tmpDate.getFullYear();
+
+                        this.dataDay.push(DateWork)
+
+                    }
+
+                    this.MatchPosition();
+
+                    for (let i = 2; i <= 7; i++) {
+                        DateWorkData = {};
+
+                        tmpPosition = [];
+
+
+                        for (let k = 0; k < this.Position.length; k++) {
+                            tmpObj = {};
+                            tmpObj.id = this.Position[k].id;
+                            tmpObj.isCheck = this.Position[k].isCheck;
+                            tmpObj.number = this.Position[k].number;
+                            tmpObj.positionname = this.Position[k].positionname;
+                            tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                            tmpPosition[k] = tmpObj
+
+                        }
+
+
+                        // console.log(tmpPosition);
+
+                        DateWorkData.name = "Ca sáng (7:30 - 11:30)";
+                        DateWorkData.position = tmpPosition;
+                        DateWorkData.date = this.dataDay[i - 2].date;
+
+
+                        this.data.push(DateWorkData);
+
+                        DateWorkData = {};
+                        tmpPosition = [];
+
+
+                        for (let k = 0; k < this.Position.length; k++) {
+                            tmpObj = {};
+                            tmpObj.id = this.Position[k].id;
+                            tmpObj.isCheck = this.Position[k].isCheck;
+                            tmpObj.number = this.Position[k].number;
+                            tmpObj.positionname = this.Position[k].positionname;
+                            tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                            tmpPosition[k] = tmpObj
+
+                        }
+
+
+                        DateWorkData.name = "Ca chiều (13:00 - 17:00)";
+                        DateWorkData.date = this.dataDay[i - 2].date;
+                        DateWorkData.position = tmpPosition;
+                        this.data.push(DateWorkData);
+
+
+                    }
+
+
+                    // alert(DateWork);
+
+
+                },
+
+                MatchPosition: function () {
+
+
+                    for (let i = 0; i < this.Position.length; i++) {
+                        // console.log(this.CheckPosition[i][0]);
+
+                        for (let j = 0; j < this.CheckPosition.length; j++) {
+                            if (this.Position[i].id == this.CheckPosition[j][0]) {
+
+                                this.Position[i].isCheck = true;
+                                this.Position[i].number = this.CheckPosition[j][1];
+
+                                break;
+                            } else {
+                                this.Position[i].isCheck = false;
+                                this.Position[i].number = 0;
+                            }
+                        }
+
+                        // console.log(this.Position[i].id)
+
+
+                    }
+
+                    // console.log(this.Position);
+
+                },
+
+                addzero: function (str) {
+
+                    if (str < 10) {
+                        return "0" + str;
+                    }
+                    return str
+
+                },
+
+                openform: function (index) {
+                    this.FormPosition = [];
+                    this.CurrentChoose = index;
+
+                    tmpPosition = [];
+                    for (let k = 0; k < this.data[index].position.length; k++) {
+                        tmpObj = {};
+                        tmpObj.id = this.data[index].position[k].id;
+                        tmpObj.isCheck = this.data[index].position[k].isCheck;
+                        tmpObj.number = this.data[index].position[k].number;
+                        tmpObj.positionname = this.data[index].position[k].positionname;
+                        tmpObj.salarydefault = this.data[index].position[k].salarydefault;
+
+                        tmpPosition[k] = tmpObj
+
+                    }
+
+
+                    this.FormPosition = tmpPosition;
+
+
+                    console.log(this.data[index]);
+                },
+                UpdatePositionData: function () {
+
+                    console.log(this.CurrentChoose);
+                    _this = this;
+
+                    for (let i = 0; i < this.FormPosition.length; i++) {
+                        this.FormPosition[i].number = parseInt(this.FormPosition[i].number)
+                    }
+
+                    _this.data[this.CurrentChoose].position = this.FormPosition;
+
+                    console.log(this.data)
+
+
+                },
+
+                submit: function () {
+
+
+                    document.getElementById("submit-text").value = JSON.stringify(this.data);
+                    document.getElementById("btn-submit").click();
+                    console.log(this.data);
+
+
+                }
+            }
+
+        })
+    </script>
 
 </div>
 

@@ -5,7 +5,6 @@
  */
 package fpt.aptech.KHR.Responsitory;
 
-import fpt.aptech.KHR.Entities.Position;
 import fpt.aptech.KHR.Entities.Timeline;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

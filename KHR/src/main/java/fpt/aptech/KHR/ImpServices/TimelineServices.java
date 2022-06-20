@@ -30,9 +30,9 @@ public class TimelineServices implements ITimelineServices {
     }
 
     @Override
-    public boolean Create(Timeline timeline) {
-        timelineRepository.save(timeline);
-        return true;
+    public Timeline Create(Timeline timeline) {
+
+        return timelineRepository.save(timeline);
     }
 
     @Override

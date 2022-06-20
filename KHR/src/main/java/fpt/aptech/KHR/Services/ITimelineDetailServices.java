@@ -5,8 +5,6 @@
  */
 package fpt.aptech.KHR.Services;
 
-import fpt.aptech.KHR.Entities.Shift;
-import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Entities.TimelineDetail;
 
 import java.util.List;

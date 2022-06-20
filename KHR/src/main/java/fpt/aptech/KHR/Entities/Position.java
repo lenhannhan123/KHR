@@ -8,7 +8,6 @@ package fpt.aptech.KHR.Entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,17 +23,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author Admin
  */
 @Entity
-@Table(name = "position", catalog = "khr", schema = "")
+@Table(name = "position")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Position.findAll", query = "SELECT p FROM Position p"),
-    @NamedQuery(name = "Position.findById", query = "SELECT p FROM Position p WHERE p.id = :id"),
-    @NamedQuery(name = "Position.findByPositionname", query = "SELECT p FROM Position p WHERE p.positionname = :positionname"),
-    @NamedQuery(name = "Position.findBySalarydefault", query = "SELECT p FROM Position p WHERE p.salarydefault = :salarydefault")})
+        @NamedQuery(name = "Position.findAll", query = "SELECT p FROM Position p"),
+        @NamedQuery(name = "Position.findById", query = "SELECT p FROM Position p WHERE p.id = :id"),
+        @NamedQuery(name = "Position.findByPositionname", query = "SELECT p FROM Position p WHERE p.positionname = :positionname"),
+        @NamedQuery(name = "Position.findBySalarydefault", query = "SELECT p FROM Position p WHERE p.salarydefault = :salarydefault")})
 public class Position implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,10 +50,8 @@ public class Position implements Serializable {
     @NotNull
     @Column(name = "Salary_default")
     private int salarydefault;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPosition")
-    private List<AccountPosition> accountPositionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPosition")
-    private List<Shift> shiftList;
+//    @OneToMany(mappedBy = "idPosition")
+//    private List<Shift> shiftList;
 
     public Position() {
     }
@@ -94,23 +90,14 @@ public class Position implements Serializable {
         this.salarydefault = salarydefault;
     }
 
-    @XmlTransient
-    public List<AccountPosition> getAccountPositionList() {
-        return accountPositionList;
-    }
-
-    public void setAccountPositionList(List<AccountPosition> accountPositionList) {
-        this.accountPositionList = accountPositionList;
-    }
-
-    @XmlTransient
-    public List<Shift> getShiftList() {
-        return shiftList;
-    }
-
-    public void setShiftList(List<Shift> shiftList) {
-        this.shiftList = shiftList;
-    }
+//    @XmlTransient
+//    public List<Shift> getShiftList() {
+//        return shiftList;
+//    }
+//
+//    public void setShiftList(List<Shift> shiftList) {
+//        this.shiftList = shiftList;
+//    }
 
     @Override
     public int hashCode() {
@@ -136,5 +123,5 @@ public class Position implements Serializable {
     public String toString() {
         return "fpt.aptech.KHR.Entities.Position[ id=" + id + " ]";
     }
-    
+
 }
