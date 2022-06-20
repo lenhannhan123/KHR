@@ -16,7 +16,7 @@ public interface ITimelineServices {
 
     public List<Timeline> findAll();
 
-    public boolean Create(Timeline timeline);
+    public Timeline Create(Timeline timeline);
 
     public boolean Edit(Timeline timeline);
 

@@ -7,29 +7,25 @@ package fpt.aptech.KHR.Entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Admin
  */
 @Entity
-@Table(name = "account", catalog = "khr", schema = "")
+@Table(name = "account")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
@@ -54,7 +50,7 @@ public class Account implements Serializable {
     private String mail;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 250)
     @Column(name = "Password")
     private String password;
     @Basic(optional = false)
@@ -96,20 +92,6 @@ public class Account implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "Token")
     private String token;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
-    private List<Timekeeping> timekeepingList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
-    private List<AccountPosition> accountPositionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
-    private List<DayOff> dayOffList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
-    private List<TimelineDetail> timelineDetailList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
-    private List<UserTimeline> userTimelineList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
-    private List<OverTime> overTimeList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
-    private List<AccountNotification> accountNotificationList;
 
     public Account() {
     }
@@ -209,69 +191,6 @@ public class Account implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    @XmlTransient
-    public List<Timekeeping> getTimekeepingList() {
-        return timekeepingList;
-    }
-
-    public void setTimekeepingList(List<Timekeeping> timekeepingList) {
-        this.timekeepingList = timekeepingList;
-    }
-
-    @XmlTransient
-    public List<AccountPosition> getAccountPositionList() {
-        return accountPositionList;
-    }
-
-    public void setAccountPositionList(List<AccountPosition> accountPositionList) {
-        this.accountPositionList = accountPositionList;
-    }
-
-    @XmlTransient
-    public List<DayOff> getDayOffList() {
-        return dayOffList;
-    }
-
-    public void setDayOffList(List<DayOff> dayOffList) {
-        this.dayOffList = dayOffList;
-    }
-
-    @XmlTransient
-    public List<TimelineDetail> getTimelineDetailList() {
-        return timelineDetailList;
-    }
-
-    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
-        this.timelineDetailList = timelineDetailList;
-    }
-
-    @XmlTransient
-    public List<UserTimeline> getUserTimelineList() {
-        return userTimelineList;
-    }
-
-    public void setUserTimelineList(List<UserTimeline> userTimelineList) {
-        this.userTimelineList = userTimelineList;
-    }
-
-    @XmlTransient
-    public List<OverTime> getOverTimeList() {
-        return overTimeList;
-    }
-
-    public void setOverTimeList(List<OverTime> overTimeList) {
-        this.overTimeList = overTimeList;
-    }
-
-    @XmlTransient
-    public List<AccountNotification> getAccountNotificationList() {
-        return accountNotificationList;
-    }
-
-    public void setAccountNotificationList(List<AccountNotification> accountNotificationList) {
-        this.accountNotificationList = accountNotificationList;
     }
 
     @Override

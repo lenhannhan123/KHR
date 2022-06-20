@@ -5,11 +5,9 @@
  */
 package fpt.aptech.KHR.Responsitory;
 
-import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Entities.UserTimeline;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**

@@ -6,9 +6,12 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Shift;
+import fpt.aptech.KHR.Responsitory.ShiftRepository;
 import fpt.aptech.KHR.Services.IShiftServices;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +20,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ShiftServices implements IShiftServices {
 
+    @Autowired
+    private ShiftRepository shiftRepository;
+
     @Override
     public List<Shift> findAll() {
         return null;
@@ -24,7 +30,11 @@ public class ShiftServices implements IShiftServices {
 
     @Override
     public boolean Create(Shift shift) {
-        return false;
+
+//        shiftRepository.CreateNewShift(shift.getIdTimeline(), shift.getIdPosition(), shift.getNumber(), shift.getTimestart(), shift.getIsOT(), shift.getTimeend(), shift.getShiftcode());
+
+        shiftRepository.save(shift);
+        return true;
     }
 
     @Override

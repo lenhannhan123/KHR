@@ -7,7 +7,6 @@ package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Position;
 import fpt.aptech.KHR.Responsitory.PositionRepository;
-import fpt.aptech.KHR.Responsitory.TimelineRepository;
 import fpt.aptech.KHR.Services.IPositionServices;
 
 import java.util.List;

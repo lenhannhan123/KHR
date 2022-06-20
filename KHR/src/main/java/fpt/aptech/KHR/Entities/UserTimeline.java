@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Admin
  */
 @Entity
-@Table(name = "user_timeline", catalog = "khr", schema = "")
+@Table(name = "user_timeline")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "UserTimeline.findAll", query = "SELECT u FROM UserTimeline u"),

@@ -24,6 +24,14 @@
             font-weight: bold
         }
 
+        #addayof {
+            color: #007bff;
+        }
+
+        #addayof:hover {
+            cursor: pointer;
+        }
+
 
     </style>
 
@@ -176,8 +184,73 @@
                             </tbody>
                         </table>
 
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
 
-                        <!--                        <input type="text" th:value="+${stt}" name="number"/>-->
+
+                <br><br>
+
+                <b>Thông tin nghỉ làm</b>
+                <br>
+
+
+                <div class="row" style="margin-top: 4%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6" style="text-align: center ;" id="dayoffadd">
+
+
+                            </div>
+                            <div class="col-sm-2"></div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col" style="text-align:center ;">
+
+                        <span hidden class="error-text" id="Dayoff-Error">Vui lòng chọn ngày nghỉ trong tuần</span>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+                <input type="text" hidden id="numberdayoff"
+                       name="numberdayoff">
+
+
+                <div class="row" style="margin-top: 4%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6" style="text-align: center ;">
+
+                                <div id="addayof" onclick="addayof()">Thêm ngày nghỉ</div>
+
+                            </div>
+                            <div class="col-sm-2"></div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+
+                <div class="row" style="margin-top: 4%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
 
                         <div class="row">
                             <div class="col-sm-3"></div>
@@ -192,10 +265,13 @@
 
                         </div>
 
-
                     </div>
                     <div class="col-sm-1"></div>
                 </div>
+
+
+                <!--                        <input type="text" th:value="+${stt}" name="number"/>-->
+
 
             </form>
         </div>
@@ -203,6 +279,9 @@
     </div>
 
     <script th:src="@{/script/GetDayofWeek.js}"></script>
+
+
+    <!--    Validate-->
     <script>
         function checkvalidate() {
 
@@ -320,8 +399,47 @@
             }
 
 
-            console.log(check);
-            // return false;
+            if (day > 0) {
+                check2 = true;
+
+                for (let i = 1; i <= day; i++) {
+
+
+                    if (document.getElementById("dayoff" + i).value == "" || document.getElementById("dayoff" + i).value == null) {
+                    } else {
+
+                        Dayoff = new Date(document.getElementById("dayoff" + i).value);
+                        StartDay = new Date(TimelineStartDay);
+                        EndDay = new Date(TimelineEndDay);
+
+
+                        if ((Dayoff >= StartDay) && (Dayoff <= EndDay)) {
+
+                        } else {
+                            check2 = false;
+                        }
+
+
+                    }
+
+
+                }
+
+                if (check2 == true) {
+
+                    // document.getElementById("Dayoff-Error").innerText = "";
+                    document.getElementById("Dayoff-Error").hidden = true;
+
+                } else {
+                    document.getElementById("Dayoff-Error").hidden = false;
+                    check = false;
+
+                }
+
+            }
+
+            document.getElementById("numberdayoff").value = day;
+
 
             if (check == true) {
 
@@ -336,6 +454,27 @@
         }
 
 
+    </script>
+
+    <!--    Add day offf-->
+
+
+    <script>
+        var day = 0;
+
+        function addayof() {
+
+            day += 1;
+
+            text = `<div style="margin-top: 5%">
+                                    <input type="date" class="form-control input" id="dayoff` + day + `"
+                                           name="dayoff` + day + `">
+                                </div>`;
+
+            document.getElementById("dayoffadd").insertAdjacentHTML('beforeend', text);
+
+
+        }
     </script>
 
 

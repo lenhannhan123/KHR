@@ -23,7 +23,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Admin
  */
 @Entity
-@Table(name = "shift", catalog = "khr", schema = "")
+@Table(name = "shift")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Shift.findAll", query = "SELECT s FROM Shift s"),
@@ -50,55 +49,34 @@ public class Shift implements Serializable {
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "Number")
-    private int number;
-    @Basic(optional = false)
-    @NotNull
+    private Integer number;
     @Column(name = "Time_start")
     @Temporal(TemporalType.TIME)
     private Date timestart;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "Is_OT")
-    private boolean isOT;
-    @Basic(optional = false)
-    @NotNull
+    private Boolean isOT;
     @Column(name = "Time_end")
     @Temporal(TemporalType.TIME)
     private Date timeend;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "Shift_code")
-    private int shiftcode;
+    private Integer shiftcode;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idshift")
     private List<Timekeeping> timekeepingList;
     @JoinColumn(name = "Id_Position", referencedColumnName = "Id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Position idPosition;
     @JoinColumn(name = "Id_Timeline", referencedColumnName = "Id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Timeline idTimeline;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idShift")
     private List<TimelineDetail> timelineDetailList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idShift")
-    private List<OverTime> overTimeList;
 
     public Shift() {
     }
 
     public Shift(Integer id) {
         this.id = id;
-    }
-
-    public Shift(Integer id, int number, Date timestart, boolean isOT, Date timeend, int shiftcode) {
-        this.id = id;
-        this.number = number;
-        this.timestart = timestart;
-        this.isOT = isOT;
-        this.timeend = timeend;
-        this.shiftcode = shiftcode;
     }
 
     public Integer getId() {
@@ -109,11 +87,11 @@ public class Shift implements Serializable {
         this.id = id;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
@@ -125,11 +103,11 @@ public class Shift implements Serializable {
         this.timestart = timestart;
     }
 
-    public boolean getIsOT() {
+    public Boolean getIsOT() {
         return isOT;
     }
 
-    public void setIsOT(boolean isOT) {
+    public void setIsOT(Boolean isOT) {
         this.isOT = isOT;
     }
 
@@ -141,11 +119,11 @@ public class Shift implements Serializable {
         this.timeend = timeend;
     }
 
-    public int getShiftcode() {
+    public Integer getShiftcode() {
         return shiftcode;
     }
 
-    public void setShiftcode(int shiftcode) {
+    public void setShiftcode(Integer shiftcode) {
         this.shiftcode = shiftcode;
     }
 
@@ -181,15 +159,6 @@ public class Shift implements Serializable {
 
     public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
         this.timelineDetailList = timelineDetailList;
-    }
-
-    @XmlTransient
-    public List<OverTime> getOverTimeList() {
-        return overTimeList;
-    }
-
-    public void setOverTimeList(List<OverTime> overTimeList) {
-        this.overTimeList = overTimeList;
     }
 
     @Override
