@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginProcessingUrl("/j_spring_security_check")
                 .loginPage("/login")
-                .defaultSuccessUrl("/home/index")
+                .defaultSuccessUrl("/home/index",true)
                 .failureUrl("/login?success=fail")
                 .usernameParameter("email")
                 .passwordParameter("password")
@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/logoutSuccessful")
+                .logoutSuccessUrl("/login")
                 .permitAll();
 
         http.csrf().disable();
