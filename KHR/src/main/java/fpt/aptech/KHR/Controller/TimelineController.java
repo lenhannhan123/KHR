@@ -59,9 +59,13 @@ public class TimelineController {
                 break;
             }
         }
+        String pattern = "dd-MM-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
 
         model.addAttribute("check", check);
+
+        model.addAttribute("simpleDateFormat", simpleDateFormat);
 
         model.addAttribute("list", list);
         return "timeline/index";
@@ -321,11 +325,10 @@ public class TimelineController {
 //                JsonServices.dd("nhan", response);
                 }
 
-                i += 1;
 
             }
 
-
+            i += 1;
         }
 
         session.removeAttribute("TimelineName");
@@ -356,4 +359,242 @@ public class TimelineController {
         String redirectUrl = "/timeline/index";
         return "redirect:" + redirectUrl;
     }
+
+
+    @RequestMapping(value = {RouteWeb.TimelineCheckStartdayURL}, method = RequestMethod.POST)
+    public String CheckStartDay(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String data = request.getParameter("timelinedtartday").toString();
+
+        Date TimelineStartDayParse;
+
+        try {
+            TimelineStartDayParse = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (timelineServices.countStartDay(TimelineStartDayParse) > 0) {
+            JsonServices.dd("0", response);
+
+        } else {
+
+            JsonServices.dd("1", response);
+
+        }
+
+
+        return "timeline/confirm";
+    }
+
+    @RequestMapping(value = {RouteWeb.TimelineCheckEnddayURL}, method = RequestMethod.POST)
+    public String CheckEndDay(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String data = request.getParameter("timelineendday").toString();
+
+        Date TimelineEndDayParse;
+
+        try {
+            TimelineEndDayParse = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (timelineServices.countEndDay(TimelineEndDayParse) > 0) {
+            JsonServices.dd("0", response);
+
+        } else {
+
+            JsonServices.dd("1", response);
+
+        }
+
+
+        return "timeline/confirm";
+    }
+
+
+    @RequestMapping(value = {RouteWeb.TimelineDeleteURL}, method = RequestMethod.GET)
+    public String DeleteTimeLine(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String id = request.getParameter("id").toString();
+
+        timelineServices.Delete(Integer.parseInt(id));
+
+
+        String redirectUrl = "/timeline/index";
+        return "redirect:" + redirectUrl;
+    }
+
+    @RequestMapping(value = {RouteWeb.TimelineEditNameURL}, method = RequestMethod.POST)
+    public String TimelineEditName(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String id = request.getParameter("id").toString();
+
+        String Name = request.getParameter("TimelineName").toString();
+
+        Timeline timeline = timelineServices.FindOne(Integer.parseInt(id));
+        timeline.setTimename(Name);
+
+        timelineServices.Edit(timeline);
+
+
+        String redirectUrl = "/timeline/index";
+        return "redirect:" + redirectUrl;
+    }
+
+    @RequestMapping(value = {RouteWeb.TimelineEditTimelineURL}, method = RequestMethod.GET)
+    public String TimelineGetEdit(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String idTimelineStr = request.getParameter("id").toString();
+
+        int idTimeline = Integer.parseInt(idTimelineStr);
+
+        List<Shift> ListShifts = shiftServices.FindByIDTimeLine(idTimeline);
+        Timeline timeline = timelineServices.FindOne(idTimeline);   //
+
+//        JsonServices.dd(timeline.getTimename(), response);
+
+        List<ShiftJS> listShift = new ArrayList<>();
+
+
+        List<Position> Listposition = positionServices.findAll();
+
+
+        List<PositionJS> ListpositionJS = new ArrayList<>();
+
+
+        for (Position item : Listposition) {
+            PositionJS positionJS = new PositionJS();
+            positionJS.setId(item.getId());
+            positionJS.setPositionname(item.getPositionname());
+            positionJS.setSalarydefault(item.getSalarydefault());
+            positionJS.setIsCheck(false);
+            positionJS.setNumber(0);
+
+            ListpositionJS.add(positionJS);
+        }
+
+//        for (int k = 0; k < ListpositionJS.size(); k++) {
+//
+//            if (k == 2) {
+//
+//                String str = "id2: " + ListpositionJS.get(k).getId() + " || number: " + ListpositionJS.get(k).getNumber() + "|| name: " + ListpositionJS.get(k).getPositionname() + "|| Salary: " + ListpositionJS.get(k).getSalarydefault();
+//
+//
+//                JsonServices.dd(str, response);
+//
+//
+//            }
+//
+//        }
+//
+
+        int j = 0;
+
+        for (int i = 2; i <= 7; i++) {
+
+            ShiftJS shiftJS = new ShiftJS();
+
+            shiftJS.setName("Ca sáng (7:30 - 11:30)");
+            shiftJS.setDate("");
+
+            listShift.add(shiftJS);
+
+            ShiftJS shiftJS1 = new ShiftJS();
+
+            shiftJS1.setName("Ca chiều (13:00 - 17:00)");
+            shiftJS1.setDate("");
+
+            listShift.add(shiftJS1);
+
+
+        }
+
+
+        for (int i = 0; i < 12; i++) {
+
+            List<Shift> lShift = new ArrayList<>();
+
+
+            for (Shift item : ListShifts
+            ) {
+                Shift shift1222 = new Shift();
+
+                if (item.getShiftcode() < 1000) {
+
+                    int codediv = item.getShiftcode() % 10;
+
+                    if (codediv == i) {
+
+                        shift1222.setIdPosition(item.getIdPosition());
+                        shift1222.setNumber(item.getNumber());
+                        lShift.add(shift1222);
+                    }
+
+
+                } else if (item.getShiftcode() >= 1000 && item.getShiftcode() < 2000) {
+                    int codediv = item.getShiftcode() % 100;
+
+                    if (codediv == i) {
+                        shift1222.setIdPosition(item.getIdPosition());
+                        shift1222.setNumber(item.getNumber());
+                        lShift.add(shift1222);
+                    }
+
+                }
+
+
+            }
+            List<PositionJS> liListpositionJS = new ArrayList<>();
+            liListpositionJS = ListpositionJS;
+
+            for (int k = 0; k < ListpositionJS.size(); k++) {
+
+                for (int l = 0; l < lShift.size(); l++) {
+                    if (ListpositionJS.get(k).getId() == lShift.get(l).getIdPosition().getId()) {
+                        PositionJS positionJS1 = ListpositionJS.get(k);
+                        positionJS1.setNumber(lShift.get(l).getNumber());
+                        positionJS1.setIsCheck(true);
+                        liListpositionJS.set(k, positionJS1);
+
+                    }
+
+                }
+
+
+            }
+
+
+            ShiftJS shift12 = listShift.get(i);
+            shift12.position.addAll(liListpositionJS);
+
+
+            listShift.set(i, shift12);
+//            JsonServices.dd(lShift.get(1).getIdPosition().getId(), response);
+
+        }
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        String Data = "";
+        try {
+
+            Data = mapper.writeValueAsString(listShift);
+
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        JsonServices.dd(Data, response);
+
+//        JsonServices.dd("nhan122", response);
+        return "redirect:";
+    }
+
+
 }

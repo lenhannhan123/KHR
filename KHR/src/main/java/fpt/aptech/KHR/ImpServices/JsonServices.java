@@ -37,6 +37,16 @@ public class JsonServices {
         }
     }
 
+    public static void dd(boolean value, HttpServletResponse response) {
+
+        try (PrintWriter out = response.getWriter()) {
+            out.println(value);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public static String ParseToJson(List value) {
         ObjectMapper mapper = new ObjectMapper();

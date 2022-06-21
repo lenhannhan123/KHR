@@ -27,6 +27,6 @@ public interface IShiftServices {
     public Shift FindOne(int id);
 
 
-    public Shift FindByIDTimeLine(int id);
+    public List<Shift> FindByIDTimeLine(int id);
 
 }

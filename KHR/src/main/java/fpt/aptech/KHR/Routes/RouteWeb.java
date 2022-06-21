@@ -70,4 +70,22 @@ public class RouteWeb {
 
     public final static String TimelineConfirmURL = "/timeline/cofirm";
     String TimelineConfirmURLControler = timelineController.GetCreate(model.model);
+
+
+    public final static String TimelineCheckEnddayURL = "/timeline/checkendday";
+    String TimelineCheckEnddaydayControler = timelineController.GetCreate(model.model);
+
+    public final static String TimelineCheckStartdayURL = "/timeline/checkstartday";
+    String TimelineCheckStartdayControler = timelineController.GetCreate(model.model);
+
+
+    public final static String TimelineDeleteURL = "/timeline/delete";
+    String TimelineDeleteyControler = timelineController.GetCreate(model.model);
+
+    public final static String TimelineEditNameURL = "/timeline/editname";
+    String TimelineEditNameControler = timelineController.GetCreate(model.model);
+
+
+    public final static String TimelineEditTimelineURL = "/timeline/edittimeline";
+    String TimelineEditTimelineControler = timelineController.GetCreate(model.model);
 }

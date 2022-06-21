@@ -25,7 +25,7 @@ public class ShiftServices implements IShiftServices {
 
     @Override
     public List<Shift> findAll() {
-        return null;
+        return shiftRepository.findAll();
     }
 
     @Override
@@ -39,21 +39,25 @@ public class ShiftServices implements IShiftServices {
 
     @Override
     public boolean Edit(Shift shift) {
-        return false;
+        shiftRepository.save(shift);
+        return true;
     }
 
     @Override
     public String Delete(int id) {
-        return null;
+
+        shiftRepository.delete(new Shift(id));
+
+        return "true";
     }
 
     @Override
     public Shift FindOne(int id) {
-        return null;
+        return shiftRepository.findID(id);
     }
 
     @Override
-    public Shift FindByIDTimeLine(int id) {
-        return null;
+    public List<Shift> FindByIDTimeLine(int id) {
+        return shiftRepository.findIDTime(id);
     }
 }

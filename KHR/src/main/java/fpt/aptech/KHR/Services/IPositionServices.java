@@ -17,7 +17,7 @@ public interface IPositionServices {
 
     public List<Position> findAll();
 
-    public boolean Create(Position position);
+    public Position Create(Position position);
 
     public boolean Edit(Position position);
 

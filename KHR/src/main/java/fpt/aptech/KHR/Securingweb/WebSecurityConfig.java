@@ -1,7 +1,9 @@
 package fpt.aptech.KHR.Securingweb;
 
 import fpt.aptech.KHR.ImpServices.AccountService;
+
 import static fpt.aptech.KHR.Routes.RouteWeb.AdminHomeURL;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/plugins/**", "/dist/**", "/css/**", "/images/**").permitAll()
+                .antMatchers("/plugins/**", "/dist/**", "/css/**", "/images/**", "/script/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

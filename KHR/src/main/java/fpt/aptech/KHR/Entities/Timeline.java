@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -34,7 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Timeline.findByTimename", query = "SELECT t FROM Timeline t WHERE t.timename = :timename"),
     @NamedQuery(name = "Timeline.findByStartdate", query = "SELECT t FROM Timeline t WHERE t.startdate = :startdate"),
     @NamedQuery(name = "Timeline.findByEnddate", query = "SELECT t FROM Timeline t WHERE t.enddate = :enddate"),
-    @NamedQuery(name = "Timeline.findByStatus", query = "SELECT t FROM Timeline t WHERE t.status = :status")})
+    @NamedQuery(name = "Timeline.findByStatus", query = "SELECT t FROM Timeline t WHERE t.status = :status"),
+    @NamedQuery(name = "Timeline.findByIsDelete", query = "SELECT t FROM Timeline t WHERE t.isDelete = :isDelete")})
 public class Timeline implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,12 +56,21 @@ public class Timeline implements Serializable {
     private Date enddate;
     @Column(name = "Status")
     private Short status;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IsDelete")
+    private short isDelete;
 
     public Timeline() {
     }
 
     public Timeline(Integer id) {
         this.id = id;
+    }
+
+    public Timeline(Integer id, short isDelete) {
+        this.id = id;
+        this.isDelete = isDelete;
     }
 
     public Integer getId() {
@@ -100,6 +111,14 @@ public class Timeline implements Serializable {
 
     public void setStatus(Short status) {
         this.status = status;
+    }
+
+    public short getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(short isDelete) {
+        this.isDelete = isDelete;
     }
 
     @Override
