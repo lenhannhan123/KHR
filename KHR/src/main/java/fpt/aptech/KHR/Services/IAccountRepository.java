@@ -8,6 +8,8 @@ package fpt.aptech.KHR.Services;
 import fpt.aptech.KHR.Entities.Account;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  *
@@ -24,7 +26,10 @@ public interface IAccountRepository {
 
     public Account findByMail(String mail);
 
+    public Account findByMailAdmin(String mail);
+
     public List<Account> findAllAdminAccounts();
 
     public List<Account> findAllUserAccounts();
+    
 }
