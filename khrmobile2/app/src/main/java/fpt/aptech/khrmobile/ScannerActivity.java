@@ -112,10 +112,10 @@ public class ScannerActivity extends AppCompatActivity {
                             _call.enqueue(new Callback<Integer>() {
                                 @Override
                                 public void onResponse(Call<Integer> call, Response<Integer> response) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
-                                    builder.setTitle("Information");
-                                    builder.setMessage(String.valueOf(response.body()) + " " + _hash);
-                                    builder.show();
+//                                    AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
+//                                    builder.setTitle("Information");
+//                                    builder.setMessage(String.valueOf(response.body()) + " " + _hash);
+//                                    builder.show();
                                     if (response.body() == 0) {
 //                                        AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
 //                                        builder.setTitle("Information");
@@ -146,6 +146,7 @@ public class ScannerActivity extends AppCompatActivity {
                 Toast.makeText(ScannerActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+        onResume();
     }
 
     public class NullOnEmptyConverterFactory extends Converter.Factory {
@@ -206,7 +207,7 @@ public class ScannerActivity extends AppCompatActivity {
             public void onResponse(Call<Timekeeping> call, Response<Timekeeping> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ScannerActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
-                } else {
+                } else if(response.body() == null) {
                     Toast.makeText(ScannerActivity.this, "Không tìm thấy ca của bạn!", Toast.LENGTH_LONG).show();
                 }
             }

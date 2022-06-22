@@ -67,4 +67,14 @@ public class SalaryServices implements ISalaryServices {
         return salaryRepository.findOneByDate(mail, month, year);
     }
 
+    @Override
+    public Salary findOne(int id) {
+        return salaryRepository.findOne(id);
+    }
+
+    @Override
+    public void delete(Salary salary) {
+        salaryRepository.delete(salary);
+    }
+
 }

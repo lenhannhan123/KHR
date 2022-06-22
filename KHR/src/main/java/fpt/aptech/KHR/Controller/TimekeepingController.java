@@ -463,7 +463,7 @@ public class TimekeepingController {
             timekeeping.getTimestart().setMinutes(realMinute);
             timekeeping.getTimestart().setSeconds(realSecond);
         }
-        JsonServices.dd(JsonServices.ParseToJson(hashMap.toString()), response);
+        //JsonServices.dd(JsonServices.ParseToJson(hashMap.toString()), response);
         return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);
 
     }
@@ -994,5 +994,13 @@ public class TimekeepingController {
             timekeepingServices.checkout(timekeeping);
         }
         return update(timekeeping.getId(), model);
+    }
+    
+    @RequestMapping(value = "/timekeeping/delete/{id}", method = RequestMethod.GET)
+    public String delete(@PathVariable int id, Model model, HttpServletRequest request) {
+        Timekeeping timekeeping = timekeepingServices.findOne(id);
+        timekeepingServices.delete(timekeeping);
+        String redirectUrl = "/timekeeping/index";
+        return "redirect:" + redirectUrl;
     }
 }

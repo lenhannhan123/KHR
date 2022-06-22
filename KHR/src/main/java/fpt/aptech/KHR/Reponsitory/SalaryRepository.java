@@ -30,6 +30,9 @@ public interface SalaryRepository extends JpaRepository<Salary, Integer> {
 
     @Query("select distinct mail from Timekeeping")
     public List<Account> findAccountByTimekeeping();
+    
+    @Query("select s from Salary s where s.id = :id")
+    public Salary findOne(int id);
 
 //    @Query("select t from Timekeeping t where t.mail = :mail and t.shiftId = :shiftId")
 //    public Timekeeping findTimekeepingByMailAndShiftId(@RequestParam("value") Account mail, @RequestParam("value") Shift shiftId);

@@ -17,19 +17,24 @@ import java.util.List;
  * @author backs
  */
 public interface ISalaryServices {
+
     public List<Salary> findAll();
-    
+
     public List<Salary> findByMail(Account mail);
-    
+
+    public Salary findOne(int id);
+
     public void save(Salary newSalary);
-    
+
     public List<Account> findAccountByTimekeeping();
-    
+
     public List<Timekeeping> findTimekeepingByDate(Date timestart, Date timeend, Account mail);
-    
+
     public Timekeeping findTimekeepingByMailAndShiftId(Account mail, Shift shiftId);
-    
+
     public List<Salary> findSalaryListByMail(String mail);
 
     public Salary findOneByDate(String mail, int month, int year);
+
+    public void delete(Salary salary);
 }
