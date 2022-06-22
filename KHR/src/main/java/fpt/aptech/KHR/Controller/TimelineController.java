@@ -1897,6 +1897,7 @@ public class TimelineController {
     public String GetTimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("sidebar","4");
         int id = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("IdTimeline",id);
         List<TimelineDetail> Listtimeline = timelineDetailServices.FindbyIdTimeline(id);
 
         List<Position> positionList = positionServices.findAll();
@@ -2430,6 +2431,207 @@ public class TimelineController {
         return "admin/timeline/usertimelinedetail";
     }
 
+
+    @RequestMapping(value = {RouteWeb.TimelineReport}, method = RequestMethod.GET)
+    public String TimelineReport(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","4");
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        List<Account> account = accountService.findAllUser();
+        List<UserTimelineJS> userTimelineJS = new ArrayList<>();
+
+        HttpSession session = request.getSession();
+//        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
+        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+        for (int i = 0; i < account.size(); i++) {
+            if (account.get(i).getIdStore().getId() == Id_Store) {
+            } else {
+                account.remove(account.get(i));
+                i -= 1;
+
+            }
+        }
+
+        // Số lượng người làm được trong 1 ca
+
+        List<UserTimeline> userTimelineList = new ArrayList<>();
+        userTimelineList = userTimelineServices.FindIDTimeLine(id);
+
+        for (int i = 0; i <userTimelineList.size() ; i++) {
+
+            Short s =  Short.valueOf(String.valueOf(userTimelineList.get(i).getShiftcode() - 1) ) ;
+            userTimelineList.get(i).setShiftcode(s);
+            userTimelineList.set(i,userTimelineList.get(i));
+        }
+
+
+        List<Integer> listtime = new ArrayList<>();
+        for (int i = 0; i <35 ; i++) {
+            listtime.add(0);
+        }
+
+        for (int i = 0; i <userTimelineList.size() ; i++) {
+          int pos=  userTimelineList.get(i).getShiftcode();
+            listtime.set(pos,listtime.get(pos)+1);
+
+        }
+        for (int i = 0; i <35 ; i++) {
+            listtime.set(i,account.size()-listtime.get(i));
+        }
+
+        request.setAttribute("listtime",JsonServices.ParseToJson(listtime));
+
+
+
+
+
+
+        //
+
+        List<Position> positionList = positionServices.findAll();
+        List<ModelString> ListPosition = new ArrayList<>();
+        for (Position item : positionList) {
+            ModelString stringdata = new ModelString();
+            stringdata.setData1(String.valueOf(item.getId()));
+            stringdata.setData3(item.getPositionname());
+            ListPosition.add(stringdata);
+        }
+
+        List<JobpriorityModel> UserPropertyListTemplate =new ArrayList<>();
+
+
+
+        for (Account item:account   ) {
+            JobpriorityModel jobpriorityModel = new JobpriorityModel();
+            jobpriorityModel.setId_user(item.getMail());
+            jobpriorityModel.setAccountPositions(accountPositionServices.findByEmail(new Account(item.getMail())));
+            UserPropertyListTemplate.add(jobpriorityModel);
+        }
+
+
+        int count = 0;
+        int min = 0, max = 0;
+        for (int i = 0; i < ListPosition.size(); i++) {
+            count = 0;
+            int id_Pos = Integer.parseInt(ListPosition.get(i).getData1());
+//            JsonServices.dd(id_Pos, response);
+
+            for (JobpriorityModel item : UserPropertyListTemplate) {
+                for (AccountPosition item2 : item.getAccountPositions()) {
+                    if (item2.getIdPosition().getId() == id_Pos) {
+                        count += 1;
+                    }
+
+                }
+            }
+
+            ListPosition.get(i).setData2(String.valueOf(count));
+        }
+
+        // Xóa vị trí không ai làm được
+        for (int i = 0; i < ListPosition.size(); i++) {
+            if (Integer.parseInt(ListPosition.get(i).getData2()) == 0) {
+                ListPosition.remove(ListPosition.get(i));
+                i = -1;
+            }
+        }
+        // Sắp xếp
+        ModelString String1 = new ModelString();
+        for (int i = 0; i < ListPosition.size(); i++) {
+            for (int j = i + 1; j < ListPosition.size(); j++) {
+                if (Integer.parseInt(ListPosition.get(i).getData2()) > Integer.parseInt(ListPosition.get(j).getData2())) {
+                    String1.setData1(ListPosition.get(i).getData1());
+                    String1.setData2(ListPosition.get(i).getData2());
+
+                    ListPosition.get(i).setData1(ListPosition.get(j).getData1());
+                    ListPosition.get(i).setData2(ListPosition.get(j).getData2());
+
+                    ListPosition.get(j).setData1(String1.getData1());
+                    ListPosition.get(j).setData2(String1.getData2());
+                }
+            }
+        }
+
+        request.setAttribute("listpos",JsonServices.ParseToJson(ListPosition));
+
+
+
+
+
+
+
+
+
+        //
+
+
+
+        List<TimelineDetail> timelineDetails = timelineDetailServices.FindbyIdTimeline(id);
+        List<ModelString> modelStringList = new ArrayList<>();
+        for (Account item:account   ) {
+            ModelString modelString = new ModelString();
+            modelString.setData1(item.getMail());
+            modelString.setData3(item.getFullname());
+            modelStringList.add(modelString);
+        }
+
+        int count1=0;
+//        for (ModelString item : modelStringList){
+            for (int i = 0; i <modelStringList.size() ; i++) {
+
+
+            count1=0;
+            for (TimelineDetail item2 :timelineDetails ){
+                if(modelStringList.get(i).getData1().equals(item2.getMail().getMail())){
+                    count1+=1;
+                }
+
+            }
+                modelStringList.get(i).setData2(String.valueOf(count1));
+        }
+
+
+
+        for (int i = 0; i < modelStringList.size(); i++) {
+            for (int j = i; j <modelStringList.size() ; j++) {
+                if(Integer.parseInt(modelStringList.get(j).getData2()) < Integer.parseInt(modelStringList.get(i).getData2())){
+                    ModelString modelString = new ModelString();
+                    modelString.setData1(modelStringList.get(j).getData1());
+                    modelString.setData2(modelStringList.get(j).getData2());
+                    modelString.setData3(modelStringList.get(j).getData3());
+
+
+                    modelStringList.get(j).setData1(modelStringList.get(i).getData1());
+                    modelStringList.get(j).setData2(modelStringList.get(i).getData2());
+                    modelStringList.get(j).setData3(modelStringList.get(i).getData3());
+
+
+                    modelStringList.get(i).setData1(modelString.getData1());
+                    modelStringList.get(i).setData2(modelString.getData2());
+                    modelStringList.get(i).setData3(modelString.getData3());
+                }
+
+            }
+
+        }
+
+
+        for (int i = 0; i < modelStringList.size(); i++) {
+
+            if(Integer.parseInt(modelStringList.get(i).getData2())>3){
+                modelStringList.get(i).setData4("true");
+            }else {
+                modelStringList.get(i).setData4("false");
+            }
+
+        }
+
+
+        request.setAttribute("listuser",modelStringList);
+
+        return "admin/timeline/report";
+    }
 
 
 
