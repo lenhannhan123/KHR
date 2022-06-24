@@ -9,6 +9,7 @@ import java.util.List;
 public class ShiftJS {
 
     public ShiftJS() {
+
     }
 
     public ShiftJS(String date, String name, PositionJS position) {
@@ -25,7 +26,7 @@ public class ShiftJS {
 
     @JsonProperty("position")
 
-    public List<PositionJS> position = new ArrayList<>();
+    public List<PositionJS> position;
 
     public String getDate() {
         return date;

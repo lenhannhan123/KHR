@@ -4,7 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PositionJS {
 
+
     public PositionJS() {
+    }
+
+    public PositionJS(int id, boolean isCheck, int number, String positionname, int salarydefault, int id_Db) {
+        this.id = id;
+        this.isCheck = isCheck;
+        this.number = number;
+        this.positionname = positionname;
+        this.salarydefault = salarydefault;
+        this.id_Db = id_Db;
     }
 
     public PositionJS(int id, boolean isCheck, int number, String positionname, int salarydefault) {
@@ -30,6 +40,9 @@ public class PositionJS {
 
     @JsonProperty("salarydefault")
     int salarydefault;
+
+    @JsonProperty("id_Db")
+    int id_Db;
 
     public int getId() {
         return id;
@@ -71,7 +84,13 @@ public class PositionJS {
         this.salarydefault = salarydefault;
     }
 
-    
-    
-    
+    public int getId_Db() {
+        return id_Db;
+    }
+
+    public void setId_Db(int id_Db) {
+        this.id_Db = id_Db;
+    }
+
+
 }

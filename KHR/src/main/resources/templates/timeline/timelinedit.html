@@ -6,7 +6,7 @@
 
 
 <head>
-    <title>Xác nhận thông tin</title>
+    <title>Chỉnh sửa thông tin</title>
     <!--CND VueJs-->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js"></script>
@@ -35,7 +35,7 @@
 
 <div layout:fragment="content">
     <div id="myApp">
-        <h3 class="title-page">Xác nhận thông tin</h3>
+        <h3 class="title-page">Chỉnh sửa thông tin</h3>
 
 
         <div class="row">
@@ -177,16 +177,17 @@
         </div>
 
 
-        <textarea th:text="${itemsArray}" hidden id="Position"></textarea>
-        <textarea th:text="${Position}" hidden id="Positioncheck"></textarea>
-        <textarea th:text="${DayoffJson}" hidden id="DayoffJson"></textarea>
+        <textarea th:text="${data}" hidden id="data"></textarea>
         <textarea th:text="${TimelineStartDay}" hidden id="TimelineStartDay"></textarea>
         <textarea th:text="${TimelineEndDay}" hidden id="TimelineEndDay"></textarea>
+        <textarea th:text="${IdTimeLine}" hidden id="IdTimeLine"></textarea>
 
 
         <form method="post" hidden>
 
             <textarea name="data" id="submit-text"></textarea>
+            <textarea name="idtimelineform"> {{ IdTimeLine}}</textarea>
+
             <input type="submit" id="btn-submit">
 
         </form>
@@ -208,6 +209,7 @@
             data() {
                 return {
                     data: [],
+                    dataDb: [],
                     dataDay: [],
                     Position: [],
                     CheckPosition: [],
@@ -215,7 +217,8 @@
                     TimelineStartDay: "",
                     TimelineEndDay: "",
                     FormPosition: [],
-                    CurrentChoose: 0
+                    CurrentChoose: 0,
+                    IdTimeLine: 0
 
 
                 }
@@ -225,38 +228,27 @@
                 load: function () {
 
 
-                    Position = JSON.parse(document.getElementById("Position").value);
-                    CheckPosition = JSON.parse(document.getElementById("Positioncheck").value);
-
-                    if (document.getElementById("DayoffJson").value != null || document.getElementById("DayoffJson").value.trim() != "") {
-
-                        Dayoff = document.getElementById("DayoffJson").value;
-                        this.Dayoff = JSON.parse(Dayoff);
-                    }
+                    Data = JSON.parse(document.getElementById("data").value);
 
 
                     TimelineStartDay = document.getElementById("TimelineStartDay").value
                     TimelineEndDay = document.getElementById("TimelineEndDay").value
-
-
-                    this.Position = Position;
-                    this.CheckPosition = CheckPosition;
+                    IdTimeLine = document.getElementById("IdTimeLine").value
 
                     this.TimelineStartDay = TimelineStartDay;
                     this.TimelineEndDay = TimelineEndDay;
+                    this.IdTimeLine = IdTimeLine;
 
-                    //
-                    // console.log(this.CheckPosition);
-                    // console.log("cách");
-                    // console.log(this.Position);
-
-                    // console.log(document.getElementById("Position").value);
+                    console.log(Data);
 
 
-                    // alert("nhan");
+                    this.dataDb = Data;
+
                     this.bindingdata();
 
+
                 },
+
 
                 bindingdata: function () {
 
@@ -266,14 +258,15 @@
 
                     j = 0;
 
+
                     for (let i = 2; i <= 7; i++) {
                         DateWork = {};
                         tmpDate = DateStart;
                         tmpDate.setDate(DateStart.getDate() + j);
-
                         if (j == 0) {
                             j += 1;
                         }
+
 
                         DateWork.name = "Thứ " + i;
                         DateWork.date = this.addzero(tmpDate.getDate()) + "/" + this.addzero(tmpDate.getMonth()) + "/" + tmpDate.getFullYear();
@@ -282,9 +275,13 @@
 
                     }
 
-                    this.MatchPosition();
-
+                    jktmp = 0;
                     for (let i = 2; i <= 7; i++) {
+
+
+                        this.Position = this.dataDb[jktmp].position;
+                        console.log(this.Position);
+
                         DateWorkData = {};
 
                         tmpPosition = [];
@@ -297,7 +294,7 @@
                             tmpObj.number = this.Position[k].number;
                             tmpObj.positionname = this.Position[k].positionname;
                             tmpObj.salarydefault = this.Position[k].salarydefault;
-
+                            tmpObj.iddb = this.Position[k].id_Db;
                             tmpPosition[k] = tmpObj
 
                         }
@@ -312,6 +309,9 @@
 
                         this.data.push(DateWorkData);
 
+
+                        jktmp = jktmp + 1;
+                        this.Position = this.dataDb[jktmp].position;
                         DateWorkData = {};
                         tmpPosition = [];
 
@@ -323,7 +323,7 @@
                             tmpObj.number = this.Position[k].number;
                             tmpObj.positionname = this.Position[k].positionname;
                             tmpObj.salarydefault = this.Position[k].salarydefault;
-
+                            tmpObj.iddb = this.Position[k].id_Db;
                             tmpPosition[k] = tmpObj
 
                         }
@@ -335,6 +335,7 @@
                         this.data.push(DateWorkData);
 
 
+                        jktmp = jktmp + 1;
                     }
 
 
@@ -392,7 +393,7 @@
                         tmpObj.number = this.data[index].position[k].number;
                         tmpObj.positionname = this.data[index].position[k].positionname;
                         tmpObj.salarydefault = this.data[index].position[k].salarydefault;
-
+                        tmpObj.iddb = this.data[index].position[k].iddb;
                         tmpPosition[k] = tmpObj
 
                     }
@@ -418,6 +419,7 @@
 
 
                 },
+
                 submit: function () {
 
 

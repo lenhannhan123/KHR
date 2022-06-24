@@ -213,13 +213,15 @@ public class TimelineController {
         try {
             jsonArr = new JSONArray(data);
 
+
             for (int i = 0; i < jsonArr.length(); i++) {
-                ShiftJS ShiftJS = new ShiftJS();
+
+                ShiftJS shiftJS = new ShiftJS();
                 JSONObject jsonObj = null;
                 jsonObj = jsonArr.getJSONObject(i);
 
-                ShiftJS.setName((String) jsonObj.get("name"));
-                ShiftJS.setDate((String) jsonObj.get("date"));
+                shiftJS.setName((String) jsonObj.get("name"));
+                shiftJS.setDate((String) jsonObj.get("date"));
 
 
                 List<PositionJS> ListpositionJS = new ArrayList<>();
@@ -241,11 +243,32 @@ public class TimelineController {
                     ListpositionJS.add(positionJS);
                 }
 
+                shiftJS.position = new ArrayList<>();
+                for (PositionJS item : ListpositionJS
+                ) {
 
-                ShiftJS.position.addAll(ListpositionJS);
+                    shiftJS.position.add(new PositionJS(item.getId(), item.isIsCheck(), item.getNumber(), item.getPositionname(), item.getSalarydefault()));
+                }
 
 
-                ListShiftJS.add(ShiftJS);
+//                int kkk = 0;
+//                for (PositionJS item : shiftJS.position) {
+//
+//                    if (kkk == 1) {
+//
+//                        String str = "id: " + item.getId() + " Position name: " + item.getPositionname() + " Number: " + item.getNumber();
+//
+//                        JsonServices.dd(str, response);
+//                    }
+//
+//                    kkk += 1;
+//
+//                }
+
+//                ShiftJS.position.addAll(ListpositionJS);
+
+
+                ListShiftJS.add(shiftJS);
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -473,24 +496,11 @@ public class TimelineController {
             positionJS.setSalarydefault(item.getSalarydefault());
             positionJS.setIsCheck(false);
             positionJS.setNumber(0);
+            positionJS.setId_Db(0);
 
             ListpositionJS.add(positionJS);
         }
 
-//        for (int k = 0; k < ListpositionJS.size(); k++) {
-//
-//            if (k == 2) {
-//
-//                String str = "id2: " + ListpositionJS.get(k).getId() + " || number: " + ListpositionJS.get(k).getNumber() + "|| name: " + ListpositionJS.get(k).getPositionname() + "|| Salary: " + ListpositionJS.get(k).getSalarydefault();
-//
-//
-//                JsonServices.dd(str, response);
-//
-//
-//            }
-//
-//        }
-//
 
         int j = 0;
 
@@ -499,14 +509,15 @@ public class TimelineController {
             ShiftJS shiftJS = new ShiftJS();
 
             shiftJS.setName("Ca sáng (7:30 - 11:30)");
-            shiftJS.setDate("");
+            shiftJS.setDate(String.valueOf(i));
 
             listShift.add(shiftJS);
+
 
             ShiftJS shiftJS1 = new ShiftJS();
 
             shiftJS1.setName("Ca chiều (13:00 - 17:00)");
-            shiftJS1.setDate("");
+            shiftJS1.setDate(String.valueOf(i));
 
             listShift.add(shiftJS1);
 
@@ -531,6 +542,7 @@ public class TimelineController {
 
                         shift1222.setIdPosition(item.getIdPosition());
                         shift1222.setNumber(item.getNumber());
+                        shift1222.setId(item.getId());
                         lShift.add(shift1222);
                     }
 
@@ -541,6 +553,7 @@ public class TimelineController {
                     if (codediv == i) {
                         shift1222.setIdPosition(item.getIdPosition());
                         shift1222.setNumber(item.getNumber());
+                        shift1222.setId(item.getId());
                         lShift.add(shift1222);
                     }
 
@@ -548,17 +561,43 @@ public class TimelineController {
 
 
             }
+
+//            ListShifts : Số lượng Position trong ngày i
+
+
+//            JsonServices.dd(lShift.size(), response);
+
+//            for (int k = 0; k < lShift.size(); k++) {
+//
+//                if (k == 2 && i == 2) {
+//
+//                    String str = "id: " + lShift.get(k).getId();
+//
+//
+//                    JsonServices.dd(str, response);
+//
+//
+//                }
+//
+//            }
+
+//            ListShifts : Số lượng Position trong ngày i
             List<PositionJS> liListpositionJS = new ArrayList<>();
             liListpositionJS = ListpositionJS;
+
 
             for (int k = 0; k < ListpositionJS.size(); k++) {
 
                 for (int l = 0; l < lShift.size(); l++) {
                     if (ListpositionJS.get(k).getId() == lShift.get(l).getIdPosition().getId()) {
-                        PositionJS positionJS1 = ListpositionJS.get(k);
+                        PositionJS positionJS1 = new PositionJS();
+                        positionJS1 = ListpositionJS.get(k);
+
                         positionJS1.setNumber(lShift.get(l).getNumber());
                         positionJS1.setIsCheck(true);
+                        positionJS1.setId_Db(lShift.get(l).getId());
                         liListpositionJS.set(k, positionJS1);
+
 
                     }
 
@@ -568,12 +607,35 @@ public class TimelineController {
             }
 
 
-            ShiftJS shift12 = listShift.get(i);
-            shift12.position.addAll(liListpositionJS);
+            ShiftJS shift12 = new ShiftJS();
+            shift12 = listShift.get(i);
+            listShift.get(i).position = new ArrayList<>();
+            shift12.position = new ArrayList<>();
+
+
+            for (PositionJS ps : liListpositionJS
+            ) {
+                shift12.position.add(new PositionJS(ps.getId(), ps.isIsCheck(), ps.getNumber(), ps.getPositionname(), ps.getSalarydefault(), ps.getId_Db()));
+            }
+
+
+//            for (int k = 0; k < liListpositionJS.size(); k++) {
+//
+//                if (k == 1 && i == 1) {
+//
+//                    String str = "id: " + liListpositionJS.get(k).getId_Db();
+//
+//
+//                    JsonServices.dd(str, response);
+//
+//
+//                }
+//
+//            }
 
 
             listShift.set(i, shift12);
-//            JsonServices.dd(lShift.get(1).getIdPosition().getId(), response);
+
 
         }
 
@@ -590,11 +652,170 @@ public class TimelineController {
             throw new RuntimeException(e);
         }
 
-        JsonServices.dd(Data, response);
+//        JsonServices.dd(Data, response);
+
+        model.addAttribute("data", Data);
+        model.addAttribute("TimelineStartDay", timeline.getStartdate());
+        model.addAttribute("TimelineEndDay", timeline.getEnddate());
+        model.addAttribute("IdTimeLine", timeline.getId());
+
 
 //        JsonServices.dd("nhan122", response);
-        return "redirect:";
+        return "timeline/timelinedit";
     }
 
 
+    @RequestMapping(value = {RouteWeb.TimelineEditTimelineURL}, method = RequestMethod.POST)
+    public String TimelinePostEdit(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String data, @RequestParam int idtimelineform) {
+        List<ShiftJS> ListShiftJS = new ArrayList<>();
+
+
+        JSONArray jsonArr;
+        try {
+            jsonArr = new JSONArray(data);
+
+            for (int i = 0; i < jsonArr.length(); i++) {
+                ShiftJS ShiftJS = new ShiftJS();
+                ShiftJS.position = new ArrayList<>();
+
+                JSONObject jsonObj = null;
+                jsonObj = jsonArr.getJSONObject(i);
+
+                ShiftJS.setName((String) jsonObj.get("name"));
+                ShiftJS.setDate((String) jsonObj.get("date"));
+
+
+                List<PositionJS> ListpositionJS = new ArrayList<>();
+                JSONArray jsonArr1 = (JSONArray) jsonObj.get("position");
+//                JsonServices.dd(((JSONArray) jsonObj.get("position")).toString(), response);
+
+
+                for (int j = 0; j < jsonArr1.length(); j++) {
+                    PositionJS positionJS = new PositionJS();
+
+                    JSONObject PositionObj = jsonArr1.getJSONObject(j);
+
+                    positionJS.setId((int) PositionObj.get("id"));
+                    positionJS.setIsCheck((boolean) PositionObj.get("isCheck"));
+                    positionJS.setNumber((int) PositionObj.get("number"));
+                    positionJS.setPositionname((String) PositionObj.get("positionname"));
+                    positionJS.setSalarydefault((int) PositionObj.get("salarydefault"));
+                    positionJS.setId_Db((int) PositionObj.get("iddb"));
+
+                    ListpositionJS.add(positionJS);
+                }
+
+
+                for (PositionJS item : ListpositionJS
+                ) {
+                    ShiftJS.position.add(new PositionJS(item.getId(), item.isIsCheck(), item.getNumber(), item.getPositionname(), item.getSalarydefault(), item.getId_Db()));
+                }
+
+
+                ListShiftJS.add(ShiftJS);
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        int id_timeline1 = idtimelineform;
+        int i = 0;
+        for (ShiftJS item : ListShiftJS
+        ) {
+            for (PositionJS posjs : item.position
+            ) {
+                Shift shiftnew = shiftServices.FindOne(posjs.getId_Db());
+
+                if (shiftnew != null) {
+
+                    if (posjs.getNumber() == 0) {
+                        shiftServices.Delete(posjs.getId_Db());
+                    } else {
+                        shiftnew.setNumber(posjs.getNumber());
+                        shiftServices.Edit(shiftnew);
+                    }
+
+                } else {
+
+                    if (posjs.getNumber() > 0) {
+
+
+                        Shift shift = new Shift();
+
+
+                        shift.setIdTimeline(new Timeline(id_timeline1));
+                        shift.setIdPosition(new Position(posjs.getId()));
+                        shift.setNumber(posjs.getNumber());
+                        int code = Integer.parseInt("10" + i);
+                        Date timestart;
+                        Date timeend;
+
+                        if (i == 0 || i % 2 == 0) {
+                            try {
+                                timestart = new SimpleDateFormat("hh:mm").parse("07:30");
+                                timeend = new SimpleDateFormat("hh:mm").parse("11:30");
+
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        } else {
+                            try {
+                                timestart = new SimpleDateFormat("hh:mm").parse("13:00");
+                                timeend = new SimpleDateFormat("hh:mm").parse("17:00");
+
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+
+
+                        shift.setShiftcode(code);
+                        shift.setIsOT(false);
+                        shift.setTimestart(timestart);
+                        shift.setTimeend(timeend);
+
+//                        String iss = "Id Timeline: " + shift.getIdTimeline()
+//                                + " Number: " + shift.getNumber()
+//                                + " Position: " + shift.getIdPosition()
+//                                + " Shiftcode: " + shift.getShiftcode();
+
+
+//                        JsonServices.dd(iss, response);
+
+                        shiftServices.Create(shift);
+//                JsonServices.dd("nhan", response);
+
+                    }
+
+
+                }
+
+            }
+
+            i += 1;
+
+        }
+
+
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+//        String Data = "";
+//        try {
+//
+//            Data = mapper.writeValueAsString(ListShiftJS);
+//
+//
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+
+
+//        id_Timeline
+
+        String redirectUrl = "/timeline/index";
+        return "redirect:" + redirectUrl;
+    }
 }
