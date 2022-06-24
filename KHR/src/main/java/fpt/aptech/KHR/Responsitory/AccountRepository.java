@@ -18,5 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface AccountRepository extends JpaRepository<Account, String> {
 
     @Query("SELECT a FROM Account a WHERE a.mail = :mail")
-    Account findAccount(@PathVariable("mail") String mail);
+    Account findByEmail(@PathVariable("mail") String mail);
+
+    @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.role = 1")
+    Account findByEmailAdmin(@PathVariable("mail") String mail);
 }
