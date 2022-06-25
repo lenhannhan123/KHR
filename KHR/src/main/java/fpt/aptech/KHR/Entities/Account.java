@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Admin
+ * @author jthie
  */
 @Entity
 @Table(name = "account")
@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Account.findByCode", query = "SELECT a FROM Account a WHERE a.code = :code"),
     @NamedQuery(name = "Account.findByRole", query = "SELECT a FROM Account a WHERE a.role = :role"),
     @NamedQuery(name = "Account.findByRecoverycode", query = "SELECT a FROM Account a WHERE a.recoverycode = :recoverycode"),
-    @NamedQuery(name = "Account.findByToken", query = "SELECT a FROM Account a WHERE a.token = :token")})
+    @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status")})
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -82,16 +82,13 @@ public class Account implements Serializable {
     @NotNull
     @Column(name = "Role")
     private short role;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
+    @Size(max = 6)
     @Column(name = "Recovery_code")
     private String recoverycode;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 250)
-    @Column(name = "Token")
-    private String token;
+    @Column(name = "Status")
+    private boolean status;
 
     public Account() {
     }
@@ -100,7 +97,7 @@ public class Account implements Serializable {
         this.mail = mail;
     }
 
-    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, short role, String recoverycode, String token) {
+    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, short role, boolean status) {
         this.mail = mail;
         this.password = password;
         this.fullname = fullname;
@@ -109,8 +106,7 @@ public class Account implements Serializable {
         this.gender = gender;
         this.code = code;
         this.role = role;
-        this.recoverycode = recoverycode;
-        this.token = token;
+        this.status = status;
     }
 
     public String getMail() {
@@ -185,12 +181,12 @@ public class Account implements Serializable {
         this.recoverycode = recoverycode;
     }
 
-    public String getToken() {
-        return token;
+    public boolean getStatus() {
+        return status;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     @Override

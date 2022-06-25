@@ -53,4 +53,9 @@ public class AccountServiceImp implements IAccountRepository{
     public List<Account> findAllUserAccounts() {
         return null;
     }
+
+    @Override
+    public Account findByCode(String code) {
+        return repository.findByCode(code);
+    }
 }
