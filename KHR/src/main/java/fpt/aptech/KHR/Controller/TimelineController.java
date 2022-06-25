@@ -978,7 +978,34 @@ public class TimelineController {
         String mail = request.getParameter("mail").toString();
         int idTimeline = Integer.parseInt(request.getParameter("idTimeline").toString());
 
-        
+        Account account = accountService.findByMail(mail);
+
+
+        if (account == null) {
+            JsonServices.dd("Tài khoản không tồn tại", response);
+        }
+
+        Timeline timeline = timelineServices.FindOne(idTimeline);
+
+        if (timeline == null) {
+            JsonServices.dd("ID Timeline không tồn tại", response);
+        }
+
+        if (timeline.getStatus() == 0) {
+
+            JsonServices.dd("Quản trị viên chưa mở điểm danh", response);
+        }
+
+        boolean check = userTimelineServices.CheckUser(idTimeline, mail);
+
+        if (check == true) {
+            JsonServices.dd("Đã điểm danh rồi", response);
+        }
+
+
+        JsonServices.dd("Kết nối thành công!", response);
+
+
 //        return new ResponseEntity<Object>(list, HttpStatus.OK);
     }
 

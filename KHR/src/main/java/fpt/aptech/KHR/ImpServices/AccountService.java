@@ -58,4 +58,9 @@ public class AccountService implements UserDetailsService {
         return accountRepository.findAllUser();
     }
 
+
+    public Account findByMail(String mail) {
+        return accountRepository.findByEmail(mail);
+    }
+
 }
