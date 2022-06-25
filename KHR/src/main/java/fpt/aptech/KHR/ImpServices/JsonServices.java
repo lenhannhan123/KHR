@@ -18,7 +18,7 @@ public class JsonServices {
 
 
     public static void dd(String value, HttpServletResponse response) {
-
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println(value);
 
@@ -28,7 +28,7 @@ public class JsonServices {
     }
 
     public static void dd(int value, HttpServletResponse response) {
-
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println(value);
 
@@ -38,7 +38,7 @@ public class JsonServices {
     }
 
     public static void dd(boolean value, HttpServletResponse response) {
-
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println(value);
 

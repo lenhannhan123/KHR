@@ -1,0 +1,98 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/_layout}"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+
+<head>
+    <title>Xác nhận thông tin</title>
+    <!--CND VueJs-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js"></script>
+    <style>
+
+        .title-card {
+            padding-top: 11%;
+            padding-bottom: 11%;
+            margin-left: 4%;
+            font-weight: bold
+        }
+
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <div id="myApp">
+        <h3 class="title-page">Xác nhận thông tin</h3>
+
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col background-table">
+
+                <button data-toggle="modal" hidden data-target="#errorform" id="open">open</button>
+
+                <div class="modal fade" id="errorform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+
+
+                                <h5 class="modal-title modal-title modal-notification " id="exampleModalLabel">Thông
+                                    báo</h5>
+
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="text-align:center; margin:10% 50px">
+
+                                <h5 style="word-wrap: normal;" th:text="${Texterror}"></h5>
+
+
+                            </div>
+                            <div class="modal-footer">
+
+                                <a th:href="${Backlink}">
+
+                                    <button type="button" class="btn btn-danger">Trở về</button>
+                                </a>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    window.onload = function () {
+                        document.getElementById("open").click();
+                    };
+                </script>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

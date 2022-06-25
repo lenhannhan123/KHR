@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import fpt.aptech.KHR.Entities.*;
 import fpt.aptech.KHR.ImpServices.*;
+import fpt.aptech.KHR.Routes.RouteAPI;
 import fpt.aptech.KHR.Routes.RouteWeb;
 import fpt.aptech.KHR.Services.ITimelineServices;
 import org.json.*;
@@ -13,12 +14,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +48,13 @@ public class TimelineController {
 
     @Autowired
     ShiftServices shiftServices;
+
+    @Autowired
+    UserTimelineServices userTimelineServices;
+
+    @Autowired
+    AccountService accountService;
+
 
     @RequestMapping(value = {RouteWeb.TimelineIndexURL}, method = RequestMethod.GET)
     public String IndexTimeline(Model model) {
@@ -818,4 +828,207 @@ public class TimelineController {
         String redirectUrl = "/timeline/index";
         return "redirect:" + redirectUrl;
     }
+
+
+    @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.GET)
+    public String TimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String idTimelineStr = request.getParameter("id").toString();
+
+        List<UserTimeline> userTimeline = userTimelineServices.FindIDTimeLine(Integer.parseInt(idTimelineStr));
+
+        if (userTimeline == null) {
+            model.addAttribute("Texterror", "Vui lòng cho nhân viên thêm timeline trước khi sắp xếp lịch");
+            model.addAttribute("Backlink", "/timeline/index");
+            return "errorpage";
+
+        }
+
+
+        JsonServices.dd("Trang Sắp Xếp", response);
+        return "errorpage";
+    }
+
+    @RequestMapping(value = {RouteWeb.TimelineUsertURL}, method = RequestMethod.GET)
+    public String TimelineUser(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String idTimelineStr = request.getParameter("id").toString();
+
+        List<Account> account = accountService.findAllUser();
+        List<UserTimelineJS> userTimelineJS = new ArrayList<>();
+
+        for (Account item : account
+        ) {
+
+            userTimelineJS.add(new UserTimelineJS(
+                            item.getMail(),
+                            item.getFullname(),
+                            userTimelineServices.CheckUser(Integer.parseInt(idTimelineStr), item.getMail())
+                    )
+            );
+
+        }
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        String Data = "";
+        try {
+
+            Data = mapper.writeValueAsString(userTimelineJS);
+
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        Timeline timeline = timelineServices.FindOne(Integer.parseInt(idTimelineStr));
+
+        if (timeline.getStatus() == 0) {
+            model.addAttribute("status", false);
+        } else {
+            model.addAttribute("status", true);
+
+        }
+
+//        JsonServices.dd(Data, response);
+        model.addAttribute("data", Data);
+        model.addAttribute("idTimeline", idTimelineStr);
+
+
+        return "timeline/usertimelineindex";
+    }
+
+    @RequestMapping(value = {RouteWeb.TimelineChangeStatusURL}, method = RequestMethod.POST)
+    public String TimelineChangeStatus(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String idTimelineStr = request.getParameter("id").toString();
+
+        Timeline timeline = timelineServices.FindOne(Integer.parseInt(idTimelineStr));
+
+        Short Status = timeline.getStatus();
+
+        Short changeSatuss = 0;
+
+        if (Status == 0) {
+
+            changeSatuss = 1;
+        } else {
+            changeSatuss = 0;
+        }
+        timeline.setStatus(changeSatuss);
+
+        timelineServices.Edit(timeline);
+
+        JsonServices.dd(changeSatuss, response);
+
+        return "errorpage";
+    }
+
+
+    @RequestMapping(value = {RouteWeb.TimelineReloadTimeURL}, method = RequestMethod.POST)
+    public String TimelineUserReload(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+
+        String idTimelineStr = request.getParameter("id").toString();
+
+        List<Account> account = accountService.findAllUser();
+        List<UserTimelineJS> userTimelineJS = new ArrayList<>();
+
+        for (Account item : account
+        ) {
+
+            userTimelineJS.add(new UserTimelineJS(
+                            item.getMail(),
+                            item.getFullname(),
+                            userTimelineServices.CheckUser(Integer.parseInt(idTimelineStr), item.getMail())
+                    )
+            );
+
+        }
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        String Data = "";
+        try {
+
+            Data = mapper.writeValueAsString(userTimelineJS);
+
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        Timeline timeline = timelineServices.FindOne(Integer.parseInt(idTimelineStr));
+
+
+        JsonServices.dd(Data, response);
+
+
+        return "timeline/usertimelineindex";
+    }
+
+
+    //    API
+
+    @RequestMapping(value = {RouteAPI.CheckAccountStatusAPI}, method = RequestMethod.POST)
+    public void AccountStatusAPI(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String mail = request.getParameter("mail").toString();
+        int idTimeline = Integer.parseInt(request.getParameter("idTimeline").toString());
+
+        Account account = accountService.findByMail(mail);
+
+
+        if (account == null) {
+            JsonServices.dd("Tài khoản không tồn tại", response);
+        }
+
+        Timeline timeline = timelineServices.FindOne(idTimeline);
+
+        if (timeline == null) {
+            JsonServices.dd("ID Timeline không tồn tại", response);
+        }
+
+        if (timeline.getStatus() == 0) {
+
+            JsonServices.dd("Quản trị viên chưa mở điểm danh", response);
+        }
+
+        boolean check = userTimelineServices.CheckUser(idTimeline, mail);
+
+        if (check == true) {
+            JsonServices.dd("Đã điểm danh rồi", response);
+        }
+
+
+        JsonServices.dd("Kết nối thành công!", response);
+
+
+//        return new ResponseEntity<Object>(list, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = {RouteAPI.TimelineListAPI}, method = RequestMethod.GET)
+    public ResponseEntity<Object> IndexTimelineAPI(Model model, HttpServletRequest request, HttpServletResponse response) {
+        List<Timeline> list = timelineServices.findAll();
+
+        boolean check = false;
+
+        for (Timeline item : list) {
+            if (item.getId() != null) {
+
+                check = true;
+                break;
+            }
+        }
+        String pattern = "dd-MM-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+
+        return new ResponseEntity<Object>(list, HttpStatus.OK);
+    }
+
+
 }

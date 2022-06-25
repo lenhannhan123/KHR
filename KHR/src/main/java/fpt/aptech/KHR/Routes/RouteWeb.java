@@ -91,4 +91,21 @@ public class RouteWeb {
 
     public final static String TimelineEditTimelineURL = "/timeline/edittimeline";
     String TimelineEditTimelineControler = timelineController.GetCreate(model.model);
+
+
+    public final static String TimelineSortURL = "/timeline/sortwork";
+    String TimelineSortURLControler = timelineController.GetCreate(model.model);
+
+
+    public final static String TimelineUsertURL = "/timeline/usertimeline";
+    String TimelineUserControler = timelineController.GetCreate(model.model);
+
+    public final static String TimelineChangeStatusURL = "/timeline/changestatus";
+    String TimelineChangeStatusControler = timelineController.GetCreate(model.model);
+
+
+    public final static String TimelineReloadTimeURL = "/timeline/reload";
+    String TimelineReloadTimeControler = timelineController.GetCreate(model.model);
+
+
 }
