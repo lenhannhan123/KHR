@@ -6,9 +6,13 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.UserTimeline;
+import fpt.aptech.KHR.Responsitory.AccountRepository;
 import fpt.aptech.KHR.Services.IAccountRepository;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +23,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author jthie
  */
 @Service
@@ -27,6 +30,9 @@ public class AccountService implements UserDetailsService {
 
     @Autowired
     IAccountRepository repository;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -43,4 +49,13 @@ public class AccountService implements UserDetailsService {
         return null;
 
     }
+
+    public List<Account> findAll() {
+        return repository.findAll();
+    }
+
+    public List<Account> findAllUser() {
+        return accountRepository.findAllUser();
+    }
+
 }

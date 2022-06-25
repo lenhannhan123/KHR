@@ -26,4 +26,8 @@ public interface IUserTimeServices {
 
     public UserTimeline FindOne(int id);
 
+    public List<UserTimeline> FindIDTimeLine(int idTimeLine);
+
+    public boolean CheckUser(int idTimeline, String mail);
+
 }

@@ -26,26 +26,72 @@ public class UserTimelineServices implements IUserTimeServices {
 
     @Override
     public List<UserTimeline> findAll() {
-        return null;
+        return userTimeLineRepository.findAll();
     }
 
     @Override
     public boolean Create(UserTimeline userTimeline) {
-        return false;
+
+        userTimeLineRepository.save(userTimeline);
+        return true;
     }
 
     @Override
     public boolean Edit(UserTimeline userTimeline) {
-        return false;
+
+        userTimeLineRepository.save(userTimeline);
+
+        return true;
     }
 
     @Override
     public String Delete(int id) {
-        return null;
+
+        UserTimeline userTimeline = FindOne(id);
+
+        if (userTimeline != null) {
+            userTimeLineRepository.delete(userTimeline);
+            return "true";
+        }
+
+        return "false";
     }
 
     @Override
     public UserTimeline FindOne(int id) {
-        return null;
+        return userTimeLineRepository.findID(id);
+    }
+
+    @Override
+    public List<UserTimeline> FindIDTimeLine(int idTimeLine) {
+
+        try {
+            return userTimeLineRepository.findIDTimeLine(idTimeLine);
+        } catch (Exception e) {
+            return null;
+
+        }
+
+
+    }
+
+    @Override
+    public boolean CheckUser(int idTimeline, String mail) {
+        UserTimeline userTimeline;
+        try {
+            userTimeline = userTimeLineRepository.checkUserTimeline(idTimeline, mail);
+        } catch (Exception e) {
+            userTimeline = null;
+        }
+
+
+        if (userTimeline == null) {
+
+            return false;
+
+        } else {
+            return true;
+        }
+
     }
 }

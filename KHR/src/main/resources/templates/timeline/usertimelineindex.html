@@ -1,0 +1,241 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/_layout}"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+
+<head>
+    <title>Chỉnh sửa thông tin</title>
+    <!--CND VueJs-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js"></script>
+    <style>
+
+        .title-card {
+            padding-top: 11%;
+            padding-bottom: 11%;
+            margin-left: 4%;
+            font-weight: bold
+        }
+
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <div id="myApp">
+
+        <h3 class="title-page">Timeline nhân viên</h3>
+
+
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col background-table">
+
+
+                <div class="row" style="margin-bottom:2% ;">
+                    <div class="col-sm-3">
+
+                        <input type="text" placeholder="Nhập email...." class="form-control
+                                            input" id="">
+                    </div>
+                    <div class="col-sm-4">
+
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-7">
+                                Cho phép nhân viên thêm timeline
+                            </div>
+                            <div class="col-sm-3">
+
+                                <img src="/images/icon/toggleturnoff.svg" v-if="checkstatus==false"
+
+                                     alt="" srcset="" v-on:click="changestatus">
+
+                                <img src="/images/icon/toggleturnon.svg" v-if="checkstatus==true"
+
+                                     alt="" srcset="" v-on:click="changestatus">
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+
+                        <th scope="col">Mã nhân viên</th>
+                        <th scope="col">Họ và tên</th>
+                        <th scope="col">Hành động</th>
+                        <th scope="col">Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody v-for="(value,index) in data" :key="index">
+                    <tr>
+                        <th scope="row">{{index+1}}</th>
+                        <td>{{value.mail}}</td>
+
+                        <td>{{value.name}}</td>
+                        <td>
+
+                            <a :href="'edit?id='+idTimeline+'&mail='+value.mail">
+                                <button class="button-envent" style="margin-left: 15%;">
+                                    <i class="fas fa-edit"
+                                       style="color:
+                                                        #6667AB"></i>
+                                </button>
+                            </a>
+                        </td>
+                        <td>
+
+                            <span id="status-add" v-if="value.isAdd ==true"> Đã thêm </span>
+
+                            <span id="status-not-add" v-if="value.isAdd ==false">chưa thêm </span>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="col-sm-1"></div>
+
+        </div>
+
+
+        <textarea th:text="${data}" hidden id="data"></textarea>
+        <textarea th:text="${status}" hidden id="status"></textarea>
+
+        <textarea th:text="${idTimeline}" hidden id="idTimeline"></textarea>
+
+    </div>
+    <script>
+        var timeID;
+    </script>
+
+    <script>
+        var App = new Vue({
+            el: "#myApp",
+            created() {
+                this.load();
+            },
+            data() {
+                return {
+                    data: [],
+                    idTimeline: 0,
+                    checkstatus: false
+
+
+                }
+
+            },
+            methods: {
+                load: function () {
+
+
+                    Data = JSON.parse(document.getElementById("data").value);
+                    idTimeline = parseInt(document.getElementById("idTimeline").value);
+
+                    statuss = document.getElementById("status").value;
+
+                    statuss = (statuss == "true") ? true : false;
+
+                    this.data = Data;
+                    this.idTimeline = idTimeline;
+
+                    this.checkstatus = statuss
+                    this.reloaddata();
+                    // console.log(statuss);
+
+
+                },
+
+                changestatus: function () {
+                    _this = this;
+                    // alert("nhan");
+                    str = "changestatus?id=" + this.idTimeline
+                    axios.post(str, {})
+                        .then(function (response) {
+
+
+                            // console.log(response.data);
+
+                            results = response.data == 1 ? true : false;
+                            _this.checkstatus = results;
+                            _this.reloaddata();
+                            console.log(_this.checkstatus);
+
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+
+                reloaddata: function () {
+                    _this = this;
+
+
+                    if (_this.checkstatus == true) {
+
+                        timeID = setInterval(() => {
+
+
+                            str = "reload?id=" + this.idTimeline
+                            axios.post(str, {})
+                                .then(function (response) {
+
+
+                                    console.log();
+
+                                    _this.data = response.data;
+
+                                    // console.log(_this.data);
+
+
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+
+
+                        }, 10000)
+                    } else {
+                        clearTimeout(timeID);
+                    }
+
+
+                }
+            }
+
+        })
+    </script>
+
+</div>
+
+
+</body>
+
+</html>
