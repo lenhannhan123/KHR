@@ -26,4 +26,8 @@ public class RouteAPI {
     public final static String CheckAccountStatusAPI = "api/timeline/checkaccount";
     String CheckAccountStatusControler = timelineController.GetCreate(model.model);
 
+    public final static String CreateUserAPI = "api/timeline/createtimeuser";
+    String CreateUserControler = timelineController.GetCreate(model.model);
+
+
 }

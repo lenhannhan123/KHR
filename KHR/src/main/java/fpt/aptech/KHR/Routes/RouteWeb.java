@@ -105,4 +105,8 @@ public class RouteWeb {
     String TimelineReloadTimeControler = timelineController.GetCreate(model.model);
 
 
+    public final static String TimelineDetailsURL = "/timeline/detail";
+    String TimelineDetailsControler = timelineController.GetCreate(model.model);
+
+
 }

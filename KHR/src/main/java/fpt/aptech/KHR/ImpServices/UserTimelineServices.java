@@ -5,6 +5,8 @@
  */
 package fpt.aptech.KHR.ImpServices;
 
+import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Entities.UserTimeline;
 import fpt.aptech.KHR.Responsitory.TimelineRepository;
 import fpt.aptech.KHR.Responsitory.UserTimeLineRepository;
@@ -66,7 +68,7 @@ public class UserTimelineServices implements IUserTimeServices {
     public List<UserTimeline> FindIDTimeLine(int idTimeLine) {
 
         try {
-            return userTimeLineRepository.findIDTimeLine(idTimeLine);
+            return userTimeLineRepository.findIDTimeLine(new Timeline(idTimeLine));
         } catch (Exception e) {
             return null;
 
@@ -77,21 +79,27 @@ public class UserTimelineServices implements IUserTimeServices {
 
     @Override
     public boolean CheckUser(int idTimeline, String mail) {
-        UserTimeline userTimeline;
-        try {
-            userTimeline = userTimeLineRepository.checkUserTimeline(idTimeline, mail);
-        } catch (Exception e) {
-            userTimeline = null;
-        }
+
+//        try {
+        List<UserTimeline> userTimeline = userTimeLineRepository.checkUserTimeline(new Timeline(idTimeline), new Account(mail));
+//        } catch (Exception e) {
+//            userTimeline = null;
+//        }
 
 
-        if (userTimeline == null) {
+        if (userTimeline.size() > 0) {
 
-            return false;
+            return true;
 
         } else {
-            return true;
+            return false;
         }
 
+    }
+
+    @Override
+    public List<UserTimeline> UserTimeline(int idTimeline, String mail) {
+        return userTimeLineRepository.checkUserTimeline(new Timeline(idTimeline), new Account(mail));
+        
     }
 }

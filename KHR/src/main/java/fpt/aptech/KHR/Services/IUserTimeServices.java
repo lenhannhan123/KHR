@@ -30,4 +30,6 @@ public interface IUserTimeServices {
 
     public boolean CheckUser(int idTimeline, String mail);
 
+    public List<UserTimeline> UserTimeline(int idTimeline, String mail);
+
 }

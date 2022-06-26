@@ -28,14 +28,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/plugins/**", "/dist/**", "/css/**", "/images/**", "/script/**").permitAll()
+                .antMatchers("/plugins/**", "/dist/**", "/css/**", "/images/**", "/script/**", "/api/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/j_spring_security_check")
                 .loginPage("/login")
-                .defaultSuccessUrl("/home/index",true)
+                .defaultSuccessUrl("/home/index", true)
                 .failureUrl("/login?success=fail")
                 .usernameParameter("email")
                 .passwordParameter("password")
