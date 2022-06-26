@@ -6,7 +6,7 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Shift;
-import fpt.aptech.KHR.Responsitory.ShiftRepository;
+import fpt.aptech.KHR.Reponsitory.ShiftRepository;
 import fpt.aptech.KHR.Services.IShiftServices;
 
 import java.util.List;

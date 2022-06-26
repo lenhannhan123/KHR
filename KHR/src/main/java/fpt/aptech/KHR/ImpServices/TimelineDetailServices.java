@@ -6,9 +6,9 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.TimelineDetail;
-import fpt.aptech.KHR.Responsitory.ShiftRepository;
-import fpt.aptech.KHR.Responsitory.TimelineDetailRepository;
-import fpt.aptech.KHR.Responsitory.TimelineRepository;
+import fpt.aptech.KHR.Reponsitory.ShiftRepository;
+import fpt.aptech.KHR.Reponsitory.TimelineDetailRepository;
+import fpt.aptech.KHR.Reponsitory.TimelineRepository;
 import fpt.aptech.KHR.Services.ITimelineDetailServices;
 
 import java.util.List;

@@ -6,8 +6,8 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.UserTimeline;
-import fpt.aptech.KHR.Responsitory.TimelineRepository;
-import fpt.aptech.KHR.Responsitory.UserTimeLineRepository;
+import fpt.aptech.KHR.Reponsitory.TimelineRepository;
+import fpt.aptech.KHR.Reponsitory.UserTimeLineRepository;
 import fpt.aptech.KHR.Services.IUserTimeServices;
 
 import java.util.List;

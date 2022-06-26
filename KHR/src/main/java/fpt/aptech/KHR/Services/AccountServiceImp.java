@@ -6,7 +6,7 @@
 package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Account;
-import fpt.aptech.KHR.Responsitory.AccountRepository;
+import fpt.aptech.KHR.Reponsitory.AccountRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

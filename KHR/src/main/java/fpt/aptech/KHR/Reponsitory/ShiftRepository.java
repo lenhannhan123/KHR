@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fpt.aptech.KHR.Responsitory;
+package fpt.aptech.KHR.Reponsitory;
 
 import fpt.aptech.KHR.Entities.Shift;
 import org.springframework.data.jpa.repository.JpaRepository;

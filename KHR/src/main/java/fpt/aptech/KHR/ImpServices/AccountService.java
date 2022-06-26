@@ -7,7 +7,7 @@ package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.UserTimeline;
-import fpt.aptech.KHR.Responsitory.AccountRepository;
+import fpt.aptech.KHR.Reponsitory.AccountRepository;
 import fpt.aptech.KHR.Services.IAccountRepository;
 
 import java.util.ArrayList;
