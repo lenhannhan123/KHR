@@ -31,5 +31,7 @@ public interface IAccountRepository {
     public List<Account> findAllAdminAccounts();
 
     public List<Account> findAllUserAccounts();
+
+    public Account findByCode(String code);
     
 }

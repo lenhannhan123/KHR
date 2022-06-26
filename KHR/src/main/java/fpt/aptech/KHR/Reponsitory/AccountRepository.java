@@ -26,4 +26,6 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     @Query("SELECT a FROM Account a WHERE  a.role = 0")
     List<Account> findAllUser();
+    @Query("SELECT a FROM Account a WHERE a.code = :code")
+    Account findByCode(@PathVariable("code") String code);
 }
