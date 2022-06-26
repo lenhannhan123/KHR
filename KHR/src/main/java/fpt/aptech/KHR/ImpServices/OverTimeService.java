@@ -6,7 +6,7 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.OverTime;
-import fpt.aptech.KHR.Responsitory.OverTimeRepository;
+import fpt.aptech.KHR.Reponsitory.OverTimeRepository;
 import fpt.aptech.KHR.Services.IOverTimeServices;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

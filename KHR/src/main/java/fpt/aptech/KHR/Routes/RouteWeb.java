@@ -31,7 +31,6 @@ public class RouteWeb {
 
 //    Khu vuc khai bao Route
 
-
     public final static String AdminHomeURL = "/home/index";
     String AdminHomeControler = homeController.Index(model.model);
 
@@ -57,7 +56,11 @@ public class RouteWeb {
     String OverTimeControler = overTimeController.Index(model.model);
     //
     public final static String accountManageURL = "/account/index";
-    String AccountControllerString = accountController.Index(model.model);
+    String AccountControllerString = accountController.AccountList(model.model);
+
+    public final static String AccountGetCreateURL = "/account/create";
+    String AccountGetCreateControler = accountController.GetCreate(model.model);
+
 
 
     //Route Timeline

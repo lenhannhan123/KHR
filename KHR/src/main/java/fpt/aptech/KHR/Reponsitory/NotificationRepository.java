@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fpt.aptech.KHR.Responsitory;
+package fpt.aptech.KHR.Reponsitory;
 
-import fpt.aptech.KHR.Entities.OverTime;
+import fpt.aptech.KHR.Entities.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author LÊ HỮU TÂM
  */
-public interface OverTimeRepository extends JpaRepository<OverTime, Integer> {
+public interface NotificationRepository extends JpaRepository<Notification, Integer> {
+    
 }

@@ -6,7 +6,7 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.DayOff;
-import fpt.aptech.KHR.Responsitory.DayOffRepository;
+import fpt.aptech.KHR.Reponsitory.DayOffRepository;
 import fpt.aptech.KHR.Services.IDayOffServices;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

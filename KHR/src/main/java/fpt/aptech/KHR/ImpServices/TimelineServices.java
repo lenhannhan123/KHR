@@ -7,7 +7,7 @@ package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Shift;
 import fpt.aptech.KHR.Entities.Timeline;
-import fpt.aptech.KHR.Responsitory.TimelineRepository;
+import fpt.aptech.KHR.Reponsitory.TimelineRepository;
 import fpt.aptech.KHR.Services.ITimelineServices;
 import org.springframework.beans.factory.annotation.Autowired;
 

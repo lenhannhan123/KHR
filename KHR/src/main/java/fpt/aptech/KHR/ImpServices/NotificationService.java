@@ -6,7 +6,7 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Notification;
-import fpt.aptech.KHR.Responsitory.NotificationRepository;
+import fpt.aptech.KHR.Reponsitory.NotificationRepository;
 import fpt.aptech.KHR.Services.INotificationServices;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

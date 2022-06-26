@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fpt.aptech.KHR.Responsitory;
+package fpt.aptech.KHR.Reponsitory;
 
 import fpt.aptech.KHR.Entities.Account;
 
@@ -26,4 +26,6 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     @Query("SELECT a FROM Account a WHERE  a.role = 0")
     List<Account> findAllUser();
+    @Query("SELECT a FROM Account a WHERE a.code = :code")
+    Account findByCode(@PathVariable("code") String code);
 }
