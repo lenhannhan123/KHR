@@ -73,9 +73,7 @@ public class Account implements Serializable {
     @NotNull
     @Column(name = "Gender")
     private boolean gender;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
+    @Size(max = 6)
     @Column(name = "Code")
     private String code;
     @Basic(optional = false)
@@ -97,14 +95,13 @@ public class Account implements Serializable {
         this.mail = mail;
     }
 
-    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, short role, boolean status) {
+    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, short role, boolean status) {
         this.mail = mail;
         this.password = password;
         this.fullname = fullname;
         this.phone = phone;
         this.birthdate = birthdate;
         this.gender = gender;
-        this.code = code;
         this.role = role;
         this.status = status;
     }
