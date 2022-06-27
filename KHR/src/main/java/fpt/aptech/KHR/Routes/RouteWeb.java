@@ -25,9 +25,8 @@ public class RouteWeb {
     AccountController accountController = new AccountController();
     DayOffController dayOffController = new DayOffController();
     OverTimeController overTimeController = new OverTimeController();
-
     TimelineController timelineController = new TimelineController();
-
+    TimekeepingController timekeepingController = new TimekeepingController();
 
 //    Khu vuc khai bao Route
 
@@ -107,5 +106,8 @@ public class RouteWeb {
     public final static String TimelineReloadTimeURL = "/timeline/reload";
     String TimelineReloadTimeControler = timelineController.GetCreate(model.model);
 
+    //route Timekeeping
+    public final static String TimekeepingIndexURL = "/timekeeping/index";
+    String TimeKeepingIndex = timekeepingController.index(model.model);
 
 }
