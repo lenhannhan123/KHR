@@ -75,26 +75,11 @@ public class AccountController {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-//        String code = codeGenerator();
-//        String code = "A103";
-//        Account checkCode = accountServiceImp.findByCode(code);
-//        if(checkCode!=null){
-//            out.println("true");
-//        }
-//        else{
-//            out.println("false");
-//        }
         Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender,encoder.encode(mail),  (short)1, true);
 
         accountRepository.save(account);
         String redirectUrl = "/account/index";
         return "redirect:" + redirectUrl;
-    }
-
-    public String codeGenerator() {
-        double random = 1000 + Math.random() * 10000;
-        String code = "KHR" + (int) random;
-        return code;
     }
 
 }
