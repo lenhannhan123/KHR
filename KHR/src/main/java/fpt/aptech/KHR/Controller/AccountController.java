@@ -75,8 +75,6 @@ public class AccountController {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        
-        
 //        String code = codeGenerator();
 //        String code = "A103";
 //        Account checkCode = accountServiceImp.findByCode(code);
@@ -86,7 +84,7 @@ public class AccountController {
 //        else{
 //            out.println("false");
 //        }
-        Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender,  (short)0, true);
+        Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender,encoder.encode(mail),  (short)1, true);
 
         accountRepository.save(account);
         String redirectUrl = "/account/index";
