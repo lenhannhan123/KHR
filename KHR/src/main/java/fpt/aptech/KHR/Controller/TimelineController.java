@@ -18,10 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@CrossOrigin(maxAge = 3600)
 public class TimelineController {
 
     @Autowired
@@ -857,6 +855,9 @@ public class TimelineController {
         List<Account> account = accountService.findAllUser();
         List<UserTimelineJS> userTimelineJS = new ArrayList<>();
 
+
+//        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
+
         for (Account item : account
         ) {
 
@@ -970,13 +971,70 @@ public class TimelineController {
     }
 
 
+    @RequestMapping(value = {RouteWeb.TimelineDetailsURL}, method = RequestMethod.GET)
+    public String DetailTimelineUser(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String mail = request.getParameter("mail");
+        int idTimeline = Integer.parseInt(request.getParameter("id"));
+
+        List<UserTimeline> timelines = userTimelineServices.UserTimeline(idTimeline, mail);
+
+        boolean[] usertimeline = new boolean[13];
+
+        for (int i = 1; i <= 12; i++) {
+            usertimeline[i] = false;
+        }
+
+        for (int i = 1; i <= 12; i++) {
+
+            for (UserTimeline item : timelines
+            ) {
+
+                if (item.getShiftcode() == i) {
+
+                    usertimeline[i] = true;
+                }
+
+            }
+
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        String Data = "";
+        try {
+
+            Data = mapper.writeValueAsString(usertimeline);
+
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        Account account = accountService.findByMail(mail);
+
+        Timeline timeline = timelineServices.FindOne(idTimeline);
+
+        model.addAttribute("startday", timeline.getStartdate());
+
+        model.addAttribute("account", account);
+
+        model.addAttribute("data", Data);
+
+        return "timeline/usertimelinedetail";
+    }
+
+
     //    API
 
     @RequestMapping(value = {RouteAPI.CheckAccountStatusAPI}, method = RequestMethod.POST)
     public void AccountStatusAPI(Model model, HttpServletRequest request, HttpServletResponse response) {
 
+
         String mail = request.getParameter("mail").toString();
         int idTimeline = Integer.parseInt(request.getParameter("idTimeline").toString());
+
 
         Account account = accountService.findByMail(mail);
 
@@ -1028,6 +1086,42 @@ public class TimelineController {
 
 
         return new ResponseEntity<Object>(list, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = {RouteAPI.CreateUserAPI}, method = RequestMethod.POST)
+    public void CreateTimelineUser(Model model, HttpServletRequest request, HttpServletResponse response) {
+        String mail = request.getParameter("mail");
+        int idTimeline = Integer.parseInt(request.getParameter("idTimeline"));
+
+
+        Boolean[] data = new Boolean[13];
+
+        for (int i = 1; i <= 12; i++) {
+
+            data[i] = Boolean.parseBoolean(request.getParameter("data" + i));
+
+        }
+
+        for (int i = 1; i <= 12; i++) {
+
+
+            if (data[i] == true) {
+
+                UserTimeline userTimeline = new UserTimeline();
+
+                userTimeline.setIdTimeline(new Timeline(idTimeline));
+                userTimeline.setShiftcode((short) i);
+                userTimeline.setMail(new Account(mail));
+                userTimelineServices.Create(userTimeline);
+
+            }
+
+        }
+        JsonServices.dd("Thêm thành công", response);
+
+
+//        return new ResponseEntity<Object>(list, HttpStatus.OK);
     }
 
 

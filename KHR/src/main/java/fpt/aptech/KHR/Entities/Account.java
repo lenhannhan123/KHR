@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Account.findByCode", query = "SELECT a FROM Account a WHERE a.code = :code"),
     @NamedQuery(name = "Account.findByRole", query = "SELECT a FROM Account a WHERE a.role = :role"),
     @NamedQuery(name = "Account.findByRecoverycode", query = "SELECT a FROM Account a WHERE a.recoverycode = :recoverycode"),
-    @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status")})
+    @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status"),
+    @NamedQuery(name = "Account.findByAvatar", query = "SELECT a FROM Account a WHERE a.avatar = :avatar")})
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -73,9 +74,7 @@ public class Account implements Serializable {
     @NotNull
     @Column(name = "Gender")
     private boolean gender;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
+    @Size(max = 250)
     @Column(name = "Code")
     private String code;
     @Basic(optional = false)
@@ -89,6 +88,9 @@ public class Account implements Serializable {
     @NotNull
     @Column(name = "Status")
     private boolean status;
+    @Size(max = 100)
+    @Column(name = "Avatar")
+    private String avatar;
 
     public Account() {
     }
@@ -187,6 +189,14 @@ public class Account implements Serializable {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

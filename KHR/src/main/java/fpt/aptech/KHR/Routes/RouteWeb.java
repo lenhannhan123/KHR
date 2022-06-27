@@ -110,4 +110,8 @@ public class RouteWeb {
     public final static String TimekeepingIndexURL = "/timekeeping/index";
     String TimeKeepingIndex = timekeepingController.index(model.model);
 
+    public final static String TimelineDetailsURL = "/timeline/detail";
+    String TimelineDetailsControler = timelineController.GetCreate(model.model);
+
+
 }

@@ -5,6 +5,8 @@
  */
 package fpt.aptech.KHR.Reponsitory;
 
+import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Entities.UserTimeline;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,8 +23,8 @@ public interface UserTimeLineRepository extends JpaRepository<UserTimeline, Inte
 
 
     @Query("SELECT u FROM UserTimeline u WHERE u.idTimeline = :idTimeline")
-    List<UserTimeline> findIDTimeLine(@PathVariable("idTimeline") int idTimeline);
+    List<UserTimeline> findIDTimeLine(@PathVariable("idTimeline") Timeline idTimeline);
 
     @Query("SELECT u FROM UserTimeline u WHERE u.idTimeline = :idTimeline AND u.mail =:mail")
-    UserTimeline checkUserTimeline(@PathVariable("idTimeline") int idTimeline, @PathVariable("mail") String mail);
+    List<UserTimeline> checkUserTimeline(@PathVariable("idTimeline") Timeline idTimeline, @PathVariable("mail") Account mail);
 }

@@ -48,7 +48,7 @@ public class JsonServices {
     }
 
 
-    public static String ParseToJson(List value) {
+    public static String ParseToJson(Object value) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {

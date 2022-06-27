@@ -96,7 +96,7 @@
                         <td>{{value.name}}</td>
                         <td>
 
-                            <a :href="'edit?id='+idTimeline+'&mail='+value.mail">
+                            <a :hidden="!value.isAdd" :href="'detail?id='+idTimeline+'&mail='+value.mail">
                                 <button class="button-envent" style="margin-left: 15%;">
                                     <i class="fas fa-edit"
                                        style="color:

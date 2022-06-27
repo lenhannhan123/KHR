@@ -34,6 +34,94 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <link href="css/icon.css" rel="stylesheet">
 
+    <style>
+        .main-sidebar {
+            background-color: #6667AB;
+        }
+        
+        .nav-item-color {
+            color: white
+        }
+        
+        .nav-item {
+            margin: 8% 0px;
+        }
+        
+        .sd {
+            margin-left: 15%;
+            font-size: 14pt;
+        }
+        
+        .active-link {
+            background-color: white;
+            border-radius: 20px;
+        }
+        
+        .nav-item-color-active {
+            color: #6667AB;
+        }
+        
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+        
+        .background-table {
+            background-color: white;
+            padding: 2%;
+            border-radius: 15px;
+        }
+        
+        .input {
+            height: 2.5rem;
+            border-radius: 10px;
+            border-color: #6667AB;
+            color: black;
+        }
+        
+        .button-defualt {
+            background-color: #6667AB;
+            border-color: #6667AB;
+        }
+        
+        .button-defualt:hover {
+            background-color: #7879b6;
+            border-color: #7879b6;
+        }
+        
+        .button-envent {
+            border: none;
+            width: 35px;
+            height: 35px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px #b9b8b8;
+        }
+        
+        #dropdownMenuButton::after {
+            border-top: none;
+            content: none;
+        }
+        
+        .modal-title {
+            margin: 0px auto;
+            padding-left: 15%;
+            font-weight: bold;
+        }
+        
+        .white {
+            background-color: white;
+            color: black;
+        }
+        
+        .red {
+            background-color: rgb(220, 40, 40);
+            color: white;
+        }
+    </style>
+
 
 </head>
 
@@ -43,13 +131,279 @@
 
         <h1 style="text-align: center ;">Xếp lịch làm việc</h1>
 
-        <div class="row">
-            <div class="col-sm-4" style="text-align: center ;">
-                <input type="text" name="" id="">
+
+        <div class="row" style="margin-top: 2%;">
+
+            <div class="col-sm-2"></div>
+            <div class="col-sm-3">
+                <input type="text" placeholder="Nhập Mail" v-model="mail" class="form-control" required>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" placeholder="Nhập TimelineID" v-model="timelineid" class="form-control" required>
+            </div>
+            <div class="col-sm-3">
+                <input type="button" class="btn btn-success" value="Check thông tin" v-on:click="checkaccount()">
             </div>
 
+        </div>
+        <div class="row" style="margin-top: 2%;">
+
+            <div class="col" style="text-align:center ;">
+
+                <span id="thongbao" style="font-size:12pt ;">
+
+                </span>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 2</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data1 ?  'red':'white' ]" v-on:click="data1=!data1">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data2 ?  'red':'white' ]" v-on:click="data2=!data2">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 3</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data3 ?  'red':'white' ]" v-on:click="data3=!data3">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data4 ?  'red':'white' ]" v-on:click="data4=!data4">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 4</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data5 ?  'red':'white' ]" v-on:click="data5=!data5">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data6 ?  'red':'white' ]" v-on:click="data6=!data6">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 5</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data7 ?  'red':'white' ]" v-on:click="data7=!data7">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data8 ?  'red':'white' ]" v-on:click="data8=!data8">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 6</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data9 ?  'red':'white' ]" v-on:click="data9=!data9">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data10 ?  'red':'white' ]" v-on:click="data10=!data10">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 7</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data11 ?  'red':'white' ]" v-on:click="data11=!data11">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data12 ?  'red':'white' ]" v-on:click="data12=!data12">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (7:30 - 11:30)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+
+
+        </div>
+
+
+        <div class="row" style="margin-top: 2%;">
+
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4" style="text-align: center;">
+
+                <input type="button" value="Lưu thông tin" class="btn btn-success" v-on:click="sendtimeline()">
+            </div>
             <div class="col-sm-4">
-                <input type="text" name="" id="">
+
             </div>
 
         </div>
@@ -69,6 +423,24 @@
             data() {
                 return {
 
+                    token: "",
+                    timelineid: 0,
+                    mail: "",
+                    data1: false,
+                    data2: false,
+                    data3: false,
+                    data4: false,
+                    data5: false,
+                    data6: false,
+                    data7: false,
+                    data8: false,
+                    data9: false,
+                    data10: false,
+                    data11: false,
+                    data12: false,
+
+
+
 
 
                 }
@@ -79,7 +451,71 @@
 
                     // alert("nhan");
 
+
+
+
+                },
+                addtoken: function() {
+
+                    token = document.getElementById("token").value;
+                    this.token = token;
+                },
+                checkaccount: function() {
+
+
+
+                    str = "http://localhost:7777/api/timeline/checkaccount?mail=" + this.mail + "&idTimeline=" + this.timelineid
+
+                    // str = "http://google.com/"
+                    // let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${KEY}`;
+
+                    var request = new XMLHttpRequest();
+                    request.open('POST', str, false); // `false` makes the request synchronous
+                    // request.withCredentials = true;
+                    request.send(null);
+
+                    if (request.status === 200) { // That's HTTP for 'ok'
+                        // return request.responseText
+                        document.getElementById("thongbao").innerText = request.responseText
+                    }
+
+
+                },
+                sendtimeline: function() {
+
+
+                    str = "http://localhost:7777/api/timeline/createtimeuser?mail=" + this.mail +
+                        "&idTimeline=" + this.timelineid +
+                        "&data1=" + this.data1 +
+                        "&data2=" + this.data2 +
+                        "&data3=" + this.data3 +
+                        "&data4=" + this.data4 +
+                        "&data5=" + this.data5 +
+                        "&data6=" + this.data6 +
+                        "&data7=" + this.data7 +
+                        "&data8=" + this.data8 +
+                        "&data9=" + this.data9 +
+                        "&data10=" + this.data10 +
+                        "&data11=" + this.data11 +
+                        "&data12=" + this.data12
+
+                    // str = "http://google.com/"
+                    // let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${KEY}`;
+
+                    var request = new XMLHttpRequest();
+                    request.open('POST', str, false); // `false` makes the request synchronous
+                    // request.withCredentials = true;
+
+                    request.send(null);
+
+                    if (request.status === 200) { // That's HTTP for 'ok'
+                        // return request.responseText
+                        document.getElementById("thongbao").innerText = request.responseText
+                    }
+
+
                 }
+
 
 
             }
