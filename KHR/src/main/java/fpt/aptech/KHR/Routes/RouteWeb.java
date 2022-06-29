@@ -60,6 +60,9 @@ public class RouteWeb {
     public final static String AccountGetCreateURL = "/account/create";
     String AccountGetCreateControler = accountController.GetCreate(model.model);
 
+    public final static String AccountGetUpdateURL = "/account/update";
+    String AccountGetUpdateController = accountController.GetUpdate(model.model);
+
 
 
     //Route Timeline

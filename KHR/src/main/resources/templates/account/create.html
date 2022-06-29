@@ -126,6 +126,71 @@
                             <div class="col-sm-1"></div>
                         </div>
 
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                Quyền
+                            </div>
+                        </div>
+
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <select name="txtRole" id="txtRole">
+                                    <option value="0">User</option>
+                                    <option value="1">Admin</option>
+                                    <option value="2">Scan Machine</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                Vị trí làm việc
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                    <tr style="text-align: center ;">
+                                        <th scope="col">Lựa chọn</th>
+                                        <th scope="col">Vị trí</th>
+                                        <th scope="col">Lương năng suất</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="item,stt:${positions}">
+                                        <td style="text-align: center ;">
+                                            <div class="pretty p-default p-curve">
+                                                <input type="checkbox" class="checkbox" th:value="${item.getId()}"  th:name="'check'+${stt.count}">
+
+                                                <div class="state">
+                                                    <label></label>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                        <td th:text="${item.getPositionname()}"></td>
+                                        <td style="text-align: center ;">
+                                            <input type="number" class="form-control input input-number" min="0" th:name="'checkvalue'+${stt.count} " th:value="${item.getSalarydefault()}" id="txtSalary">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+
+
+
+
                         <div class="row" style="margin-top: 5%;">
                             <div class="col-sm-5"></div>
                             <div class="col-sm-2" style="text-align: center ;">
