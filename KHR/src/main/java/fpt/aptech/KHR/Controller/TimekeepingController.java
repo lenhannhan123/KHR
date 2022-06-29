@@ -29,10 +29,10 @@ public class TimekeepingController {
         return "timekeeping/index";
     }
     
-    @RequestMapping(value = {RouteWeb.TimekeepingIndexURL}, method = RequestMethod.GET)
-    public String checkin(Model model) {
-        model.addAttribute("list", timekeepingServices.findAll());
-        return "timekeeping/index";
-    }
+//    @RequestMapping(value = {RouteWeb.TimekeepingIndexURL}, method = RequestMethod.GET)
+//    public String checkin(Model model) {
+//        model.addAttribute("list", timekeepingServices.findAll());
+//        return "timekeeping/index";
+//    }
     
 }
