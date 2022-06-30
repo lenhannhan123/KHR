@@ -16,4 +16,10 @@ import java.util.List;
 public interface IAccountPositionServices {
 
     List<AccountPosition> findAll();
+    
+    void save(AccountPosition accountPosition);
+    
+    AccountPosition findByEmail(String mail);
+    
+    void delete(AccountPosition accountPosition);
 }

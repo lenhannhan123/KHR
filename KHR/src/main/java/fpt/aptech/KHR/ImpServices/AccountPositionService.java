@@ -24,5 +24,20 @@ public class AccountPositionService implements IAccountPositionServices {
     public List<AccountPosition> findAll() {
         return accountPositionRepository.findAll();
     }
+
+    @Override
+    public void save(AccountPosition accountPosition) {
+        accountPositionRepository.save(accountPosition);
+    }
+
+    @Override
+    public AccountPosition findByEmail(String mail) {
+        return accountPositionRepository.findByEmail(mail);
+    }
+
+    @Override
+    public void delete(AccountPosition accountPosition) {
+        accountPositionRepository.delete(accountPosition);
+    }
     
 }

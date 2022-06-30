@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  *
@@ -111,7 +112,11 @@ public class AccountController {
     }
 
     @RequestMapping(value = {RouteWeb.AccountGetUpdateURL}, method = RequestMethod.GET)
-    public String GetUpdate(Model model) {
+    public String GetUpdate(Model model, HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        Account account = accountRepository.findByMail(id);
+        request.setAttribute("Account", account);
+        model.addAttribute("Account",account);
         return "/account/update";
     }
 
