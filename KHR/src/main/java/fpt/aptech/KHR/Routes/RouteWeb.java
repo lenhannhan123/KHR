@@ -29,14 +29,11 @@ public class RouteWeb {
     TimekeepingController timekeepingController = new TimekeepingController();
 
 //    Khu vuc khai bao Route
-
     public final static String AdminHomeURL = "/home/index";
     String AdminHomeControler = homeController.Index(model.model);
 
-
     public final static String index1URL = "/login";
     String Index1Controler = homeController.Index(model.model);
-
 
     //Route Notification
     public final static String notificationURL = "/notification";
@@ -58,17 +55,14 @@ public class RouteWeb {
     String AccountControllerString = accountController.AccountList(model.model);
 
     public final static String AccountGetCreateURL = "/account/create";
-    String AccountGetCreateControler = accountController.GetCreate(model.model);
+    String AccountGetCreateController = accountController.GetCreate(model.model);
 
     public final static String AccountGetUpdateURL = "/account/update";
     String AccountGetUpdateController = accountController.GetUpdate(model.model);
 
-
-
     //Route Timeline
     public final static String TimelineIndexURL = "/timeline/index";
     String TimelineIndexControler = timelineController.IndexTimeline(model.model);
-
 
     public final static String TimelineGetCreateURL = "/timeline/create";
     String TimelineGetCreateControler = timelineController.GetCreate(model.model);
@@ -76,13 +70,11 @@ public class RouteWeb {
     public final static String TimelineConfirmURL = "/timeline/cofirm";
     String TimelineConfirmURLControler = timelineController.GetCreate(model.model);
 
-
     public final static String TimelineCheckEnddayURL = "/timeline/checkendday";
     String TimelineCheckEnddaydayControler = timelineController.GetCreate(model.model);
 
     public final static String TimelineCheckStartdayURL = "/timeline/checkstartday";
     String TimelineCheckStartdayControler = timelineController.GetCreate(model.model);
-
 
     public final static String TimelineDeleteURL = "/timeline/delete";
     String TimelineDeleteyControler = timelineController.GetCreate(model.model);
@@ -90,21 +82,17 @@ public class RouteWeb {
     public final static String TimelineEditNameURL = "/timeline/editname";
     String TimelineEditNameControler = timelineController.GetCreate(model.model);
 
-
     public final static String TimelineEditTimelineURL = "/timeline/edittimeline";
     String TimelineEditTimelineControler = timelineController.GetCreate(model.model);
 
-
     public final static String TimelineSortURL = "/timeline/sortwork";
     String TimelineSortURLControler = timelineController.GetCreate(model.model);
-
 
     public final static String TimelineUsertURL = "/timeline/usertimeline";
     String TimelineUserControler = timelineController.GetCreate(model.model);
 
     public final static String TimelineChangeStatusURL = "/timeline/changestatus";
     String TimelineChangeStatusControler = timelineController.GetCreate(model.model);
-
 
     public final static String TimelineReloadTimeURL = "/timeline/reload";
     String TimelineReloadTimeControler = timelineController.GetCreate(model.model);
@@ -115,6 +103,5 @@ public class RouteWeb {
 
     public final static String TimelineDetailsURL = "/timeline/detail";
     String TimelineDetailsControler = timelineController.GetCreate(model.model);
-
 
 }
