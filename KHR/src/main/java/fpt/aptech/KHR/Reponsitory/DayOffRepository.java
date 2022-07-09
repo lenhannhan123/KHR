@@ -7,11 +7,14 @@ package fpt.aptech.KHR.Reponsitory;
 
 import fpt.aptech.KHR.Entities.DayOff;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  *
  * @author LÊ HỮU TÂM
  */
 public interface DayOffRepository extends JpaRepository<DayOff, Integer> {
-    
+    @Query("SELECT d FROM DayOff d WHERE d.id = :id")
+    DayOff findID(@PathVariable("id") int id);
 }

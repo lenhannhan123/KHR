@@ -24,5 +24,21 @@ public class DayOffService implements IDayOffServices{
     public List<DayOff> findAll() {
         return dor.findAll();
     }
+
+    @Override
+    public boolean approve(int id) {
+        DayOff dayOff = dor.findID(id);
+        dayOff.setStatus(Short.valueOf("1"));
+        dor.save(dayOff);
+        return true;
+    }
+
+    @Override
+    public boolean denying(int id) {
+        DayOff dayOff = dor.findID(id);
+        dayOff.setStatus(Short.valueOf("2"));
+        dor.save(dayOff);
+        return true;
+    }
     
 }
