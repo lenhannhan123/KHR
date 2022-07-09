@@ -8,8 +8,10 @@ package fpt.aptech.KHR.ImpServices;
 import fpt.aptech.KHR.Entities.Shift;
 import fpt.aptech.KHR.Reponsitory.ShiftRepository;
 import fpt.aptech.KHR.Services.IShiftServices;
+import java.util.Date;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,4 +62,10 @@ public class ShiftServices implements IShiftServices {
     public List<Shift> FindByIDTimeLine(int id) {
         return shiftRepository.findIDTime(id);
     }
+
+    @Override
+    public List<Shift> findByTime(Date timeStart, Date timeEnd) {
+        return shiftRepository.findShiftByTime(timeStart, timeEnd);
+    }
+
 }

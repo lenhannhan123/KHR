@@ -22,7 +22,7 @@ public interface IAccountRepository {
 
     public void save(Account account);
 
-    public void delete(Account camera);
+    public void delete(Account account);
 
     public Account findByMail(String mail);
 

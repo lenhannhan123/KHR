@@ -26,16 +26,14 @@
 
         <div layout:fragment="content">
 
-            <h3 class="title-page">Thêm tài khoản mới</h3>
+            <h3 class="title-page">Chỉnh sửa thông tin</h3>
 
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col background-table">
 
-                    <form action="/account/create" method="POST">
-                        <b>Thông tin cơ bản</b>
+                    <form action="/account/update" method="POST">
                         <br>
-
 
                         <div class="row" style="margin-top: 3%;">
                             <div class="col-sm-1"></div>
@@ -48,7 +46,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="text" class="form-control input" placeholder="Địa chỉ email" id="txtAccountMail"
+                                <input type="text" class="form-control input" th:value="${Account.getMail()}" placeholder="Địa chỉ email" id="txtAccountMail"
                                        name="txtAccountMail">
                                 <span hidden class="error-text" id="txtAccountMail-Error">Vui lòng nhập email</span>
                             </div>
@@ -66,7 +64,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="text" class="form-control input" placeholder="Họ tên" id="txtFullName"
+                                <input type="text" class="form-control input" th:value="${Account.getFullname()}" placeholder="Họ tên" id="txtFullName"
                                        name="txtFullName">
                                 <span hidden class="error-text" id="txtFullName-Error">Vui lòng nhập họ tên</span>
                             </div>
@@ -83,7 +81,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="text" class="form-control input" placeholder="Số điện thoại" id="txtPhone"
+                                <input type="text" class="form-control input" th:value="${Account.getPhone()}" placeholder="Số điện thoại" id="txtPhone"
                                        name="txtPhone">
                                 <span hidden class="error-text" id="txtPhone-Error">Vui lòng nhập SĐT</span>
                             </div>
@@ -100,7 +98,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="radio" id="Male" value="1" name="radioGender">
+                                <input type="radio" id="Male" value="1" name="radioGender" checked>
                                 <label for="Male">Nam</label><br>
                                 <input type="radio" id="Female" value="0" name="radioGender">
                                 <label for="Female">Nữ</label><br>
@@ -119,7 +117,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="date" class="form-control input" id="txtBirthDay"
+                                <input type="date" class="form-control input" id="txtBirthDay"  th:value="${Account.getBirthdate()}"
                                        name="txtBirthDay">
                                 <span hidden class="error-text" id="txtBirthDay-Error">Vui lòng chọn ngày sinh</span>
                             </div>
@@ -156,40 +154,39 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <table class="table">
+                                <table class="table" style="text-align: center;">
                                     <thead class="thead-light">
-                                    <tr style="text-align: center ;">
-                                        <th scope="col">Lựa chọn</th>
-                                        <th scope="col">Vị trí</th>
-                                        <th scope="col">Lương năng suất</th>
-                                    </tr>
+                                        <tr style="text-align: center ;">
+                                            <th scope="col">Lựa chọn</th>
+                                            <th scope="col">Vị trí</th>
+                                            <th scope="col">Lương năng suất</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="item,stt:${positions}">
-                                        <td style="text-align: center ;">
-                                            <div class="pretty p-default p-curve">
-                                                <input type="checkbox" class="checkbox" th:value="${item.getId()}"  th:name="'check'+${stt.count}">
 
-                                                <div class="state">
-                                                    <label></label>
+                                        <tr th:each="item,stt:${positionList}">
+                                            <td style="text-align: center ;">
+                                                <div class="pretty p-default p-curve">
+                                                    <input type="checkbox" th:checked="${item[3]}" class="checkbox" th:value="${item[0]}" th:name="'check'+${stt.count}">
+                                                    <div class="state">
+                                                        <label></label>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                        </td>
-                                        <td th:text="${item.getPositionname()}"></td>
-                                        <td style="text-align: center ;">
-                                            <input type="number" class="form-control input input-number" min="0" th:name="'checkvalue'+${stt.count} " th:value="${item.getSalarydefault()}" id="txtSalary">
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td th:text="${item[1]}"></td>
+
+                                            <td style="text-align: center ;">
+                                                <input type="number" class="form-control input input-number" min="0" th:name="'checkvalue'+${stt.count} " th:value="${item[2]}" id="txtSalary">
+                                            </td>
+                                        </tr>
+
+
                                     </tbody>
                                 </table>
                             </div>
                             <div class="col-sm-1"></div>
                         </div>
-
-
-
-
 
                         <div class="row" style="margin-top: 5%;">
                             <div class="col-sm-5"></div>

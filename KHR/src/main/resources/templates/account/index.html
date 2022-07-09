@@ -95,16 +95,11 @@
                                         </button>
 
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">Chỉnh sửa thông tin</a>
+                                            <a class="dropdown-item" th:href="'/account/update?id='+${item.getMail()}">Chỉnh sửa thông tin</a>
 
                                             <a class="dropdown-item" href="#">Đặt lại mật khẩu</a>
 
-                                            <a class="dropdown-item" href="#">Khóa tài khoản</a>
-
-                                            <!--                                <a class="dropdown-item" href="#" th:onclick="'openformEdit('+${item.getId()}+')'">Khóa tài khoản</a>-->
-
-                                            <!--                                <a class="dropdown-item" th:href="'/timeline/edittimeline?id='+${item.getId()}">Chỉnh sửa-->
-                                            <!--                                    Timeline mẫu</a>-->
+                                            <a class="dropdown-item" th:href="'/account/lock?id='+${item.getMail()}">Khóa tài khoản</a>
                                         </div>
 
                                     </div>
