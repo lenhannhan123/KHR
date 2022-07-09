@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.ImpServices;
 
+import fpt.aptech.KHR.Entities.AccountNotification;
 import fpt.aptech.KHR.Entities.Notification;
 import fpt.aptech.KHR.Reponsitory.NotificationRepository;
 import fpt.aptech.KHR.Services.INotificationServices;
@@ -23,6 +24,17 @@ public class NotificationService implements INotificationServices {
     @Override
     public List<Notification> findAll() {
         return nr.findAll();
+    }
+
+    @Override
+    public List<AccountNotification> findAllNotification() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean AddNotification(Notification notification) {
+        nr.save(notification);
+        return true;
     }
     
 }

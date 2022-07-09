@@ -10,7 +10,7 @@ and open the template in the editor.
 
     <head>
         <title>AdminLTE 3 | Dashboard</title>
-
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </head>
 
     <body>
@@ -25,33 +25,45 @@ and open the template in the editor.
                 </tr>
             </table>
             <br>
-            <table th:border="1" th:align="center">
+            <table class="table" th:border="1" th:align="center">
                 <tr>
                     <th>ID</th>
                     <th>Mail</th>
                     <th>Tên Nhân viên</th>
                     <th>Ngày bắt đầu</th>
                     <th>Ngày kết thúc</th>
+                    <th>Số ngày nghĩ</th>
                     <th>Lí do</th>
                     <th>Trạng thái</th>
                     <th>Hành động</th>
                 </tr>
-<!--                <tr th:each="c:${overtimeList}">   
-                    <th th:text="${c.getContent()}"></th>
-                    <th th:text="${c.getMail().getMail()}"></th>
-                    <th th:text="${c.getStatus()}"></th>
-                    <th></th>
-                </tr>-->
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>ThanhThanh@gmail.com</td>
-                        <td>Thanh Thanh</td>
-                        <td>22/12/2019</td>
-                        <td>23/12/2019</td>
-                        <td>Hoàn thành chỉ tiêu kế hoạch</td>
-                        <td>Đã được duyệt</td>
-                        <td><a>V</a>&nbsp;<a>X</a></td>
+                    <tr th:each="c:${listdateoff}">   
+                        <td th:text="${c.getId()}"></td>
+                        <td th:text="${c.getMail().getMail()}"></td>
+                        <td th:text="${c.getMail().getFullname()}"></td>
+                        <td th:text="${c.getStartdate()}"></td>
+                        <td th:text="${c.getEnddate()}"></td>
+                        <td th:text="${c.getDaynumber()}"></td>
+                        <td th:text="${c.getContent()}"></td>
+                        <td>
+                            <div th:switch="${c.getStatus()}"> 
+                                <p th:case="'0'">Chưa được duyệt</p>
+                                <p th:case="'1'">Đã được duyệt</p>
+                                <p th:case="'2'">Từ chối</p> 
+                            </div>
+                        </td>
+                        <td>
+                            <div th:switch="${c.getStatus()}"> 
+                                <div th:case="'0'">
+                                    <a href="#">Chấp thuận</a>
+                                    <a href="#">từ chối</a>
+                                </div>
+                                <p th:case="'1'"></p>
+                                <p th:case="'2'"></p> 
+                            </div>
+
+                        </td>
                     </tr>
                 </tbody>
             </table>

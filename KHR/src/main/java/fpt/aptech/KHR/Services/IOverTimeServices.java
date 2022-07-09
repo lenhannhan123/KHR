@@ -14,4 +14,8 @@ import java.util.List;
  */
 public interface IOverTimeServices {
    List<OverTime> findAll();
+   OverTime findOne(int id);
+   boolean approve(int id);
+   boolean denying(int id);
+   OverTime newOverTime(OverTime overTime);
 }

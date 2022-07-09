@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RouteWeb {
 
     ModelDemo model = new ModelDemo();
-
+    
     //    Khu vuc new Model
     HomeController homeController = new HomeController();
     NotificationController notificationController = new NotificationController();
@@ -46,10 +46,23 @@ public class RouteWeb {
     //Route DayOff
     public final static String dayoffURL = "/dayoff";
     String DayOffControler = dayOffController.Index(model.model);
+    
+     public final static String dayoffapproveURL = "/dayoff/approved/{id}";
+    //String DayOffApprovedControler = dayOffController.approved(model.model);
+    
+     public final static String dayoffdenyingURL = "/dayoff/denying/{id}";
+    //String DayOffDenyingControler = dayOffController.Index(model.model);
     //
     //Route OverTime
     public final static String overtimeURL = "/overtime";
     String OverTimeControler = overTimeController.Index(model.model);
+    
+     public final static String overtimeapproveURL = "/overtime/approved/{id}";
+   // String OverTimeApprovedControler = dayOffController.Index(model.model);
+    
+     public final static String overtimedenyingURL = "/overtime/denying/{id}";
+    //String OverTimeDenyingControler = dayOffController.Index(model.model);
+    
     //
     public final static String accountManageURL = "/account/index";
     String AccountControllerString = accountController.AccountList(model.model);
