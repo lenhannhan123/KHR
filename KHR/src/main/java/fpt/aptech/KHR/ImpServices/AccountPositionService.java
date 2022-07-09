@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.ImpServices;
 
+import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.AccountPosition;
 import fpt.aptech.KHR.Reponsitory.AccountPositionRepository;
 import fpt.aptech.KHR.Services.IAccountPositionServices;
@@ -31,8 +32,8 @@ public class AccountPositionService implements IAccountPositionServices {
     }
 
     @Override
-    public AccountPosition findByEmail(String mail) {
-        return accountPositionRepository.findByEmail(mail);
+    public List<AccountPosition> findByEmail(Account account) {
+        return accountPositionRepository.findByEmail(account);
     }
 
     @Override

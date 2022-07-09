@@ -110,6 +110,17 @@ public class Account implements Serializable {
         this.role = role;
         this.status = status;
     }
+    
+        public Account(String mail, String fullname, String phone, Date birthdate, boolean gender, String code, short role, boolean status) {
+        this.mail = mail;
+        this.fullname = fullname;
+        this.phone = phone;
+        this.birthdate = birthdate;
+        this.gender = gender;
+        this.code = code;
+        this.role = role;
+        this.status = status;
+    }
 
     public String getMail() {
         return mail;

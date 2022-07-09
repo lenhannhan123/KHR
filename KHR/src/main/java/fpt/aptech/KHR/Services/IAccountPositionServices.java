@@ -19,7 +19,7 @@ public interface IAccountPositionServices {
     
     void save(AccountPosition accountPosition);
     
-    AccountPosition findByEmail(String mail);
+    List<AccountPosition> findByEmail(Account mail);
     
     void delete(AccountPosition accountPosition);
 }

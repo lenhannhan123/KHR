@@ -591,19 +591,32 @@ public class TimelineController {
 
 //            ListShifts : Số lượng Position trong ngày i
             List<PositionJS> liListpositionJS = new ArrayList<>();
-            liListpositionJS = ListpositionJS;
+            liListpositionJS.addAll(ListpositionJS);
 
 
             for (int k = 0; k < ListpositionJS.size(); k++) {
 
                 for (int l = 0; l < lShift.size(); l++) {
                     if (ListpositionJS.get(k).getId() == lShift.get(l).getIdPosition().getId()) {
-                        PositionJS positionJS1 = new PositionJS();
-                        positionJS1 = ListpositionJS.get(k);
+                        PositionJS positionJS1 = new PositionJS(ListpositionJS.get(k).getId(), ListpositionJS.get(k).isIsCheck(), ListpositionJS.get(k).getNumber(), ListpositionJS.get(k).getPositionname(), ListpositionJS.get(k).getSalarydefault(), ListpositionJS.get(k).getId_Db());
+//                        positionJS1 = ;
+
 
                         positionJS1.setNumber(lShift.get(l).getNumber());
                         positionJS1.setIsCheck(true);
                         positionJS1.setId_Db(lShift.get(l).getId());
+
+//                        if (i == 1 ) {
+//
+//                            String str = "name: " + positionJS1.getPositionname() + " check: " + positionJS1.isIsCheck() + i;
+//
+//
+//                            JsonServices.dd(str, response);
+//
+//
+//                        }
+
+
                         liListpositionJS.set(k, positionJS1);
 
 
@@ -629,9 +642,9 @@ public class TimelineController {
 
 //            for (int k = 0; k < liListpositionJS.size(); k++) {
 //
-//                if (k == 1 && i == 1) {
+//                if (k == 3 && i == 4) {
 //
-//                    String str = "id: " + liListpositionJS.get(k).getId_Db();
+//                    String str = "name: " + liListpositionJS.get(k).getPositionname() + " check1 " + liListpositionJS.get(k).isIsCheck();
 //
 //
 //                    JsonServices.dd(str, response);

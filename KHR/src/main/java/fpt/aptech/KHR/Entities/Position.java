@@ -121,7 +121,7 @@ public class Position implements Serializable {
 
     @Override
     public String toString() {
-        return "fpt.aptech.KHR.Entities.Position[ id=" + id + " ]";
+        return positionname;
     }
 
 }

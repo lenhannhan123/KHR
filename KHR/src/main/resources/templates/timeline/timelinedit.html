@@ -239,8 +239,6 @@
                     this.TimelineEndDay = TimelineEndDay;
                     this.IdTimeLine = IdTimeLine;
 
-                    console.log(Data);
-
 
                     this.dataDb = Data;
 
@@ -280,7 +278,7 @@
 
 
                         this.Position = this.dataDb[jktmp].position;
-                        console.log(this.Position);
+                        // console.log(this.Position);
 
                         DateWorkData = {};
 
@@ -402,11 +400,11 @@
                     this.FormPosition = tmpPosition;
 
 
-                    console.log(this.data[index]);
+                    // console.log(this.data[index]);
                 },
                 UpdatePositionData: function () {
 
-                    console.log(this.CurrentChoose);
+                    // console.log(this.CurrentChoose);
                     _this = this;
 
                     for (let i = 0; i < this.FormPosition.length; i++) {
@@ -415,7 +413,7 @@
 
                     _this.data[this.CurrentChoose].position = this.FormPosition;
 
-                    console.log(this.data)
+                    // console.log(this.data)
 
 
                 },
@@ -425,7 +423,7 @@
 
                     document.getElementById("submit-text").value = JSON.stringify(this.data);
                     document.getElementById("btn-submit").click();
-                    console.log(this.data);
+                    // console.log(this.data);
 
 
                 }
