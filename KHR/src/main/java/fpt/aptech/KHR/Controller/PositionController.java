@@ -56,5 +56,26 @@ public class PositionController {
         String redirectUrl = "/position/index";
         return "redirect:" + redirectUrl;
     }
+    
+    @RequestMapping(value = {RouteWeb.PositionGetUpdateURL}, method = RequestMethod.GET)
+    public String GetUpdate(Model model, HttpServletRequest request, HttpServletResponse response){
+        int id = Integer.parseInt(request.getParameter("id"));
+        Position position = positionServices.FindOne(id);
+        model.addAttribute("Position", position);
+        return "/position/update";
+    }
+    
+    @RequestMapping(value = {RouteWeb.PositionGetUpdateURL}, method = RequestMethod.POST)
+    public String PostUpdate(Model model, HttpServletRequest request, HttpServletResponse response){
+        int id = Integer.parseInt(request.getParameter("txtPositionId"));
+        String positionName = request.getParameter("txtPositionName");
+        int salaryDefault = Integer.parseInt(request.getParameter("txtSalaryDefault"));
+        Position position = positionServices.FindOne(id);
+        position.setPositionname(positionName);
+        position.setSalarydefault(salaryDefault);
+        positionServices.save(position);
+        String redirectUrl = "/position/index";
+        return "redirect:" + redirectUrl;
+    }
 
 }

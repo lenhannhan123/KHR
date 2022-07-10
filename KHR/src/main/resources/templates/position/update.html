@@ -1,0 +1,105 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/_layout}"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Quản lý vị trí làm việc</title>
+
+        <style>
+            .title-card {
+                padding-top: 11%;
+                padding-bottom: 11%;
+                margin-left: 4%;
+                font-weight: bold
+            }
+            .title-page {
+                text-align: center;
+                margin-top: 2%;
+                margin-bottom: 3%;
+                font-weight: bold
+            }
+        </style>
+
+    </head>
+
+    <body>
+
+        <div layout:fragment="content">
+
+            <h3 class="title-page">Chỉnh sửa thông tin</h3>
+
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col background-table">
+
+                    <form action="/position/update" method="POST">
+                        <br>
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                Id
+                            </div>
+                        </div>
+
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <input type="text" class="form-control input" th:value="${Position.getId()}" id="txtPositionId"
+                                       name="txtPositionId" readonly>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                Tên vị trí làm việc
+                            </div>
+                        </div>
+
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <input type="text" class="form-control input" th:value="${Position.getPositionname()}" placeholder="Tên vị trí làm việc" id="txtPositionName"
+                                       name="txtPositionName">
+                                <span hidden class="error-text" id="txtPositionName-Error">Vui lòng nhập vị trí làm việc</span>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                Lương mặc định
+                            </div>
+                        </div>
+
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <input type="text" class="form-control input" th:value="${Position.getSalarydefault()}" placeholder="Lương mặc định" id="txtSalaryDefault"
+                                       name="txtSalaryDefault">
+                                <span hidden class="error-text" id="txtSalaryDefault-Error">Vui lòng nhập lương mặc định</span>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" style="margin-top: 5%;">
+                            <div class="col-sm-5"></div>
+                            <div class="col-sm-2" style="text-align: center ;">
+                                <input type="submit" class="btn btn-success form-control button-defualt"
+                                       value="Lưu dữ liệu">
+                            </div>
+                            <div class="col-sm-5"></div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

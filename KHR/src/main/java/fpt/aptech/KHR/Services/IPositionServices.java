@@ -25,5 +25,7 @@ public interface IPositionServices {
     public Position FindOne(int id);
 
     public int CountPosition();
+    
+    public void save(Position position);
 
 }
