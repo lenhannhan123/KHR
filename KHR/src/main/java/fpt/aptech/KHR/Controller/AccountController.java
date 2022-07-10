@@ -143,7 +143,6 @@ public class AccountController {
                     positionList[i][3] = "true";
                 }
             }
-
         }
 
         model.addAttribute("positionList", positionList);
@@ -174,6 +173,20 @@ public class AccountController {
         account.setRole(role);
         accountRepository.save(account);
 
+        List<Position> positions = positionServices.findAll();
+        for (int i = 0; i < positions.size(); i++) {
+            if (request.getParameter("check" + i) != null) {
+                AccountPosition accountPosition = new AccountPosition();
+//                Nếu account position đã có Id_position bằng id check i thì hủy không thêm, nếu uncheck thì xóa.
+//                if(Integer.parseInt(request.getParameter("check" + i).toString())){
+//                }
+                accountPosition.setIdPosition(new Position(Integer.parseInt(request.getParameter("check" + i).toString())));
+                accountPosition.setMail(new Account(mail));
+                accountPosition.setSalary(Integer.parseInt(request.getParameter("checkvalue" + i).toString()));
+                accountPositionRepository.save(accountPosition);
+            }
+        }
+
         String redirectUrl = "/account/index";
         return "redirect:" + redirectUrl;
 
@@ -183,15 +196,13 @@ public class AccountController {
     public String GetBlockAccount(Model model, HttpServletRequest request, HttpServletResponse response) {
         String mail = request.getParameter("id");
         Account account = accountRepository.findByMail(mail);
-        if(account.getStatus()==true){
+        if (account.getStatus() == true) {
             account.setStatus(false);
             accountRepository.save(account);
-        }
-        else{
+        } else {
             account.setStatus(true);
             accountRepository.save(account);
         }
-
         String redirectUrl = "/account/index";
         return "redirect:" + redirectUrl;
 

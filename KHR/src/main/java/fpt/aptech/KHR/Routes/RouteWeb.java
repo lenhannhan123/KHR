@@ -27,6 +27,7 @@ public class RouteWeb {
     OverTimeController overTimeController = new OverTimeController();
     TimelineController timelineController = new TimelineController();
     TimekeepingController timekeepingController = new TimekeepingController();
+    PositionController positionController = new PositionController();
 
 //    Khu vuc khai bao Route
     public final static String AdminHomeURL = "/home/index";
@@ -63,7 +64,7 @@ public class RouteWeb {
      public final static String overtimedenyingURL = "/overtime/denying/{id}";
     //String OverTimeDenyingControler = dayOffController.Index(model.model);
     
-    //
+    //Route Account
     public final static String accountManageURL = "/account/index";
     String AccountControllerString = accountController.AccountList(model.model);
 
@@ -74,6 +75,15 @@ public class RouteWeb {
     
     
     public final static String AccountGetBlockURL = "/account/lock";
+    
+    //Route Position
+    public final static String positionManageURL = "/position/index";
+    String PositionControllerString = positionController.PositionList(model.model);
+    
+    public final static String PositionGetCreateURL = "/position/create";
+    String PositionGetCreateController = positionController.GetCreate(model.model);
+    
+    
     
 
     //Route Timeline
