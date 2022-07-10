@@ -48,20 +48,20 @@ public class RouteWeb {
     public final static String dayoffURL = "/dayoff";
     String DayOffControler = dayOffController.Index(model.model);
     
-     public final static String dayoffapproveURL = "/dayoff/approved/{id}";
+     public final static String dayoffapproveURL = "/dayoff/approved";
     //String DayOffApprovedControler = dayOffController.approved(model.model);
     
-     public final static String dayoffdenyingURL = "/dayoff/denying/{id}";
+     public final static String dayoffdenyingURL = "/dayoff/denying";
     //String DayOffDenyingControler = dayOffController.Index(model.model);
     //
     //Route OverTime
     public final static String overtimeURL = "/overtime";
     String OverTimeControler = overTimeController.Index(model.model);
     
-     public final static String overtimeapproveURL = "/overtime/approved/{id}";
+     public final static String overtimeapproveURL = "/overtime/approved";
    // String OverTimeApprovedControler = dayOffController.Index(model.model);
     
-     public final static String overtimedenyingURL = "/overtime/denying/{id}";
+     public final static String overtimedenyingURL = "/overtime/denying";
     //String OverTimeDenyingControler = dayOffController.Index(model.model);
     
     //Route Account

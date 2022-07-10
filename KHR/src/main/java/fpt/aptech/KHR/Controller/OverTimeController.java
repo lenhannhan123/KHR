@@ -7,6 +7,8 @@ package fpt.aptech.KHR.Controller;
 
 import fpt.aptech.KHR.ImpServices.OverTimeService;
 import fpt.aptech.KHR.Routes.RouteWeb;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,17 +29,19 @@ public class OverTimeController {
         model.addAttribute("overtimeList", iots.findAll());
         return "overtime/index";
     }
-//    @RequestMapping(value = {RouteWeb.dayoffapproveURL}, method = RequestMethod.GET)
-//    public String approved(@PathVariable int id, Model model) throws Exception {
-//        iots.approve(id);
-//        model.addAttribute("overtimeList", iots.findAll());
-//        return "overtime/index";
-//    }
-//    @RequestMapping(value = {RouteWeb.dayoffdenyingURL}, method = RequestMethod.GET)
-//    public String denying(@PathVariable int id, Model model) throws Exception {
-//        iots.denying(id);
-//        model.addAttribute("overtimeList", iots.findAll());
-//        return "overtime/index";
-//    }
+    @RequestMapping(value = {RouteWeb.overtimeapproveURL}, method = RequestMethod.GET)
+    public String approved( Model model,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        int id = Integer.valueOf(request.getParameter("id"));
+        iots.approve(id);
+        String redirectUrl = "/overtime";
+        return "redirect:" + redirectUrl;
+    }
+    @RequestMapping(value = {RouteWeb.overtimedenyingURL}, method = RequestMethod.GET)
+    public String denying( Model model,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        int id = Integer.valueOf(request.getParameter("id"));
+        iots.denying(id);
+        String redirectUrl = "/overtime";
+        return "redirect:" + redirectUrl;
+    }
     
 }

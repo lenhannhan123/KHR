@@ -55,8 +55,8 @@ and open the template in the editor.
                         <td>
                             <div th:switch="${c.getStatus()}"> 
                                 <div th:case="'0'">
-                                    <a href="#">Chấp thuận</a>
-                                    <a href="#">Từ chối</a>
+                                    <a th:href="'overtime/approved?id='+${c.getId()}">Chấp thuận</a>
+                                    <a th:href="'overtime/denying?id='+${c.getId()}">Từ chối</a>
                                 </div>
                                 <p th:case="'1'"></p>
                                 <p th:case="'2'"></p> 
