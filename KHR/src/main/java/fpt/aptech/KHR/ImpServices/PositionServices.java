@@ -36,7 +36,6 @@ public class PositionServices implements IPositionServices {
 
     @Override
     public boolean Edit(Position position) {
-
         positionRepository.save(position);
         return true;
     }
@@ -63,5 +62,10 @@ public class PositionServices implements IPositionServices {
     @Override
     public int CountPosition() {
         return positionRepository.CouPosition();
+    }
+
+    @Override
+    public void save(Position position) {
+        positionRepository.save(position);
     }
 }

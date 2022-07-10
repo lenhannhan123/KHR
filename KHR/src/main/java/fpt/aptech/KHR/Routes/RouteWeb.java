@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RouteWeb {
 
     ModelDemo model = new ModelDemo();
-    
+
     //    Khu vuc new Model
     HomeController homeController = new HomeController();
     NotificationController notificationController = new NotificationController();
@@ -47,23 +47,23 @@ public class RouteWeb {
     //Route DayOff
     public final static String dayoffURL = "/dayoff";
     String DayOffControler = dayOffController.Index(model.model);
-    
-     public final static String dayoffapproveURL = "/dayoff/approved";
+
+    public final static String dayoffapproveURL = "/dayoff/approved";
     //String DayOffApprovedControler = dayOffController.approved(model.model);
-    
-     public final static String dayoffdenyingURL = "/dayoff/denying";
+
+    public final static String dayoffdenyingURL = "/dayoff/denying";
     //String DayOffDenyingControler = dayOffController.Index(model.model);
     //
     //Route OverTime
     public final static String overtimeURL = "/overtime";
     String OverTimeControler = overTimeController.Index(model.model);
-    
-     public final static String overtimeapproveURL = "/overtime/approved";
-   // String OverTimeApprovedControler = dayOffController.Index(model.model);
-    
-     public final static String overtimedenyingURL = "/overtime/denying";
+
+    public final static String overtimeapproveURL = "/overtime/approved";
+    // String OverTimeApprovedControler = dayOffController.Index(model.model);
+
+    public final static String overtimedenyingURL = "/overtime/denying";
     //String OverTimeDenyingControler = dayOffController.Index(model.model);
-    
+
     //Route Account
     public final static String accountManageURL = "/account/index";
     String AccountControllerString = accountController.AccountList(model.model);
@@ -72,19 +72,17 @@ public class RouteWeb {
     String AccountGetCreateController = accountController.GetCreate(model.model);
 
     public final static String AccountGetUpdateURL = "/account/update";
-    
-    
+
     public final static String AccountGetBlockURL = "/account/lock";
-    
+
     //Route Position
     public final static String positionManageURL = "/position/index";
     String PositionControllerString = positionController.PositionList(model.model);
-    
+
     public final static String PositionGetCreateURL = "/position/create";
     String PositionGetCreateController = positionController.GetCreate(model.model);
-    
-    
-    
+
+    public final static String PositionGetUpdateURL = "/position/update";
 
     //Route Timeline
     public final static String TimelineIndexURL = "/timeline/index";
