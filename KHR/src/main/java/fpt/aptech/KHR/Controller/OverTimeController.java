@@ -27,17 +27,17 @@ public class OverTimeController {
         model.addAttribute("overtimeList", iots.findAll());
         return "overtime/index";
     }
-    @RequestMapping(value = {RouteWeb.dayoffapproveURL}, method = RequestMethod.GET)
-    public String approved(@PathVariable int id, Model model) throws Exception {
-        iots.approve(id);
-        model.addAttribute("overtimeList", iots.findAll());
-        return "overtime/index";
-    }
-    @RequestMapping(value = {RouteWeb.dayoffdenyingURL}, method = RequestMethod.GET)
-    public String denying(@PathVariable int id, Model model) throws Exception {
-        iots.denying(id);
-        model.addAttribute("overtimeList", iots.findAll());
-        return "overtime/index";
-    }
+//    @RequestMapping(value = {RouteWeb.dayoffapproveURL}, method = RequestMethod.GET)
+//    public String approved(@PathVariable int id, Model model) throws Exception {
+//        iots.approve(id);
+//        model.addAttribute("overtimeList", iots.findAll());
+//        return "overtime/index";
+//    }
+//    @RequestMapping(value = {RouteWeb.dayoffdenyingURL}, method = RequestMethod.GET)
+//    public String denying(@PathVariable int id, Model model) throws Exception {
+//        iots.denying(id);
+//        model.addAttribute("overtimeList", iots.findAll());
+//        return "overtime/index";
+//    }
     
 }

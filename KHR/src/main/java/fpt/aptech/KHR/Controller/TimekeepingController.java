@@ -66,15 +66,25 @@ public class TimekeepingController {
         return new ResponseEntity<String>(strDate, HttpStatus.OK);
     }
 
-    @PostMapping("shift")
-    List<Shift> findShiftByTime() throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        Date date = new Date();
-        String time = formatter.format(date);
-        //String date = formatter.format(java.sql.Time.valueOf(new Date().toString()));
-        List<Shift> shift = new ArrayList<>();
-        shift.addAll(shiftServices.findByTime(java.sql.Time.valueOf("07:30:00"), java.sql.Time.valueOf("11:30:00")));
-        return shift;
+//    @PostMapping("shift")
+//    List<Shift> findShiftByTime() throws ParseException {
+//        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+//        Date date = new Date();
+//        String time = formatter.format(date);
+//        //String date = formatter.format(java.sql.Time.valueOf(new Date().toString()));
+//        List<Shift> shift = new ArrayList<>();
+//        shift.addAll(shiftServices.findByTime(java.sql.Time.valueOf("07:30:00"), java.sql.Time.valueOf("11:30:00")));
+//        return shift;
+//    }
+    
+    @PostMapping(value = "timekeeping/save")
+    public ResponseEntity<Shift> insert(@RequestBody Timekeeping timekeeping) {
+        try {
+            _service.saveEmployees(employees);
+            return new ResponseEntity<>(employees, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
