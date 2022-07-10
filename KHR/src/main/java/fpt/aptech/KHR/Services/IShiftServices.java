@@ -6,6 +6,7 @@
 package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Shift;
+import java.util.Date;
 
 import java.util.List;
 
@@ -13,7 +14,6 @@ import java.util.List;
  * @author Admin
  */
 public interface IShiftServices {
-
 
     public List<Shift> findAll();
 
@@ -26,7 +26,7 @@ public interface IShiftServices {
 
     public Shift FindOne(int id);
 
-
     public List<Shift> FindByIDTimeLine(int id);
 
+    public List<Shift> findByTime(Date timeStart, Date timeEnd);
 }
