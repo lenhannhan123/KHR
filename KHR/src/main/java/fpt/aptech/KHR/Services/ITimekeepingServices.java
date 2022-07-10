@@ -14,4 +14,5 @@ import java.util.List;
  */
 public interface ITimekeepingServices {
     List<Timekeeping> findAll();
+    void saveTimekeeping(Timekeeping timekeeping);
 }

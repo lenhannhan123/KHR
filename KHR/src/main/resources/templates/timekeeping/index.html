@@ -31,7 +31,8 @@
         <div layout:fragment="content">
 
             <h3 class="title-page">Quản lý chấm công</h3>
-
+            
+            <a style="margin-left: 100px" href="/timekeeping/add">Tạo chấm công</a>
 
             <div class="row">
                 <div class="col-sm-1"></div>
@@ -45,11 +46,11 @@
                         <div class="col-sm-6">
                             <div class="row">
                                 <!--div class="col-sm-12"></div>-->
-<!--                                <div class="col-sm-5" style="margin-left: 500px">
-                                    <a href="/account/create">
-                                        <input type="button" class="btn btn-success form-control button-defualt" value="">
-                                    </a>
-                                </div>-->
+                                <!--                                <div class="col-sm-5" style="margin-left: 500px">
+                                                                    <a href="/account/create">
+                                                                        <input type="button" class="btn btn-success form-control button-defualt" value="">
+                                                                    </a>
+                                                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -77,31 +78,31 @@
                                 <td th:text="${item.getTimestart()}"></td>
                                 <td th:text="${item.getTimeend()}"></td>
                                 <td th:text="${item.getIdshift()}"></td>
-                                    <div class="dropdown">
-                                        <button class="button-envent
-                                                dropdown-toggle" style="margin-right:
-                                                10px;" type="button" id="dropdownMenuButton"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-edit"
-                                               style="color:
-                                               #6667AB"></i>
-                                        </button>
+                        <div class="dropdown">
+                            <button class="button-envent
+                                    dropdown-toggle" style="margin-right:
+                                    10px;" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-edit"
+                                   style="color:
+                                   #6667AB"></i>
+                            </button>
 
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">Chỉnh sửa thông tin</a>
-                                        </div>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Chỉnh sửa thông tin</a>
+                            </div>
 
-                                    </div>
+                        </div>
 
-                                </td>                            
+                        </td>                            
 
-                            </tr>
+                        </tr>
 
                         </tbody>
 
                     </table>
 
-                    
+
                 </div>
                 <div class="col-sm-1"></div>
 
