@@ -61,8 +61,6 @@ public class Shift implements Serializable {
     private Date timeend;
     @Column(name = "Shift_code")
     private Integer shiftcode;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idshift")
-    private List<Timekeeping> timekeepingList;
     @JoinColumn(name = "Id_Position", referencedColumnName = "Id")
     @ManyToOne
     private Position idPosition;
@@ -125,15 +123,6 @@ public class Shift implements Serializable {
 
     public void setShiftcode(Integer shiftcode) {
         this.shiftcode = shiftcode;
-    }
-
-    @XmlTransient
-    public List<Timekeeping> getTimekeepingList() {
-        return timekeepingList;
-    }
-
-    public void setTimekeepingList(List<Timekeeping> timekeepingList) {
-        this.timekeepingList = timekeepingList;
     }
 
     public Position getIdPosition() {

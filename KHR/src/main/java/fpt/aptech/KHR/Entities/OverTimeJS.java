@@ -3,17 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fpt.aptech.KHR.Services;
-
-import fpt.aptech.KHR.Entities.DayOff;
-import java.util.List;
+package fpt.aptech.KHR.Entities;
 
 /**
  *
  * @author LÊ HỮU TÂM
  */
-public interface IDayOffServices {
-    List<DayOff> findAll();
-    boolean approve(int id);
-    boolean denying(int id);
+public class OverTimeJS {
+    
 }

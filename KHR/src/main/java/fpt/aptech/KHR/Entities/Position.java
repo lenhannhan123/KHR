@@ -29,10 +29,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "position")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Position.findAll", query = "SELECT p FROM Position p"),
-        @NamedQuery(name = "Position.findById", query = "SELECT p FROM Position p WHERE p.id = :id"),
-        @NamedQuery(name = "Position.findByPositionname", query = "SELECT p FROM Position p WHERE p.positionname = :positionname"),
-        @NamedQuery(name = "Position.findBySalarydefault", query = "SELECT p FROM Position p WHERE p.salarydefault = :salarydefault")})
+    @NamedQuery(name = "Position.findAll", query = "SELECT p FROM Position p"),
+    @NamedQuery(name = "Position.findById", query = "SELECT p FROM Position p WHERE p.id = :id"),
+    @NamedQuery(name = "Position.findByPositionname", query = "SELECT p FROM Position p WHERE p.positionname = :positionname"),
+    @NamedQuery(name = "Position.findBySalarydefault", query = "SELECT p FROM Position p WHERE p.salarydefault = :salarydefault")})
 public class Position implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,6 +58,11 @@ public class Position implements Serializable {
 
     public Position(Integer id) {
         this.id = id;
+    }
+
+    public Position(String positionname, int salarydefault) {
+        this.positionname = positionname;
+        this.salarydefault = salarydefault;
     }
 
     public Position(Integer id, String positionname, int salarydefault) {
@@ -98,7 +103,6 @@ public class Position implements Serializable {
 //    public void setShiftList(List<Shift> shiftList) {
 //        this.shiftList = shiftList;
 //    }
-
     @Override
     public int hashCode() {
         int hash = 0;

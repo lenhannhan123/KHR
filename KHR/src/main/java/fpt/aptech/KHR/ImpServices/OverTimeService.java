@@ -25,5 +25,32 @@ public class OverTimeService implements IOverTimeServices{
     public List<OverTime> findAll() {
         return otr.findAll();
     }
+
+    @Override
+    public OverTime findOne(int id) {
+        return otr.findID(id);
+    }
+
+    @Override
+    public boolean approve(int id) {
+        OverTime overTime = otr.findID(id);
+        short st = Short.valueOf("1");
+        overTime.setStatus(st);
+        otr.save(overTime);
+        return true;
+    }
+
+    @Override
+    public boolean denying(int id) {
+        OverTime overTime = otr.findID(id);
+        overTime.setStatus(Short.valueOf("2"));
+        otr.save(overTime);
+        return true;
+    }
+
+    @Override
+    public OverTime newOverTime(OverTime overTime) {
+        return otr.save(overTime);
+    }
     
 }

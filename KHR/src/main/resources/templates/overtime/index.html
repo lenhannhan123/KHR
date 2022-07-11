@@ -26,33 +26,43 @@ and open the template in the editor.
                 </tr>
             </table>
             <br>
-            <table th:border="1" th:align="center">
+            <table class="table" th:border="1" th:align="center">
                 <tr>
                     <th>ID</th>
                     <th>Mail</th>
                     <th>Tên Nhân viên</th>
-                    <th>Ngày nghĩ</th>
-                    <th>Số ngày</th>
+                    <th>Thời gian bắt đầu</th>
+                    <th>Thời gian thúc</th>
                     <th>Lí do</th>
                     <th>Trạng thái</th>
                     <th>Hành động</th>
                 </tr>
-                <tr th:each="c:${overtimeList}">   
-                    <th th:text="${c.getContent()}"></th>
-                    <th th:text="${c.getMail().getMail()}"></th>
-                    <th th:text="${c.getStatus()}"></th>
-                    <th></th>
-                </tr>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>ThanhThanh@gmail.com</td>
-                        <td>Thanh Thanh</td>
-                        <td>22/12/2019</td>
-                        <td>03</td>
-                        <td>Đi du lịch</td>
-                        <td>Đã được duyệt</td>
-                        <td><a>V</a>&nbsp;<a>X</a></td>
+                    <tr th:each="c:${overtimeList}">   
+                        <td th:text="${c.getId()}"></td>
+                        <td th:text="${c.getMail().getMail()}"></td>
+                        <td th:text="${c.getMail().getFullname()}"></td>
+                        <td th:text="${c.getIdShift().getTimestart()}"></td>
+                        <td th:text="${c.getIdShift().getTimeend()}"></td>
+                        <td th:text="${c.getContent()}"></td>
+                        <td>
+                            <div th:switch="${c.getStatus()}"> 
+                                <p th:case="'0'">Chưa được duyệt</p>
+                                <p th:case="'1'">Đã được duyệt</p>
+                                <p th:case="'2'">Từ chối</p> 
+                            </div>
+                        </td>
+                        <td>
+                            <div th:switch="${c.getStatus()}"> 
+                                <div th:case="'0'">
+                                    <a th:href="'overtime/approved?id='+${c.getId()}">Chấp thuận</a>
+                                    <a th:href="'overtime/denying?id='+${c.getId()}">Từ chối</a>
+                                </div>
+                                <p th:case="'1'"></p>
+                                <p th:case="'2'"></p> 
+                            </div>
+
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -25,5 +25,10 @@ public class TimekeepingServiceImp implements ITimekeepingServices{
     public List<Timekeeping> findAll() {
         return timekeepingRepository.findAll();
     }
+
+    @Override
+    public void saveTimekeeping(Timekeeping timekeeping) {
+        timekeepingRepository.save(timekeeping);
+    }
     
 }
