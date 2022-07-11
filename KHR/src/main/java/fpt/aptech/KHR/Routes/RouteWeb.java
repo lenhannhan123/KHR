@@ -28,7 +28,7 @@ public class RouteWeb {
     TimelineController timelineController = new TimelineController();
     TimekeepingController timekeepingController = new TimekeepingController();
 
-//    Khu vuc khai bao Route
+    //    Khu vuc khai bao Route
     public final static String AdminHomeURL = "/home/index";
     String AdminHomeControler = homeController.Index(model.model);
 
@@ -58,14 +58,14 @@ public class RouteWeb {
     String AccountGetCreateController = accountController.GetCreate(model.model);
 
     public final static String AccountGetUpdateURL = "/account/update";
-    
-    
+
+
     public final static String AccountGetBlockURL = "/account/lock";
-    
+
 
     //Route Timeline
     public final static String TimelineIndexURL = "/timeline/index";
-    String TimelineIndexControler = timelineController.IndexTimeline(model.model);
+//    String TimelineIndexControler = timelineController.IndexTimeline(model.model);
 
     public final static String TimelineGetCreateURL = "/timeline/create";
     String TimelineGetCreateControler = timelineController.GetCreate(model.model);
