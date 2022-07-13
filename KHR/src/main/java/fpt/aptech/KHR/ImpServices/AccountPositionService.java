@@ -40,5 +40,10 @@ public class AccountPositionService implements IAccountPositionServices {
     public void delete(AccountPosition accountPosition) {
         accountPositionRepository.delete(accountPosition);
     }
+
+    @Override
+    public AccountPosition findByMailAndPosition(Account mail, int id) {
+        return accountPositionRepository.findByMailAndPosition(mail, id);
+    }
     
 }
