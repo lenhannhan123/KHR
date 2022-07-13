@@ -29,7 +29,7 @@ public class RouteWeb {
     TimekeepingController timekeepingController = new TimekeepingController();
     PositionController positionController = new PositionController();
 
-//    Khu vuc khai bao Route
+    //    Khu vuc khai bao Route
     public final static String AdminHomeURL = "/home/index";
     String AdminHomeControler = homeController.Index(model.model);
 
@@ -86,7 +86,7 @@ public class RouteWeb {
 
     //Route Timeline
     public final static String TimelineIndexURL = "/timeline/index";
-    String TimelineIndexControler = timelineController.IndexTimeline(model.model);
+//    String TimelineIndexControler = timelineController.IndexTimeline(model.model);
 
     public final static String TimelineGetCreateURL = "/timeline/create";
     String TimelineGetCreateControler = timelineController.GetCreate(model.model);

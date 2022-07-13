@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F2F2"
+    tools:context=".MainActivity">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="568dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="138dp"
+                android:layout_height="125dp"
+                android:layout_marginLeft="-40dp"
+                android:layout_marginTop="-40dp"
+                app:srcCompat="@drawable/icon1" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Xin chào, Lê Nguyễn Thành Nhân !"
+                android:textColor="@color/black"
+                android:textSize="9pt"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:orientation="horizontal">
+
+                <Button
+
+                    android:id="@+id/Home_btnWorkSchedule"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo"
+                    android:drawableTop="@drawable/icon"
+                    android:paddingTop="10dp"
+                    android:text="\n Lịch làm việc"
+                    android:textSize="5pt"
+                    app:backgroundTint="#7388D4" />
+
+                <Button
+
+                    android:id="@+id/Home_btnTimekeeping"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo"
+                    android:drawableTop="@drawable/icon2"
+                    android:paddingTop="10dp"
+                    android:text="\n Chấm công"
+                    android:textSize="5pt"
+                    app:backgroundTint="#44A9CE" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <Button
+
+                    android:id="@+id/Home_btnSalary"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo"
+                    android:drawableTop="@drawable/icon3"
+                    android:paddingTop="10dp"
+                    android:text="\n Tiền lương"
+                    android:textSize="5pt"
+                    app:backgroundTint="#4ECB62" />
+
+                <Button
+
+                    android:id="@+id/Home_Leaveoff"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo"
+                    android:drawableTop="@drawable/icon4"
+                    android:paddingTop="10dp"
+                    android:text="\n Nghỉ phép"
+                    android:textSize="5pt"
+                    app:backgroundTint="#746BDB" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="127dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <Button
+
+                    android:id="@+id/Home_btnOT"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo"
+                    android:drawableTop="@drawable/icon5"
+                    android:paddingTop="10dp"
+                    android:text="\n Tăng ca"
+                    android:textSize="5pt"
+                    app:backgroundTint="#B06BDB" />
+
+                <Button
+
+                    android:id="@+id/Home_Logout"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo"
+                    android:drawableTop="@drawable/icon6"
+                    android:paddingTop="10dp"
+                    android:text="\n Đăng xuất"
+                    android:textSize="5pt"
+                    app:backgroundTint="#DA4468" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@xml/duongvien_goctron"
+        app:menu="@xml/bottom_navigation_menu" />
+
+</LinearLayout>
