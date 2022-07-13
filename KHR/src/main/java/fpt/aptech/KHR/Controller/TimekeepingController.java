@@ -18,6 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,35 +75,34 @@ public class TimekeepingController {
         return new ResponseEntity<String>(strDate, HttpStatus.OK);
     }
 
-//    @PostMapping("shift")
-//    List<Shift> findShiftByTime() throws ParseException {
-//        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-//        Date date = new Date();
-//        String time = formatter.format(date);
-//        //String date = formatter.format(java.sql.Time.valueOf(new Date().toString()));
-//        List<Shift> shift = new ArrayList<>();
-//        shift.addAll(shiftServices.findByTime(java.sql.Time.valueOf("07:30:00"), java.sql.Time.valueOf("11:30:00")));
-//        return shift;
-//    }
     @RequestMapping(value = "timekeeping/add", method = RequestMethod.GET)
     public String add(Model model) {
         model.addAttribute("timekeeping", new Timekeeping());
         return "timekeeping/create";
     }
 
-    @RequestMapping(value = "timekeeping/save", method = RequestMethod.POST)
-    public ResponseEntity<String> insert(HttpServletRequest request, Timekeeping timekeeping) {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        String time = formatter.format(new Date());
-        //String date = formatter.format(java.sql.Time.valueOf(new Date().toString()));
-        Account account = accountRepository.findByMail(request.getParameter("mail"));
+//    @RequestMapping(value = "timekeeping/save", method = RequestMethod.POST)
+    @PostMapping(value = "timekeeping/save")
+    public ResponseEntity<Timekeeping> insert(@RequestBody Timekeeping timekeeping) {
         timekeeping = new Timekeeping();
-        timekeeping.setMail(account);
-        timekeeping.setTimestart(java.sql.Time.valueOf("07:30:00"));
-        timekeeping.setTimeend(java.sql.Time.valueOf("11:30:00"));
-        timekeepingServices.saveTimekeeping(timekeeping);
-        return new ResponseEntity<String>(time, HttpStatus.OK);
-        //timekeepingServices.saveTimekeeping(timekeeping);
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+            //String time = formatter.format(new Date());
+            //String date = formatter.format(java.sql.Time.valueOf(new Date().toString()));
+            Account account = accountRepository.findByMail("vuongpham@gmail.com");
+            timekeeping.setMail(account);
+            timekeeping.setTimestart(java.sql.Time.valueOf("07:30:00"));
+            timekeeping.setTimeend(java.sql.Time.valueOf("11:30:00"));
+            Date timeStart = formatter.parse(timekeeping.getTimestart().toString());
+            Date timeEnd = formatter.parse(timekeeping.getTimeend().toString());
+            Long time = timeEnd.getTime() - timeStart.getTime();
+            int workingHours = (int)TimeUnit.MILLISECONDS.toHours(time);
+            timekeeping.setTime(workingHours);
+            timekeepingServices.saveTimekeeping(timekeeping);
+        } catch (ParseException ex) {
+            Logger.getLogger(TimekeepingController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);
     }
 
 //    @PostMapping(value = "timekeeping/save")

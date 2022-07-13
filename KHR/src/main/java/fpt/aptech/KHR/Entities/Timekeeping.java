@@ -47,12 +47,12 @@ public class Timekeeping implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "Time_start")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIME)
     private Date timestart;
     @Basic(optional = false)
     @NotNull
     @Column(name = "Time_end")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIME)
     private Date timeend;
     @Basic(optional = false)
     @NotNull
