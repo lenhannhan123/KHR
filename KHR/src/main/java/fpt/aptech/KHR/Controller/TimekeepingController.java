@@ -24,9 +24,11 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,9 +56,9 @@ public class TimekeepingController {
     IShiftServices shiftServices;
 
     @RequestMapping(value = {RouteWeb.TimekeepingIndexURL}, method = RequestMethod.GET)
-    public String index(Model model) {
+    public ResponseEntity<List<Timekeeping>> index(Model model) {
         model.addAttribute("list", timekeepingServices.findAll());
-        return "timekeeping/index";
+        return new ResponseEntity<>(timekeepingServices.findAll(), HttpStatus.OK);
     }
 
     @RequestMapping(value = {RouteAPI.checkinAPI}, method = RequestMethod.GET)
@@ -81,10 +83,19 @@ public class TimekeepingController {
         return "timekeeping/create";
     }
 
-//    @RequestMapping(value = "timekeeping/save", method = RequestMethod.POST)
-    @PostMapping(value = "timekeeping/save")
+    @RequestMapping(value = "/api/timekeeping/findAccount", method = RequestMethod.GET)
+    public ResponseEntity<Account> findByMail() {
+        try {
+            Account account = accountRepository.findByMail("vuongpham@gmail.com");
+            return new ResponseEntity<>(account, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @RequestMapping(value = "/api/timekeeping/save", method = RequestMethod.POST)
     public ResponseEntity<Timekeeping> insert(@RequestBody Timekeeping timekeeping) {
-        timekeeping = new Timekeeping();
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
             //String time = formatter.format(new Date());
@@ -96,13 +107,14 @@ public class TimekeepingController {
             Date timeStart = formatter.parse(timekeeping.getTimestart().toString());
             Date timeEnd = formatter.parse(timekeeping.getTimeend().toString());
             Long time = timeEnd.getTime() - timeStart.getTime();
-            int workingHours = (int)TimeUnit.MILLISECONDS.toHours(time);
+            int workingHours = (int) TimeUnit.MILLISECONDS.toHours(time);
             timekeeping.setTime(workingHours);
             timekeepingServices.saveTimekeeping(timekeeping);
-        } catch (ParseException ex) {
-            Logger.getLogger(TimekeepingController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);
+        } catch (ParseException e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);
+
     }
 
 //    @PostMapping(value = "timekeeping/save")

@@ -9,6 +9,9 @@ import fpt.aptech.KHR.Controller.*;
 import fpt.aptech.KHR.Entities.ModelDemo;
 import fpt.aptech.KHR.Entities.Notification;
 import fpt.aptech.KHR.Entities.RouteModel;
+import fpt.aptech.KHR.Entities.Timekeeping;
+import java.util.List;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -123,7 +126,7 @@ public class RouteWeb {
 
     //route Timekeeping
     public final static String TimekeepingIndexURL = "/timekeeping/index";
-    String TimeKeepingIndex = timekeepingController.index(model.model);
+    ResponseEntity<List<Timekeeping>> TimeKeepingIndex = timekeepingController.index(model.model);
 
     public final static String TimelineDetailsURL = "/timeline/detail";
     String TimelineDetailsControler = timelineController.GetCreate(model.model);
