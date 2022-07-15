@@ -16,4 +16,7 @@ public interface IDayOffServices {
     List<DayOff> findAll();
     boolean approve(int id);
     boolean denying(int id);
+    List<DayOff> findApproveList();
+    List<DayOff> findDenyingList();
+    List<DayOff> findNotCheck();
 }

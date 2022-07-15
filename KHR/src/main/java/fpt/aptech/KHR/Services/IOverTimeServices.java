@@ -18,4 +18,7 @@ public interface IOverTimeServices {
    boolean approve(int id);
    boolean denying(int id);
    OverTime newOverTime(OverTime overTime);
+   List<OverTime> findStatusApproved();
+   List<OverTime> findStatusDenying();
+   List<OverTime> findStatusNotCheck();
 }

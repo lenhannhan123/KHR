@@ -16,56 +16,121 @@ and open the template in the editor.
 
     <body>
         <div layout:fragment="content">
-            <table >
-                <tr>
-                    <td>
-                        <form>
-                            <input type="text" placeholder="Nhập Mail"/>
-                        </form> 
-                    </td>
-                </tr>
-            </table>
-            <br>
-            <table class="table" th:border="1" th:align="center">
-                <tr>
-                    <th>ID</th>
-                    <th>Mail</th>
-                    <th>Tên Nhân viên</th>
-                    <th>Thời gian bắt đầu</th>
-                    <th>Thời gian thúc</th>
-                    <th>Lí do</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
-                </tr>
-                <tbody>
-                    <tr th:each="c:${overtimeList}">   
-                        <td th:text="${c.getId()}"></td>
-                        <td th:text="${c.getMail().getMail()}"></td>
-                        <td th:text="${c.getMail().getFullname()}"></td>
-                        <td th:text="${c.getIdShift().getTimestart()}"></td>
-                        <td th:text="${c.getIdShift().getTimeend()}"></td>
-                        <td th:text="${c.getContent()}"></td>
-                        <td>
-                            <div th:switch="${c.getStatus()}"> 
-                                <p th:case="'0'">Chưa được duyệt</p>
-                                <p th:case="'1'">Đã được duyệt</p>
-                                <p th:case="'2'">Từ chối</p> 
-                            </div>
-                        </td>
-                        <td>
-                            <div th:switch="${c.getStatus()}"> 
-                                <div th:case="'0'">
-                                    <a th:href="'overtime/approved?id='+${c.getId()}">Chấp thuận</a>
-                                    <a th:href="'overtime/denying?id='+${c.getId()}">Từ chối</a>
-                                </div>
-                                <p th:case="'1'"></p>
-                                <p th:case="'2'"></p> 
-                            </div>
+            <h3 class="title-page">Quản lý ngày nghĩ</h3>
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col background-table">
 
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+
+                    <div class="row" style="margin-bottom:2% ;">
+                        <div class="col-sm-3">
+                            <b style="margin-bottom:2% ;">Từ ngày</b>
+                            <input type="datetime-local" class="form-control input" id="">
+                        </div>
+                        <div class="col-sm-3">
+                            <b style="margin-bottom:2% ;">Đến ngày</b>
+                            <input type="datetime-local" class="form-control input" id="">
+                        </div>
+                        <div class="col-sm-2">
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-12" style="margin-top:12% ;">
+                                    <a href="#">
+                                        <input type="button" class="btn btn-success form-control button-defualt" value="Tìm Kiếm">
+                                    </a>
+                                </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <!--                                <div class="col-sm-12"></div>-->
+                                <div class="col-sm-4" style="margin-top:4% ;">
+                                    <a href="/../overtime/list/approved">
+                                        <input type="button" class="btn btn-success form-control " value="Đã duyệt">
+                                    </a>
+                                </div>
+                                <div class="col-sm-4" style="margin-top:4% ;">
+                                    <a href="/../overtime/list/denying">
+                                        <input type="button" class="btn btn-danger form-control" value="Từ chối">
+                                    </a>
+                                </div>
+                                <div class="col-sm-4" style="margin-top:4% ;">
+                                    <a href="/../overtime/list/notcheck">
+                                        <input type="button" class="btn btn-warning form-control" value="Chưa duyệt">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" >Id</th>
+                                <th scope="col" >Mail</th>
+                                <th scope="col" >Tên Nhân viên</th>
+                                <th scope="col" >Thời gian bắt đầu  </th>
+                                <th scope="col" >Thời gian kết thúc</th>
+                                <th scope="col" >Lí do</th>
+                                <th scope="col" >Trạng thái</th>
+                                <th scope="col">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody th:if="${check == false}">
+                            <tr>
+                                <td colspan="5" style="text-align: center"> Không có dữ liệu </td>
+                            </tr>
+
+                        </tbody>
+
+                        <tbody th:if="${check == true}">
+                            <tr th:each="c:${list}">
+                                <td th:text="${c.getId()}"></td>
+                                <td th:text="${c.getMail().getMail()}"></td>
+                                <td th:text="${c.getMail().getFullname()}"></td>
+                                <td th:text="${c.getIdShift().getTimestart()}"></td>
+                                <td th:text="${c.getIdShift().getTimeend()}"></td>
+                                <td th:text="${c.getContent()}"></td>
+                                <td>
+                                    <div th:switch="${c.getStatus()}"> 
+                                        <p th:case="'0'" style="color: yellow"><b>Chưa được duyệt</b></p>
+                                        <p th:case="'1'" style="color: green"><b>Đã được duyệt</b></p>
+                                        <p th:case="'2'" style="color: red"><b>Từ chối</b></p> 
+                                    </div>
+                                </td>
+                                <td>
+                                    <div th:switch="${c.getStatus()}"> 
+                                        <div th:case="'0'">
+                                            <a th:href="'overtime/approved?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn Chấp thuận ?')">
+                                                <button class="button-envent">
+                                                    <i class="fas
+                                                       fa-thin fa-check"
+                                                       style="color:
+                                                       #00FF00"></i>
+                                                </button>
+
+                                            </a>
+                                            <a th:href="'overtime/denying?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn Từ chối ?')">
+                                                <button class="button-envent">
+                                                    <i class="fas
+                                                       fa-angry"
+                                                       style="color:
+                                                       #F26E6E"></i>
+                                                </button>
+
+                                            </a>
+                                        </div>
+                                        <p th:case="'1'"></p>
+                                        <p th:case="'2'"></p> 
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-1"></div>
+
+            </div>
         </div>
     </body>
 

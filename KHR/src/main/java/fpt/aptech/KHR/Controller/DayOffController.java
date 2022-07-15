@@ -5,8 +5,11 @@
  */
 package fpt.aptech.KHR.Controller;
 
+import fpt.aptech.KHR.Entities.DayOff;
+import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.Routes.RouteWeb;
 import fpt.aptech.KHR.Services.IDayOffServices;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +28,67 @@ public class DayOffController {
     @Autowired
     IDayOffServices idos;
     @RequestMapping(value = {RouteWeb.dayoffURL}, method = RequestMethod.GET)
-    public String Index(Model model) {
-        model.addAttribute("listdateoff", idos.findAll());
+    public String Index(Model model,HttpServletRequest request, HttpServletResponse response) {
+        List<DayOff> list = idos.findAll();
+//        JsonServices.dd(JsonServices.ParseToJson(list), response);
+//        JsonServices.ParseToJson(list);
+        boolean check = false;
+        for (DayOff item : list) {
+            if (item.getMail() != null) {
+                check = true;
+                break;
+            }
+        }
+        model.addAttribute("listdateoff", list);
+        model.addAttribute("check", check);
+        return "dayoff/index";
+    }
+        @RequestMapping(value = {"/dayoff/list/approved"}, method = RequestMethod.GET)
+    public String ApprovedList(Model model,HttpServletRequest request, HttpServletResponse response) {
+        List<DayOff> list = idos.findApproveList();
+//        JsonServices.dd(JsonServices.ParseToJson(list), response);
+//        JsonServices.ParseToJson(list);
+        boolean check = false;
+        for (DayOff item : list) {
+            if (item.getMail() != null ) {
+                check = true;
+                break;
+            }
+        }
+        model.addAttribute("listdateoff", list);
+        model.addAttribute("check", check);
+        return "dayoff/index";
+    }
+            @RequestMapping(value = {"/dayoff/list/denying"}, method = RequestMethod.GET)
+    public String DenyingList(Model model,HttpServletRequest request, HttpServletResponse response) {
+        List<DayOff> list = idos.findDenyingList();
+//        JsonServices.dd(JsonServices.ParseToJson(list), response);
+//        JsonServices.ParseToJson(list);
+        boolean check = false;
+        for (DayOff item : list ) {
+            if (item.getMail() != null) {
+                check = true;
+                break;
+            }
+        }
+        model.addAttribute("listdateoff", list);
+        model.addAttribute("check", check);
+        return "dayoff/index";
+    }
+    @RequestMapping(value = {"/dayoff/list/notcheck"}, method = RequestMethod.GET)
+    public String NotCheckList(Model model,HttpServletRequest request, HttpServletResponse response) {
+        List<DayOff> list = idos.findNotCheck();
+//        JsonServices.dd(JsonServices.ParseToJson(list), response);
+//        JsonServices.ParseToJson(list);
+        boolean check = false;
+        for (DayOff item : list ) {
+            if (item.getMail() != null) {
+                check = true;
+                break;
+            }
+        }
+        model.addAttribute("listdateoff", list);
+        model.addAttribute("check", check);
         return "dayoff/index";
     }
     @RequestMapping(value = {RouteWeb.dayoffapproveURL}, method = RequestMethod.GET)
