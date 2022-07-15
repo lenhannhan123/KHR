@@ -55,8 +55,11 @@ public class TimelineController {
 
 
     @RequestMapping(value = {RouteWeb.TimelineIndexURL}, method = RequestMethod.GET)
-    public String IndexTimeline(Model model) {
+    public String IndexTimeline(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+
         List<Timeline> list = timelineServices.findAll();
+
 
         boolean check = false;
 

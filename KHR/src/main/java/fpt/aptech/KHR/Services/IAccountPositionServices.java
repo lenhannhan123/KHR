@@ -22,4 +22,6 @@ public interface IAccountPositionServices {
     List<AccountPosition> findByEmail(Account mail);
     
     void delete(AccountPosition accountPosition);
+    
+    AccountPosition findByMailAndPosition(Account mail, int id);
 }

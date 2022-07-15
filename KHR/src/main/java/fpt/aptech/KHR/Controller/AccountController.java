@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -143,7 +145,6 @@ public class AccountController {
                     positionList[i][3] = "true";
                 }
             }
-
         }
 
         model.addAttribute("positionList", positionList);
@@ -174,24 +175,74 @@ public class AccountController {
         account.setRole(role);
         accountRepository.save(account);
 
-        String redirectUrl = "/account/index";
-        return "redirect:" + redirectUrl;
+        List<Position> positions = positionServices.findAll();
+        List<AccountPosition> accountPositions = accountPositionService.findAll();
 
+        boolean checkAccountPosition = false;
+
+        int number = positions.size();
+        int id = 0;
+        for (int i = 1; i <= number; i++) {
+            checkAccountPosition = false;
+            if (request.getParameter("check" + i) != null) {
+                id = Integer.parseInt(request.getParameter("check" + i));
+                for (AccountPosition item : accountPositions) {
+                    if (item.getIdPosition().getId() == id) {
+                        item.setSalary(Integer.parseInt(request.getParameter("checkvalue" + i)));
+                        accountPositionService.save(item);
+                        checkAccountPosition = true;
+                    }
+                }
+                if (checkAccountPosition == false) {
+                    AccountPosition accountPosition = new AccountPosition();
+                    accountPosition.setIdPosition(new Position(Integer.parseInt(request.getParameter("check" + i).toString())));
+                    accountPosition.setMail(new Account(mail));
+                    accountPosition.setSalary(Integer.parseInt(request.getParameter("checkvalue" + i).toString()));
+                    accountPositionRepository.save(accountPosition);
+                }
+            }
+        }
+        List<AccountPosition> newaccountPositionsList = accountPositionService.findAll();
+        boolean checking = true;
+//        JsonServices.dd(JsonServices.ParseToJson(newaccountPositionsList), response);
+
+//        for (int i = 0; i < newaccountPositionsList.size(); i++) {
+//            for (int j = 1; j <= number; j++) {
+//                if (request.getParameter("check" + j) != null) {
+//                    if (newaccountPositionsList.get(i).getIdPosition().getId() == Integer.parseInt(request.getParameter("check" + j))) {
+//                        checking = false;
+//
+//                    }
+//
+//                }
+//
+//            }
+//            if (checking == true) {
+//                AccountPosition deleteAccountPosition = accountPositionService.findByMailAndPosition(new Account(mail), newaccountPositionsList.get(i).getIdPosition().getId());
+//
+//                if (deleteAccountPosition != null) {
+//                    accountPositionService.delete(deleteAccountPosition);
+//                }
+//            }
+//
+//        }
+
+        String redirectUrl = "/account/index";
+
+        return "redirect:" + redirectUrl;
     }
 
     @RequestMapping(value = {RouteWeb.AccountGetBlockURL}, method = RequestMethod.GET)
     public String GetBlockAccount(Model model, HttpServletRequest request, HttpServletResponse response) {
         String mail = request.getParameter("id");
         Account account = accountRepository.findByMail(mail);
-        if(account.getStatus()==true){
+        if (account.getStatus() == true) {
             account.setStatus(false);
             accountRepository.save(account);
-        }
-        else{
+        } else {
             account.setStatus(true);
             accountRepository.save(account);
         }
-
         String redirectUrl = "/account/index";
         return "redirect:" + redirectUrl;
 

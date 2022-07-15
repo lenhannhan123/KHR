@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Admin
+ * @author backs
  */
 @Entity
 @Table(name = "timekeeping")
@@ -47,12 +47,12 @@ public class Timekeeping implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "Time_start")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIME)
     private Date timestart;
     @Basic(optional = false)
     @NotNull
     @Column(name = "Time_end")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIME)
     private Date timeend;
     @Basic(optional = false)
     @NotNull
@@ -61,9 +61,6 @@ public class Timekeeping implements Serializable {
     @JoinColumn(name = "Mail", referencedColumnName = "Mail")
     @ManyToOne(optional = false)
     private Account mail;
-    @JoinColumn(name = "Id_shift", referencedColumnName = "Id")
-    @ManyToOne(optional = false)
-    private Shift idshift;
 
     public Timekeeping() {
     }
@@ -117,14 +114,6 @@ public class Timekeeping implements Serializable {
 
     public void setMail(Account mail) {
         this.mail = mail;
-    }
-
-    public Shift getIdshift() {
-        return idshift;
-    }
-
-    public void setIdshift(Shift idshift) {
-        this.idshift = idshift;
     }
 
     @Override

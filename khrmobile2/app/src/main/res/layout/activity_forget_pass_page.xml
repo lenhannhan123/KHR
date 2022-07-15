@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#6667AB"
+    android:gravity="center"
+    tools:context=".ForgetPassPage">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quên mật khẩu"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="13pt"
+        android:textStyle="bold"
+        android:layout_marginBottom="60dp"
+        />
+
+    <EditText
+        android:id="@+id/Forgetpass_txtUsername"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:padding="15dp"
+        android:hint="Địa chỉ mail"
+        android:background="@xml/duongvien_goctron"
+        android:textColor="#808080"
+        />
+
+    <TextView
+        android:id="@+id/Login_linkforrgetpass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="8pt"
+        android:textColor="#4ACADC"
+        android:text="Gửi mã xác nhận"
+        android:layout_marginTop="20dp"
+        />
+    <EditText
+        android:id="@+id/Forgetpass_txtCode"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:padding="15dp"
+        android:hint="Mã xác nhận"
+        android:background="@xml/duongvien_goctron"
+        android:textColor="#808080"
+        android:layout_marginTop="20dp"
+        />
+
+    <EditText
+        android:id="@+id/Forgetpass_txtNewPass"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:padding="15dp"
+        android:hint="Mật khẩu mỡi"
+        android:background="@xml/duongvien_goctron"
+        android:textColor="#808080"
+        android:layout_marginTop="20dp"
+        />
+
+    <EditText
+        android:id="@+id/Forgetpass_txtNewPassConfirm"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:padding="15dp"
+        android:hint="Nhập lại mmật khẩu mỡi"
+        android:background="@xml/duongvien_goctron"
+        android:textColor="#808080"
+        android:layout_marginTop="20dp"
+        />
+
+    <Button
+        android:id="@+id/Forgetpass_btnSend"
+        android:layout_width="300dp"
+        android:layout_height="59dp"
+        android:background="@xml/duongvien_goctron"
+        android:text="Lấy lại mật khẩu"
+        android:textColor="@color/white"
+        android:layout_marginTop="100dp"
+        />
+</LinearLayout>
