@@ -58,4 +58,9 @@ public class AccountServiceImp implements IAccountRepository{
     public Account findByCode(String code) {
         return repository.findByCode(code);
     }
+
+    @Override
+    public Account findByMailUser(String mail) {
+        return repository.findByEmailUser(mail);
+    }
 }

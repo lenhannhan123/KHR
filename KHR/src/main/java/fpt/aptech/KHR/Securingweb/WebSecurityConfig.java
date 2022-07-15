@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -28,7 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/plugins/**", "/dist/**", "/css/**", "/images/**", "/script/**", "/api/**").permitAll()
+                .antMatchers("/plugins/**", "/dist/**", "/css/**", "/images/**", "/script/**", "/api/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -40,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .permitAll()
+//                .successHandler(myAuthenticationSuccessHandler())
                 .and()
                 .logout()
                 .logoutUrl("/logout")
@@ -49,6 +52,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
     }
+
+//    @Bean
+//    public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
+//        return new MySimpleUrlAuthenticationSuccessHandler();
+//    }
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {

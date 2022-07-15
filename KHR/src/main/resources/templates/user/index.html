@@ -1,0 +1,58 @@
+
+<html lang="en" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+    <head>
+        <title>Trang cá nhân</title>
+
+        <style>
+
+            .title-card{
+                padding-top: 11%; 
+                padding-bottom: 11%; 
+                margin-left: 4%; 
+                font-weight: bold
+            }
+            .title-page{
+                text-align: center; 
+                margin-top: 2%; 
+                margin-bottom: 3%;
+                font-weight: bold
+            }
+
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div layout:fragment="content">
+
+
+            <h2 class="title-page" >Trang quản trị tài khoản cá nhân</h2>
+
+            <div class="row">
+
+                <div class="col-lg-4 col-6" >
+
+                    <div class="small-box"  style="width: 18rem; margin: 0 auto; color: white ;background-color: #7CC3D2">
+                        <div class="inner" style="padding-top: 2%; padding-bottom: 3%">
+                            <h5 class="title-card" >Tài khoản cá nhân</h5>
+
+
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-user" style="color: white"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Quản lý tài khoản cá nhân <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>
