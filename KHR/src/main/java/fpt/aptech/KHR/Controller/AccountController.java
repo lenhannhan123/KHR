@@ -179,12 +179,42 @@ public class AccountController {
 
         List<Position> positions = positionServices.findAll();
         List<AccountPosition> accountPositions = accountPositionService.findAll();
+        int number = positions.size();
+
+        boolean check = true;
+
+        for (int i = 0; i < accountPositions.size(); i++) {
+            check = true;
+            for (int j = 1; j <= number; j++) {
+
+                if (request.getParameter("check" + j) != null) {
+
+                    int id = Integer.parseInt(request.getParameter("check" + j));
+
+                    if ((id == accountPositions.get(i).getIdPosition().getId()) && (accountPositions.get(i).getMail().getMail().equals(mail))) {
+
+
+                        check = false;
+                    }
+
+
+                }
+
+
+            }
+
+            if (check == true) {
+                AccountPosition accountPosition1 = new AccountPosition(accountPositions.get(i).getId(), accountPositions.get(i).getSalary(), accountPositions.get(i).getMail(), accountPositions.get(i).getIdPosition());
+                accountPositionService.delete(accountPosition1);
+            }
+
+
+        }
+
 
         boolean checkAccountPosition = false;
 
-        int number = positions.size();
-        int[] arrayid = new int[number];
-        int count = 0;
+
         int id = 0;
         for (int i = 1; i <= number; i++) {
             checkAccountPosition = false;
@@ -204,55 +234,11 @@ public class AccountController {
                     accountPosition.setMail(new Account(mail));
                     accountPosition.setSalary(Integer.parseInt(request.getParameter("checkvalue" + i).toString()));
                     accountPositionRepository.save(accountPosition);
-                    arrayid[count] = accountPosition.getIdPosition().getId();
-                    count += 1;
+
 
                 }
             }
         }
-        List<AccountPosition> newaccountPositionsList = accountPositionService.findAll();
-        boolean checking = true;
-        boolean checking2 = true;
-
-//        JsonServices.dd(JsonServices.ParseToJson(newaccountPositionsList), response);
-//
-//        for (int i = 0; i < newaccountPositionsList.size(); i++) {
-//            checking = true;
-//            for (int j = 1; j <= number; j++) {
-//                if (request.getParameter("check" + j) != null) {
-//                    if (newaccountPositionsList.get(i).getIdPosition().getId() == Integer.parseInt(request.getParameter("check" + j)) && newaccountPositionsList.get(i).getMail().getMail().equals(mail)) {
-//                        checking = false;
-//
-//                    }
-//
-//                }
-//
-//            }
-//            checking2 = true;
-//            if (checking == true) {
-//                AccountPosition deleteAccountPosition = accountPositionService.findByMailAndPosition(new Account(mail), new Position(newaccountPositionsList.get(i).getIdPosition().getId()));
-//
-//                for (int j = 0; j < count; j++) {
-//
-//                    if (arrayid[j] == newaccountPositionsList.get(i).getIdPosition().getId()) {
-//
-//                        checking2 = false;
-//                    }
-//
-//                }
-//
-//                if (checking2 == true) {
-//
-//                    if (deleteAccountPosition != null) {
-//                        accountPositionService.delete(deleteAccountPosition);
-//                    }
-//                }
-//
-////                JsonServices.dd(JsonServices.ParseToJson(newaccountPositionsList.get(i).getIdPosition().getId()), response);
-//
-//            }
-//
-//        }
 
         String redirectUrl = "/account/index";
 
