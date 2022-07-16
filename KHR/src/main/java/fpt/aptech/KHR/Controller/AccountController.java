@@ -25,10 +25,13 @@ import java.util.Date;
 import java.util.List;
 
 import fpt.aptech.KHR.Services.IPositionServices;
+
 import static java.lang.System.out;
+
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +45,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- *
  * @author jthie
  */
 @Controller
@@ -181,35 +183,44 @@ public class AccountController {
         boolean checkAccountPosition = false;
 
         int number = positions.size();
+        int[] arrayid = new int[number];
+        int count = 0;
         int id = 0;
         for (int i = 1; i <= number; i++) {
             checkAccountPosition = false;
             if (request.getParameter("check" + i) != null) {
                 id = Integer.parseInt(request.getParameter("check" + i));
                 for (AccountPosition item : accountPositions) {
-                    if (item.getIdPosition().getId() == id) {
+                    if (item.getIdPosition().getId() == id && item.getMail().getMail().equals(mail)) {
                         item.setSalary(Integer.parseInt(request.getParameter("checkvalue" + i)));
                         accountPositionService.save(item);
                         checkAccountPosition = true;
                     }
                 }
+//                JsonServices.dd(checkAccountPosition, response);
                 if (checkAccountPosition == false) {
                     AccountPosition accountPosition = new AccountPosition();
                     accountPosition.setIdPosition(new Position(Integer.parseInt(request.getParameter("check" + i).toString())));
                     accountPosition.setMail(new Account(mail));
                     accountPosition.setSalary(Integer.parseInt(request.getParameter("checkvalue" + i).toString()));
                     accountPositionRepository.save(accountPosition);
+                    arrayid[count] = accountPosition.getIdPosition().getId();
+                    count += 1;
+
                 }
             }
         }
         List<AccountPosition> newaccountPositionsList = accountPositionService.findAll();
         boolean checking = true;
-//        JsonServices.dd(JsonServices.ParseToJson(newaccountPositionsList), response);
+        boolean checking2 = true;
 
+//        JsonServices.dd(JsonServices.ParseToJson(newaccountPositionsList), response);
+//
 //        for (int i = 0; i < newaccountPositionsList.size(); i++) {
+//            checking = true;
 //            for (int j = 1; j <= number; j++) {
 //                if (request.getParameter("check" + j) != null) {
-//                    if (newaccountPositionsList.get(i).getIdPosition().getId() == Integer.parseInt(request.getParameter("check" + j))) {
+//                    if (newaccountPositionsList.get(i).getIdPosition().getId() == Integer.parseInt(request.getParameter("check" + j)) && newaccountPositionsList.get(i).getMail().getMail().equals(mail)) {
 //                        checking = false;
 //
 //                    }
@@ -217,12 +228,28 @@ public class AccountController {
 //                }
 //
 //            }
+//            checking2 = true;
 //            if (checking == true) {
-//                AccountPosition deleteAccountPosition = accountPositionService.findByMailAndPosition(new Account(mail), newaccountPositionsList.get(i).getIdPosition().getId());
+//                AccountPosition deleteAccountPosition = accountPositionService.findByMailAndPosition(new Account(mail), new Position(newaccountPositionsList.get(i).getIdPosition().getId()));
 //
-//                if (deleteAccountPosition != null) {
-//                    accountPositionService.delete(deleteAccountPosition);
+//                for (int j = 0; j < count; j++) {
+//
+//                    if (arrayid[j] == newaccountPositionsList.get(i).getIdPosition().getId()) {
+//
+//                        checking2 = false;
+//                    }
+//
 //                }
+//
+//                if (checking2 == true) {
+//
+//                    if (deleteAccountPosition != null) {
+//                        accountPositionService.delete(deleteAccountPosition);
+//                    }
+//                }
+//
+////                JsonServices.dd(JsonServices.ParseToJson(newaccountPositionsList.get(i).getIdPosition().getId()), response);
+//
 //            }
 //
 //        }
