@@ -40,5 +40,20 @@ public class DayOffService implements IDayOffServices{
         dor.save(dayOff);
         return true;
     }
+
+    @Override
+    public List<DayOff> findApproveList() {
+        return dor.findStatus(Short.valueOf("1"));
+    }
+
+    @Override
+    public List<DayOff> findDenyingList() {
+        return dor.findStatus(Short.valueOf("2"));
+    }
+
+    @Override
+    public List<DayOff> findNotCheck() {
+        return dor.findStatus(Short.valueOf("0"));
+    }
     
 }

@@ -6,6 +6,7 @@
 package fpt.aptech.KHR.Reponsitory;
 
 import fpt.aptech.KHR.Entities.OverTime;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,4 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface OverTimeRepository extends JpaRepository<OverTime, Integer> {
     @Query("SELECT o FROM OverTime o WHERE o.id = :id")
     OverTime findID(@PathVariable("id") int id);
+    @Query("SELECT d FROM OverTime d WHERE d.status = :status")
+    List<OverTime> findStatus(@PathVariable("status") short status);
 }

@@ -52,5 +52,20 @@ public class OverTimeService implements IOverTimeServices{
     public OverTime newOverTime(OverTime overTime) {
         return otr.save(overTime);
     }
+
+    @Override
+    public List<OverTime> findStatusApproved() {
+        return otr.findStatus(Short.valueOf("1"));
+    }
+
+    @Override
+    public List<OverTime> findStatusDenying() {
+        return otr.findStatus(Short.valueOf("2"));
+    }
+
+    @Override
+    public List<OverTime> findStatusNotCheck() {
+        return otr.findStatus(Short.valueOf("0"));
+    }
     
 }

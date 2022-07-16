@@ -44,14 +44,14 @@ public class RouteWeb {
     String NotificationControler = notificationController.Index(model.model);
 
     public final static String notificationAddURL = "/notification/add";
-    String NotificationAddControler = notificationController.AddPage();
+    //String NotificationAddControler = notificationController.AddPage(model.model);
     //
 
     //Route DayOff
     public final static String dayoffURL = "/dayoff";
-    String DayOffControler = dayOffController.Index(model.model);
-
-    public final static String dayoffapproveURL = "/dayoff/approved";
+    //String DayOffControler = dayOffController.Index(model.model);
+    
+     public final static String dayoffapproveURL = "/dayoff/approved";
     //String DayOffApprovedControler = dayOffController.approved(model.model);
 
     public final static String dayoffdenyingURL = "/dayoff/denying";
@@ -59,12 +59,12 @@ public class RouteWeb {
     //
     //Route OverTime
     public final static String overtimeURL = "/overtime";
-    String OverTimeControler = overTimeController.Index(model.model);
-
-    public final static String overtimeapproveURL = "/overtime/approved";
-    // String OverTimeApprovedControler = dayOffController.Index(model.model);
-
-    public final static String overtimedenyingURL = "/overtime/denying";
+    //String OverTimeControler = overTimeController.Index(model.model);
+    
+     public final static String overtimeapproveURL = "/overtime/approved";
+   // String OverTimeApprovedControler = dayOffController.Index(model.model);
+    
+     public final static String overtimedenyingURL = "/overtime/denying";
     //String OverTimeDenyingControler = dayOffController.Index(model.model);
 
     //Route Account

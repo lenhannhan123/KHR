@@ -6,6 +6,7 @@
 package fpt.aptech.KHR.Reponsitory;
 
 import fpt.aptech.KHR.Entities.DayOff;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,4 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface DayOffRepository extends JpaRepository<DayOff, Integer> {
     @Query("SELECT d FROM DayOff d WHERE d.id = :id")
     DayOff findID(@PathVariable("id") int id);
+    @Query("SELECT d FROM DayOff d WHERE d.status = :status")
+    List<DayOff> findStatus(@PathVariable("status") short status);
 }
