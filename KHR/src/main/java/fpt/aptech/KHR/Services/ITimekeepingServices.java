@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.Services;
 
+import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.Timekeeping;
 import java.util.List;
 
@@ -13,6 +14,14 @@ import java.util.List;
  * @author backs
  */
 public interface ITimekeepingServices {
+
     List<Timekeeping> findAll();
-    void saveTimekeeping(Timekeeping timekeeping);
+
+    Timekeeping findOne(int id);
+
+    Timekeeping findByMail(Account mail);
+
+    void checkin(Timekeeping timekeeping);
+
+    void checkout(Timekeeping timekeeping);
 }

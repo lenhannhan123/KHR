@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.Services;
 
+import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.Timekeeping;
 import fpt.aptech.KHR.Reponsitory.TimekeepingRepository;
 import java.util.List;
@@ -25,9 +26,25 @@ public class TimekeepingServiceImp implements ITimekeepingServices{
     public List<Timekeeping> findAll() {
         return timekeepingRepository.findAll();
     }
+    
+    @Override
+    public Timekeeping findOne(int id) {
+        return timekeepingRepository.findOne(id);
+    }
+    
+    @Override
+    public Timekeeping findByMail(Account mail) {
+        return timekeepingRepository.findByMail(mail);
+    }
+    
 
     @Override
-    public void saveTimekeeping(Timekeeping timekeeping) {
+    public void checkin(Timekeeping timekeeping) {
+        timekeepingRepository.save(timekeeping);
+    }
+
+    @Override
+    public void checkout(Timekeeping timekeeping) {
         timekeepingRepository.save(timekeeping);
     }
     
