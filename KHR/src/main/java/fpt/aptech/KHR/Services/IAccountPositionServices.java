@@ -7,21 +7,22 @@ package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.AccountPosition;
+import fpt.aptech.KHR.Entities.Position;
+
 import java.util.List;
 
 /**
- *
  * @author jthie
  */
 public interface IAccountPositionServices {
 
     List<AccountPosition> findAll();
-    
+
     void save(AccountPosition accountPosition);
-    
+
     List<AccountPosition> findByEmail(Account mail);
-    
+
     void delete(AccountPosition accountPosition);
-    
-    AccountPosition findByMailAndPosition(Account mail, int id);
+
+    AccountPosition findByMailAndPosition(Account mail, Position id);
 }

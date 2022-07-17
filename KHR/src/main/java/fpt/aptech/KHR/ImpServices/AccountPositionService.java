@@ -7,20 +7,23 @@ package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.AccountPosition;
+import fpt.aptech.KHR.Entities.Position;
 import fpt.aptech.KHR.Reponsitory.AccountPositionRepository;
 import fpt.aptech.KHR.Services.IAccountPositionServices;
+
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author jthie
  */
 @Service
 public class AccountPositionService implements IAccountPositionServices {
     @Autowired
     private AccountPositionRepository accountPositionRepository;
+
     @Override
     public List<AccountPosition> findAll() {
         return accountPositionRepository.findAll();
@@ -42,8 +45,8 @@ public class AccountPositionService implements IAccountPositionServices {
     }
 
     @Override
-    public AccountPosition findByMailAndPosition(Account mail, int id) {
+    public AccountPosition findByMailAndPosition(Account mail, Position id) {
         return accountPositionRepository.findByMailAndPosition(mail, id);
     }
-    
+
 }
