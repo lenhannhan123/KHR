@@ -9,6 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Khrmobile">
+        <activity
+            android:name=".ChangeInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuChangeAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainAccountActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/bottom_navigation_menu" />
