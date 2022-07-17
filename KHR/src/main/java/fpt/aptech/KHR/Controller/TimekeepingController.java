@@ -15,7 +15,11 @@ import fpt.aptech.KHR.Services.IShiftServices;
 import fpt.aptech.KHR.Services.ITimekeepingServices;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -55,66 +59,46 @@ public class TimekeepingController {
     @Autowired
     IShiftServices shiftServices;
 
-    @RequestMapping(value = {RouteWeb.TimekeepingIndexURL}, method = RequestMethod.GET)
-    public ResponseEntity<List<Timekeeping>> index(Model model) {
+    @RequestMapping(value = "/timekeeping/index", method = RequestMethod.GET)
+    public String index(Model model) {
         model.addAttribute("list", timekeepingServices.findAll());
-        return new ResponseEntity<>(timekeepingServices.findAll(), HttpStatus.OK);
+        return "timekeeping/index";
     }
 
-    @RequestMapping(value = {RouteAPI.checkinAPI}, method = RequestMethod.GET)
-    ResponseEntity<String> checkin() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm:ss");
-        Date date = new Date();
-        String strDate = sdfDate.format(date);
-        return new ResponseEntity<String>(strDate, HttpStatus.OK);
+    @RequestMapping(value = "/api/timekeeping/checkin", method = RequestMethod.POST)
+    public ResponseEntity<Timekeeping> checkin(@RequestBody Timekeeping timekeeping) {
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        Account account = accountRepository.findByMail("vuongpham@gmail.com");
+        timekeeping.setMail(account);
+        LocalTime localTime = LocalTime.now();
+        //timekeeping.setTimestart(java.sql.Time.valueOf(localTime));
+        timekeeping.setTimestart(java.sql.Time.valueOf("07:30:00"));
+        timekeeping.setTimeend(java.sql.Time.valueOf("00:00:00"));
+        timekeepingServices.checkin(timekeeping);
+        return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = {RouteAPI.checkoutAPI}, method = RequestMethod.GET)
-    ResponseEntity<String> checkout() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm:ss");
-        Date date = new Date();
-        String strDate = sdfDate.format(date);
-        return new ResponseEntity<String>(strDate, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "timekeeping/add", method = RequestMethod.GET)
-    public String add(Model model) {
-        model.addAttribute("timekeeping", new Timekeeping());
-        return "timekeeping/create";
-    }
-
-    @RequestMapping(value = "/api/timekeeping/findAccount", method = RequestMethod.GET)
-    public ResponseEntity<Account> findByMail() {
-        try {
-            Account account = accountRepository.findByMail("vuongpham@gmail.com");
-            return new ResponseEntity<>(account, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
-
-    @RequestMapping(value = "/api/timekeeping/save", method = RequestMethod.POST)
-    public ResponseEntity<Timekeeping> insert(@RequestBody Timekeeping timekeeping) {
+    @RequestMapping(value = "/api/timekeeping/checkout", method = RequestMethod.POST)
+    public ResponseEntity<Timekeeping> checkout(@RequestBody Timekeeping timekeeping) {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-            //String time = formatter.format(new Date());
-            //String date = formatter.format(java.sql.Time.valueOf(new Date().toString()));
             Account account = accountRepository.findByMail("vuongpham@gmail.com");
             timekeeping.setMail(account);
-            timekeeping.setTimestart(java.sql.Time.valueOf("07:30:00"));
+            timekeeping = timekeepingServices.findByMail(timekeeping.getMail());
+            LocalTime localTime = LocalTime.now();
+            //timekeeping.setTimeend(java.sql.Time.valueOf(localTime));
             timekeeping.setTimeend(java.sql.Time.valueOf("11:30:00"));
             Date timeStart = formatter.parse(timekeeping.getTimestart().toString());
             Date timeEnd = formatter.parse(timekeeping.getTimeend().toString());
             Long time = timeEnd.getTime() - timeStart.getTime();
             int workingHours = (int) TimeUnit.MILLISECONDS.toHours(time);
             timekeeping.setTime(workingHours);
-            timekeepingServices.saveTimekeeping(timekeeping);
-            return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);
-        } catch (ParseException e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            timekeepingServices.checkout(timekeeping);
+            return new ResponseEntity<>(timekeeping, HttpStatus.OK);
+        } catch (ParseException ex) {
+            Logger.getLogger(TimekeepingController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 //    @PostMapping(value = "timekeeping/save")
