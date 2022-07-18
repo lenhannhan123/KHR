@@ -1180,13 +1180,13 @@ public class TimelineController {
 
         List<UserTimeline> timelines = userTimelineServices.UserTimeline(idTimeline, mail);
 
-        boolean[] usertimeline = new boolean[13];
+        boolean[] usertimeline = new boolean[36];
 
-        for (int i = 1; i <= 12; i++) {
+        for (int i = 1; i <= 36; i++) {
             usertimeline[i] = false;
         }
 
-        for (int i = 1; i <= 12; i++) {
+        for (int i = 1; i <= 36; i++) {
 
             for (UserTimeline item : timelines
             ) {
