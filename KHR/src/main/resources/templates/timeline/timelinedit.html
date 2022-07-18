@@ -66,15 +66,24 @@
                             <tr id="" class="hover-click" v-for="(value1,index1) in data" :key="index1"
                                 v-if="value1.date == value.date">
                                 <td style="text-align:center ; padding:1.5rem">
-                                    {{value1.name}}
-                                    <br>
+
+                                    <span v-if="value1.name != 'Ngày nghỉ'">
+                                        {{value1.name}}
+                                         <br>
                                     <a href="#" v-on:click="openform(index1)" data-toggle="modal"
                                        data-target="#infomationform">Nhấn vào đây để sửa
                                         thông
                                         tin</a>
+                                    </span>
+
+                                    <span v-if="value1.name == 'Ngày nghỉ'" style="color: red; font-weight: bold">
+                                        {{value1.name}}
+
+                                    </span>
+
+
                                 </td>
                             </tr>
-
 
                             </tbody>
                         </table>
@@ -257,7 +266,7 @@
                     j = 0;
 
 
-                    for (let i = 2; i <= 7; i++) {
+                    for (let i = 2; i <= 8; i++) {
                         DateWork = {};
                         tmpDate = DateStart;
                         tmpDate.setDate(DateStart.getDate() + j);
@@ -265,8 +274,13 @@
                             j += 1;
                         }
 
+                        if (i == 8) {
 
-                        DateWork.name = "Thứ " + i;
+                            DateWork.name = "Chủ nhật ";
+                        } else {
+                            DateWork.name = "Thứ " + i;
+                        }
+
                         DateWork.date = this.addzero(tmpDate.getDate()) + "/" + this.addzero(tmpDate.getMonth()) + "/" + tmpDate.getFullYear();
 
                         this.dataDay.push(DateWork)
@@ -274,9 +288,12 @@
                     }
 
                     jktmp = 0;
-                    for (let i = 2; i <= 7; i++) {
+                    checkdayoff = 0;
+                    for (let i = 2; i <= 8; i++) {
 
 
+                        //Bat dau
+                        checkdayoff = 0;
                         this.Position = this.dataDb[jktmp].position;
                         // console.log(this.Position);
 
@@ -295,20 +312,44 @@
                             tmpObj.iddb = this.Position[k].id_Db;
                             tmpPosition[k] = tmpObj
 
+                            if (tmpObj.isCheck == true && tmpObj.number == 0) {
+                                checkdayoff += 1;
+                            }
+
+                        }
+
+                        if (checkdayoff == this.Position.length) {
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpPosition[k].isCheck = false
+
+                            }
+                            DateWorkData.name = "Ngày nghỉ";
+                            DateWorkData.position = tmpPosition;
+                            DateWorkData.date = this.dataDay[i - 2].date;
+
+
+                            this.data.push(DateWorkData);
+
+                        } else {
+
+                            DateWorkData.name = "Ca sáng (6:00 - 10:00)";
+                            DateWorkData.position = tmpPosition;
+                            DateWorkData.date = this.dataDay[i - 2].date;
+
+
+                            this.data.push(DateWorkData);
                         }
 
 
                         // console.log(tmpPosition);
 
-                        DateWorkData.name = "Ca sáng (7:30 - 11:30)";
-                        DateWorkData.position = tmpPosition;
-                        DateWorkData.date = this.dataDay[i - 2].date;
-
-
-                        this.data.push(DateWorkData);
-
 
                         jktmp = jktmp + 1;
+
+
+                        //// het
+
+                        checkdayoff = 0;
                         this.Position = this.dataDb[jktmp].position;
                         DateWorkData = {};
                         tmpPosition = [];
@@ -324,14 +365,174 @@
                             tmpObj.iddb = this.Position[k].id_Db;
                             tmpPosition[k] = tmpObj
 
+                            if (tmpObj.isCheck == true && tmpObj.number == 0) {
+                                checkdayoff += 1;
+                            }
+
                         }
 
+                        if (checkdayoff == this.Position.length) {
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpPosition[k].isCheck = false
 
-                        DateWorkData.name = "Ca chiều (13:00 - 17:00)";
-                        DateWorkData.date = this.dataDay[i - 2].date;
-                        DateWorkData.position = tmpPosition;
-                        this.data.push(DateWorkData);
+                            }
+                            DateWorkData.name = "Ngày nghỉ";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
 
+
+                            this.data.push(DateWorkData);
+
+                        } else {
+
+
+                            DateWorkData.name = "Ca trưa (10:00 - 14:00)";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+                            this.data.push(DateWorkData);
+                        }
+
+                        jktmp = jktmp + 1;
+
+
+                        ///het 2
+
+                        checkdayoff = 0;
+                        this.Position = this.dataDb[jktmp].position;
+                        DateWorkData = {};
+                        tmpPosition = [];
+
+
+                        for (let k = 0; k < this.Position.length; k++) {
+                            tmpObj = {};
+                            tmpObj.id = this.Position[k].id;
+                            tmpObj.isCheck = this.Position[k].isCheck;
+                            tmpObj.number = this.Position[k].number;
+                            tmpObj.positionname = this.Position[k].positionname;
+                            tmpObj.salarydefault = this.Position[k].salarydefault;
+                            tmpObj.iddb = this.Position[k].id_Db;
+                            tmpPosition[k] = tmpObj
+
+                            if (tmpObj.isCheck == true && tmpObj.number == 0) {
+                                checkdayoff += 1;
+                            }
+
+                        }
+
+                        if (checkdayoff == this.Position.length) {
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpPosition[k].isCheck = false
+
+                            }
+                            DateWorkData.name = "Ngày nghỉ";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+
+
+                            this.data.push(DateWorkData);
+
+                        } else {
+
+                            DateWorkData.name = "Ca chiều (14:00 - 18:00)";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+                            this.data.push(DateWorkData);
+
+                        }
+                        jktmp = jktmp + 1;
+
+
+                        // het 3
+
+                        checkdayoff = 0;
+                        this.Position = this.dataDb[jktmp].position;
+                        DateWorkData = {};
+                        tmpPosition = [];
+
+
+                        for (let k = 0; k < this.Position.length; k++) {
+                            tmpObj = {};
+                            tmpObj.id = this.Position[k].id;
+                            tmpObj.isCheck = this.Position[k].isCheck;
+                            tmpObj.number = this.Position[k].number;
+                            tmpObj.positionname = this.Position[k].positionname;
+                            tmpObj.salarydefault = this.Position[k].salarydefault;
+                            tmpObj.iddb = this.Position[k].id_Db;
+                            tmpPosition[k] = tmpObj
+
+                            if (tmpObj.isCheck == true && tmpObj.number == 0) {
+                                checkdayoff += 1;
+                            }
+
+                        }
+
+                        if (checkdayoff == this.Position.length) {
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpPosition[k].isCheck = false
+
+                            }
+                            DateWorkData.name = "Ngày nghỉ";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+
+
+                            this.data.push(DateWorkData);
+
+                        } else {
+
+
+                            DateWorkData.name = "Ca tối (18:00 - 22:00)";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+                            this.data.push(DateWorkData);
+
+                        }
+                        jktmp = jktmp + 1;
+
+                        // het 4
+                        checkdayoff = 0;
+
+                        this.Position = this.dataDb[jktmp].position;
+                        DateWorkData = {};
+                        tmpPosition = [];
+
+
+                        for (let k = 0; k < this.Position.length; k++) {
+                            tmpObj = {};
+                            tmpObj.id = this.Position[k].id;
+                            tmpObj.isCheck = this.Position[k].isCheck;
+                            tmpObj.number = this.Position[k].number;
+                            tmpObj.positionname = this.Position[k].positionname;
+                            tmpObj.salarydefault = this.Position[k].salarydefault;
+                            tmpObj.iddb = this.Position[k].id_Db;
+                            tmpPosition[k] = tmpObj
+
+                            if (tmpObj.isCheck == true && tmpObj.number == 0) {
+                                checkdayoff += 1;
+                            }
+
+                        }
+
+                        if (checkdayoff == this.Position.length) {
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpPosition[k].isCheck = false
+
+                            }
+                            DateWorkData.name = "Ngày nghỉ";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+
+
+                            this.data.push(DateWorkData);
+
+                        } else {
+
+
+                            DateWorkData.name = "Ca đêm (22:00 - 06:00)";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+                            this.data.push(DateWorkData);
+                        }
 
                         jktmp = jktmp + 1;
                     }

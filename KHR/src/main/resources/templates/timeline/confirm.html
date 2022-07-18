@@ -66,12 +66,22 @@
                             <tr id="" class="hover-click" v-for="(value1,index1) in data" :key="index1"
                                 v-if="value1.date == value.date">
                                 <td style="text-align:center ; padding:1.5rem">
-                                    {{value1.name}}
-                                    <br>
+
+                                    <span v-if="value1.name != 'Ngày nghỉ'">
+                                        {{value1.name}}
+                                         <br>
                                     <a href="#" v-on:click="openform(index1)" data-toggle="modal"
                                        data-target="#infomationform">Nhấn vào đây để sửa
                                         thông
                                         tin</a>
+                                    </span>
+
+                                    <span v-if="value1.name == 'Ngày nghỉ'" style="color: red; font-weight: bold">
+                                        {{value1.name}}
+
+                                    </span>
+
+
                                 </td>
                             </tr>
 
@@ -234,6 +244,8 @@
                         this.Dayoff = JSON.parse(Dayoff);
                     }
 
+                    console.log(this.Dayoff);
+
 
                     TimelineStartDay = document.getElementById("TimelineStartDay").value
                     TimelineEndDay = document.getElementById("TimelineEndDay").value
@@ -266,7 +278,7 @@
 
                     j = 0;
 
-                    for (let i = 2; i <= 7; i++) {
+                    for (let i = 2; i <= 8; i++) {
                         DateWork = {};
                         tmpDate = DateStart;
                         tmpDate.setDate(DateStart.getDate() + j);
@@ -274,8 +286,14 @@
                         if (j == 0) {
                             j += 1;
                         }
+                        if (i == 8) {
 
-                        DateWork.name = "Thứ " + i;
+                            DateWork.name = "Chủ nhật ";
+                        } else {
+                            DateWork.name = "Thứ " + i;
+                        }
+
+
                         DateWork.date = this.addzero(tmpDate.getDate()) + "/" + this.addzero(tmpDate.getMonth()) + "/" + tmpDate.getFullYear();
 
                         this.dataDay.push(DateWork)
@@ -284,56 +302,307 @@
 
                     this.MatchPosition();
 
-                    for (let i = 2; i <= 7; i++) {
-                        DateWorkData = {};
+                    checkdayoff = true;
 
-                        tmpPosition = [];
+                    for (let i = 2; i <= 8; i++) {
+                        checkdayoff = true;
+                        for (let q = 1; q < this.Dayoff.length; q++) {
+
+                            dayofftmp = new Date(this.Dayoff[q]);
+                            dateoffparse = this.addzero(dayofftmp.getDate()) + "/" + this.addzero(dayofftmp.getMonth()) + "/" + dayofftmp.getFullYear();
 
 
-                        for (let k = 0; k < this.Position.length; k++) {
-                            tmpObj = {};
-                            tmpObj.id = this.Position[k].id;
-                            tmpObj.isCheck = this.Position[k].isCheck;
-                            tmpObj.number = this.Position[k].number;
-                            tmpObj.positionname = this.Position[k].positionname;
-                            tmpObj.salarydefault = this.Position[k].salarydefault;
+                            if (dateoffparse == this.dataDay[i - 2].date) {
+                                checkdayoff = false;
 
-                            tmpPosition[k] = tmpObj
+                            }
+                        }
 
+                        if (checkdayoff == true) {
+                            //Ca Sáng
+                            DateWorkData = {};
+
+                            tmpPosition = [];
+
+
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpObj = {};
+                                tmpObj.id = this.Position[k].id;
+                                tmpObj.isCheck = this.Position[k].isCheck;
+                                tmpObj.number = this.Position[k].number;
+                                tmpObj.positionname = this.Position[k].positionname;
+                                tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                                tmpPosition[k] = tmpObj
+
+                            }
+
+
+                            // console.log(tmpPosition);
+
+                            DateWorkData.name = "Ca sáng (6:00 - 10:00)";
+                            DateWorkData.position = tmpPosition;
+                            DateWorkData.date = this.dataDay[i - 2].date;
+
+
+                            this.data.push(DateWorkData);
+
+
+                            //Ca trưa
+
+                            DateWorkData = {};
+                            tmpPosition = [];
+
+
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpObj = {};
+                                tmpObj.id = this.Position[k].id;
+                                tmpObj.isCheck = this.Position[k].isCheck;
+                                tmpObj.number = this.Position[k].number;
+                                tmpObj.positionname = this.Position[k].positionname;
+                                tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                                tmpPosition[k] = tmpObj
+
+                            }
+
+
+                            DateWorkData.name = "Ca trưa (10:00 - 14:00)";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+                            this.data.push(DateWorkData);
+
+                            //Ca chiều
+
+                            DateWorkData = {};
+                            tmpPosition = [];
+
+
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpObj = {};
+                                tmpObj.id = this.Position[k].id;
+                                tmpObj.isCheck = this.Position[k].isCheck;
+                                tmpObj.number = this.Position[k].number;
+                                tmpObj.positionname = this.Position[k].positionname;
+                                tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                                tmpPosition[k] = tmpObj
+
+                            }
+
+
+                            DateWorkData.name = "Ca chiều (14:00 - 18:00)";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+                            this.data.push(DateWorkData);
+
+
+                            //Ca tối
+
+                            DateWorkData = {};
+                            tmpPosition = [];
+
+
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpObj = {};
+                                tmpObj.id = this.Position[k].id;
+                                tmpObj.isCheck = this.Position[k].isCheck;
+                                tmpObj.number = this.Position[k].number;
+                                tmpObj.positionname = this.Position[k].positionname;
+                                tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                                tmpPosition[k] = tmpObj
+
+                            }
+
+
+                            DateWorkData.name = "Ca tối (18:00 - 22:00)";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+                            this.data.push(DateWorkData);
+
+
+                            //Ca đêm
+
+                            DateWorkData = {};
+                            tmpPosition = [];
+
+
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpObj = {};
+                                tmpObj.id = this.Position[k].id;
+                                tmpObj.isCheck = this.Position[k].isCheck;
+                                tmpObj.number = this.Position[k].number;
+                                tmpObj.positionname = this.Position[k].positionname;
+                                tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                                tmpPosition[k] = tmpObj
+
+                            }
+
+
+                            DateWorkData.name = "Ca đêm (22:00 - 6:00)";
+                            DateWorkData.date = this.dataDay[i - 2].date;
+                            DateWorkData.position = tmpPosition;
+                            this.data.push(DateWorkData);
+                            ///het if------------
+
+
+                        } else {
+
+
+                            //Ca Sáng
+                            DateWorkData = {};
+
+                            tmpPosition = [];
+
+
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpObj = {};
+                                tmpObj.id = this.Position[k].id;
+                                tmpObj.isCheck = false;
+                                tmpObj.number = 0;
+                                tmpObj.positionname = this.Position[k].positionname;
+                                tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                                tmpPosition[k] = tmpObj
+
+                            }
+
+
+                            // console.log(tmpPosition);
+
+                            DateWorkData.name = "Ngày nghỉ";
+                            DateWorkData.position = tmpPosition;
+                            DateWorkData.date = this.dataDay[i - 2].date;
+
+
+                            this.data.push(DateWorkData);
+
+
+                            //Ca trưa
+
+                            DateWorkData = {};
+
+                            tmpPosition = [];
+
+
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpObj = {};
+                                tmpObj.id = this.Position[k].id;
+                                tmpObj.isCheck = false;
+                                tmpObj.number = 0;
+                                tmpObj.positionname = this.Position[k].positionname;
+                                tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                                tmpPosition[k] = tmpObj
+
+                            }
+
+
+                            // console.log(tmpPosition);
+
+                            DateWorkData.name = "Ngày nghỉ";
+                            DateWorkData.position = tmpPosition;
+                            DateWorkData.date = this.dataDay[i - 2].date;
+
+
+                            this.data.push(DateWorkData);
+
+                            //Ca chiều
+
+                            DateWorkData = {};
+
+                            tmpPosition = [];
+
+
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpObj = {};
+                                tmpObj.id = this.Position[k].id;
+                                tmpObj.isCheck = false;
+                                tmpObj.number = 0;
+                                tmpObj.positionname = this.Position[k].positionname;
+                                tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                                tmpPosition[k] = tmpObj
+
+                            }
+
+
+                            // console.log(tmpPosition);
+
+                            DateWorkData.name = "Ngày nghỉ";
+                            DateWorkData.position = tmpPosition;
+                            DateWorkData.date = this.dataDay[i - 2].date;
+
+
+                            this.data.push(DateWorkData);
+
+
+                            //Ca tối
+
+                            DateWorkData = {};
+
+                            tmpPosition = [];
+
+
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpObj = {};
+                                tmpObj.id = this.Position[k].id;
+                                tmpObj.isCheck = false;
+                                tmpObj.number = 0;
+                                tmpObj.positionname = this.Position[k].positionname;
+                                tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                                tmpPosition[k] = tmpObj
+
+                            }
+
+
+                            // console.log(tmpPosition);
+
+                            DateWorkData.name = "Ngày nghỉ";
+                            DateWorkData.position = tmpPosition;
+                            DateWorkData.date = this.dataDay[i - 2].date;
+
+
+                            this.data.push(DateWorkData);
+
+
+                            //Ca đêm
+
+                            DateWorkData = {};
+
+                            tmpPosition = [];
+
+
+                            for (let k = 0; k < this.Position.length; k++) {
+                                tmpObj = {};
+                                tmpObj.id = this.Position[k].id;
+                                tmpObj.isCheck = false;
+                                tmpObj.number = 0;
+                                tmpObj.positionname = this.Position[k].positionname;
+                                tmpObj.salarydefault = this.Position[k].salarydefault;
+
+                                tmpPosition[k] = tmpObj
+
+                            }
+
+
+                            // console.log(tmpPosition);
+
+                            DateWorkData.name = "Ngày nghỉ";
+                            DateWorkData.position = tmpPosition;
+                            DateWorkData.date = this.dataDay[i - 2].date;
+
+
+                            this.data.push(DateWorkData);
+
+                            ///het else
                         }
 
 
-                        // console.log(tmpPosition);
-
-                        DateWorkData.name = "Ca sáng (7:30 - 11:30)";
-                        DateWorkData.position = tmpPosition;
-                        DateWorkData.date = this.dataDay[i - 2].date;
-
-
-                        this.data.push(DateWorkData);
-
-                        DateWorkData = {};
-                        tmpPosition = [];
-
-
-                        for (let k = 0; k < this.Position.length; k++) {
-                            tmpObj = {};
-                            tmpObj.id = this.Position[k].id;
-                            tmpObj.isCheck = this.Position[k].isCheck;
-                            tmpObj.number = this.Position[k].number;
-                            tmpObj.positionname = this.Position[k].positionname;
-                            tmpObj.salarydefault = this.Position[k].salarydefault;
-
-                            tmpPosition[k] = tmpObj
-
-                        }
-
-
-                        DateWorkData.name = "Ca chiều (13:00 - 17:00)";
-                        DateWorkData.date = this.dataDay[i - 2].date;
-                        DateWorkData.position = tmpPosition;
-                        this.data.push(DateWorkData);
-
+                        ///het
 
                     }
 

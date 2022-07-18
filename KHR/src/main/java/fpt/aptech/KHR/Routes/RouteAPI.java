@@ -24,7 +24,7 @@ public class RouteAPI {
 
     public final static String CheckAccountStatusAPI = "api/timeline/checkaccount";
     String CheckAccountStatusControler = timelineController.GetCreate(model.model);
-    
+
     // api timekeeping
 
     public final static String CreateUserAPI = "api/timeline/createtimeuser";
@@ -36,4 +36,7 @@ public class RouteAPI {
     public final static String checkinAPI = "api/timekeeping/checkin";
     public final static String checkoutAPI = "api/timekeeping/checkout";
     public final static String saveTimekeepingAPI = "api/timekeeping/save";
+
+    public final static String Timelinecheckmytimeline = "api/timeline/mytimeline";
+
 }

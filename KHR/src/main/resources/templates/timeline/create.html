@@ -359,14 +359,15 @@
 
                     EndDay = new Date(TimelineEndDay);
 
+                    console.log(GetNumberDayofWeek(EndDay));
 
                     if (StartDay > EndDay == true) {
 
                         document.getElementById("TimelineEndDay-Eror").innerText = "Ngày bắt đầu phải nhỏ hơn ngày kết thúc";
                         document.getElementById("TimelineEndDay-Eror").hidden = false;
                         check = false;
-                    } else if (GetNumberDayofWeek(EndDay) < 6 || GetNumberDayofWeek(EndDay) > 6) {
-                        document.getElementById("TimelineEndDay-Eror").innerText = "Ngày kết thúc phải là thứ 7";
+                    } else if (GetNumberDayofWeek(EndDay) < 0 || GetNumberDayofWeek(EndDay) > 0) {
+                        document.getElementById("TimelineEndDay-Eror").innerText = "Ngày kết thúc phải là chủ nhật";
                         document.getElementById("TimelineEndDay-Eror").hidden = false;
                         check = false;
                     }
@@ -390,7 +391,7 @@
                     //
                     //
                     // }
-                    StartDay.setDate(StartDay.getDate() + 5);
+                    StartDay.setDate(StartDay.getDate() + 6);
 
                     // console.log(StartDay);
 
