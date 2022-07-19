@@ -1,0 +1,200 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+    <head>
+        <title>Tạo chấm công</title>
+
+        <style>
+
+            .title-card {
+                padding-top: 11%;
+                padding-bottom: 11%;
+                margin-left: 4%;
+                font-weight: bold
+            }
+
+            .title-page {
+                text-align: center;
+                margin-top: 2%;
+                margin-bottom: 3%;
+                font-weight: bold
+            }
+
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div layout:fragment="content">
+
+            <h3 class="title-page">Chỉnh sửa chấm công</h3>
+
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col background-table">
+
+                    <form th:action="@{'/timekeeping/edit/' + ${timekeeping.getId()}}" method="post" name="_form">  
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                Email
+                            </div>
+                        </div>
+
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <input type="text" class="form-control input" th:value="${timekeeping.getMail().getMail()}" id="" name="" readonly="">
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">Họ tên</div>
+                        </div>
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <input type="text" class="form-control input" id="" name="" th:value="${user.getFullname()}" readonly="">
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                Thời gian vào
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <input type="text" class="form-control input" placeholder="Thời gian vào" oninput="validateCheckin();" id="checkin" th:value="${timekeeping.getTimestart()}"
+                                       name="timeStart">
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                Thời gian ra
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <input type="text" class="form-control input" placeholder="Thời gian ra" id="checkout" oninput="validateCheckout();" th:value="${timekeeping.getTimeend()}"
+                                       name="timeEnd">
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                Thời gian làm việc
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col input-group mb-3">
+                                <input type="text" class="form-control input" placeholder="Thời gian làm việc" id="time" th:value="${timekeeping.getTime()}"
+                                       name="time" readonly="">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">Giờ</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" style="margin-top: 4%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-3" style="text-align: center ;">
+
+                                        <input type="submit" id="btnSubmit" class="btn btn-success form-control button-defualt" name="action"
+                                               value="Lưu">
+                                    </div>
+                                    <div class="col-sm-3" style="text-align: center ;">
+                                        <input type="submit" class="btn btn-success form-control button-defualt" name="action"
+                                               value="Trở lại">
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+                <div class="col-sm-3"></div>
+
+            </div>
+
+
+        </div>
+
+
+    </body>
+
+</html>
+
+<script th:src="@{/script/cleave.js}"></script>
+<script>
+    var checkinFormat = new Cleave('#checkin', {
+        time: true,
+        timePattern: ['h', 'm']
+    });
+    
+     var checkoutFormat = new Cleave('#checkout', {
+        time: true,
+        timePattern: ['h', 'm']
+    });
+
+    var btnSubmit = document.getElementById('btnSubmit');
+
+    function validateCheckin() {
+        var checkin = document.getElementById('checkin').value;
+        if (checkin.length < 5) {
+            document.getElementById('checkin').style.borderColor = '#cc0000';
+            btnSubmit.disabled = true;
+            btnSubmit.style.cursor = "pointer";
+            btnSubmit.style.background = '#cc0000';
+        } else {
+            document.getElementById('checkin').style.borderColor = 'green';
+            btnSubmit.disabled = false;
+            btnSubmit.style.background = '#6667AB';
+        }
+    }
+    
+    function validateCheckout() {
+        var checkin = document.getElementById('checkout').value;
+        if (checkin.length < 5) {
+            document.getElementById('checkout').style.borderColor = '#cc0000';
+            btnSubmit.disabled = true;
+            btnSubmit.style.background = '#cc0000';
+        } else {
+            document.getElementById('checkout').style.borderColor = 'green';
+            btnSubmit.disabled = false;
+            btnSubmit.style.background = '#6667AB';
+        }
+    }
+
+</script>

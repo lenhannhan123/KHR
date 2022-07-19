@@ -9,6 +9,7 @@ import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.Timekeeping;
 import fpt.aptech.KHR.Reponsitory.TimekeepingRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,11 @@ public class TimekeepingServiceImp implements ITimekeepingServices{
     @Override
     public void checkout(Timekeeping timekeeping) {
         timekeepingRepository.save(timekeeping);
+    }
+
+    @Override
+    public List<String> search(String keyword) {
+        return timekeepingRepository.search(keyword);
     }
     
 }

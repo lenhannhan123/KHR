@@ -23,16 +23,38 @@
 
 
         </style>
-
+        <link rel="stylesheet"
+	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $("#searchBox").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "http://localhost:7777/timekeeping/search",
+                            dataType: "json",
+                            data: {
+                                value: request.term
+                            },
+                            success: function (data) {
+                                //alert(data);
+                                console.log(data);
+                                response(data);
+                            }
+                        });
+                    },
+                    minLength: 2
+                });
+            });
+        </script>
     </head>
 
     <body>
 
         <div layout:fragment="content">
 
-            <h3 class="title-page">Quản lý chấm công</h3>
-            
-            <a style="margin-left: 100px" href="/timekeeping/add">Tạo chấm công</a>
+            <h3 class="title-page">Quản lý chấm công</h3>        
 
             <div class="row">
                 <div class="col-sm-1"></div>
@@ -41,22 +63,14 @@
 
                     <div class="row" style="margin-bottom:2% ;">
                         <div class="col-sm-3">
-                            <input type="text" class="form-control input" id="" placeholder="Nhập email">
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <!--div class="col-sm-12"></div>-->
-                                <!--                                <div class="col-sm-5" style="margin-left: 500px">
-                                                                    <a href="/account/create">
-                                                                        <input type="button" class="btn btn-success form-control button-defualt" value="">
-                                                                    </a>
-                                                                </div>-->
-                            </div>
+                            <form method="get">
+                                <input type="text" class="form-control input" placeholder="Nhập email" name="search" id="searchBox">
+                            </form>
                         </div>
                     </div>
 
 
-                    <table class="table">
+                    <table class="table" style="text-align: center;">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
@@ -65,34 +79,39 @@
                                 <th scope="col">Thời gian checkin</th>
                                 <th scope="col">Thời gian checkout</th>
                                 <th scope="col">Số giờ làm</th>
-                                <th scope="col">Ca</th>
+                                <!--<th scope="col">Ca</th>-->
                                 <th scope="col">Trạng thái</th>
 
                             </tr>
                         </thead>                     
                         <tbody>
                             <tr th:each="item:${list}">
-                                <td align="center">
                                 <td th:text="${item.getId()}"></td>
-                                <td th:text="${item.getMail()}"></td>
-                                <td th:text="${item.getTimestart()}"></td>
-                                <td th:text="${item.getTimeend()}"></td>
-                                <td th:text="${item.getIdshift()}"></td>
-                        <div class="dropdown">
-                            <button class="button-envent
-                                    dropdown-toggle" style="margin-right:
-                                    10px;" type="button" id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-edit"
-                                   style="color:
-                                   #6667AB"></i>
-                            </button>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Chỉnh sửa thông tin</a>
-                            </div>
-
+                                <td th:text="${item.getMail().getMail()}"></td> 
+                        <div th:each="user:${accountList}">
+                            <td th:if="${user.getMail() == item.getMail().getMail()}" th:text="${user.getFullname()}"></td>
                         </div>
+
+                        <td th:text="${item.getTimestart()}"></td>
+                        <td th:text="${item.getTimeend()}"></td>
+                        <td th:text="${item.getTime()}"></td>
+                        <!--<td th:text="${item.getIdshift()}"></td>-->
+                        <td>
+                            <div class="dropdown">
+                                <button class="button-envent
+                                        dropdown-toggle" style="margin-right:
+                                        10px;" type="button" id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-edit"
+                                       style="color:
+                                       #6667AB"></i>
+                                </button>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" th:href="@{'/timekeeping/update/' + ${item.getId()}}">Chỉnh sửa thông tin</a>
+                                </div>
+
+                            </div>
 
                         </td>                            
 
