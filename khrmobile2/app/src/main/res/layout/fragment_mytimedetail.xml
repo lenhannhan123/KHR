@@ -28,7 +28,7 @@
                 android:paddingTop="10dp"
                 android:text="\n Lịch làm việc"
                 android:textSize="5pt"
-                app:backgroundTint="#7388D4"
+
                   />
 
             <Button
