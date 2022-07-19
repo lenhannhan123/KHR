@@ -30,6 +30,7 @@ import java.lang.reflect.Array;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -310,17 +311,29 @@ public class TimelineController {
         timeline.setStartdate(TimelineStartDayParse);
         timeline.setEnddate(TimelineEndDayParse);
         timeline.setStatus((short) 0);
-        timeline = timelineServices.Create(timeline);
+//        timeline = timelineServices.Create(timeline);
 
 
 //        JsonServices.dd(timeline.getId(), response);
         int k = 0;
         int i = 0;
         int t = 0;
+        int date = 0;
         boolean OTT = false;
+        Date tmpDateStart;
+
+//        JsonServices.dd(JsonServices.ParseToJson(ListShiftJS), response);
 
         for (ShiftJS item : ListShiftJS
         ) {
+
+            long mili = Long.parseLong(JsonServices.ParseToJson(TimelineStartDayParse).toString()) + (86400000 * 2);
+            tmpDateStart = new Date(mili);
+
+
+//            JsonServices.dd(JsonServices.ParseToJson(TimelineStartDayParse).toString(), response);
+            JsonServices.dd(tmpDateStart.toString(), response);
+
             t = 0;
             OTT = false;
             for (PositionJS position : item.position
@@ -355,8 +368,8 @@ public class TimelineController {
                     switch (k) {
                         case 0:
                             try {
-                                timestart = new SimpleDateFormat(" yyyy-mm-dd hh:mm::ss").parse("06:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("10:00");
+                                timestart = new SimpleDateFormat(" yyyy-mm-dd hh:mm").parse(" 06:00");
+                                timeend = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse(" 10:00");
 
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
@@ -365,8 +378,8 @@ public class TimelineController {
 
                         case 1:
                             try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("10:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("14:00");
+                                timestart = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse("10:00");
+                                timeend = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse("14:00");
 
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
@@ -374,8 +387,8 @@ public class TimelineController {
                             break;
                         case 2:
                             try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("14:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("18:00");
+                                timestart = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse("14:00");
+                                timeend = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse("18:00");
 
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
@@ -383,8 +396,8 @@ public class TimelineController {
                             break;
                         case 3:
                             try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("18:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("22:00");
+                                timestart = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse("18:00");
+                                timeend = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse("22:00");
 
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
@@ -392,8 +405,8 @@ public class TimelineController {
                             break;
                         case 4:
                             try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("22:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("06:00");
+                                timestart = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse("22:00");
+                                timeend = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse("06:00");
 
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
@@ -401,8 +414,8 @@ public class TimelineController {
                             break;
                         default:
                             try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("21:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("06:00");
+                                timestart = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse("21:00");
+                                timeend = new SimpleDateFormat("yyyy-mm-dd hh:mm").parse("06:00");
 
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
