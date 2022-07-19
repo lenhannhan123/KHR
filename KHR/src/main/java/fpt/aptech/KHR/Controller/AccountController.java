@@ -10,6 +10,7 @@ import fpt.aptech.KHR.Entities.AccountPosition;
 import fpt.aptech.KHR.Entities.Position;
 import fpt.aptech.KHR.Entities.PositionJS;
 import fpt.aptech.KHR.Entities.Timeline;
+import fpt.aptech.KHR.FileUpload.FileUploadUtil;
 import fpt.aptech.KHR.ImpServices.AccountPositionService;
 import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.ImpServices.PositionServices;
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import fpt.aptech.KHR.Services.IPositionServices;
+import java.io.IOException;
 
 import static java.lang.System.out;
 
@@ -42,7 +44,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author jthie
@@ -83,7 +88,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = {RouteWeb.AccountGetCreateURL}, method = RequestMethod.POST)
-    public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response) {
+    public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam("image") MultipartFile multipartFile) throws IOException {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String mail = request.getParameter("txtAccountMail");
@@ -91,6 +96,7 @@ public class AccountController {
         String phone = request.getParameter("txtPhone");
         boolean gender = Boolean.parseBoolean(request.getParameter("radioGender"));
         String strBday = request.getParameter("txtBirthDay");
+
         Date bday = null;
         try {
             bday = new SimpleDateFormat("yyyy-mm-dd").parse(strBday);
@@ -98,10 +104,17 @@ public class AccountController {
             throw new RuntimeException(e);
         }
         short role = Short.parseShort(request.getParameter("txtRole"));
-
-        Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender, encoder.encode(mail), role, true);
+        
+        
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender, encoder.encode(mail), role, true, fileName);
 
         accountRepository.save(account);
+        
+        String uploadDir = "src/main/resources/images/user-photos/";
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        
+        
         List<Position> positions = positionServices.findAll();
         for (int i = 0; i < positions.size(); i++) {
             if (request.getParameter("check" + i) != null) {

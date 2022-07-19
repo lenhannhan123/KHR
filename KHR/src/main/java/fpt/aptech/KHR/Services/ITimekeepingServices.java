@@ -24,4 +24,6 @@ public interface ITimekeepingServices {
     void checkin(Timekeeping timekeeping);
 
     void checkout(Timekeeping timekeeping);
+    
+    public List<String> search(String keyword);
 }

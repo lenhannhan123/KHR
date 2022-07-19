@@ -11,6 +11,7 @@ import fpt.aptech.KHR.Entities.Timekeeping;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author backs
@@ -22,4 +23,7 @@ public interface TimekeepingRepository extends JpaRepository<Timekeeping, Intege
 
     @Query(value = "select * from Timekeeping where mail = :mail order by id DESC limit 1", nativeQuery = true)
     Timekeeping findByMail(@PathVariable("mail") Account mail);
+
+    @Query("select distinct mail.mail from Timekeeping t inner join t.mail mail where t.mail.mail like %:keyword%")
+    public List<String> search(@RequestParam("keyword") String keyword);
 }

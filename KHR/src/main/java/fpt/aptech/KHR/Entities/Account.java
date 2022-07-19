@@ -99,7 +99,7 @@ public class Account implements Serializable {
         this.mail = mail;
     }
 
-    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, short role, boolean status) {
+    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, short role, boolean status, String avatar) {
         this.mail = mail;
         this.password = password;
         this.fullname = fullname;
@@ -109,6 +109,7 @@ public class Account implements Serializable {
         this.code = code;
         this.role = role;
         this.status = status;
+        this.avatar = avatar;
     }
     
         public Account(String mail, String fullname, String phone, Date birthdate, boolean gender, String code, short role, boolean status) {
