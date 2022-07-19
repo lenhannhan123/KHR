@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head>
     <meta charset="utf-8">
@@ -100,6 +100,7 @@
             <div style="margin-top:40% ; margin-left: 20%;">
 
                 <h3>Đăng nhập</h3>
+                
 
             </div>
             <form class="form-signin" method="post" th:action="@{/j_spring_security_check}">
@@ -124,6 +125,19 @@
                     </div>
                     <!-- <div class="col-sm-2"></div> -->
                 </div>
+                <div class="row" style="margin-top:7% ">
+                    <div class="col">
+                        <div th:if="${param.error}">
+                            Invalid username or password.
+                        </div>
+                        <div th:if="${param.logout}">
+                            You have been logged out.
+                        </div>
+                    </div>
+
+                </div>
+                
+
                 <div class="row" style="margin-top:7% ">
                     <div class="col-sm-4"></div>
                     <div class="col">
