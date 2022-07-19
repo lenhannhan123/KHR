@@ -7,10 +7,10 @@ package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.Timekeeping;
+
 import java.util.List;
 
 /**
- *
  * @author backs
  */
 public interface ITimekeepingServices {

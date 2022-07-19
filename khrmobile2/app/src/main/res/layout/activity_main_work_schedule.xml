@@ -29,7 +29,7 @@
 
                 <Button
 
-                    android:id="@+id/Accoun_change_btnInfor"
+                    android:id="@+id/btn_schedule_my_timeline"
                     android:layout_width="10dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"

@@ -39,4 +39,8 @@ public class RouteAPI {
 
     public final static String Timelinecheckmytimeline = "api/timeline/mytimeline";
 
+    public final static String TimelineGetYear = "api/timeline/getyear";
+
+    public final static String TimelineGetMyTimelineDetail = "api/timeline/mytimeline/detail";
+
 }

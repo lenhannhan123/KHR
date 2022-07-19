@@ -355,7 +355,7 @@ public class TimelineController {
                     switch (k) {
                         case 0:
                             try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("06:00");
+                                timestart = new SimpleDateFormat(" yyyy-mm-dd hh:mm::ss").parse("06:00");
                                 timeend = new SimpleDateFormat("hh:mm").parse("10:00");
 
                             } catch (ParseException e) {
@@ -1182,7 +1182,7 @@ public class TimelineController {
 
         boolean[] usertimeline = new boolean[36];
 
-        for (int i = 1; i <= 36; i++) {
+        for (int i = 1; i <= 35; i++) {
             usertimeline[i] = false;
         }
 
@@ -1296,7 +1296,7 @@ public class TimelineController {
         int idTimeline = Integer.parseInt(request.getParameter("idTimeline"));
 
 
-        Boolean[] data = new Boolean[13];
+        Boolean[] data = new Boolean[36];
 
         for (int i = 1; i <= 35; i++) {
 

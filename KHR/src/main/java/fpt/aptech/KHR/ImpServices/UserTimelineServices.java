@@ -97,9 +97,15 @@ public class UserTimelineServices implements IUserTimeServices {
 
     }
 
+
     @Override
     public List<UserTimeline> UserTimeline(int idTimeline, String mail) {
         return userTimeLineRepository.checkUserTimeline(new Timeline(idTimeline), new Account(mail));
-        
+
+    }
+
+    @Override
+    public List<Integer> GetIdTimeline(String mail) {
+        return userTimeLineRepository.GetIdtimeline(mail);
     }
 }

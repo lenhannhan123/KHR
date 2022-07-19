@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 
@@ -29,6 +30,21 @@ public class MainWorkScheduleActivity extends AppCompatActivity {
         callNav.setDisplay(scrollView,MainWorkScheduleActivity.this,0.8);
 
         buttonBack();
+        button_my_timeline();
+    }
+
+
+
+    private void button_my_timeline(){
+        Button button = findViewById(R.id.btn_schedule_my_timeline);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainWorkScheduleActivity.this, MyTimelineActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void buttonBack(){
