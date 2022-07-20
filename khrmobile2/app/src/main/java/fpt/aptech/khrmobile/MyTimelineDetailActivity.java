@@ -21,7 +21,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import fpt.aptech.khrmobile.APII.APITimeline;
+import fpt.aptech.khrmobile.API.APITimeline;
 import fpt.aptech.khrmobile.Config.ConfigData;
 import fpt.aptech.khrmobile.Entities.ModelString;
 import retrofit2.Call;

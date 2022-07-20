@@ -1,4 +1,4 @@
-package fpt.aptech.khrmobile.APII;
+package fpt.aptech.khrmobile.API;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
