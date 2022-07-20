@@ -21,8 +21,12 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.tabs.TabLayout
+                android:id="@+id/myTimeline_tablayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="#6667AB"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="#6667AB">
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/t2"
@@ -67,10 +71,16 @@
                     android:text="Chủ nhật" />
             </com.google.android.material.tabs.TabLayout>
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/My_timelinedetail_Tabview"
+            <FrameLayout
+                android:id="@+id/My_timedetail_fragmentlayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                >
+
+            </FrameLayout>
+
+
         </RelativeLayout>
 
 

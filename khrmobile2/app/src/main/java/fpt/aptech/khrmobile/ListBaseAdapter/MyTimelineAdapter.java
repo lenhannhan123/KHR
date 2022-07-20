@@ -67,7 +67,20 @@ public class MyTimelineAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, MyTimelineDetailActivity.class);
-                intent.putExtra("data", Mytimeline_Item_Timeline.getText());
+                String text = Mytimeline_Item_Timeline.getText().toString();
+                String idSelect="";
+
+                for (ModelString item1: list) {
+
+                    if(item1.getData2().equals(text) ){
+                        idSelect = item1.getData1();
+                    }
+
+                }
+
+                intent.putExtra("data", text);
+                intent.putExtra("idSelect", idSelect);
+
                 context.startActivity(intent);
             }
         });
