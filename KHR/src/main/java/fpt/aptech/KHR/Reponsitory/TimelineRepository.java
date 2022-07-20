@@ -31,4 +31,7 @@ public interface TimelineRepository extends JpaRepository<Timeline, Integer> {
     @Query("SELECT COUNT(t.id) FROM Timeline t WHERE t.enddate = :enddate AND t.isDelete = :isDelete")
     int findEndDay(@PathVariable("enddate") Date enddate, @PathVariable("isDelete") short isDelete);
 
+    @Query("SELECT t FROM Timeline t WHERE t.status = :status AND t.isDelete = :isDelete")
+    List<Timeline> findAllWhenStatusOn(@PathVariable("status") short status, @PathVariable("isDelete") short isDelete);
+
 }

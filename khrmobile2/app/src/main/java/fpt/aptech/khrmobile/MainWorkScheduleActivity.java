@@ -31,6 +31,7 @@ public class MainWorkScheduleActivity extends AppCompatActivity {
 
         buttonBack();
         button_my_timeline();
+        button_add_timeline();
     }
 
 
@@ -46,6 +47,19 @@ public class MainWorkScheduleActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void button_add_timeline(){
+        Button button = findViewById(R.id.work_schedule_add_timeline);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainWorkScheduleActivity.this, AddTimeLineActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
     private void buttonBack(){
         ImageButton button = findViewById(R.id.btn_Work_schedule_back);

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -204,4 +205,22 @@ public class APITimelineController {
 
     }
 
+
+    @RequestMapping(value = {RouteAPI.TimelineGetAddTimeline}, method = RequestMethod.GET)
+    public void GetAddTimeline(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String idUser = request.getParameter("mail").toString();
+        List<Timeline> timelines = timelineServices.FindAllWhenStatusOn();
+        List<ModelString> models = new ArrayList<>();
+
+
+        for (Timeline item : timelines) {
+            ModelString mdString = new ModelString();
+            mdString.setData2(item.getTimename());
+            mdString.setData1(item.getId().toString());
+            models.add(mdString);
+        }
+        JsonServices.dd(JsonServices.ParseToJson(models), response);
+
+    }
 }

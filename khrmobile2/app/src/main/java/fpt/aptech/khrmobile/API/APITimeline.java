@@ -37,4 +37,8 @@ public interface APITimeline {
     @GET("mytimeline/detail")
     Call<List<String>> getMyTimelineDetail (@Query("id") String id,
                                                  @Query("mail") String mail);
+
+    @GET("addtimeline/list")
+    Call<List<ModelString>> getAddTimeLine (@Query("mail") String mail);
 }
+
