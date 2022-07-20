@@ -30,9 +30,11 @@ import java.lang.reflect.Array;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @CrossOrigin(maxAge = 3600)
@@ -317,10 +319,25 @@ public class TimelineController {
         int k = 0;
         int i = 0;
         int t = 0;
+        int date = 0;
         boolean OTT = false;
+        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        Date tmpDateStart, tmpDateEnd;
+
+//        JsonServices.dd(JsonServices.ParseToJson(ListShiftJS), response);
 
         for (ShiftJS item : ListShiftJS
         ) {
+
+            long mili = Long.parseLong(JsonServices.ParseToJson(TimelineStartDayParse).toString()) + (86400000 * date);
+
+
+            long miliend = Long.parseLong(JsonServices.ParseToJson(TimelineStartDayParse).toString()) + (86400000 * date);
+
+
+//            JsonServices.dd(JsonServices.ParseToJson(TimelineStartDayParse).toString(), response);
+//            JsonServices.dd(tmpDateStart.toString(), response);
+
             t = 0;
             OTT = false;
             for (PositionJS position : item.position
@@ -352,61 +369,49 @@ public class TimelineController {
                     Date timestart;
                     Date timeend;
 
+
                     switch (k) {
                         case 0:
-                            try {
-                                timestart = new SimpleDateFormat(" yyyy-mm-dd hh:mm::ss").parse("06:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("10:00");
 
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
+                            timestart = new Date(mili + 21600000);
+                            timeend = new Date(miliend + 36000000);
+
+
                             break;
 
                         case 1:
-                            try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("10:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("14:00");
 
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
+                            timestart = new Date(mili + 36000000);
+                            timeend = new Date(miliend + 50400000);
+
+
                             break;
                         case 2:
-                            try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("14:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("18:00");
 
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
+                            timestart = new Date(mili + 50400000);
+                            timeend = new Date(miliend + 64800000);
+
                             break;
                         case 3:
-                            try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("18:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("22:00");
 
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
+                            timestart = new Date(mili + 64800000);
+                            timeend = new Date(miliend + 79200000);
+
+
                             break;
                         case 4:
-                            try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("22:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("06:00");
 
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
+                            timestart = new Date(mili + 79200000);
+                            timeend = new Date(miliend + 108000000);
+
+
                             break;
                         default:
-                            try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("21:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("06:00");
 
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
+                            timestart = new Date(mili + 79200001);
+                            timeend = new Date(miliend + 86400001);
+
+
                             break;
                     }
 
@@ -445,6 +450,7 @@ public class TimelineController {
 
             if (k == 4) {
                 k = -1;
+                date += 1;
 
             }
             k += 1;
@@ -845,7 +851,11 @@ public class TimelineController {
         int i = 0;
         int t = 0;
         int k = 0;
+        int date = 0;
         boolean OTT = false;
+
+        Timeline tl = timelineServices.FindOne(id_timeline1);
+
         for (ShiftJS item : ListShiftJS
         ) {
             t = 0;
@@ -858,6 +868,10 @@ public class TimelineController {
                 }
 
             }
+            long mili = Long.parseLong(JsonServices.ParseToJson(tl.getStartdate()).toString()) + (86400000 * date);
+
+
+            long miliend = Long.parseLong(JsonServices.ParseToJson(tl.getStartdate()).toString()) + (86400000 * date);
 
             if (t == item.position.size()) {
                 OTT = true;
@@ -897,59 +911,46 @@ public class TimelineController {
                         Date timeend;
                         switch (k) {
                             case 0:
-                                try {
-                                    timestart = new SimpleDateFormat("hh:mm").parse("06:00");
-                                    timeend = new SimpleDateFormat("hh:mm").parse("10:00");
 
-                                } catch (ParseException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                timestart = new Date(mili + 21600000);
+                                timeend = new Date(miliend + 36000000);
+
+
                                 break;
 
                             case 1:
-                                try {
-                                    timestart = new SimpleDateFormat("hh:mm").parse("10:00");
-                                    timeend = new SimpleDateFormat("hh:mm").parse("14:00");
 
-                                } catch (ParseException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                timestart = new Date(mili + 36000000);
+                                timeend = new Date(miliend + 50400000);
+
+
                                 break;
                             case 2:
-                                try {
-                                    timestart = new SimpleDateFormat("hh:mm").parse("14:00");
-                                    timeend = new SimpleDateFormat("hh:mm").parse("18:00");
 
-                                } catch (ParseException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                timestart = new Date(mili + 50400000);
+                                timeend = new Date(miliend + 64800000);
+
                                 break;
                             case 3:
-                                try {
-                                    timestart = new SimpleDateFormat("hh:mm").parse("18:00");
-                                    timeend = new SimpleDateFormat("hh:mm").parse("22:00");
 
-                                } catch (ParseException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                timestart = new Date(mili + 64800000);
+                                timeend = new Date(miliend + 79200000);
+
+
                                 break;
                             case 4:
-                                try {
-                                    timestart = new SimpleDateFormat("hh:mm").parse("22:00");
-                                    timeend = new SimpleDateFormat("hh:mm").parse("06:00");
 
-                                } catch (ParseException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                timestart = new Date(mili + 79200000);
+                                timeend = new Date(miliend + 108000000);
+
+
                                 break;
                             default:
-                                try {
-                                    timestart = new SimpleDateFormat("hh:mm").parse("21:00");
-                                    timeend = new SimpleDateFormat("hh:mm").parse("06:00");
 
-                                } catch (ParseException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                timestart = new Date(mili + 79200001);
+                                timeend = new Date(miliend + 86400001);
+
+
                                 break;
                         }
 //
@@ -999,6 +1000,7 @@ public class TimelineController {
 
             if (k == 4) {
                 k = -1;
+                date += 1;
 
             }
             k += 1;

@@ -1,10 +1,11 @@
-package fpt.aptech.khrmobile.APII;
+package fpt.aptech.khrmobile.API;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
+import fpt.aptech.khrmobile.Config.ConfigData;
 import fpt.aptech.khrmobile.Entities.ModelString;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -18,7 +19,7 @@ public interface APITimeline {
 
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     APITimeline api = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.201:7777/api/timeline/")
+            .baseUrl("http://"+ ConfigData.IP +":7777/api/timeline/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(APITimeline.class);
@@ -33,5 +34,11 @@ public interface APITimeline {
                                            @Query("year") String year
                                       );
 
+    @GET("mytimeline/detail")
+    Call<List<String>> getMyTimelineDetail (@Query("id") String id,
+                                                 @Query("mail") String mail);
 
+    @GET("addtimeline/list")
+    Call<List<ModelString>> getAddTimeLine (@Query("mail") String mail);
 }
+

@@ -30,4 +30,6 @@ public interface ITimelineServices {
 
     public int countEndDay(Date EndDay);
 
+    public List<Timeline> FindAllWhenStatusOn();
+
 }

@@ -13,6 +13,12 @@
         android:theme="@style/Theme.Khrmobile"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".AddTimelineDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddTimeLineActivity"
+            android:exported="false" />
+        <activity
             android:name=".MyTimelineDetailActivity"
             android:exported="false" />
         <activity

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    tools:context=".MyTimelineDetailActivity">
+    tools:context=".AddTimelineDetailActivity">
 
     <ScrollView
         android:id="@+id/scrollView"
