@@ -11,11 +11,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import fpt.aptech.khrmobile.API.APIAccountLogin;
 import fpt.aptech.khrmobile.API.ApiClient;
 import fpt.aptech.khrmobile.Entities.Account;
 import fpt.aptech.khrmobile.Entities.AccountLogin;
 import fpt.aptech.khrmobile.Entities.LoginRequest;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class login extends AppCompatActivity {
     EditText Login_txtUsername;
@@ -46,12 +49,13 @@ public class login extends AppCompatActivity {
                     Toast.makeText(login.this, message, Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    LoginRequest loginRequest = new LoginRequest();
-                    loginRequest.setMail(Login_txtUsername.getText().toString());
-                    loginRequest.setPassword(Login_txtPassword.getText().toString());
+//                    LoginRequest loginRequest = new LoginRequest();
+//                    loginRequest.setMail(Login_txtUsername.getText().toString());
+//                    loginRequest.setPassword(Login_txtPassword.getText().toString());
+                    loginUser();
                 }
-                Intent intent = new Intent(login.this, MainActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(login.this, MainActivity.class);
+//                startActivity(intent);
             }
         });
     }
@@ -65,9 +69,52 @@ public class login extends AppCompatActivity {
         login();
     }
 
+    public void loginUser(){
+//        Toast.makeText(login.this, Login_txtPassword.getText().toString(),Toast.LENGTH_LONG).show();
+        APIAccountLogin.api.getLogin(Login_txtUsername.getText().toString(), Login_txtPassword.getText().toString()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+//                Toast.makeText(login.this, response.body(), Toast.LENGTH_LONG).show();
+            if(response.body().equals("User signed-in successfully!.")){
+                startActivity(new Intent(login.this, MainActivity.class));
+//                    finish();
+            }
+                else{
+                    String message="An error occured, please try again later..";
+                    Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(login.this,"Lỗi mạng!!",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 //    public void loginUser(LoginRequest loginRequest){
 //        Call<Account> accountCall = ApiClient.getService().loginUser(loginRequest);
-//        AccountLogin.en
+//        accountCall.enqueue(new Callback<Account>() {
+//            @Override
+//            public void onResponse(Call<Account> call, Response<Account> response) {
+//                if(response.body().equals("User signed-in successfully!.")){
+//                    Account account = response.body();
+//                    startActivity(new Intent(login.this, MainActivity.class));
+////                    finish();
+//                }
+//                else{
+//                    String message="An error occured, please try again later..";
+//                    Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
+//                }
+//            }
 //
+//            @Override
+//            public void onFailure(Call<Account> call, Throwable t) {
+//                String message = t.getLocalizedMessage();
+//                Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
+//            }
+//        });
 //    }
+
 }

@@ -8,7 +8,11 @@ package fpt.aptech.KHR.Controller;
 import Security.jwt.JwtUtils;
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.ImpServices.AccountService;
+import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.Services.AccountServiceImp;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +23,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -41,13 +48,27 @@ public class AuthController {
     @Autowired
     private AccountServiceImp accountServiceImp;
 
-    @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestBody Account account) {
+//    @PostMapping("/signin")
+//    public ResponseEntity<String> authenticateUser(@RequestBody Account account) {
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//                account.getMail(), account.getPassword()));
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+//    }
+    
+    @RequestMapping(value = "/signin", method = RequestMethod.GET)
+    public void authenticateUser(Model model, @RequestParam("mail") String mail, @RequestParam("password") String password, 
+            HttpServletRequest request, HttpServletResponse response) {
+        
+        Account account = new Account();
+        account.setMail(mail);
+        account.setPassword(password);
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 account.getMail(), account.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+        JsonServices.dd("User signed-in successfully!.", response);
+//        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
     }
 
 }

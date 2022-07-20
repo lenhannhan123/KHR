@@ -1,8 +1,9 @@
 package fpt.aptech.khrmobile.Entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Account {
+public class Account  implements Serializable {
     private String mail;
     private String password;
     private String fullname;

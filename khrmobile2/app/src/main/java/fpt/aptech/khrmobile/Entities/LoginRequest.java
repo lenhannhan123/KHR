@@ -1,6 +1,8 @@
 package fpt.aptech.khrmobile.Entities;
 
-public class LoginRequest {
+import java.io.Serializable;
+
+public class LoginRequest  implements Serializable {
     private String mail;
     private String password;
 

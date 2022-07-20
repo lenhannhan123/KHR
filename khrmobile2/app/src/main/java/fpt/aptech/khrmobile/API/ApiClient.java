@@ -13,7 +13,7 @@ public class ApiClient {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("http://"+ ConfigData.IP +":7777/api/auth/signin")
+                .baseUrl("http://"+ ConfigData.IP +":7777/")
                 .client(okHttpClient).build();
         return retrofit;
     }
