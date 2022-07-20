@@ -6,6 +6,7 @@
 package fpt.aptech.KHR.Controller;
 
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.Shift;
 import fpt.aptech.KHR.Entities.Timekeeping;
 import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.Routes.RouteAPI;
@@ -18,9 +19,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 /**
  * @author backs
  */
@@ -68,6 +73,9 @@ public class TimekeepingController {
         //timekeeping.setTimestart(java.sql.Time.valueOf(localTime));
         timekeeping.setTimestart(java.sql.Time.valueOf("07:30:00"));
         timekeeping.setTimeend(java.sql.Time.valueOf("00:00:00"));
+        Shift shift = new Shift();
+        shift.setId(0);
+        timekeeping.setShiftId(shift);
         timekeepingServices.checkin(timekeeping);
         return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);
     }
@@ -112,7 +120,7 @@ public class TimekeepingController {
         } else {
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-                
+
                 String checkin = request.getParameter("timeStart") + ":00";
                 //JsonServices.dd(JsonServices.ParseToJson(checkin), response);
                 String checkout = request.getParameter("timeEnd") + ":00";
