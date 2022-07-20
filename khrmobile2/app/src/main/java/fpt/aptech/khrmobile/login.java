@@ -65,9 +65,9 @@ public class login extends AppCompatActivity {
         login();
     }
 
-    public void loginUser(LoginRequest loginRequest){
-        Call<Account> accountCall = ApiClient.getService().loginUser(loginRequest);
-        AccountLogin.en
-
-    }
+//    public void loginUser(LoginRequest loginRequest){
+//        Call<Account> accountCall = ApiClient.getService().loginUser(loginRequest);
+//        AccountLogin.en
+//
+//    }
 }

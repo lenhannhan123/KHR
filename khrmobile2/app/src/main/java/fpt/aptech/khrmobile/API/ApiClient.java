@@ -1,5 +1,5 @@
 package fpt.aptech.khrmobile.API;
-import fpt.aptech.khrmobile.Config.ConfigIP;
+import fpt.aptech.khrmobile.Config.ConfigData;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -13,7 +13,7 @@ public class ApiClient {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("http://"+ ConfigIP.IP +":7777/api/auth/signin")
+                .baseUrl("http://"+ ConfigData.IP +":7777/api/auth/signin")
                 .client(okHttpClient).build();
         return retrofit;
     }
