@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import fpt.aptech.khrmobile.APII.APITimeline;
+import fpt.aptech.khrmobile.API.APITimeline;
 import fpt.aptech.khrmobile.Entities.ModelString;
 import fpt.aptech.khrmobile.ListBaseAdapter.MyTimelineAdapter;
 import retrofit2.Call;
