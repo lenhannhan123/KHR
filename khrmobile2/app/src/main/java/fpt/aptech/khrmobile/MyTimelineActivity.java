@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import fpt.aptech.khrmobile.API.APITimeline;
+import fpt.aptech.khrmobile.Config.ConfigData;
 import fpt.aptech.khrmobile.Entities.ModelString;
 import fpt.aptech.khrmobile.ListBaseAdapter.MyTimelineAdapter;
 import retrofit2.Call;
@@ -226,12 +227,12 @@ public class MyTimelineActivity extends AppCompatActivity {
 
     private  void GetData(String month, String year){
 
-        String mail = "j.thien1551@gmail.com";
+        String mail = ConfigData.userId;
 
         listView = findViewById(R.id.My_timeline_list_view);
 
 
-        APITimeline.api.getMyTimeline("j.thien1551@gmail.com",month,year).enqueue(new Callback<List<ModelString>>() {
+        APITimeline.api.getMyTimeline(mail,month,year).enqueue(new Callback<List<ModelString>>() {
             @Override
             public void onResponse(Call<List<ModelString>> call, Response<List<ModelString>> response) {
                 List<ModelString> data =response.body();
