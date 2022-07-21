@@ -13,6 +13,7 @@ import fpt.aptech.KHR.Services.IAccountRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,17 +44,17 @@ public class AccountService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account adminaccount = repository.findByMailAdmin(username);
         Account useraccount = repository.findByMailUser(username);
-        if (adminaccount != null) {
+        Account account = repository.findByMail(username);
+        if (account != null) {
             List<GrantedAuthority> grantList = new ArrayList<>();
             GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");
             grantList.add(authority);
-            UserDetails userDetails = new User(adminaccount.getMail(), adminaccount.getPassword(), grantList);
+            UserDetails userDetails = new User(account.getMail(), account.getPassword(), grantList);
             return userDetails;
         } else {
             new UsernameNotFoundException("Login failed!");
         }
         return null;
-
     }
 
     public List<Account> findAll() {
