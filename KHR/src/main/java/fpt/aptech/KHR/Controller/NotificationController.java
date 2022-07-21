@@ -36,12 +36,20 @@ public class NotificationController {
     }
     @RequestMapping(value = {RouteWeb.notificationAddURL}, method = RequestMethod.GET)
     public String AddPage(Model model) {
-        model.addAttribute("accountList", JsonServices.ParseToJson(acs.findAll()));
+         model.addAttribute("accountList", JsonServices.ParseToJson(acs.findAll()));
          model.addAttribute("accountsize",acs.findAll().size());
         return "notification/add";
     }
     @RequestMapping(value = {"/notification/create"}, method = RequestMethod.GET)
     public String AddNotification(Model model,HttpServletRequest request, HttpServletResponse response) {
+       
+        return "notification/add";
+    }
+    @RequestMapping(value = {"/notification/mail"}, method = RequestMethod.GET)
+    public String FindNotificationByMail(Model model,HttpServletRequest request, HttpServletResponse response) {
+        String mail = request.getParameter("mail").toString();
+        Account account = acs.findByMail(mail);
+       JsonServices.dd(JsonServices.ParseToJson(ns.findbyAccount(account)), response);
         return "notification/add";
     }
     
