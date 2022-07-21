@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import fpt.aptech.khrmobile.APII.APITimeline;
+import fpt.aptech.khrmobile.API.APITimeline;
 import fpt.aptech.khrmobile.Config.ConfigData;
 import fpt.aptech.khrmobile.Entities.ModelString;
 import fpt.aptech.khrmobile.ListBaseAdapter.AddTimelineAdapter;

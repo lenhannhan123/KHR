@@ -44,6 +44,7 @@ public class login extends AppCompatActivity {
         Login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(login.this, MainActivity.class));
                 if(TextUtils.isEmpty(Login_txtUsername.getText().toString()) || TextUtils.isEmpty(Login_txtPassword.getText().toString())){
                     String message = "All inputs required ...";
                     Toast.makeText(login.this, message, Toast.LENGTH_SHORT).show();
@@ -70,19 +71,18 @@ public class login extends AppCompatActivity {
     }
 
     public void loginUser(){
+
 //        Toast.makeText(login.this, Login_txtPassword.getText().toString(),Toast.LENGTH_LONG).show();
-        APIAccountLogin.api.getLogin(Login_txtUsername.getText().toString(), Login_txtPassword.getText().toString()).enqueue(new Callback<String>() {
+        String mails = Login_txtUsername.getText().toString();
+        String passwords = Login_txtPassword.getText().toString();
+
+        APIAccountLogin.api.getLogin(mails,passwords).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-//                Toast.makeText(login.this, response.body(), Toast.LENGTH_LONG).show();
-            if(response.body().equals("User signed-in successfully!.")){
-                startActivity(new Intent(login.this, MainActivity.class));
-//                    finish();
-            }
-                else{
-                    String message="An error occured, please try again later..";
-                    Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
-                }
+
+
+                Toast.makeText(login.this,response.body(),Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

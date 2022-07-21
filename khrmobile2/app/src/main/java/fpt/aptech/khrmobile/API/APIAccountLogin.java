@@ -19,11 +19,11 @@ import retrofit2.http.Query;
 public interface APIAccountLogin {
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     APIAccountLogin api = new Retrofit.Builder()
-//            .baseUrl("http://"+ ConfigData.IP +":7777/api/auth/")
-            .baseUrl("http://192.168.1.3:7777/api/auth/")
+            .baseUrl("http://"+ConfigData.IP+":7777/api/auth/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(APIAccountLogin.class);
+
 
     @GET("signin")
     Call<String> getLogin (@Query("mail") String mail,
