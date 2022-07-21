@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -45,9 +46,11 @@ public class AccountNotification implements Serializable {
     private boolean status;
     @JoinColumn(name = "Mail", referencedColumnName = "Mail")
     @ManyToOne(optional = false)
+//    @JsonBackReference
     private Account mail;
     @JoinColumn(name = "Id_notification", referencedColumnName = "Id")
     @ManyToOne(optional = false)
+//    @JsonBackReference
     private Notification idnotification;
 
     public AccountNotification() {

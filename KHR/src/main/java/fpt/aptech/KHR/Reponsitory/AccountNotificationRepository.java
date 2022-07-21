@@ -5,13 +5,18 @@
  */
 package fpt.aptech.KHR.Reponsitory;
 
+import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.AccountNotification;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  *
  * @author LÊ HỮU TÂM
  */
 public interface AccountNotificationRepository extends JpaRepository<AccountNotification, Integer> {
-    
+    @Query("SELECT a FROM AccountNotification a WHERE a.mail = :mail")
+    List<AccountNotification> findByEmail(@PathVariable("mail") Account mail);
 }

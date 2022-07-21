@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.Services;
 
+import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.AccountNotification;
 import fpt.aptech.KHR.Entities.Notification;
 import java.util.List;
@@ -17,5 +18,8 @@ public interface INotificationServices {
     List<Notification> findAll();
     List<AccountNotification> findAllNotification();
     boolean AddNotification(Notification notification);
-    
+    void SendAllPeople(Notification notification );
+    void SendAnyPeople(Notification notification,List<Account> listAccount);
+    List<AccountNotification> findbyAccount(Account account);
+    void Seen(AccountNotification accountNotification);
 }
