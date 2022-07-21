@@ -5,19 +5,21 @@
  */
 package fpt.aptech.KHR.Services;
 
+import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.Timekeeping;
 import fpt.aptech.KHR.Reponsitory.TimekeepingRepository;
+
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author backs
  */
 @Service
-public class TimekeepingServiceImp implements ITimekeepingServices{
-    
+public class TimekeepingServiceImp implements ITimekeepingServices {
+
     @Autowired
     TimekeepingRepository timekeepingRepository;
 
@@ -27,8 +29,29 @@ public class TimekeepingServiceImp implements ITimekeepingServices{
     }
 
     @Override
-    public void saveTimekeeping(Timekeeping timekeeping) {
+    public Timekeeping findOne(int id) {
+        return timekeepingRepository.findOne(id);
+    }
+
+    @Override
+    public Timekeeping findByMail(Account mail) {
+        return timekeepingRepository.findByMail(mail);
+    }
+
+
+    @Override
+    public void checkin(Timekeeping timekeeping) {
         timekeepingRepository.save(timekeeping);
+    }
+
+    @Override
+    public void checkout(Timekeeping timekeeping) {
+        timekeepingRepository.save(timekeeping);
+    }
+
+    @Override
+    public List<String> search(String keyword) {
+        return timekeepingRepository.search(keyword);
     }
     
 }

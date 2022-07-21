@@ -30,9 +30,11 @@ import java.lang.reflect.Array;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @CrossOrigin(maxAge = 3600)
@@ -286,6 +288,9 @@ public class TimelineController {
         }
 
 
+//        JsonServices.dd(JsonServices.ParseToJson(ListShiftJS), response);
+
+
         HttpSession session = request.getSession();
         String TimelineStartDay = session.getAttribute("TimelineStartDay").toString();
         String TimelineEndDay = session.getAttribute("TimelineEndDay").toString();
@@ -311,16 +316,50 @@ public class TimelineController {
 
 
 //        JsonServices.dd(timeline.getId(), response);
-
-
+        int k = 0;
         int i = 0;
+        int t = 0;
+        int date = 0;
+        boolean OTT = false;
+        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        Date tmpDateStart, tmpDateEnd;
+
+//        JsonServices.dd(JsonServices.ParseToJson(ListShiftJS), response);
+
         for (ShiftJS item : ListShiftJS
         ) {
+
+            long mili = Long.parseLong(JsonServices.ParseToJson(TimelineStartDayParse).toString()) + (86400000 * date);
+
+
+            long miliend = Long.parseLong(JsonServices.ParseToJson(TimelineStartDayParse).toString()) + (86400000 * date);
+
+
+//            JsonServices.dd(JsonServices.ParseToJson(TimelineStartDayParse).toString(), response);
+//            JsonServices.dd(tmpDateStart.toString(), response);
+
+            t = 0;
+            OTT = false;
+            for (PositionJS position : item.position
+            ) {
+                if (position.isIsCheck() == false) {
+
+                    t += 1;
+                }
+
+            }
+
+            if (t == item.position.size()) {
+                OTT = true;
+
+            }
+
 
             for (PositionJS position : item.position
             ) {
 
-                if (position.getNumber() > 0) {
+
+                if (position.getNumber() > 0 || OTT == true) {
                     Shift shift = new Shift();
 
                     shift.setIdTimeline(new Timeline(timeline.getId()));
@@ -330,28 +369,75 @@ public class TimelineController {
                     Date timestart;
                     Date timeend;
 
-                    if (i == 0 || i % 2 == 0) {
-                        try {
-                            timestart = new SimpleDateFormat("hh:mm").parse("07:30");
-                            timeend = new SimpleDateFormat("hh:mm").parse("11:30");
 
-                        } catch (ParseException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } else {
-                        try {
-                            timestart = new SimpleDateFormat("hh:mm").parse("13:00");
-                            timeend = new SimpleDateFormat("hh:mm").parse("17:00");
+                    switch (k) {
+                        case 0:
 
-                        } catch (ParseException e) {
-                            throw new RuntimeException(e);
-                        }
+                            timestart = new Date(mili + 21600000);
+                            timeend = new Date(miliend + 36000000);
 
+
+                            break;
+
+                        case 1:
+
+                            timestart = new Date(mili + 36000000);
+                            timeend = new Date(miliend + 50400000);
+
+
+                            break;
+                        case 2:
+
+                            timestart = new Date(mili + 50400000);
+                            timeend = new Date(miliend + 64800000);
+
+                            break;
+                        case 3:
+
+                            timestart = new Date(mili + 64800000);
+                            timeend = new Date(miliend + 79200000);
+
+
+                            break;
+                        case 4:
+
+                            timestart = new Date(mili + 79200000);
+                            timeend = new Date(miliend + 108000000);
+
+
+                            break;
+                        default:
+
+                            timestart = new Date(mili + 79200001);
+                            timeend = new Date(miliend + 86400001);
+
+
+                            break;
                     }
 
 
+//                    if (i == 0 || i % 2 == 0) {
+//                        try {
+//                            timestart = new SimpleDateFormat("hh:mm").parse("07:30");
+//                            timeend = new SimpleDateFormat("hh:mm").parse("11:30");
+//
+//                        } catch (ParseException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    } else {
+//                        try {
+//                            timestart = new SimpleDateFormat("hh:mm").parse("13:00");
+//                            timeend = new SimpleDateFormat("hh:mm").parse("17:00");
+//
+//                        } catch (ParseException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//
+//                    }
+
+
                     shift.setShiftcode(code);
-                    shift.setIsOT(false);
+                    shift.setIsOT(OTT);
                     shift.setTimestart(timestart);
                     shift.setTimeend(timeend);
 
@@ -362,6 +448,12 @@ public class TimelineController {
 
             }
 
+            if (k == 4) {
+                k = -1;
+                date += 1;
+
+            }
+            k += 1;
             i += 1;
         }
 
@@ -515,28 +607,41 @@ public class TimelineController {
 
         int j = 0;
 
-        for (int i = 2; i <= 7; i++) {
+        for (int i = 2; i <= 8; i++) {
 
             ShiftJS shiftJS = new ShiftJS();
-
-            shiftJS.setName("Ca sáng (7:30 - 11:30)");
+            shiftJS.setName("Ca sáng (6:00 - 10:00)");
             shiftJS.setDate(String.valueOf(i));
-
             listShift.add(shiftJS);
 
 
             ShiftJS shiftJS1 = new ShiftJS();
-
-            shiftJS1.setName("Ca chiều (13:00 - 17:00)");
+            shiftJS1.setName("Ca trưa (10:00 - 14:00)");
             shiftJS1.setDate(String.valueOf(i));
-
             listShift.add(shiftJS1);
 
 
+            ShiftJS shiftJS2 = new ShiftJS();
+            shiftJS2.setName("Ca chiều (14:00 - 18:00)");
+            shiftJS2.setDate(String.valueOf(i));
+            listShift.add(shiftJS2);
+
+            ShiftJS shiftJS3 = new ShiftJS();
+            shiftJS3.setName("Ca tối (18:00 - 22:00)");
+            shiftJS3.setDate(String.valueOf(i));
+            listShift.add(shiftJS3);
+
+            ShiftJS shiftJS4 = new ShiftJS();
+            shiftJS4.setName("Ca đêm (22:00 - 06:00)");
+            shiftJS4.setDate(String.valueOf(i));
+            listShift.add(shiftJS4);
+
+
         }
+//        JsonServices.dd(JsonServices.ParseToJson(listShift));
 
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 35; i++) {
 
             List<Shift> lShift = new ArrayList<>();
 
@@ -676,7 +781,6 @@ public class TimelineController {
             throw new RuntimeException(e);
         }
 
-//        JsonServices.dd(Data, response);
 
         model.addAttribute("data", Data);
         model.addAttribute("TimelineStartDay", timeline.getStartdate());
@@ -745,15 +849,46 @@ public class TimelineController {
 
         int id_timeline1 = idtimelineform;
         int i = 0;
+        int t = 0;
+        int k = 0;
+        int date = 0;
+        boolean OTT = false;
+
+        Timeline tl = timelineServices.FindOne(id_timeline1);
+
         for (ShiftJS item : ListShiftJS
         ) {
+            t = 0;
+            OTT = false;
+            for (PositionJS position : item.position
+            ) {
+                if (position.isIsCheck() == false) {
+
+                    t += 1;
+                }
+
+            }
+            long mili = Long.parseLong(JsonServices.ParseToJson(tl.getStartdate()).toString()) + (86400000 * date);
+
+
+            long miliend = Long.parseLong(JsonServices.ParseToJson(tl.getStartdate()).toString()) + (86400000 * date);
+
+            if (t == item.position.size()) {
+                OTT = true;
+
+            }
+
+
             for (PositionJS posjs : item.position
             ) {
-                Shift shiftnew = shiftServices.FindOne(posjs.getId_Db());
+
+                Shift shiftnew = new Shift();
+                shiftnew = shiftServices.FindOne(posjs.getId_Db());
+
 
                 if (shiftnew != null) {
 
-                    if (posjs.getNumber() == 0) {
+                    if (posjs.getNumber() == 0 && OTT == false) {
                         shiftServices.Delete(posjs.getId_Db());
                     } else {
                         shiftnew.setNumber(posjs.getNumber());
@@ -762,7 +897,7 @@ public class TimelineController {
 
                 } else {
 
-                    if (posjs.getNumber() > 0) {
+                    if (posjs.getNumber() > 0 || OTT == true) {
 
 
                         Shift shift = new Shift();
@@ -774,29 +909,74 @@ public class TimelineController {
                         int code = Integer.parseInt("10" + i);
                         Date timestart;
                         Date timeend;
+                        switch (k) {
+                            case 0:
 
-                        if (i == 0 || i % 2 == 0) {
-                            try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("07:30");
-                                timeend = new SimpleDateFormat("hh:mm").parse("11:30");
+                                timestart = new Date(mili + 21600000);
+                                timeend = new Date(miliend + 36000000);
 
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
-                        } else {
-                            try {
-                                timestart = new SimpleDateFormat("hh:mm").parse("13:00");
-                                timeend = new SimpleDateFormat("hh:mm").parse("17:00");
 
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
+                                break;
 
+                            case 1:
+
+                                timestart = new Date(mili + 36000000);
+                                timeend = new Date(miliend + 50400000);
+
+
+                                break;
+                            case 2:
+
+                                timestart = new Date(mili + 50400000);
+                                timeend = new Date(miliend + 64800000);
+
+                                break;
+                            case 3:
+
+                                timestart = new Date(mili + 64800000);
+                                timeend = new Date(miliend + 79200000);
+
+
+                                break;
+                            case 4:
+
+                                timestart = new Date(mili + 79200000);
+                                timeend = new Date(miliend + 108000000);
+
+
+                                break;
+                            default:
+
+                                timestart = new Date(mili + 79200001);
+                                timeend = new Date(miliend + 86400001);
+
+
+                                break;
                         }
+//
+//
+//                        if (i == 0 || i % 2 == 0) {
+//                            try {
+//                                timestart = new SimpleDateFormat("hh:mm").parse("07:30");
+//                                timeend = new SimpleDateFormat("hh:mm").parse("11:30");
+//
+//                            } catch (ParseException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//                        } else {
+//                            try {
+//                                timestart = new SimpleDateFormat("hh:mm").parse("13:00");
+//                                timeend = new SimpleDateFormat("hh:mm").parse("17:00");
+//
+//                            } catch (ParseException e) {
+//                                throw new RuntimeException(e);
+//                            }
+//
+//                        }
 
 
                         shift.setShiftcode(code);
-                        shift.setIsOT(false);
+                        shift.setIsOT(OTT);
                         shift.setTimestart(timestart);
                         shift.setTimeend(timeend);
 
@@ -817,6 +997,13 @@ public class TimelineController {
                 }
 
             }
+
+            if (k == 4) {
+                k = -1;
+                date += 1;
+
+            }
+            k += 1;
 
             i += 1;
 
@@ -995,13 +1182,13 @@ public class TimelineController {
 
         List<UserTimeline> timelines = userTimelineServices.UserTimeline(idTimeline, mail);
 
-        boolean[] usertimeline = new boolean[13];
+        boolean[] usertimeline = new boolean[36];
 
-        for (int i = 1; i <= 12; i++) {
+        for (int i = 1; i <= 35; i++) {
             usertimeline[i] = false;
         }
 
-        for (int i = 1; i <= 12; i++) {
+        for (int i = 1; i <= 36; i++) {
 
             for (UserTimeline item : timelines
             ) {
@@ -1111,30 +1298,78 @@ public class TimelineController {
         int idTimeline = Integer.parseInt(request.getParameter("idTimeline"));
 
 
-        Boolean[] data = new Boolean[13];
+        Boolean[] data = new Boolean[36];
 
-        for (int i = 1; i <= 12; i++) {
+        for (int i = 1; i <= 35; i++) {
 
             data[i] = Boolean.parseBoolean(request.getParameter("data" + i));
 
         }
 
-        for (int i = 1; i <= 12; i++) {
+        boolean check = userTimelineServices.CheckUser(idTimeline, mail);
 
+        if (check == true) {
 
-            if (data[i] == true) {
+            List<UserTimeline> userTimeline = userTimelineServices.UserTimeline(idTimeline, mail);
 
-                UserTimeline userTimeline = new UserTimeline();
+            for (UserTimeline item : userTimeline) {
+                for (int i = 1; i <= 35; i++) {
+                    if (item.getShiftcode() == i) {
+                        if (data[i] == false) {
+                            userTimelineServices.Delete(item.getId());
+                        }
 
-                userTimeline.setIdTimeline(new Timeline(idTimeline));
-                userTimeline.setShiftcode((short) i);
-                userTimeline.setMail(new Account(mail));
-                userTimelineServices.Create(userTimeline);
+                    }
+                }
+            }
+
+            Boolean check1 = true;
+            for (int i = 1; i <= 35; i++) {
+                check1 = true;
+                for (UserTimeline item : userTimeline) {
+
+                    if (item.getShiftcode() == i) {
+                        check1 = false;
+                    }
+
+                }
+
+                if (check1 == true && data[i] == true) {
+
+                    UserTimeline userTimeline1 = new UserTimeline();
+
+                    userTimeline1.setIdTimeline(new Timeline(idTimeline));
+                    userTimeline1.setShiftcode((short) i);
+                    userTimeline1.setMail(new Account(mail));
+                    userTimelineServices.Create(userTimeline1);
+                }
+
 
             }
 
+
+        } else {
+            for (int i = 1; i <= 35; i++) {
+
+
+                if (data[i] == true) {
+
+                    UserTimeline userTimeline = new UserTimeline();
+
+                    userTimeline.setIdTimeline(new Timeline(idTimeline));
+                    userTimeline.setShiftcode((short) i);
+                    userTimeline.setMail(new Account(mail));
+                    userTimelineServices.Create(userTimeline);
+
+                }
+
+            }
         }
-        JsonServices.dd("Thêm thành công", response);
+
+        List<String> str = new ArrayList<>();
+        str.add("Thêm thành công");
+
+        JsonServices.dd(JsonServices.ParseToJson(str), response);
 
 
 //        return new ResponseEntity<Object>(list, HttpStatus.OK);

@@ -7,7 +7,9 @@ package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Reponsitory.AccountRepository;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,11 @@ import org.springframework.stereotype.Service;
  * @author jthie
  */
 @Service
-public class AccountServiceImp implements IAccountRepository{
+public class AccountServiceImp implements IAccountRepository {
+
     @Autowired
     private AccountRepository repository;
+
     @Override
     public List<Account> findAll() {
         return repository.findAll();

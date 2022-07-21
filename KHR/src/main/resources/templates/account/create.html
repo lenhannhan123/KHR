@@ -32,7 +32,7 @@
                 <div class="col-sm-3"></div>
                 <div class="col background-table">
 
-                    <form action="/account/create" method="POST">
+                    <form action="/account/create" method="POST" enctype="multipart/form-data">
                         <b>Thông tin cơ bản</b>
                         <br>
 
@@ -48,7 +48,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="text" class="form-control input" placeholder="Địa chỉ email" id="txtAccountMail"
+                                <input type="email" class="form-control input" placeholder="Địa chỉ email" id="txtAccountMail"
                                        name="txtAccountMail">
                                 <span hidden class="error-text" id="txtAccountMail-Error">Vui lòng nhập email</span>
                             </div>
@@ -129,6 +129,23 @@
                         <div class="row" style="margin-top: 3%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
+                                Ảnh đại diện
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
+                                <input type="file" name="image" accept="image/png, image/jpeg" />
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col">
                                 Quyền
                             </div>
                         </div>
@@ -158,29 +175,29 @@
                             <div class="col">
                                 <table class="table">
                                     <thead class="thead-light">
-                                    <tr style="text-align: center ;">
-                                        <th scope="col">Lựa chọn</th>
-                                        <th scope="col">Vị trí</th>
-                                        <th scope="col">Lương năng suất</th>
-                                    </tr>
+                                        <tr style="text-align: center ;">
+                                            <th scope="col">Lựa chọn</th>
+                                            <th scope="col">Vị trí</th>
+                                            <th scope="col">Lương năng suất (VNĐ/giờ)</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="item,stt:${positions}">
-                                        <td style="text-align: center ;">
-                                            <div class="pretty p-default p-curve">
-                                                <input type="checkbox" class="checkbox" th:value="${item.getId()}"  th:name="'check'+${stt.count}">
+                                        <tr th:each="item,stt:${positions}">
+                                            <td style="text-align: center ;">
+                                                <div class="pretty p-default p-curve">
+                                                    <input type="checkbox" class="checkbox" th:value="${item.getId()}"  th:name="'check'+${stt.count}">
 
-                                                <div class="state">
-                                                    <label></label>
+                                                    <div class="state">
+                                                        <label></label>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                        </td>
-                                        <td th:text="${item.getPositionname()}"></td>
-                                        <td style="text-align: center ;">
-                                            <input type="number" class="form-control input input-number" min="0" th:name="'checkvalue'+${stt.count} " th:value="${item.getSalarydefault()}" id="txtSalary">
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td th:text="${item.getPositionname()}"></td>
+                                            <td style="text-align: center ;">
+                                                <input type="number" class="form-control input input-number" min="0" th:name="'checkvalue'+${stt.count} " th:value="${item.getSalarydefault()}" id="txtSalary">
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

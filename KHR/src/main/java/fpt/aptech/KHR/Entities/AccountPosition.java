@@ -21,17 +21,16 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Admin
  */
 @Entity
 @Table(name = "account_position", catalog = "khr", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "AccountPosition.findAll", query = "SELECT a FROM AccountPosition a"),
-    @NamedQuery(name = "AccountPosition.findById", query = "SELECT a FROM AccountPosition a WHERE a.id = :id"),
-    @NamedQuery(name = "AccountPosition.findByMail", query = "SELECT a FROM AccountPosition a WHERE a.mail = :mail"),
-    @NamedQuery(name = "AccountPosition.findBySalary", query = "SELECT a FROM AccountPosition a WHERE a.salary = :salary")})
+        @NamedQuery(name = "AccountPosition.findAll", query = "SELECT a FROM AccountPosition a"),
+        @NamedQuery(name = "AccountPosition.findById", query = "SELECT a FROM AccountPosition a WHERE a.id = :id"),
+        @NamedQuery(name = "AccountPosition.findByMail", query = "SELECT a FROM AccountPosition a WHERE a.mail = :mail"),
+        @NamedQuery(name = "AccountPosition.findBySalary", query = "SELECT a FROM AccountPosition a WHERE a.salary = :salary")})
 public class AccountPosition implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,6 +60,13 @@ public class AccountPosition implements Serializable {
     public AccountPosition(Integer id, int salary) {
         this.id = id;
         this.salary = salary;
+    }
+
+    public AccountPosition(Integer id, int salary, Account Mail, Position position) {
+        this.id = id;
+        this.salary = salary;
+        this.mail = Mail;
+        this.idPosition = position;
     }
 
     public Integer getId() {
@@ -119,5 +125,5 @@ public class AccountPosition implements Serializable {
     public String toString() {
         return "fpt.aptech.KHR.Entities.AccountPosition[ id=" + id + " ]";
     }
-    
+
 }

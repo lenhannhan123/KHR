@@ -32,4 +32,6 @@ public interface IUserTimeServices {
 
     public List<UserTimeline> UserTimeline(int idTimeline, String mail);
 
+
+    public List<Integer> GetIdTimeline(String mail);
 }

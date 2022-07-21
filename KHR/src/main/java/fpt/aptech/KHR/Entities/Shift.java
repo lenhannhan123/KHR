@@ -52,23 +52,23 @@ public class Shift implements Serializable {
     @Column(name = "Number")
     private Integer number;
     @Column(name = "Time_start")
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date timestart;
     @Column(name = "Is_OT")
     private Boolean isOT;
     @Column(name = "Time_end")
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date timeend;
     @Column(name = "Shift_code")
     private Integer shiftcode;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shiftId")
+    private List<Timekeeping> timekeepingList;
     @JoinColumn(name = "Id_Position", referencedColumnName = "Id")
     @ManyToOne
     private Position idPosition;
     @JoinColumn(name = "Id_Timeline", referencedColumnName = "Id")
     @ManyToOne
     private Timeline idTimeline;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idShift")
-    private List<TimelineDetail> timelineDetailList;
 
     public Shift() {
     }
@@ -125,6 +125,15 @@ public class Shift implements Serializable {
         this.shiftcode = shiftcode;
     }
 
+    @XmlTransient
+    public List<Timekeeping> getTimekeepingList() {
+        return timekeepingList;
+    }
+
+    public void setTimekeepingList(List<Timekeeping> timekeepingList) {
+        this.timekeepingList = timekeepingList;
+    }
+
     public Position getIdPosition() {
         return idPosition;
     }
@@ -139,15 +148,6 @@ public class Shift implements Serializable {
 
     public void setIdTimeline(Timeline idTimeline) {
         this.idTimeline = idTimeline;
-    }
-
-    @XmlTransient
-    public List<TimelineDetail> getTimelineDetailList() {
-        return timelineDetailList;
-    }
-
-    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
-        this.timelineDetailList = timelineDetailList;
     }
 
     @Override

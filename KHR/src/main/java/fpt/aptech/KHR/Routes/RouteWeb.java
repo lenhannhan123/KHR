@@ -7,13 +7,6 @@ package fpt.aptech.KHR.Routes;
 
 import fpt.aptech.KHR.Controller.*;
 import fpt.aptech.KHR.Entities.ModelDemo;
-import fpt.aptech.KHR.Entities.Notification;
-import fpt.aptech.KHR.Entities.RouteModel;
-import fpt.aptech.KHR.Entities.Timekeeping;
-import java.util.List;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author Admin
@@ -50,8 +43,8 @@ public class RouteWeb {
     //Route DayOff
     public final static String dayoffURL = "/dayoff";
     //String DayOffControler = dayOffController.Index(model.model);
-    
-     public final static String dayoffapproveURL = "/dayoff/approved";
+
+    public final static String dayoffapproveURL = "/dayoff/approved";
     //String DayOffApprovedControler = dayOffController.approved(model.model);
 
     public final static String dayoffdenyingURL = "/dayoff/denying";
@@ -60,11 +53,11 @@ public class RouteWeb {
     //Route OverTime
     public final static String overtimeURL = "/overtime";
     //String OverTimeControler = overTimeController.Index(model.model);
-    
-     public final static String overtimeapproveURL = "/overtime/approved";
-   // String OverTimeApprovedControler = dayOffController.Index(model.model);
-    
-     public final static String overtimedenyingURL = "/overtime/denying";
+
+    public final static String overtimeapproveURL = "/overtime/approved";
+    // String OverTimeApprovedControler = dayOffController.Index(model.model);
+
+    public final static String overtimedenyingURL = "/overtime/denying";
     //String OverTimeDenyingControler = dayOffController.Index(model.model);
 
     //Route Account
@@ -126,7 +119,7 @@ public class RouteWeb {
 
     //route Timekeeping
     public final static String TimekeepingIndexURL = "/timekeeping/index";
-    ResponseEntity<List<Timekeeping>> TimeKeepingIndex = timekeepingController.index(model.model);
+    String TimeKeepingIndex = timekeepingController.index(model.model);
 
     public final static String TimelineDetailsURL = "/timeline/detail";
     String TimelineDetailsControler = timelineController.GetCreate(model.model);

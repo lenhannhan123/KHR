@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/Mytimeline_Item_Timeline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@xml/duongvien_goctron"
+        android:backgroundTint="#D2D6D8"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:drawableRight="@drawable/icon19"
+        android:text="Lịch  làm việc tháng 5 tuần 2"  />
+
+</LinearLayout>

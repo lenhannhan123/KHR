@@ -10,6 +10,7 @@ import fpt.aptech.KHR.Entities.AccountPosition;
 import fpt.aptech.KHR.Entities.Position;
 import fpt.aptech.KHR.Entities.PositionJS;
 import fpt.aptech.KHR.Entities.Timeline;
+import fpt.aptech.KHR.FileUpload.FileUploadUtil;
 import fpt.aptech.KHR.ImpServices.AccountPositionService;
 import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.ImpServices.PositionServices;
@@ -25,10 +26,14 @@ import java.util.Date;
 import java.util.List;
 
 import fpt.aptech.KHR.Services.IPositionServices;
+import java.io.IOException;
+
 import static java.lang.System.out;
+
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,10 +44,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
  * @author jthie
  */
 @Controller
@@ -81,7 +88,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = {RouteWeb.AccountGetCreateURL}, method = RequestMethod.POST)
-    public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response) {
+    public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam("image") MultipartFile multipartFile) throws IOException {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String mail = request.getParameter("txtAccountMail");
@@ -89,6 +96,7 @@ public class AccountController {
         String phone = request.getParameter("txtPhone");
         boolean gender = Boolean.parseBoolean(request.getParameter("radioGender"));
         String strBday = request.getParameter("txtBirthDay");
+
         Date bday = null;
         try {
             bday = new SimpleDateFormat("yyyy-mm-dd").parse(strBday);
@@ -96,10 +104,17 @@ public class AccountController {
             throw new RuntimeException(e);
         }
         short role = Short.parseShort(request.getParameter("txtRole"));
-
-        Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender, encoder.encode(mail), role, true);
+        
+        
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender, encoder.encode(mail), role, true, fileName);
 
         accountRepository.save(account);
+        
+        String uploadDir = "src/main/resources/images/user-photos/";
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        
+        
         List<Position> positions = positionServices.findAll();
         for (int i = 0; i < positions.size(); i++) {
             if (request.getParameter("check" + i) != null) {
@@ -177,55 +192,66 @@ public class AccountController {
 
         List<Position> positions = positionServices.findAll();
         List<AccountPosition> accountPositions = accountPositionService.findAll();
+        int number = positions.size();
+
+        boolean check = true;
+
+        for (int i = 0; i < accountPositions.size(); i++) {
+            check = true;
+            for (int j = 1; j <= number; j++) {
+
+                if (request.getParameter("check" + j) != null) {
+
+                    int id = Integer.parseInt(request.getParameter("check" + j));
+
+                    if ((id == accountPositions.get(i).getIdPosition().getId()) && (accountPositions.get(i).getMail().getMail().equals(mail))) {
+
+
+                        check = false;
+                    }
+
+
+                }
+
+
+            }
+
+            if (check == true) {
+                AccountPosition accountPosition1 = new AccountPosition(accountPositions.get(i).getId(), accountPositions.get(i).getSalary(), accountPositions.get(i).getMail(), accountPositions.get(i).getIdPosition());
+                accountPositionService.delete(accountPosition1);
+            }
+
+
+        }
+
 
         boolean checkAccountPosition = false;
 
-        int number = positions.size();
+
         int id = 0;
         for (int i = 1; i <= number; i++) {
             checkAccountPosition = false;
             if (request.getParameter("check" + i) != null) {
                 id = Integer.parseInt(request.getParameter("check" + i));
                 for (AccountPosition item : accountPositions) {
-                    if (item.getIdPosition().getId() == id) {
+                    if (item.getIdPosition().getId() == id && item.getMail().getMail().equals(mail)) {
                         item.setSalary(Integer.parseInt(request.getParameter("checkvalue" + i)));
                         accountPositionService.save(item);
                         checkAccountPosition = true;
                     }
                 }
+//                JsonServices.dd(checkAccountPosition, response);
                 if (checkAccountPosition == false) {
                     AccountPosition accountPosition = new AccountPosition();
                     accountPosition.setIdPosition(new Position(Integer.parseInt(request.getParameter("check" + i).toString())));
                     accountPosition.setMail(new Account(mail));
                     accountPosition.setSalary(Integer.parseInt(request.getParameter("checkvalue" + i).toString()));
                     accountPositionRepository.save(accountPosition);
+
+
                 }
             }
         }
-        List<AccountPosition> newaccountPositionsList = accountPositionService.findAll();
-        boolean checking = true;
-//        JsonServices.dd(JsonServices.ParseToJson(newaccountPositionsList), response);
-
-//        for (int i = 0; i < newaccountPositionsList.size(); i++) {
-//            for (int j = 1; j <= number; j++) {
-//                if (request.getParameter("check" + j) != null) {
-//                    if (newaccountPositionsList.get(i).getIdPosition().getId() == Integer.parseInt(request.getParameter("check" + j))) {
-//                        checking = false;
-//
-//                    }
-//
-//                }
-//
-//            }
-//            if (checking == true) {
-//                AccountPosition deleteAccountPosition = accountPositionService.findByMailAndPosition(new Account(mail), newaccountPositionsList.get(i).getIdPosition().getId());
-//
-//                if (deleteAccountPosition != null) {
-//                    accountPositionService.delete(deleteAccountPosition);
-//                }
-//            }
-//
-//        }
 
         String redirectUrl = "/account/index";
 

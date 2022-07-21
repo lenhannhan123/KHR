@@ -4,7 +4,14 @@
  * and open the template in the editor.
  */
 package Security.jwt;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.ImpServices.AccountService;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,41 +20,36 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import fpt.aptech.KHR.Services.AccountServiceImp;
 import io.jsonwebtoken.*;
+import java.io.Serializable;
+import org.springframework.context.annotation.Bean;
+
 @Component
 public class JwtUtils {
-	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-	@Value("${khr.app.jwtSecret}")
-	private String jwtSecret;
-	@Value("${khr.app.jwtExpirationMs}")
-	private int jwtExpirationMs;
-	public String generateJwtToken(Authentication authentication) {
-                Account account = new Account();
-		AccountServiceImp userPrincipal = (AccountServiceImp) authentication.getPrincipal();
-		return Jwts.builder()
-				.setSubject((account.getMail()))
-				.setIssuedAt(new Date())
-				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-				.signWith(SignatureAlgorithm.HS512, jwtSecret)
-				.compact();
-	}
-	public String getUserNameFromJwtToken(String token) {
-		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
-	}
-	public boolean validateJwtToken(String authToken) {
-		try {
-			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-			return true;
-		} catch (SignatureException e) {
-			logger.error("Invalid JWT signature: {}", e.getMessage());
-		} catch (MalformedJwtException e) {
-			logger.error("Invalid JWT token: {}", e.getMessage());
-		} catch (ExpiredJwtException e) {
-			logger.error("JWT token is expired: {}", e.getMessage());
-		} catch (UnsupportedJwtException e) {
-			logger.error("JWT token is unsupported: {}", e.getMessage());
-		} catch (IllegalArgumentException e) {
-			logger.error("JWT claims string is empty: {}", e.getMessage());
-		}
-		return false;
-	}
+
+
+    private static Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+    private static final String USER = "user";
+    private static final String SECRET = "khrSecretKey";
+
+    public String generateToken(AccountService account) {
+        String token = null;
+        try {
+            JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
+            builder.claim(USER, account);
+            builder.expirationTime(generateExpirationDate());
+            JWTClaimsSet claimsSet = builder.build();
+            SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
+            JWSSigner signer = new MACSigner(SECRET.getBytes());
+            signedJWT.sign(signer);
+            token = signedJWT.serialize();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return token;
+    }
+
+    public Date generateExpirationDate() {
+        return new Date(System.currentTimeMillis() + 86400000);
+    }
+
 }

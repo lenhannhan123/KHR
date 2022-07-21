@@ -5,7 +5,6 @@
  */
 package fpt.aptech.KHR.ImpServices;
 
-import fpt.aptech.KHR.Entities.Shift;
 import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Reponsitory.TimelineRepository;
 import fpt.aptech.KHR.Services.ITimelineServices;
@@ -39,8 +38,6 @@ public class TimelineServices implements ITimelineServices {
     @Override
     public boolean Edit(Timeline timeline) {
         timelineRepository.save(timeline);
-
-
         return true;
     }
 
@@ -70,5 +67,10 @@ public class TimelineServices implements ITimelineServices {
     @Override
     public int countEndDay(Date EndDay) {
         return timelineRepository.findEndDay(EndDay, (short) 0);
+    }
+
+    @Override
+    public List<Timeline> FindAllWhenStatusOn() {
+        return timelineRepository.findAllWhenStatusOn((short) 1, (short) 0);
     }
 }
