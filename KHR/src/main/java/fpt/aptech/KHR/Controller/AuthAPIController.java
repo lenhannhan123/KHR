@@ -38,16 +38,22 @@ public class AuthAPIController {
     @Autowired
     private AccountServiceImp accountServiceImp;
 
-    @RequestMapping(value = RouteAPI.CheckAuth, method = RequestMethod.GET)
-    public void authenticateUser(Model model, @RequestParam("mail") String mail, @RequestParam("password") String password,
-                                 HttpServletRequest request, HttpServletResponse response) {
-        Account account = new Account();
-        account.setMail(mail);
-        account.setPassword(password);
+    @PostMapping("/signin")
+    public ResponseEntity<String> authenticateUser(@RequestBody Account account) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 account.getMail(), account.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        JsonServices.dd("User signed-in successfully!.", response);
+        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<Account> login(@RequestBody Account account) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                account.getMail(), account.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
 }
