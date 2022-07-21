@@ -40,17 +40,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        
+
         http
                 .authorizeRequests()
                 .antMatchers("/plugins/**", "/dist/**", "/css/**", "/images/**", "/script/**", "/api/**")
                 .permitAll()
                 .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/account/**","/dayoff/**","/layout/**","/notification/**","/overtime/**","/position/**","/timekeeping/**","/timeline/**")
-                .access("hasAnyRole('ROLE_ADMIN')")
-                
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .antMatchers("/account/**", "/dayoff/**", "/layout/**", "/notification/**", "/overtime/**", "/position/**", "/timekeeping/**", "/timeline/**")
+                .access("hasAnyRole('ROLE_ADMIN')")
                 .anyRequest()
                 .authenticated()
                 .and().exceptionHandling().accessDeniedPage("/403")
