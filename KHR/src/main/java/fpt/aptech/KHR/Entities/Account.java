@@ -7,22 +7,18 @@ package fpt.aptech.KHR.Entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -46,13 +42,20 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Account.findByAvatar", query = "SELECT a FROM Account a WHERE a.avatar = :avatar")})
 public class Account implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "Mail")
+    private String mail;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 250)
     @Column(name = "Password")
     private String password;
     @Basic(optional = false)
-    @NotNull()
+    @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "Fullname")
     private String fullname;
@@ -67,7 +70,6 @@ public class Account implements Serializable {
     @Column(name = "Birthdate")
     @Temporal(TemporalType.DATE)
     private Date birthdate;
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "Gender")
@@ -77,8 +79,9 @@ public class Account implements Serializable {
     private String code;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "Role")
-    private short role;
+    private String role;
     @Size(max = 6)
     @Column(name = "Recovery_code")
     private String recoverycode;
@@ -89,15 +92,6 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
-    private List<UserRole> userRoleList;
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "Mail")
-    private String mail;
 
     public Account() {
     }
@@ -106,7 +100,7 @@ public class Account implements Serializable {
         this.mail = mail;
     }
 
-    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, short role, boolean status, String avatar) {
+    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, String role, boolean status, String avatar) {
         this.mail = mail;
         this.password = password;
         this.fullname = fullname;
@@ -119,7 +113,7 @@ public class Account implements Serializable {
         this.avatar = avatar;
     }
     
-        public Account(String mail, String fullname, String phone, Date birthdate, boolean gender, String code, short role, boolean status) {
+        public Account(String mail, String fullname, String phone, Date birthdate, boolean gender, String code, String role, boolean status) {
         this.mail = mail;
         this.fullname = fullname;
         this.phone = phone;
@@ -136,34 +130,6 @@ public class Account implements Serializable {
 
     public void setMail(String mail) {
         this.mail = mail;
-    }
-    public String getRecoverycode() {
-        return recoverycode;
-    }
-    public void setRecoverycode(String recoverycode) {
-        this.recoverycode = recoverycode;
-    }
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (mail != null ? mail.hashCode() : 0);
-        return hash;
-    }
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Account)) {
-            return false;
-        }
-        Account other = (Account) object;
-        if ((this.mail == null && other.mail != null) || (this.mail != null && !this.mail.equals(other.mail))) {
-            return false;
-        }
-        return true;
-    }
-    @Override
-    public String toString() {
-        return "fpt.aptech.KHR.Entities.Account[ mail=" + mail + " ]";
     }
 
     public String getPassword() {
@@ -214,12 +180,20 @@ public class Account implements Serializable {
         this.code = code;
     }
 
-    public short getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(short role) {
+    public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getRecoverycode() {
+        return recoverycode;
+    }
+
+    public void setRecoverycode(String recoverycode) {
+        this.recoverycode = recoverycode;
     }
 
     public boolean getStatus() {
@@ -238,13 +212,29 @@ public class Account implements Serializable {
         this.avatar = avatar;
     }
 
-    @XmlTransient
-    public List<UserRole> getUserRoleList() {
-        return userRoleList;
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (mail != null ? mail.hashCode() : 0);
+        return hash;
     }
 
-    public void setUserRoleList(List<UserRole> userRoleList) {
-        this.userRoleList = userRoleList;
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Account)) {
+            return false;
+        }
+        Account other = (Account) object;
+        if ((this.mail == null && other.mail != null) || (this.mail != null && !this.mail.equals(other.mail))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "fpt.aptech.KHR.Entities.Account[ mail=" + mail + " ]";
     }
     
 }
