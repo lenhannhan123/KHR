@@ -33,14 +33,14 @@ public class AuthAPIController {
     @Autowired
     private AccountServiceImp accountServiceImp;
 
-    @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestBody Account account) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                account.getMail(), account.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
-    }
+//    @PostMapping("/signin")
+//    public ResponseEntity<String> authenticateUser(@RequestBody Account account) {
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//                account.getMail(), account.getPassword()));
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+//    }
     
     @PostMapping("/login")
     public ResponseEntity<Account> login(@RequestBody Account account) {
@@ -50,5 +50,4 @@ public class AuthAPIController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
-
 }
