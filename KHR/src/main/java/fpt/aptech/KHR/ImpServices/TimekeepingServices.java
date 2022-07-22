@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fpt.aptech.KHR.Services;
+package fpt.aptech.KHR.ImpServices;
 
+import fpt.aptech.KHR.Services.*;
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.Shift;
 import fpt.aptech.KHR.Entities.Timekeeping;
 import fpt.aptech.KHR.Reponsitory.TimekeepingRepository;
+import java.util.Date;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +21,7 @@ import org.springframework.stereotype.Service;
  * @author backs
  */
 @Service
-public class TimekeepingServiceImp implements ITimekeepingServices {
+public class TimekeepingServices implements ITimekeepingServices {
 
     @Autowired
     TimekeepingRepository timekeepingRepository;
@@ -50,8 +53,18 @@ public class TimekeepingServiceImp implements ITimekeepingServices {
     }
 
     @Override
-    public List<String> search(String keyword) {
-        return timekeepingRepository.search(keyword);
+    public List<String> autocomplete(String keyword) {
+        return timekeepingRepository.autocomplete(keyword);
+    }
+
+    @Override
+    public List<Shift> findShiftByTimeStart(Date timeStart) {
+        return timekeepingRepository.findShiftByTimeStart(timeStart);
+    }
+
+    @Override
+    public List<Timekeeping> search(String mail) {
+        return timekeepingRepository.search(mail);
     }
     
 }
