@@ -15,6 +15,9 @@
     <class>fpt.aptech.KHR.Entities.Account</class>
     <class>fpt.aptech.KHR.Entities.Notification</class>
     <class>fpt.aptech.KHR.Entities.Token</class>
+    <class>fpt.aptech.KHR.Entities.UserRole</class>
+    <class>fpt.aptech.KHR.Entities.Role</class>
+    <class>fpt.aptech.KHR.Entities.AccountToken</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://14.225.192.108:3306/khr?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="khareerserver"/>

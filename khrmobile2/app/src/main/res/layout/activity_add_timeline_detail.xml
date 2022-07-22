@@ -18,10 +18,11 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+
             android:layout_height="match_parent">
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/myTimeline_tablayout"
+                android:id="@+id/myTimeline_tablayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabIndicatorColor="#6667AB"
@@ -72,19 +73,42 @@
             </com.google.android.material.tabs.TabLayout>
 
             <FrameLayout
-                android:id="@+id/My_timedetail_fragmentlayout"
+                android:id="@+id/My_timedetail_fragmentlayout1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="450dp"
                 android:layout_marginTop="70dp"
                 >
 
             </FrameLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="470dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/red"
+                    android:text="Vui lòng chọn ngày bạn không làm được \n Vui lòng chọn út nhất 1 ca nghỉ" />
+
+                <Button
+                    android:id="@+id/Add_timeline_buttonadd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Thêm lịch làm việc" />
+            </LinearLayout>
 
         </RelativeLayout>
 
 
     </ScrollView>
+
 
 
 

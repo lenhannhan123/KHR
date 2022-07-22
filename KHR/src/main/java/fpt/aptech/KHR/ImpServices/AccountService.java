@@ -13,6 +13,7 @@ import fpt.aptech.KHR.Services.IAccountRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,10 +30,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService implements UserDetailsService {
 
-    private Long userId;
-    private String username;
-    private String password;
-    private Collection authorities;
     @Autowired
     IAccountRepository repository;
 
@@ -43,17 +40,23 @@ public class AccountService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account adminaccount = repository.findByMailAdmin(username);
         Account useraccount = repository.findByMailUser(username);
+        Account account = repository.findByMail(username);
         if (adminaccount != null) {
-            List<GrantedAuthority> grantList = new ArrayList<>();
+            List<GrantedAuthority> grantListAdmin = new ArrayList<>();
             GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");
-            grantList.add(authority);
-            UserDetails userDetails = new User(adminaccount.getMail(), adminaccount.getPassword(), grantList);
+            grantListAdmin.add(authority);
+            UserDetails userDetails = new User(adminaccount.getMail(), adminaccount.getPassword(), grantListAdmin);
+            return userDetails;
+        } else if (useraccount != null) {
+            List<GrantedAuthority> grantListUser = new ArrayList<>();
+            GrantedAuthority userAuthority = new SimpleGrantedAuthority("ROLE_USER");
+            grantListUser.add(userAuthority);
+            UserDetails userDetails = new User(useraccount.getMail(), useraccount.getPassword(), grantListUser);
             return userDetails;
         } else {
             new UsernameNotFoundException("Login failed!");
         }
         return null;
-
     }
 
     public List<Account> findAll() {

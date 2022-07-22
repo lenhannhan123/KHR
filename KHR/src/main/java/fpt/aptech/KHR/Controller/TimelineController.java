@@ -1306,22 +1306,70 @@ public class TimelineController {
 
         }
 
-        for (int i = 1; i <= 35; i++) {
+        boolean check = userTimelineServices.CheckUser(idTimeline, mail);
 
+        if (check == true) {
 
-            if (data[i] == true) {
+            List<UserTimeline> userTimeline = userTimelineServices.UserTimeline(idTimeline, mail);
 
-                UserTimeline userTimeline = new UserTimeline();
+            for (UserTimeline item : userTimeline) {
+                for (int i = 1; i <= 35; i++) {
+                    if (item.getShiftcode() == i) {
+                        if (data[i] == false) {
+                            userTimelineServices.Delete(item.getId());
+                        }
 
-                userTimeline.setIdTimeline(new Timeline(idTimeline));
-                userTimeline.setShiftcode((short) i);
-                userTimeline.setMail(new Account(mail));
-                userTimelineServices.Create(userTimeline);
+                    }
+                }
+            }
+
+            Boolean check1 = true;
+            for (int i = 1; i <= 35; i++) {
+                check1 = true;
+                for (UserTimeline item : userTimeline) {
+
+                    if (item.getShiftcode() == i) {
+                        check1 = false;
+                    }
+
+                }
+
+                if (check1 == true && data[i] == true) {
+
+                    UserTimeline userTimeline1 = new UserTimeline();
+
+                    userTimeline1.setIdTimeline(new Timeline(idTimeline));
+                    userTimeline1.setShiftcode((short) i);
+                    userTimeline1.setMail(new Account(mail));
+                    userTimelineServices.Create(userTimeline1);
+                }
+
 
             }
 
+
+        } else {
+            for (int i = 1; i <= 35; i++) {
+
+
+                if (data[i] == true) {
+
+                    UserTimeline userTimeline = new UserTimeline();
+
+                    userTimeline.setIdTimeline(new Timeline(idTimeline));
+                    userTimeline.setShiftcode((short) i);
+                    userTimeline.setMail(new Account(mail));
+                    userTimelineServices.Create(userTimeline);
+
+                }
+
+            }
         }
-        JsonServices.dd("Thêm thành công", response);
+
+        List<String> str = new ArrayList<>();
+        str.add("Thêm thành công");
+
+        JsonServices.dd(JsonServices.ParseToJson(str), response);
 
 
 //        return new ResponseEntity<Object>(list, HttpStatus.OK);

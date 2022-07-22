@@ -101,16 +101,16 @@ and open the template in the editor.
                                 <td>
                                     <div th:switch="${c.getStatus()}"> 
                                         <div th:case="'0'">
-                                            <a th:href="'dayoff/approved?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn xóa ?')">
+                                            <a th:href="'/../dayoff/approved?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn xóa ?')">
                                                 <button class="button-envent">
                                                     <i class="fas
-                                                       fa-trash"
+                                                       fa-check"
                                                        style="color:
-                                                       #F26E6E"></i>
+                                                       greenyellow"></i>
                                                 </button>
 
                                             </a>
-                                            <a th:href="'dayoff/denying?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn xóa ?')">
+                                            <a th:href="'/../dayoff/denying?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn xóa ?')">
                                                 <button class="button-envent">
                                                     <i class="fas
                                                        fa-angry"
