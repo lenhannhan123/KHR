@@ -9,14 +9,13 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -29,17 +28,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AccountToken.findAll", query = "SELECT a FROM AccountToken a"),
-    @NamedQuery(name = "AccountToken.findById", query = "SELECT a FROM AccountToken a WHERE a.id = :id"),
     @NamedQuery(name = "AccountToken.findByToken", query = "SELECT a FROM AccountToken a WHERE a.token = :token")})
 public class AccountToken implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "Id")
-    private Integer id;
-    @Size(max = 255)
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(name = "Token")
     private String token;
     @JoinColumn(name = "Mail", referencedColumnName = "Mail")
@@ -49,16 +45,8 @@ public class AccountToken implements Serializable {
     public AccountToken() {
     }
 
-    public AccountToken(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public AccountToken(String token) {
+        this.token = token;
     }
 
     public String getToken() {
@@ -80,7 +68,7 @@ public class AccountToken implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (token != null ? token.hashCode() : 0);
         return hash;
     }
 
@@ -91,7 +79,7 @@ public class AccountToken implements Serializable {
             return false;
         }
         AccountToken other = (AccountToken) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.token == null && other.token != null) || (this.token != null && !this.token.equals(other.token))) {
             return false;
         }
         return true;
@@ -99,7 +87,7 @@ public class AccountToken implements Serializable {
 
     @Override
     public String toString() {
-        return "fpt.aptech.KHR.Entities.AccountToken[ id=" + id + " ]";
+        return "fpt.aptech.KHR.Entities.AccountToken[ token=" + token + " ]";
     }
     
 }

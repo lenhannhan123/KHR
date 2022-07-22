@@ -60,6 +60,7 @@ public class Account implements Serializable {
     @Column(name = "Fullname")
     private String fullname;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -92,6 +93,20 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
+<<<<<<< HEAD
+=======
+    @OneToMany(mappedBy = "mail")
+    private List<AccountToken> accountTokenList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
+    private List<UserRole> userRoleList;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "Mail")
+    private String mail;
+>>>>>>> 5cae95082c1783f9b591b60dd576b1d36cbf2ec2
 
     public Account() {
     }
@@ -131,6 +146,44 @@ public class Account implements Serializable {
     public void setMail(String mail) {
         this.mail = mail;
     }
+<<<<<<< HEAD
+=======
+    public String getRecoverycode() {
+        return recoverycode;
+    }
+    public void setRecoverycode(String recoverycode) {
+        this.recoverycode = recoverycode;
+    }
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (mail != null ? mail.hashCode() : 0);
+        return hash;
+    }
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Account)) {
+            return false;
+        }
+        Account other = (Account) object;
+        if ((this.mail == null && other.mail != null) || (this.mail != null && !this.mail.equals(other.mail))) {
+            return false;
+        }
+        return true;
+    }
+    @Override
+    public String toString() {
+        return "fpt.aptech.KHR.Entities.Account[ mail=" + mail + " ]";
+    }
+    @XmlTransient
+    public List<UserRole> getUserRoleList() {
+        return userRoleList;
+    }
+    public void setUserRoleList(List<UserRole> userRoleList) {
+        this.userRoleList = userRoleList;
+    }
+>>>>>>> 5cae95082c1783f9b591b60dd576b1d36cbf2ec2
 
     public String getPassword() {
         return password;
@@ -212,6 +265,7 @@ public class Account implements Serializable {
         this.avatar = avatar;
     }
 
+<<<<<<< HEAD
     @Override
     public int hashCode() {
         int hash = 0;
@@ -235,6 +289,15 @@ public class Account implements Serializable {
     @Override
     public String toString() {
         return "fpt.aptech.KHR.Entities.Account[ mail=" + mail + " ]";
+=======
+    @XmlTransient
+    public List<AccountToken> getAccountTokenList() {
+        return accountTokenList;
+    }
+
+    public void setAccountTokenList(List<AccountToken> accountTokenList) {
+        this.accountTokenList = accountTokenList;
+>>>>>>> 5cae95082c1783f9b591b60dd576b1d36cbf2ec2
     }
     
 }
