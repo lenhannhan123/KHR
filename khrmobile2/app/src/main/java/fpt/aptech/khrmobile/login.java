@@ -42,7 +42,6 @@ public class login extends AppCompatActivity {
         Login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(login.this, MainActivity.class));
                 if(TextUtils.isEmpty(Login_txtUsername.getText().toString()) || TextUtils.isEmpty(Login_txtPassword.getText().toString())){
                     String message = "All inputs required ...";
                     Toast.makeText(login.this, message, Toast.LENGTH_SHORT).show();
@@ -72,7 +71,6 @@ public class login extends AppCompatActivity {
             @Override
             public void onResponse(Call<Account> call, Response<Account> response) {
                 if(response.isSuccessful()){
-
                     Account account = response.body();
                     startActivity(new Intent(login.this, MainActivity.class).putExtra("data",account));
                     finish();

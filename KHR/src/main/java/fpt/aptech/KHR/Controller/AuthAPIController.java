@@ -7,7 +7,9 @@ package fpt.aptech.KHR.Controller;
 
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.ImpServices.AccountService;
+import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.Services.AccountServiceImp;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +39,6 @@ public class AuthAPIController {
     @Autowired
     private AccountServiceImp accountServiceImp;
 
-
     @PostMapping("/login")
     public ResponseEntity<Account> login(@RequestBody Account account) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -45,5 +46,22 @@ public class AuthAPIController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return new ResponseEntity<>(account, HttpStatus.OK);
+    }
+
+    @PostMapping("api/auth")
+    public ResponseEntity<Account> auth(@RequestBody Account account, HttpServletResponse response) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                account.getMail(), account.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Account account1 = accountService.findByMail(account.getMail());
+
+        if (account1 == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        account1.setPassword(account.getPassword());
+
+        return new ResponseEntity<>(account1, HttpStatus.OK);
+//        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 }
