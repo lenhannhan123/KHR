@@ -30,10 +30,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService implements UserDetailsService {
 
-    private Long userId;
-    private String username;
-    private String password;
-    private Collection authorities;
     @Autowired
     IAccountRepository repository;
 
