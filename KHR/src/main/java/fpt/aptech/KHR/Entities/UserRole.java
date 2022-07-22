@@ -5,7 +5,6 @@
  */
 package fpt.aptech.KHR.Entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -18,21 +17,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Admin
+ * @author jthie
  */
 @Entity
-@Table(name = "account_notification", catalog = "khr", schema = "")
+@Table(name = "user_role")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "AccountNotification.findAll", query = "SELECT a FROM AccountNotification a"),
-    @NamedQuery(name = "AccountNotification.findById", query = "SELECT a FROM AccountNotification a WHERE a.id = :id"),
-    @NamedQuery(name = "AccountNotification.findByStatus", query = "SELECT a FROM AccountNotification a WHERE a.status = :status")})
-public class AccountNotification implements Serializable {
+    @NamedQuery(name = "UserRole.findAll", query = "SELECT u FROM UserRole u"),
+    @NamedQuery(name = "UserRole.findById", query = "SELECT u FROM UserRole u WHERE u.id = :id")})
+public class UserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,29 +37,18 @@ public class AccountNotification implements Serializable {
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Status")
-    private boolean status;
     @JoinColumn(name = "Mail", referencedColumnName = "Mail")
     @ManyToOne(optional = false)
-//    @JsonBackReference
     private Account mail;
-    @JoinColumn(name = "Id_notification", referencedColumnName = "Id")
+    @JoinColumn(name = "Roleid", referencedColumnName = "Id")
     @ManyToOne(optional = false)
-//    @JsonBackReference
-    private Notification idnotification;
+    private Role roleid;
 
-    public AccountNotification() {
+    public UserRole() {
     }
 
-    public AccountNotification(Integer id) {
+    public UserRole(Integer id) {
         this.id = id;
-    }
-
-    public AccountNotification(Integer id, boolean status) {
-        this.id = id;
-        this.status = status;
     }
 
     public Integer getId() {
@@ -73,14 +59,6 @@ public class AccountNotification implements Serializable {
         this.id = id;
     }
 
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
     public Account getMail() {
         return mail;
     }
@@ -89,12 +67,12 @@ public class AccountNotification implements Serializable {
         this.mail = mail;
     }
 
-    public Notification getIdnotification() {
-        return idnotification;
+    public Role getRoleid() {
+        return roleid;
     }
 
-    public void setIdnotification(Notification idnotification) {
-        this.idnotification = idnotification;
+    public void setRoleid(Role roleid) {
+        this.roleid = roleid;
     }
 
     @Override
@@ -107,10 +85,10 @@ public class AccountNotification implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof AccountNotification)) {
+        if (!(object instanceof UserRole)) {
             return false;
         }
-        AccountNotification other = (AccountNotification) object;
+        UserRole other = (UserRole) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -119,7 +97,7 @@ public class AccountNotification implements Serializable {
 
     @Override
     public String toString() {
-        return "fpt.aptech.KHR.Entities.AccountNotification[ id=" + id + " ]";
+        return "fpt.aptech.KHR.Entities.UserRole[ id=" + id + " ]";
     }
     
 }

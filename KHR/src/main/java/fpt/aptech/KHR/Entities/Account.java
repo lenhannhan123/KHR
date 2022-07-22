@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -88,8 +89,8 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
-    @OneToMany(mappedBy = "mail")
-    private List<AccountToken> accountTokenList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
+    private List<UserRole> userRoleList;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -221,14 +222,6 @@ public class Account implements Serializable {
         this.role = role;
     }
 
-    public String getRecoverycode() {
-        return recoverycode;
-    }
-
-    public void setRecoverycode(String recoverycode) {
-        this.recoverycode = recoverycode;
-    }
-
     public boolean getStatus() {
         return status;
     }
@@ -246,12 +239,12 @@ public class Account implements Serializable {
     }
 
     @XmlTransient
-    public List<AccountToken> getAccountTokenList() {
-        return accountTokenList;
+    public List<UserRole> getUserRoleList() {
+        return userRoleList;
     }
 
-    public void setAccountTokenList(List<AccountToken> accountTokenList) {
-        this.accountTokenList = accountTokenList;
+    public void setUserRoleList(List<UserRole> userRoleList) {
+        this.userRoleList = userRoleList;
     }
     
 }

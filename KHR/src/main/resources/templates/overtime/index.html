@@ -16,7 +16,7 @@ and open the template in the editor.
 
     <body>
         <div layout:fragment="content">
-            <h3 class="title-page">Quản lý ngày nghĩ</h3>
+            <h3 class="title-page">Quản lý tăng ca</h3>
             <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col background-table">
@@ -100,16 +100,15 @@ and open the template in the editor.
                                 <td>
                                     <div th:switch="${c.getStatus()}"> 
                                         <div th:case="'0'">
-                                            <a th:href="'overtime/approved?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn Chấp thuận ?')">
+                                            <a th:href="'/../overtime/approved?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn Chấp thuận ?')">
                                                 <button class="button-envent">
                                                     <i class="fas
-                                                       fa-thin fa-check"
+                                                       fa-check"
                                                        style="color:
-                                                       #00FF00"></i>
+                                                       greenyellow"></i>
                                                 </button>
-
                                             </a>
-                                            <a th:href="'overtime/denying?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn Từ chối ?')">
+                                            <a th:href="'/../overtime/denying?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn Từ chối ?')">
                                                 <button class="button-envent">
                                                     <i class="fas
                                                        fa-angry"
