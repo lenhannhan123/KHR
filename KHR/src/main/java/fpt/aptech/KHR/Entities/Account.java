@@ -57,6 +57,7 @@ public class Account implements Serializable {
     @Column(name = "Fullname")
     private String fullname;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -89,6 +90,8 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
+    @OneToMany(mappedBy = "mail")
+    private List<AccountToken> accountTokenList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
     private List<UserRole> userRoleList;
     private static final long serialVersionUID = 1L;
@@ -165,6 +168,13 @@ public class Account implements Serializable {
     public String toString() {
         return "fpt.aptech.KHR.Entities.Account[ mail=" + mail + " ]";
     }
+    @XmlTransient
+    public List<UserRole> getUserRoleList() {
+        return userRoleList;
+    }
+    public void setUserRoleList(List<UserRole> userRoleList) {
+        this.userRoleList = userRoleList;
+    }
 
     public String getPassword() {
         return password;
@@ -222,6 +232,14 @@ public class Account implements Serializable {
         this.role = role;
     }
 
+    public String getRecoverycode() {
+        return recoverycode;
+    }
+
+    public void setRecoverycode(String recoverycode) {
+        this.recoverycode = recoverycode;
+    }
+
     public boolean getStatus() {
         return status;
     }
@@ -239,12 +257,12 @@ public class Account implements Serializable {
     }
 
     @XmlTransient
-    public List<UserRole> getUserRoleList() {
-        return userRoleList;
+    public List<AccountToken> getAccountTokenList() {
+        return accountTokenList;
     }
 
-    public void setUserRoleList(List<UserRole> userRoleList) {
-        this.userRoleList = userRoleList;
+    public void setAccountTokenList(List<AccountToken> accountTokenList) {
+        this.accountTokenList = accountTokenList;
     }
     
 }
