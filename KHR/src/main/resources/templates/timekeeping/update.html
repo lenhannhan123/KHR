@@ -77,7 +77,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="text" class="form-control input" placeholder="Thời gian vào" oninput="validateCheckin();" id="checkin" th:value="${timekeeping.getTimestart()}"
+                                <input type="text" class="form-control input" placeholder="Thời gian vào" oninput="validateCheckin();" id="checkin" th:value="${timeStart}"
                                        name="timeStart">
                             </div>
                             <div class="col-sm-1"></div>
@@ -93,7 +93,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="text" class="form-control input" placeholder="Thời gian ra" id="checkout" oninput="validateCheckout();" th:value="${timekeeping.getTimeend()}"
+                                <input type="text" class="form-control input" placeholder="Thời gian ra" id="checkout" oninput="validateCheckout();" th:value="${timeEnd}"
                                        name="timeEnd">
                             </div>
                             <div class="col-sm-1"></div>

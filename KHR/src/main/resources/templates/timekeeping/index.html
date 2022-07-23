@@ -24,7 +24,7 @@
 
         </style>
         <link rel="stylesheet"
-	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+              href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script>
@@ -32,7 +32,7 @@
                 $("#searchBox").autocomplete({
                     source: function (request, response) {
                         $.ajax({
-                            url: "http://localhost:7777/timekeeping/search",
+                            url: "http://localhost:7777/timekeeping/autocomplete",
                             dataType: "json",
                             data: {
                                 value: request.term
@@ -62,11 +62,16 @@
 
 
                     <div class="row" style="margin-bottom:2% ;">
-                        <div class="col-sm-3">
-                            <form method="get">
-                                <input type="text" class="form-control input" placeholder="Nhập email" name="search" id="searchBox">
-                            </form>
-                        </div>
+                        
+                            <div class="col-sm-3">
+                                <form th:action="@{/timekeeping/search}" th:method="get">
+                                <input type="text" class="form-control input" placeholder="Nhập email" name="mail" id="searchBox">
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="submit" class="btn btn-success form-control button-defualt" value="Tìm">
+                            </div>
+                        </form>
+
                     </div>
 
 
@@ -92,8 +97,8 @@
                             <td th:if="${user.getMail() == item.getMail().getMail()}" th:text="${user.getFullname()}"></td>
                         </div>
 
-                        <td th:text="${item.getTimestart()}"></td>
-                        <td th:text="${item.getTimeend()}"></td>
+                        <td th:text="${#dates.format(item.getTimestart(), 'hh:mm dd-MM-yyyy')}"></td>
+                        <td th:text="${#dates.format(item.getTimeend(), 'hh:mm dd-MM-yyyy')}"></td>
                         <td th:text="${item.getTime()}"></td>
                         <!--<td th:text="${item.getIdshift()}"></td>-->
                         <td>
