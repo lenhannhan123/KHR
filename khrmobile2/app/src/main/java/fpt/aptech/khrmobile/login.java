@@ -1,5 +1,6 @@
 package fpt.aptech.khrmobile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import fpt.aptech.khrmobile.API.ApiClient;
 import fpt.aptech.khrmobile.Entities.Account;
@@ -27,7 +31,6 @@ public class login extends AppCompatActivity {
     String USERNAME_KEY = "user";
     String PASSWORD_KEY = "password";
 
-
     void openFormForget(){
         TextView linkforget = findViewById(R.id.Login_linkforrgetpass);
         linkforget.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +41,6 @@ public class login extends AppCompatActivity {
             }
         });
     }
-
 
     void login(){
         Button Login_button = findViewById(R.id.Login_btnlogin);

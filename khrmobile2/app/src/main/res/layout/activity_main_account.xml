@@ -44,7 +44,7 @@
 
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/tvUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Lê Nguyễn Thành Nhân"
@@ -82,7 +82,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView6"
+                        android:id="@+id/tvMail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
@@ -109,7 +109,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView6"
+                        android:id="@+id/tvPhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
@@ -136,7 +136,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView6"
+                        android:id="@+id/tvBirthday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
@@ -163,7 +163,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView6"
+                        android:id="@+id/tvGender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
