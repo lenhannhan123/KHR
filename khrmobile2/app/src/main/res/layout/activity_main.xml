@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Xin chào, Lê Nguyễn Thành Nhân !"
+                android:text="Xin chào "
                 android:textColor="@color/black"
                 android:textSize="9pt"
                 android:textStyle="bold" />

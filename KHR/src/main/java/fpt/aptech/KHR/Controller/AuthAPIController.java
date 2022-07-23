@@ -39,14 +39,14 @@ public class AuthAPIController {
     @Autowired
     private AccountServiceImp accountServiceImp;
 
-    @PostMapping("/login")
-    public ResponseEntity<Account> login(@RequestBody Account account) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                account.getMail(), account.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return new ResponseEntity<>(account, HttpStatus.OK);
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<Account> login(@RequestBody Account account) {
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//                account.getMail(), account.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        return new ResponseEntity<>(account, HttpStatus.OK);
+//    }
 
     @PostMapping("api/auth")
     public ResponseEntity<Account> auth(@RequestBody Account account, HttpServletResponse response) {
@@ -54,14 +54,10 @@ public class AuthAPIController {
                 account.getMail(), account.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Account account1 = accountService.findByMail(account.getMail());
-
         if (account1 == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
         account1.setPassword(account.getPassword());
-
         return new ResponseEntity<>(account1, HttpStatus.OK);
-//        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 }
