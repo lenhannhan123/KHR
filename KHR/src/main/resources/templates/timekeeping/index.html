@@ -97,8 +97,8 @@
                             <td th:if="${user.getMail() == item.getMail().getMail()}" th:text="${user.getFullname()}"></td>
                         </div>
 
-                        <td th:text="${#dates.format(item.getTimestart(), 'hh:mm dd-MM-yyyy')}"></td>
-                        <td th:text="${#dates.format(item.getTimeend(), 'hh:mm dd-MM-yyyy')}"></td>
+                        <td th:text="${#dates.format(item.getTimestart(), 'HH:mm dd-MM-yyyy')}"></td>
+                        <td th:text="${#dates.format(item.getTimeend(), 'HH:mm dd-MM-yyyy')}"></td>
                         <td th:text="${item.getTime()}"></td>
                         <!--<td th:text="${item.getIdshift()}"></td>-->
                         <td>
