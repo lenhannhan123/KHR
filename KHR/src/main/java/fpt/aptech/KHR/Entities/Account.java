@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author jthie
+ * @author Admin
  */
 @Entity
 @Table(name = "account")
@@ -79,8 +79,9 @@ public class Account implements Serializable {
     private String code;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "Role")
-    private short role;
+    private String role;
     @Size(max = 6)
     @Column(name = "Recovery_code")
     private String recoverycode;
@@ -98,8 +99,8 @@ public class Account implements Serializable {
     public Account(String mail) {
         this.mail = mail;
     }
-
-    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, short role, boolean status, String avatar) {
+    
+    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, String role, boolean status, String avatar) {
         this.mail = mail;
         this.password = password;
         this.fullname = fullname;
@@ -112,7 +113,7 @@ public class Account implements Serializable {
         this.avatar = avatar;
     }
     
-        public Account(String mail, String fullname, String phone, Date birthdate, boolean gender, String code, short role, boolean status) {
+        public Account(String mail, String fullname, String phone, Date birthdate, boolean gender, String code, String role, boolean status) {
         this.mail = mail;
         this.fullname = fullname;
         this.phone = phone;
@@ -122,6 +123,8 @@ public class Account implements Serializable {
         this.role = role;
         this.status = status;
     }
+
+   
 
     public String getMail() {
         return mail;
@@ -179,11 +182,11 @@ public class Account implements Serializable {
         this.code = code;
     }
 
-    public short getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(short role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

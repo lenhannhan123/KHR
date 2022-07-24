@@ -103,7 +103,7 @@ public class AccountController {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        short role = Short.parseShort(request.getParameter("txtRole"));
+        String role = request.getParameter("txtRole");
         
         
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -180,7 +180,7 @@ public class AccountController {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        short role = Short.parseShort(request.getParameter("txtRole"));
+        String role = request.getParameter("txtRole");
 
         Account account = accountRepository.findByMail(mail);
         account.setFullname(name);

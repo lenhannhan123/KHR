@@ -30,10 +30,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService implements UserDetailsService {
 
-    private Long userId;
-    private String username;
-    private String password;
-    private Collection authorities;
     @Autowired
     IAccountRepository repository;
 
@@ -45,11 +41,17 @@ public class AccountService implements UserDetailsService {
         Account adminaccount = repository.findByMailAdmin(username);
         Account useraccount = repository.findByMailUser(username);
         Account account = repository.findByMail(username);
-        if (account != null) {
-            List<GrantedAuthority> grantList = new ArrayList<>();
+        if (adminaccount != null) {
+            List<GrantedAuthority> grantListAdmin = new ArrayList<>();
             GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");
-            grantList.add(authority);
-            UserDetails userDetails = new User(account.getMail(), account.getPassword(), grantList);
+            grantListAdmin.add(authority);
+            UserDetails userDetails = new User(adminaccount.getMail(), adminaccount.getPassword(), grantListAdmin);
+            return userDetails;
+        } else if (useraccount != null) {
+            List<GrantedAuthority> grantListUser = new ArrayList<>();
+            GrantedAuthority userAuthority = new SimpleGrantedAuthority("ROLE_USER");
+            grantListUser.add(userAuthority);
+            UserDetails userDetails = new User(useraccount.getMail(), useraccount.getPassword(), grantListUser);
             return userDetails;
         } else {
             new UsernameNotFoundException("Login failed!");

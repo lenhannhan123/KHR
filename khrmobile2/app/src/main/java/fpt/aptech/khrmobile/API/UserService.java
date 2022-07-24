@@ -12,6 +12,6 @@ import retrofit2.http.Body;
 
 public interface UserService {
     @Headers({"Accept: application/json"})
-    @POST("api/auth/login")
+    @POST("/api/auth")
     Call<Account> loginUser(@Body LoginRequest loginRequest);
 }
