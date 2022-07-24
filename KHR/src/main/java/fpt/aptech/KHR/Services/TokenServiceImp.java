@@ -25,4 +25,19 @@ public class TokenServiceImp implements ITokenServices {
         return tokenRepository.saveAndFlush(token);
     }
 
+    @Override
+    public boolean saveToke(Token newtoken) {
+        try {
+            tokenRepository.save(newtoken);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updatedevice(Token device) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

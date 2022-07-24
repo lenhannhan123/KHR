@@ -5,14 +5,10 @@
  */
 package fpt.aptech.KHR.Services;
 
-import fpt.aptech.KHR.Entities.Token;
-
 /**
  *
- * @author jthie
+ * @author LÊ HỮU TÂM
  */
-public interface ITokenServices {
-    public Token createToken(Token token);
-    boolean saveToke(Token newtoken);
-    boolean updatedevice(Token device);
+public interface IFirebaseToken {
+    
 }
