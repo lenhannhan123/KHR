@@ -6,6 +6,7 @@
 package fpt.aptech.KHR.Controller;
 
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.AccountNotification;
 import fpt.aptech.KHR.ImpServices.AccountService;
 import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.ImpServices.NotificationService;
@@ -14,6 +15,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +54,21 @@ public class NotificationController {
         Account account = acs.findByMail(mail);
        JsonServices.dd(JsonServices.ParseToJson(ns.findbyAccount(account)), response);
         return "notification/add";
+    }
+    @RequestMapping(value = {"api/notification/mail"}, method = RequestMethod.GET)
+    public ResponseEntity<List<AccountNotification>> APINotificationByMail(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String mail = request.getParameter("mail").toString();
+        Account account = acs.findByMail(mail);
+        List<AccountNotification> list = ns.findbyAccount(account);
+        if (list!=null) {
+            return new ResponseEntity<List<AccountNotification>>(list, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
     }
     
     

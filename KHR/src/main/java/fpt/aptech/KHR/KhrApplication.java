@@ -22,11 +22,11 @@ public class KhrApplication {
     public LayoutDialect layoutDialect() {
         return new LayoutDialect();
     }
-    
+
     @Bean
     public FirebaseMessaging firebaseMessaging() throws IOException {
         GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ClassPathResource("khr-app-10543-firebase-adminsdk-mbjiy-5b55aedc9e.json").getInputStream());
+                .fromStream(new ClassPathResource("khr-app-10543-firebase-adminsdk-mbjiy-04c917fe3e.json").getInputStream());
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(googleCredentials)
                 .build();
