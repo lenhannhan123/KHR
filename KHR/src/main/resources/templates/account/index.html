@@ -81,7 +81,15 @@
                                 <td th:text="${item.getMail()}" th:id="${item.getMail()}" ></td>
                                 <td></td>
                                 <td th:text="${item.getFullname()}" ></td>
-                                <td th:text="${item.getRole()}?'Quản trị viên':'Nhân viên'" ></td>
+                                <td>
+                                    <div th:switch="${item.role}">
+                                        <p th:case="'0'">Nhân viên</p>
+                                        <p th:case="'1'">Quản trị viên</p>
+                                        <p th:case="'2'">Máy quét QR</p>
+                                        <!-- * for default case -->
+                                        <p th:case="*">Chưa có phân quyền</p>
+                                    </div>
+                                </td>
                                 <td align="center">
 
                                     <div class="dropdown">
