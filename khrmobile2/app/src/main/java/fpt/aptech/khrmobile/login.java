@@ -1,6 +1,8 @@
 package fpt.aptech.khrmobile;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import fpt.aptech.khrmobile.API.ApiClient;
 import fpt.aptech.khrmobile.Entities.Account;
@@ -21,6 +26,10 @@ import retrofit2.Response;
 public class login extends AppCompatActivity {
     EditText Login_txtUsername;
     EditText Login_txtPassword;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    String USERNAME_KEY = "user";
+    String PASSWORD_KEY = "password";
 
     void openFormForget(){
         TextView linkforget = findViewById(R.id.Login_linkforrgetpass);
@@ -32,7 +41,6 @@ public class login extends AppCompatActivity {
             }
         });
     }
-
 
     void login(){
         Button Login_button = findViewById(R.id.Login_btnlogin);
@@ -50,6 +58,13 @@ public class login extends AppCompatActivity {
                     LoginRequest loginRequest = new LoginRequest();
                     loginRequest.setMail(Login_txtUsername.getText().toString());
                     loginRequest.setPassword(Login_txtPassword.getText().toString());
+                    String user = Login_txtUsername.getText().toString().trim();
+                    String password = Login_txtPassword.getText().toString().trim();
+                    editor = sharedPreferences.edit();
+                    editor.putString(USERNAME_KEY, Login_txtUsername.getText().toString().trim());
+                    editor.putString(PASSWORD_KEY, Login_txtPassword.getText().toString().trim());
+                    editor.commit();
+
                     loginUser(loginRequest);
                 }
             }
@@ -63,6 +78,9 @@ public class login extends AppCompatActivity {
         getSupportActionBar().hide();
         openFormForget();
         login();
+        sharedPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        Login_txtUsername.setText(sharedPreferences.getString(USERNAME_KEY,""));
+        Login_txtPassword.setText(sharedPreferences.getString(PASSWORD_KEY,""));
     }
 
     public void loginUser(LoginRequest loginRequest){

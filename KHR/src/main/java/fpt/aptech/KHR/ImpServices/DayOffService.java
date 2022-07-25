@@ -55,5 +55,10 @@ public class DayOffService implements IDayOffServices{
     public List<DayOff> findNotCheck() {
         return dor.findStatus(Short.valueOf("0"));
     }
+
+    @Override
+    public DayOff AddDayOff( DayOff newDayOff) {
+        return dor.save(newDayOff);
+    }
     
 }
