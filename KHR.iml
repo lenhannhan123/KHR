@@ -5,6 +5,7 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <datasource-mapping>
+          <factory-entry name="entityManagerFactory" />
           <factory-entry name="fpt.aptech_KHR_jar_1.0.0PU" />
         </datasource-mapping>
         <naming-strategy-map />

@@ -41,7 +41,10 @@ public class WorkScheduleDetailActivity extends AppCompatActivity {
          data_  = intent.getStringExtra("data");
         idSelect  = intent.getStringExtra("idSelect");
         Code  =intent.getStringExtra("Code") ;
-  
+
+        androidx.appcompat.widget.AppCompatTextView n = findViewById(R.id.title_Mytimeline_details);
+        n.setText(data_);
+
 
         BottomNavigationView bottom_navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         CallNav callNav = new CallNav();

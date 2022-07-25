@@ -1,0 +1,191 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<head>
+    <title>Chi tiết chuyển ca</title>
+
+    <style>
+
+        .title-card {
+            padding-top: 11%;
+            padding-bottom: 11%;
+            margin-left: 4%;
+            font-weight: bold
+        }
+
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div layout:fragment="content">
+
+
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col background-table">
+
+
+            <h3 style="text-align: center" th:text="${model.getData1()}"></h3>
+            <br/>
+
+            <div class="row" style="font-size: 15pt; margin-bottom: 2%">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><b>Thời gian:</b></div>
+                <div class="col-sm-6"th:text="${model.getData2()}"> </div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row" style="font-size: 15pt; margin-bottom: 2%">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><b>Ngày cần đổi:</b></div>
+                <div class="col-sm-6" th:text="${model.getData3()}"></div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row" style="font-size: 15pt; margin-bottom: 2%">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><b>Ngày đổi:</b></div>
+                <div class="col-sm-6" th:text="${model.getData4()}"></div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row" style="font-size: 15pt; margin-bottom: 2%">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><b>Vị trí:</b></div>
+                <div class="col-sm-6" th:text="${model.getData5()}"></div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row" style="font-size: 15pt; margin-bottom: 2%">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><b>Sang vị trí:</b></div>
+                <div class="col-sm-6" th:text="${model.getData6()}"></div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row" style="font-size: 15pt; margin-bottom: 2%">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><b>Mail cần đổi:</b></div>
+                <div class="col-sm-6" th:text="${model.getData7()}"></div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row" style="font-size: 15pt; margin-bottom: 2%">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><b>Mail đổi:</b></div>
+                <div class="col-sm-6" th:text="${model.getData8()}"></div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row" style="font-size: 15pt; margin-bottom: 2%">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><b>Nội dung:</b></div>
+                <div class="col-sm-6" th:text="${model.getData9()}"></div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row" style="font-size: 15pt; margin-bottom: 2%">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><b>Trạng thái:</b></div>
+                <div class="col-sm-6" th:text="${model.getData10()}"></div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row" style="font-size: 15pt; margin-bottom: 2%">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-3"><b>Lý do hủy (Nếu có):</b></div>
+                <div class="col-sm-6" th:text="${model.getData11()}"></div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br>
+
+            <div class="row"  >
+                <div class="col-sm-3" ></div>
+                <div class="col-sm-3" >
+                    <button class="btn btn-success" onclick="opformsuccesss()" >Chấp nhận</button>
+
+                </div>
+                <div class="col-sm-3" >
+                    <button class="btn btn-danger" onclick="opform()">Từ chối</button>
+
+                </div>
+
+            </div>
+            <br>
+            <br>
+
+
+            <form method="post" hidden id="form_respon"  >
+
+                <div hidden>
+                    <input type="text" name="Id_trans"th:value="${model.getData12()}" >
+                    <input type="text" hidden name="Status" value="4" >
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col" style="text-align: center">
+                        <textarea  rows="5" cols="50" name="response_content"></textarea>
+                    </div>
+
+
+                </div>
+                <br>
+                <div class="row">
+
+                    <div class="col" style="text-align: center">
+                        <input  type="submit" class="btn btn-success" value="Gửi lý do">
+                    </div>
+
+
+                </div>
+
+
+            </form>
+
+
+
+
+        </div>
+
+        <form method="post" hidden>
+
+            <input type="text" name="Id_trans"th:value="${model.getData12()}" >
+            <input type="text" name="Status" value="3" >
+            <textarea  rows="5" cols="50" name="response_content"></textarea>
+            <input  type="submit" id="acceptSub">
+
+        </form>
+
+
+
+
+        <div class="col-sm-3"></div>
+
+
+
+    </div>
+
+    <script>
+
+        function  opform(){
+            document.getElementById("form_respon").hidden=false
+        }
+
+        function  opformsuccesss(){
+            document.getElementById("acceptSub").click();
+        }
+
+
+    </script>
+
+
+</div>
+
+
+</body>
+
+</html>

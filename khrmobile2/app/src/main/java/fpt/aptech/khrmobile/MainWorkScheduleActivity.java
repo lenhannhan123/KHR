@@ -50,7 +50,7 @@ public class MainWorkScheduleActivity extends AppCompatActivity {
     }
 
     private void btn_Schedule(){
-        Button button = findViewById(R.id.btn_Schedule);
+        Button button = findViewById(R.id.btn_cofirm);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
