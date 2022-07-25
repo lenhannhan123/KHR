@@ -7,6 +7,7 @@ package fpt.aptech.KHR.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.util.DateTime;
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.AccountPosition;
 import fpt.aptech.KHR.Entities.Position;
@@ -27,6 +28,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -94,6 +96,116 @@ public class TimekeepingController {
         return "admin/timekeeping/index";
     }
 
+    @RequestMapping(value = "/timekeeping/create", method = RequestMethod.GET)
+    public String create(Model model) {
+        return "admin/timekeeping/create";
+    }
+
+//    @RequestMapping(value = "/timekeeping//{id}", method = RequestMethod.GET)
+//    public ResponseEntity<String> getShifts(@PathVariable("id") String id) {
+//        //Shift shift = shiftServices.FindOne(id);
+//        Account account = accountRepository.findByMail(id);
+//        return new ResponseEntity<String>(account.getFullname(), HttpStatus.OK);
+//    }
+    @RequestMapping(value = "/timekeeping/save", method = RequestMethod.POST)
+    public String save(Model model, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+            Timekeeping timekeeping = new Timekeeping();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat hour = new SimpleDateFormat("HH");
+            SimpleDateFormat minute = new SimpleDateFormat("mm");
+            String dateStartString = request.getParameter("dateStart");
+            String day, month, year;
+            day = dateStartString.substring(0, 2);
+            month = dateStartString.substring(3, 5);
+            year = dateStartString.substring(6, 10);
+            String dateStart = year + "-" + month + "-" + day;
+            String checkinTime = dateStart + " " + request.getParameter("timeStart") + ":00";
+            String dateEndString = request.getParameter("dateEnd");
+            day = dateEndString.substring(0, 2);
+            month = dateEndString.substring(3, 5);
+            year = dateEndString.substring(6, 10);
+            String dateEnd = year + "-" + month + "-" + day;
+            String checkoutTime = dateEnd + " " + request.getParameter("timeEnd") + ":00";
+//          Account account = accountRepository.findByMail(_mail);
+//          timekeeping.setMail(account);
+            Account account = new Account();
+            account.setMail(request.getParameter("mail"));
+            timekeeping.setMail(account);
+            timekeeping.setTimestart(java.sql.Timestamp.valueOf(checkinTime));
+            timekeeping.setTimeend(java.sql.Timestamp.valueOf(checkoutTime));
+
+            List<Shift> shiftList = timekeepingServices.findShiftByDate(timekeeping.getTimestart());
+            Date date = dateFormat.parse(timekeeping.getTimestart().toString());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.DATE, -1);
+            Date yesterday = calendar.getTime();
+
+            List<Shift> shiftListDateBefore = timekeepingServices.findShiftByDate(simpleDateFormat.parse(simpleDateFormat.format(yesterday)));
+            shiftList.addAll(shiftListDateBefore);
+
+            List<TimelineDetail> timelineDetailList = new ArrayList<>();
+            for (int i = 0; i < shiftList.size(); i++) {
+                List<TimelineDetail> _timelineDetailList = new ArrayList<>();
+                String shiftCode = shiftList.get(i).getShiftcode().toString();
+                if (shiftCode.length() == 4) {
+                    _timelineDetailList = timekeepingServices.findTimelineDetailList(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 1000, shiftList.get(i).getIdPosition(), shiftList.get(i).getIdTimeline());
+                } else {
+                    _timelineDetailList = timekeepingServices.findTimelineDetailList(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 100, shiftList.get(i).getIdPosition(), shiftList.get(i).getIdTimeline());
+                }
+
+                for (TimelineDetail item : _timelineDetailList) {
+                    if (!timelineDetailList.contains(item)) {
+                        timelineDetailList.add(item);
+                    }
+                }
+            }
+
+            List<Shift> tempList = new ArrayList<>();
+            for (int i = 0; i < timelineDetailList.size(); i++) {
+                String shiftCode = String.valueOf(timelineDetailList.get(i).getShiftCode());
+                if (shiftCode.length() > 1) {
+                    Shift shift = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 1000, timekeeping.getTimestart(), timelineDetailList.get(i).getIdPosition());
+                    if (shift != null) {
+                        tempList.add(shift);
+                    }
+                } else {
+                    Shift shift = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 100, timekeeping.getTimestart(), timelineDetailList.get(i).getIdPosition());
+                    if (shift != null) {
+                        tempList.add(shift);
+                    }
+                }
+
+            }
+
+            //JsonServices.dd(JsonServices.ParseToJson(timelineDetailList.toString() + " " + tempList.toString()), response);
+            for (int i = 0; i < timelineDetailList.size(); i++) {
+                Shift shiftDateBefore = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 100, simpleDateFormat.parse(simpleDateFormat.format(yesterday)), timelineDetailList.get(i).getIdPosition());
+                if (shiftDateBefore != null) {
+                    tempList.add(shiftDateBefore);
+                }
+            }
+
+            List<Timekeeping> timekeepings = timekeepingServices.findAll();
+            for (int i = 0; i < timekeepings.size(); i++) {
+                for (int j = 0; j < tempList.size(); j++) {
+                    if (timekeepings.get(i).getShiftId().equals(tempList.get(j)) && timekeepings.get(i).getMail().equals(timekeeping.getMail())) {
+                        tempList.remove(tempList.get(j));
+                    }
+                }
+            }
+
+            //JsonServices.dd(JsonServices.ParseToJson(tempList.toString()), response);
+            return index(model);
+        } catch (ParseException ex) {
+            Logger.getLogger(TimekeepingController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     @RequestMapping(value = "/api/timekeeping/year/{mail}", method = RequestMethod.GET)
     public ResponseEntity<List<String>> getYear(@PathVariable("mail") String mail, HttpServletResponse response) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
@@ -155,7 +267,7 @@ public class TimekeepingController {
         Shift shift = timekeepingServices.findShiftByTimekeeping(id);
         List<String> dataList = new ArrayList<>();
         dataList.add(simpleDateFormat.format(shift.getTimestart()));
-        dataList.add(hourFormat .format(shift.getTimestart()));
+        dataList.add(hourFormat.format(shift.getTimestart()));
         Position position = timekeepingServices.findPositionAccountById(shift.getIdPosition().getId());
         dataList.add(position.getPositionname());
 //        JsonServices.dd(JsonServices.ParseToJson(dataList.toString()), response);
@@ -188,14 +300,17 @@ public class TimekeepingController {
         List<Shift> shiftListDateBefore = timekeepingServices.findShiftByDate(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
         shiftList.addAll(shiftListDateBefore);
 
+        List<String> viewList = new ArrayList<>();
         List<TimelineDetail> timelineDetailList = new ArrayList<>();
         for (int i = 0; i < shiftList.size(); i++) {
             List<TimelineDetail> _timelineDetailList = new ArrayList<>();
+
             String shiftCode = shiftList.get(i).getShiftcode().toString();
+
             if (shiftCode.length() == 4) {
-//                viewList.add(shiftCode + " " + shiftList.get(i).getIdPosition().getId().toString() + " " + shiftList.get(i).getIdTimeline().getId().toString());
                 _timelineDetailList = timekeepingServices.findTimelineDetailList(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 1000, shiftList.get(i).getIdPosition(), shiftList.get(i).getIdTimeline());
             } else {
+                viewList.add(shiftList.get(i).getShiftcode() + " " + shiftList.get(i).getIdTimeline() + " " + shiftList.get(i).getIdPosition().getId());
                 _timelineDetailList = timekeepingServices.findTimelineDetailList(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 100, shiftList.get(i).getIdPosition(), shiftList.get(i).getIdTimeline());
             }
 
@@ -205,6 +320,8 @@ public class TimekeepingController {
                 }
             }
         }
+
+        JsonServices.dd(JsonServices.ParseToJson(timelineDetailList.toString() + shiftList.toString()), response);
 
         List<Shift> tempList = new ArrayList<>();
         for (int i = 0; i < timelineDetailList.size(); i++) {
@@ -238,8 +355,6 @@ public class TimekeepingController {
                 }
             }
         }
-
-        JsonServices.dd(JsonServices.ParseToJson(tempList.toString()), response);
 
         int minuteTimeStart = timekeeping.getTimestart().getMinutes();
         int secondTimeStart = timekeeping.getTimestart().getSeconds();
@@ -312,6 +427,91 @@ public class TimekeepingController {
         int checkinMinute = Integer.parseInt(minute.format(timekeeping.getTimestart()));
         int checkoutHour = Integer.parseInt(hour.format(timekeeping.getTimeend()));
 
+        List<Shift> shiftList = timekeepingServices.findShiftByDate(timekeeping.getTimestart());
+
+        List<TimelineDetail> timelineDetailList = new ArrayList<>();
+        for (int i = 0; i < shiftList.size(); i++) {
+            List<TimelineDetail> _timelineDetailList = new ArrayList<>();
+            String shiftCode = shiftList.get(i).getShiftcode().toString();
+            if (shiftCode.length() == 4) {
+//                viewList.add(shiftCode + " " + shiftList.get(i).getIdPosition().getId().toString() + " " + shiftList.get(i).getIdTimeline().getId().toString());
+                _timelineDetailList = timekeepingServices.findTimelineDetailList(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 1000, shiftList.get(i).getIdPosition(), shiftList.get(i).getIdTimeline());
+            } else {
+                _timelineDetailList = timekeepingServices.findTimelineDetailList(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 100, shiftList.get(i).getIdPosition(), shiftList.get(i).getIdTimeline());
+            }
+
+            for (TimelineDetail item : _timelineDetailList) {
+                if (!timelineDetailList.contains(item)) {
+                    timelineDetailList.add(item);
+                }
+            }
+        }
+
+        List<Shift> tempList = new ArrayList<>();
+        for (int i = 0; i < timelineDetailList.size(); i++) {
+            String shiftCode = String.valueOf(timelineDetailList.get(i).getShiftCode());
+            if (shiftCode.length() > 1) {
+                Shift shift = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 1000, timekeeping.getTimestart(), timelineDetailList.get(i).getIdPosition());
+                if (shift != null) {
+                    tempList.add(shift);
+                }
+            } else {
+                Shift shift = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 100, timekeeping.getTimestart(), timelineDetailList.get(i).getIdPosition());
+                if (shift != null) {
+                    tempList.add(shift);
+                }
+            }
+
+        }
+
+        for (int i = 0; i < tempList.size(); i++) {
+            if (tempList.get(i).getId() == timekeeping.getShiftId().getId()) {
+                int count = i;
+                for (int j = count; j < tempList.size(); j++) {
+                    if (j + 1 < tempList.size() && tempList.get(j + 1).getTimestart().compareTo(tempList.get(j).getTimeend()) == 0) {
+                        Long time = timekeeping.getTimeend().getTime() - tempList.get(i).getTimeend().getTime();
+                        int diff = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;
+                        //JsonServices.dd(JsonServices.ParseToJson(hour.format(timekeeping.getTimeend()) + " " + String.valueOf(diff)), response);
+                        if (timekeeping.getTimeend().compareTo(tempList.get(j + 1).getTimestart()) >= 0 && diff >= 1) {
+                            Timekeeping _timekeeping = new Timekeeping();
+                            _timekeeping.setMail(timekeeping.getMail());
+                            _timekeeping.setTimestart(tempList.get(j + 1).getTimestart());
+                            if (tempList.get(j + 1).equals(tempList.get(tempList.size() - 1))) {
+                                timekeeping.setTimeend(tempList.get(j).getTimeend());
+                                _timekeeping.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
+                            } else {
+                                _timekeeping.setTimeend(tempList.get(j + 1).getTimeend());
+                            }
+                            _timekeeping.setShiftId(tempList.get(j + 1));
+                            timekeepingServices.checkin(_timekeeping);
+                            timeHandle(_timekeeping.getId());
+                        } else {
+                            break;
+                        }
+
+                    }
+                }
+
+            }
+
+        }
+
+        timeHandle(timekeeping.getId());
+        return new ResponseEntity<>(timekeeping, HttpStatus.OK);
+
+    }
+
+    public void timeHandle(int id) {
+        SimpleDateFormat hour = new SimpleDateFormat("HH");
+        SimpleDateFormat minute = new SimpleDateFormat("mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Timekeeping timekeeping = timekeepingServices.findOne(id);
+        int checkinHour = Integer.parseInt(hour.format(timekeeping.getTimestart()));
+        int checkinMinute = Integer.parseInt(minute.format(timekeeping.getTimestart()));
+        int checkoutHour = Integer.parseInt(hour.format(timekeeping.getTimeend()));
+
         if (dateFormat.format(timekeeping.getShiftId().getTimestart()).compareTo(dateFormat.format(timekeeping.getShiftId().getTimeend())) == 0) {
             if (checkinMinute > 15 && checkinHour >= Integer.parseInt(hour.format(timekeeping.getShiftId().getTimestart()))) {
                 checkinHour += 1;
@@ -331,7 +531,7 @@ public class TimekeepingController {
             _beginTime.setMinutes(0);
             _beginTime.setSeconds(0);
             Date beginTime = _beginTime;
-            Date endTime = timekeeping.getShiftId().getTimeend();
+            Date endTime = timekeeping.getTimeend();
             Long time = null;
             if (checkinMinute > 15) {
                 time = endTime.getTime() - (beginTime.getTime() + TimeUnit.HOURS.toMillis(1));
@@ -339,15 +539,12 @@ public class TimekeepingController {
                 time = endTime.getTime() - beginTime.getTime();
             }
             int workingHours = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;
-            //JsonServices.dd(JsonServices.ParseToJson(workingHours), response);
+//            JsonServices.dd(JsonServices.ParseToJson(simpleDateFormat.format(timekeeping.getTimeend())), response);
             timekeeping.getTimestart().setMinutes(minuteTimeStart);
             timekeeping.getTimestart().setSeconds(secondTimeStart);
             timekeeping.setTime(workingHours);
         }
-
         timekeepingServices.checkout(timekeeping);
-        return new ResponseEntity<>(timekeeping, HttpStatus.OK);
-
     }
 
     @RequestMapping(value = "/timekeeping/update/{id}", method = RequestMethod.GET)
@@ -412,7 +609,7 @@ public class TimekeepingController {
                 _beginTime.setMinutes(0);
                 _beginTime.setSeconds(0);
                 Date beginTime = _beginTime;
-                Date endTime = timekeeping.getShiftId().getTimeend();
+                Date endTime = timekeeping.getTimeend();
                 Long time = null;
                 if (checkinMinute > 15) {
                     time = endTime.getTime() - (beginTime.getTime() + TimeUnit.HOURS.toMillis(1));

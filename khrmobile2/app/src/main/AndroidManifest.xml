@@ -16,6 +16,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".TimekeepingDetail"
+            android:exported="false" />
+        <activity
             android:name=".WorkScheduleDetailActivity"
             android:exported="false" />
         <activity
