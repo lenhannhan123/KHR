@@ -18,6 +18,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -66,7 +67,8 @@ public class MainAccountActivity extends AppCompatActivity {
         int radius = 500; // corner radius, higher value = more rounded
         Glide.with(context)
                 .load("http://" + ConfigData.IP + ":7777/sid?filename=" + avatarkey)
-                .transform(new RoundedCorners(radius))
+//                .transform(new RoundedCorners(radius))
+                .transform(new CircleCrop())
                 .override(600, 600)
                 .error(R.drawable.icon5)
                 .into(avatar);
@@ -83,6 +85,7 @@ public class MainAccountActivity extends AppCompatActivity {
         callNav.setDisplay(scrollView,MainAccountActivity.this,0.8);
 
         buttonchange();
+        buttonOpenQR();
     }
 
     private void buttonchange(){
@@ -92,6 +95,17 @@ public class MainAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainAccountActivity.this, MenuChangeAccountActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void buttonOpenQR(){
+        Button btnOpenQR = findViewById(R.id.btnOpenQR);
+        btnOpenQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainAccountActivity.this, QRDisplay.class);
                 startActivity(intent);
             }
         });

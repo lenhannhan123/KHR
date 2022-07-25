@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String Birthday = "birthKey";
     public static final String Gender = "genderKey";
     public static final String Avatar = "avatarKey";
+    public static final String Code = "codeKey";
 
 
     @Override
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString(Phone, account.getPhone());
             editor.putString(Birthday, DateFormat.getDateInstance().format(account.getBirthdate()));
             editor.putString(Avatar, account.getAvatar());
+            editor.putString(Code, account.getCode());
             editor.commit();
             String namekey = sharedPreferences.getString(MainActivity.Name,null);
             username.setText("Xin chào " + namekey);

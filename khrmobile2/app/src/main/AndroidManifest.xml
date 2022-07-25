@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Khrmobile"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".QRDisplay"
+            android:exported="false" />
+        <activity
             android:name=".AddTimelineDetailActivity"
             android:exported="false" />
         <activity
