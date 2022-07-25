@@ -38,6 +38,7 @@ public class Timeline implements Serializable {
     @Column(name = "IsDelete")
     private short isDelete;
 
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimeline")
     private List<TimelineDetail> timelineDetailList;
 
@@ -147,13 +148,6 @@ public class Timeline implements Serializable {
         return "fpt.aptech.KHR.Entities.Timeline[ id=" + id + " ]";
     }
 
-    public short getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(short isDelete) {
-        this.isDelete = isDelete;
-    }
 
   
 
@@ -165,5 +159,16 @@ public class Timeline implements Serializable {
     public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
         this.timelineDetailList = timelineDetailList;
     }
+
+
+
+    public short getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(short isDelete) {
+        this.isDelete = isDelete;
+    }
+
 
 }

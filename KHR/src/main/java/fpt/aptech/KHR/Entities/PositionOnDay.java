@@ -13,7 +13,7 @@ public class PositionOnDay {
     int Position_id;
     String mail;
 
-    int Id_Shift;
+    int Id_Code;
 
     public PositionOnDay() {
     }
@@ -21,7 +21,7 @@ public class PositionOnDay {
     public PositionOnDay(int position_id, String mail, int id_Shift) {
         Position_id = position_id;
         this.mail = mail;
-        this.Id_Shift = id_Shift;
+        this.Id_Code = id_Shift;
     }
 
     public int getPosition_id() {
@@ -40,11 +40,11 @@ public class PositionOnDay {
         this.mail = mail;
     }
 
-    public int getId_Shift() {
-        return Id_Shift;
+    public int getId_Code() {
+        return Id_Code;
     }
 
-    public void setId_Shift(int id_Shift) {
-        Id_Shift = id_Shift;
+    public void setId_Code(int id_Shift) {
+        Id_Code = id_Shift;
     }
 }

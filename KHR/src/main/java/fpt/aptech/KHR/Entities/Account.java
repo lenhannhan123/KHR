@@ -14,6 +14,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -61,6 +63,7 @@ public class Account implements Serializable {
 
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -94,6 +97,13 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
+    @JoinTable(name = "account_token", joinColumns = {
+        @JoinColumn(name = "Mail", referencedColumnName = "Mail")}, inverseJoinColumns = {
+        @JoinColumn(name = "Mail", referencedColumnName = "Mail")})
+    @ManyToMany
+    private List<Account> accountList;
+    @ManyToMany(mappedBy = "accountList")
+    private List<Account> accountList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
     private List<TimelineDetail> timelineDetailList;
     private static final long serialVersionUID = 1L;
@@ -188,7 +198,13 @@ public class Account implements Serializable {
     public void setIdStore(Store idStore) {
         this.idStore = idStore;
     }
-
+    @XmlTransient
+    public List<TimelineDetail> getTimelineDetailList() {
+        return timelineDetailList;
+    }
+    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
+        this.timelineDetailList = timelineDetailList;
+    }
 
     public String getPassword() {
         return password;
@@ -238,6 +254,8 @@ public class Account implements Serializable {
         this.code = code;
     }
 
+
+
     public String getRole() {
         return role;
     }
@@ -245,7 +263,6 @@ public class Account implements Serializable {
     public void setRole(String role) {
         this.role = role;
     }
-
 
 
     public boolean getStatus() {
@@ -265,12 +282,21 @@ public class Account implements Serializable {
     }
 
     @XmlTransient
-    public List<TimelineDetail> getTimelineDetailList() {
-        return timelineDetailList;
+    public List<Account> getAccountList() {
+        return accountList;
     }
 
-    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
-        this.timelineDetailList = timelineDetailList;
+    public void setAccountList(List<Account> accountList) {
+        this.accountList = accountList;
+    }
+
+    @XmlTransient
+    public List<Account> getAccountList1() {
+        return accountList1;
+    }
+
+    public void setAccountList1(List<Account> accountList1) {
+        this.accountList1 = accountList1;
     }
 
 

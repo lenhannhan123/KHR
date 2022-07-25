@@ -5,10 +5,13 @@
  */
 package fpt.aptech.KHR.Reponsitory;
 
+import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Entities.TimelineDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 /**
  * @author Admin
@@ -17,6 +20,10 @@ public interface TimelineDetailRepository extends JpaRepository<TimelineDetail, 
 
     @Query("SELECT t FROM TimelineDetail t WHERE t.id = :id")
     TimelineDetail findID(@PathVariable("id") int id);
+
+
+    @Query("SELECT t FROM TimelineDetail t WHERE t.idTimeline = :idTimeline")
+    List<TimelineDetail> findbyIdTimeline(@PathVariable("idTimeline") Timeline idTimeline);
 
 
 }
