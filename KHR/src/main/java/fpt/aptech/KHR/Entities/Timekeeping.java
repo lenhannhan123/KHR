@@ -61,9 +61,9 @@ public class Timekeeping implements Serializable {
     @JoinColumn(name = "Mail", referencedColumnName = "Mail")
     @ManyToOne(optional = false)
     private Account mail;
-//    @JoinColumn(name = "shift_id", referencedColumnName = "Id")
-//    @ManyToOne(optional = false)
-//    private Shift shiftId;
+    @JoinColumn(name = "shift_id", referencedColumnName = "Id")
+    @ManyToOne(optional = false)
+    private Shift shiftId;
 
     public Timekeeping() {
     }
@@ -119,13 +119,13 @@ public class Timekeeping implements Serializable {
         this.mail = mail;
     }
 
-//    public Shift getShiftId() {
-//        return shiftId;
-//    }
-//
-//    public void setShiftId(Shift shiftId) {
-//        this.shiftId = shiftId;
-//    }
+    public Shift getShiftId() {
+        return shiftId;
+    }
+
+    public void setShiftId(Shift shiftId) {
+        this.shiftId = shiftId;
+    }
 
     @Override
     public int hashCode() {

@@ -69,32 +69,47 @@
 
                         <div class="row" style="margin-top: 3%;">
                             <div class="col-sm-1"></div>
-                            <div class="col">
+                            <div class="col-sm-5">
                                 Thời gian vào
+                            </div>
+                            <div class="col-sm-5">
+                                Ngày
                             </div>
                         </div>
 
+
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
-                            <div class="col">
-                                <input type="text" class="form-control input" placeholder="Thời gian vào" oninput="validateCheckin();" id="checkin" th:value="${timeStart}"
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input" placeholder="Thời gian vào" oninput="validateCheckin();" id="timeStart" th:value="${#dates.format(timekeeping.getTimestart(), 'HH:mm')}"
                                        name="timeStart">
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input" placeholder="Ngày" oninput="" id="dateStart" th:value="${#dates.format(timekeeping.getTimestart(), 'dd-MM-yyyy')}"
+                                       name="dateStart">
                             </div>
                             <div class="col-sm-1"></div>
                         </div>
 
                         <div class="row" style="margin-top: 3%;">
                             <div class="col-sm-1"></div>
-                            <div class="col">
+                            <div class="col-sm-5">
                                 Thời gian ra
+                            </div>
+                            <div class="col-sm-5">
+                                Ngày
                             </div>
                         </div>
 
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
-                            <div class="col">
-                                <input type="text" class="form-control input" placeholder="Thời gian ra" id="checkout" oninput="validateCheckout();" th:value="${timeEnd}"
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input" placeholder="Thời gian ra" id="timeEnd" oninput="validateCheckout();" th:value="${#dates.format(timekeeping.getTimeend(), 'HH:mm')}"
                                        name="timeEnd">
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control input" placeholder="Ngày" oninput="" id="dateEnd" th:value="${#dates.format(timekeeping.getTimeend(), 'dd-MM-yyyy')}"
+                                       name="dateEnd">
                             </div>
                             <div class="col-sm-1"></div>
                         </div>
@@ -158,40 +173,53 @@
 
 <script th:src="@{/script/cleave.js}"></script>
 <script>
-    var checkinFormat = new Cleave('#checkin', {
+    var timeStartFormat = new Cleave('#timeStart', {
         time: true,
         timePattern: ['h', 'm']
     });
     
-     var checkoutFormat = new Cleave('#checkout', {
+    var dateStartFormat = new Cleave('#dateStart', {
+        date: true,
+        delimiter: '-',
+        datePattern: ['d', 'm', 'Y']
+    });
+
+    var timeEndFormat = new Cleave('#timeEnd', {
         time: true,
         timePattern: ['h', 'm']
+    });
+    
+    var dateStartFormat = new Cleave('#dateEnd', {
+        date: true,
+        delimiter: '-',
+        datePattern: ['d', 'm', 'Y']
     });
 
     var btnSubmit = document.getElementById('btnSubmit');
 
     function validateCheckin() {
-        var checkin = document.getElementById('checkin').value;
+        var checkin = document.getElementById('timeStart').value;
         if (checkin.length < 5) {
-            document.getElementById('checkin').style.borderColor = '#cc0000';
+            document.getElementById('timeStart').style.borderColor = '#cc0000';
             btnSubmit.disabled = true;
             btnSubmit.style.cursor = "pointer";
             btnSubmit.style.background = '#cc0000';
         } else {
-            document.getElementById('checkin').style.borderColor = 'green';
+            document.getElementById('timeStart').style.borderColor = 'green';
             btnSubmit.disabled = false;
             btnSubmit.style.background = '#6667AB';
         }
     }
-    
+
     function validateCheckout() {
-        var checkin = document.getElementById('checkout').value;
+        var checkin = document.getElementById('timeEnd').value;
         if (checkin.length < 5) {
-            document.getElementById('checkout').style.borderColor = '#cc0000';
+            document.getElementById('timeEnd').style.borderColor = '#cc0000';
             btnSubmit.disabled = true;
+            btnSubmit.style.cursor = "pointer";
             btnSubmit.style.background = '#cc0000';
         } else {
-            document.getElementById('checkout').style.borderColor = 'green';
+            document.getElementById('timeEnd').style.borderColor = 'green';
             btnSubmit.disabled = false;
             btnSubmit.style.background = '#6667AB';
         }
