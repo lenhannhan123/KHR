@@ -36,10 +36,12 @@
                 android:layout_marginTop="-80dp"
                 android:orientation="vertical">
 
-                <fpt.aptech.khrmobile.CricleImage
-                    android:layout_width="145dp"
-                    android:layout_height="156dp"
-                    android:src="@drawable/avatar" />
+                <ImageView
+                    android:id="@+id/ivAvatarProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/avatar" />
+
             </LinearLayout>
 
 

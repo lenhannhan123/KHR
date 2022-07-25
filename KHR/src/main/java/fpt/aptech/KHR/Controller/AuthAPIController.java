@@ -68,9 +68,8 @@ public class AuthAPIController {
     }
     
     @RequestMapping(value = "/sid", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> getProfileImage() throws IOException {
-
-        ClassPathResource imgFile = new ClassPathResource("images/user-photos/thien.jpg");
+    public ResponseEntity<byte[]> getProfileImage(String filename) throws IOException {
+        ClassPathResource imgFile = new ClassPathResource("images/user-photos/" + filename);
         byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
 
         return ResponseEntity
@@ -78,6 +77,4 @@ public class AuthAPIController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(bytes);
     }
-    
-    
 }
