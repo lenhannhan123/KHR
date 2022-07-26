@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Admin
+ * @author jthie
  */
 @Entity
 @Table(name = "account")
@@ -39,7 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Account.findByRole", query = "SELECT a FROM Account a WHERE a.role = :role"),
     @NamedQuery(name = "Account.findByRecoverycode", query = "SELECT a FROM Account a WHERE a.recoverycode = :recoverycode"),
     @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status"),
-    @NamedQuery(name = "Account.findByAvatar", query = "SELECT a FROM Account a WHERE a.avatar = :avatar")})
+    @NamedQuery(name = "Account.findByAvatar", query = "SELECT a FROM Account a WHERE a.avatar = :avatar"),
+    @NamedQuery(name = "Account.findByIdStore", query = "SELECT a FROM Account a WHERE a.idStore = :idStore")})
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -92,6 +93,8 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
+    @Column(name = "Id_Store")
+    private Integer idStore;
 
     public Account() {
     }
@@ -99,7 +102,7 @@ public class Account implements Serializable {
     public Account(String mail) {
         this.mail = mail;
     }
-    
+
     public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, String role, boolean status, String avatar) {
         this.mail = mail;
         this.password = password;
@@ -123,8 +126,6 @@ public class Account implements Serializable {
         this.role = role;
         this.status = status;
     }
-
-   
 
     public String getMail() {
         return mail;
@@ -212,6 +213,14 @@ public class Account implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Integer getIdStore() {
+        return idStore;
+    }
+
+    public void setIdStore(Integer idStore) {
+        this.idStore = idStore;
     }
 
     @Override

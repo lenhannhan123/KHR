@@ -18,7 +18,6 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class QRDisplay extends AppCompatActivity {
     private ImageView qrImage;
-    private Bitmap bitmap;
     private TextView tvQRName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
