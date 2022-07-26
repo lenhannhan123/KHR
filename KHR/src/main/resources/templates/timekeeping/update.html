@@ -81,11 +81,11 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Thời gian vào" oninput="validateCheckin();" id="timeStart" th:value="${#dates.format(timekeeping.getTimestart(), 'HH:mm')}"
+                                <input type="text" class="form-control input" placeholder="Thời gian vào" oninput="validateTimeStart();" id="timeStart" th:value="${#dates.format(timekeeping.getTimestart(), 'HH:mm')}"
                                        name="timeStart">
                             </div>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Ngày" oninput="" id="dateStart" th:value="${#dates.format(timekeeping.getTimestart(), 'dd-MM-yyyy')}"
+                                <input type="text" class="form-control input" placeholder="Ngày" oninput="validateDateStart();" id="dateStart" th:value="${#dates.format(timekeeping.getTimestart(), 'dd-MM-yyyy')}"
                                        name="dateStart">
                             </div>
                             <div class="col-sm-1"></div>
@@ -104,11 +104,11 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Thời gian ra" id="timeEnd" oninput="validateCheckout();" th:value="${#dates.format(timekeeping.getTimeend(), 'HH:mm')}"
+                                <input type="text" class="form-control input" placeholder="Thời gian ra" id="timeEnd" oninput="validateTimeEnd();" th:value="${#dates.format(timekeeping.getTimeend(), 'HH:mm')}"
                                        name="timeEnd">
                             </div>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Ngày" oninput="" id="dateEnd" th:value="${#dates.format(timekeeping.getTimeend(), 'dd-MM-yyyy')}"
+                                <input type="text" class="form-control input" placeholder="Ngày" oninput="validateDateEnd();" id="dateEnd" th:value="${#dates.format(timekeeping.getTimeend(), 'dd-MM-yyyy')}"
                                        name="dateEnd">
                             </div>
                             <div class="col-sm-1"></div>
@@ -197,9 +197,9 @@
 
     var btnSubmit = document.getElementById('btnSubmit');
 
-    function validateCheckin() {
-        var checkin = document.getElementById('timeStart').value;
-        if (checkin.length < 5) {
+    function validateTimeStart() {
+        var val = document.getElementById('timeStart').value;
+        if (val.length < 5) {
             document.getElementById('timeStart').style.borderColor = '#cc0000';
             btnSubmit.disabled = true;
             btnSubmit.style.cursor = "pointer";
@@ -211,15 +211,43 @@
         }
     }
 
-    function validateCheckout() {
-        var checkin = document.getElementById('timeEnd').value;
-        if (checkin.length < 5) {
+    function validateTimeEnd() {
+        var val = document.getElementById('timeEnd').value;
+        if (val.length < 5) {
             document.getElementById('timeEnd').style.borderColor = '#cc0000';
             btnSubmit.disabled = true;
             btnSubmit.style.cursor = "pointer";
             btnSubmit.style.background = '#cc0000';
         } else {
             document.getElementById('timeEnd').style.borderColor = 'green';
+            btnSubmit.disabled = false;
+            btnSubmit.style.background = '#6667AB';
+        }
+    }
+    
+    function validateDateStart() {
+        var val = document.getElementById('dateStart').value;
+        if (val.length < 10) {
+            document.getElementById('dateStart').style.borderColor = '#cc0000';
+            btnSubmit.disabled = true;
+            btnSubmit.style.cursor = "pointer";
+            btnSubmit.style.background = '#cc0000';
+        } else {
+            document.getElementById('dateStart').style.borderColor = 'green';
+            btnSubmit.disabled = false;
+            btnSubmit.style.background = '#6667AB';
+        }
+    }
+    
+    function validateDateEnd() {
+        var val = document.getElementById('dateEnd').value;
+        if (val.length < 10) {
+            document.getElementById('dateEnd').style.borderColor = '#cc0000';
+            btnSubmit.disabled = true;
+            btnSubmit.style.cursor = "pointer";
+            btnSubmit.style.background = '#cc0000';
+        } else {
+            document.getElementById('dateEnd').style.borderColor = 'green';
             btnSubmit.disabled = false;
             btnSubmit.style.background = '#6667AB';
         }

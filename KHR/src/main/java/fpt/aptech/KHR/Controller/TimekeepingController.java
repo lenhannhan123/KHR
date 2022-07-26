@@ -82,54 +82,72 @@ public class TimekeepingController {
 
     @RequestMapping(value = "/api/timekeeping/checkin", method = RequestMethod.POST)
     public ResponseEntity<Timekeeping> checkin(@RequestBody Timekeeping timekeeping, HttpServletResponse response) {
-        SimpleDateFormat hour = new SimpleDateFormat("HH");
-        SimpleDateFormat minute = new SimpleDateFormat("mm");
-        SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Account account = accountRepository.findByMail("thanhnhan@gmail.com");
-        timekeeping.setMail(account);
-        Date date = new Date();
-        String dateOfToday = dateFormat.format(date);
-        String timeOfToday = hourFormat.format(date);
-        timekeeping.setTimestart(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
-        String timeEnd = dateOfToday + " " + "00:00:00";
-        timekeeping.setTimeend(java.sql.Timestamp.valueOf(timeEnd));
+        try {
+            SimpleDateFormat hour = new SimpleDateFormat("HH");
+            SimpleDateFormat minute = new SimpleDateFormat("mm");
+            SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Account account = accountRepository.findByMail("thanhnhan@gmail.com");
+            timekeeping.setMail(account);
+            Date date = new Date();
+            String dateOfToday = dateFormat.format(date);
+            String timeOfToday = hourFormat.format(date);
+            timekeeping.setTimestart(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
 
-        List<Shift> shiftList = timekeepingServices.findShiftByDate(timekeeping.getTimestart());
-        for (int i = 0; i < shiftList.size(); i++) {
-            TimelineDetail timelineDetail = timekeepingServices.findTimelineDetailByMailAndShift(timekeeping.getMail(), shiftList.get(i));
-            if (timelineDetail != null) {
-                //JsonServices.dd(JsonServices.ParseToJson(timelineDetail.toString()), response);
-                Shift shift = shiftServices.FindOne(timelineDetail.getIdShift().getId());
-                timekeeping.setShiftId(shift);
+            List<Shift> shiftList = timekeepingServices.findShiftByDate(timekeeping.getTimestart());
+            for (int i = 0; i < shiftList.size(); i++) {
+                TimelineDetail timelineDetail = timekeepingServices.findTimelineDetailByMailAndShift(timekeeping.getMail(), shiftList.get(i));
+                if (timelineDetail != null) {
+                    //JsonServices.dd(JsonServices.ParseToJson(timelineDetail.toString()), response);
+                    Shift shift = shiftServices.FindOne(timelineDetail.getIdShift().getId());
+                    timekeeping.setShiftId(shift);
+                }
+
             }
-        }
 
-        Date beginTime = timekeeping.getShiftId().getTimestart();
-        Date endTime = timekeeping.getShiftId().getTimeend();
+            Date timeStartOfShift = timekeeping.getShiftId().getTimestart();
+            Date timeEndOfShift = timekeeping.getShiftId().getTimeend();
 
-        if (timekeeping.getTimestart().compareTo(beginTime) <= 0) {
-            timekeeping.setTimestart(beginTime);
-        } else {
-            for (int i = Integer.parseInt(hour.format(beginTime)); i < Integer.parseInt(hour.format(endTime)); i++) {
-                if (Integer.parseInt(hour.format(timekeeping.getTimestart())) == i) {
-                    int _minute = Integer.parseInt(minute.format(timekeeping.getTimestart()));
-                    if (_minute > 15) {
-                        timekeeping.setTimestart(DateUtils.addHours(timekeeping.getTimestart(), 1));
-                        timekeeping.setTimestart(DateUtils.setMinutes(timekeeping.getTimestart(), 0));
-                        timekeeping.setTimestart(DateUtils.setSeconds(timekeeping.getTimestart(), 0));
-                    }else{
-                        timekeeping.setTimestart(DateUtils.setHours(timekeeping.getTimestart(), i));
-                        timekeeping.setTimestart(DateUtils.setMinutes(timekeeping.getTimestart(), 0));
-                        timekeeping.setTimestart(DateUtils.setSeconds(timekeeping.getTimestart(), 0));
+            String timeEnd = dateFormat.format(timeEndOfShift) + " " + "00:00:00";
+            timekeeping.setTimeend(java.sql.Timestamp.valueOf(timeEnd));
+
+            if (timekeeping.getTimestart().compareTo(timeStartOfShift) <= 0) {
+                timekeeping.setTimestart(timeStartOfShift);
+            } else if (dateFormat.parse(dateFormat.format(timeEndOfShift)).compareTo(dateFormat.parse(dateFormat.format(timeStartOfShift))) > 0) {
+                //JsonServices.dd(JsonServices.ParseToJson("What"), response);
+                int _minute = Integer.parseInt(minute.format(timekeeping.getTimestart()));
+                if (_minute > 15) {
+                    timekeeping.setTimestart(DateUtils.addHours(timekeeping.getTimestart(), 1));
+                    timekeeping.setTimestart(DateUtils.setMinutes(timekeeping.getTimestart(), 0));
+                    timekeeping.setTimestart(DateUtils.setSeconds(timekeeping.getTimestart(), 0));
+                } else {
+                    timekeeping.setTimestart(DateUtils.setHours(timekeeping.getTimestart(), Integer.parseInt(hour.format(timekeeping.getTimestart()))));
+                    timekeeping.setTimestart(DateUtils.setMinutes(timekeeping.getTimestart(), 0));
+                    timekeeping.setTimestart(DateUtils.setSeconds(timekeeping.getTimestart(), 0));
+                }
+            } else {
+                for (int i = Integer.parseInt(hour.format(timeStartOfShift)); i < Integer.parseInt(hour.format(timeEndOfShift)); i++) {
+                    if (Integer.parseInt(hour.format(timekeeping.getTimestart())) == i) {
+                        int _minute = Integer.parseInt(minute.format(timekeeping.getTimestart()));
+                        if (_minute > 15) {
+                            timekeeping.setTimestart(DateUtils.addHours(timekeeping.getTimestart(), 1));
+                            timekeeping.setTimestart(DateUtils.setMinutes(timekeeping.getTimestart(), 0));
+                            timekeeping.setTimestart(DateUtils.setSeconds(timekeeping.getTimestart(), 0));
+                        } else {
+                            timekeeping.setTimestart(DateUtils.setHours(timekeeping.getTimestart(), i));
+                            timekeeping.setTimestart(DateUtils.setMinutes(timekeeping.getTimestart(), 0));
+                            timekeeping.setTimestart(DateUtils.setSeconds(timekeeping.getTimestart(), 0));
+                        }
                     }
                 }
             }
-        }
 
-        //JsonServices.dd(JsonServices.ParseToJson(timekeeping.getShiftId().getTimestart() + " and " + timekeeping.getShiftId().getTimeend()), response);
-        timekeepingServices.checkin(timekeeping);
-        return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);
+            timekeepingServices.checkin(timekeeping);
+            return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);
+        } catch (ParseException ex) {
+            Logger.getLogger(TimekeepingController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/api/timekeeping/checkout", method = RequestMethod.POST)
@@ -137,8 +155,6 @@ public class TimekeepingController {
     ) {
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            SimpleDateFormat hour = new SimpleDateFormat("HH");
-            SimpleDateFormat minute = new SimpleDateFormat("mm");
             SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Account account = accountRepository.findByMail("thanhnhan@gmail.com");
@@ -150,16 +166,15 @@ public class TimekeepingController {
             timekeeping.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
             //JsonServices.dd(JsonServices.ParseToJson(shiftList.toString()), response);
 
-            Date beginTime = timekeeping.getShiftId().getTimestart();
-            Date endTime = timekeeping.getShiftId().getTimeend();
+            Date timeEndOfShift = timekeeping.getShiftId().getTimeend();
 
-            if (timekeeping.getTimeend().compareTo(endTime) >= 0) {
-                timekeeping.setTimeend(endTime);
-            } 
+            if (timekeeping.getTimeend().compareTo(timeEndOfShift) >= 0) {
+                timekeeping.setTimeend(timeEndOfShift);
+            }
 
-            Date _beginTime = simpleDateFormat.parse(timekeeping.getTimestart().toString());
-            Date _endTime = simpleDateFormat.parse(timekeeping.getTimeend().toString());
-            Long time = _endTime.getTime() - _beginTime.getTime();
+            Date beginTime = simpleDateFormat.parse(timekeeping.getTimestart().toString());
+            Date endTime = simpleDateFormat.parse(timekeeping.getTimeend().toString());
+            Long time = endTime.getTime() - beginTime.getTime();
             int workingHours = (int) TimeUnit.MILLISECONDS.toHours(time);
             timekeeping.setTime(workingHours);
             timekeepingServices.checkout(timekeeping);
@@ -167,7 +182,7 @@ public class TimekeepingController {
         } catch (ParseException ex) {
             Logger.getLogger(TimekeepingController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/timekeeping/update/{id}", method = RequestMethod.GET)
