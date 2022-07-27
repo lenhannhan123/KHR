@@ -8,6 +8,7 @@ package fpt.aptech.KHR.Services;
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.Shift;
 import fpt.aptech.KHR.Entities.Timekeeping;
+import fpt.aptech.KHR.Entities.TimelineDetail;
 import java.util.Date;
 
 import java.util.List;
@@ -31,5 +32,7 @@ public interface ITimekeepingServices {
     
     public List<Timekeeping> search(String mail);
     
-    public List<Shift> findShiftByTimeStart(Date timeStart);
+    public List<Shift> findShiftByDate(Date timeStart);
+    
+    public TimelineDetail findTimelineDetailByMailAndShift(Account mail, Shift id);
 }

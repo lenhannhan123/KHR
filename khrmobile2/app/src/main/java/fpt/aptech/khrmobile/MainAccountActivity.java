@@ -13,15 +13,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import fpt.aptech.khrmobile.API.ApiClient;
+import fpt.aptech.khrmobile.API.UserService;
+import fpt.aptech.khrmobile.Config.ConfigData;
 import fpt.aptech.khrmobile.Entities.Account;
+import fpt.aptech.khrmobile.Module.MyAppGlideModule;
 
 public class MainAccountActivity extends AppCompatActivity {
     Account account;
+    Context context;
 
 
 
@@ -36,6 +45,7 @@ public class MainAccountActivity extends AppCompatActivity {
         TextView phone = findViewById(R.id.tvPhone);
         TextView birthday = findViewById(R.id.tvBirthday);
         TextView gender = findViewById(R.id.tvGender);
+        ImageView avatar = findViewById(R.id.ivAvatarProfile);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar_main_account_layout);
@@ -46,11 +56,22 @@ public class MainAccountActivity extends AppCompatActivity {
         String mailkey = sharedpreferences.getString(MainActivity.Mail,null);
         String phonekey = sharedpreferences.getString(MainActivity.Phone,null);
         String birthdaykey = sharedpreferences.getString(MainActivity.Birthday,null);
+        String avatarkey = sharedpreferences.getString(MainActivity.Avatar, null);
 
         username.setText(namekey);
         mail.setText(mailkey);
         phone.setText(phonekey);
         birthday.setText(birthdaykey);
+
+        context = getApplicationContext();
+        int radius = 500; // corner radius, higher value = more rounded
+        Glide.with(context)
+                .load("http://" + ConfigData.IP + ":7777/sid?filename=" + avatarkey)
+//                .transform(new RoundedCorners(radius))
+                .transform(new CircleCrop())
+                .override(600, 600)
+                .error(R.drawable.icon5)
+                .into(avatar);
 
 
 
@@ -64,6 +85,7 @@ public class MainAccountActivity extends AppCompatActivity {
         callNav.setDisplay(scrollView,MainAccountActivity.this,0.8);
 
         buttonchange();
+        buttonOpenQR();
     }
 
     private void buttonchange(){
@@ -73,6 +95,17 @@ public class MainAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainAccountActivity.this, MenuChangeAccountActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void buttonOpenQR(){
+        Button btnOpenQR = findViewById(R.id.btnOpenQR);
+        btnOpenQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainAccountActivity.this, QRDisplay.class);
                 startActivity(intent);
             }
         });
