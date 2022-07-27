@@ -8,11 +8,13 @@ package fpt.aptech.KHR.Entities;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,20 +45,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Account.findByIdStore", query = "SELECT a FROM Account a WHERE a.idStore = :idStore")})
 public class Account implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "Mail")
-    private String mail;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 250)
     @Column(name = "Password")
     private String password;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 50)
     @Column(name = "Fullname")
     private String fullname;
@@ -71,6 +66,7 @@ public class Account implements Serializable {
     @Column(name = "Birthdate")
     @Temporal(TemporalType.DATE)
     private Date birthdate;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "Gender")
@@ -93,6 +89,15 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "account")
+    private Store store;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "Mail")
+    private String mail;
     @Column(name = "Id_Store")
     private Integer idStore;
 
@@ -133,6 +138,49 @@ public class Account implements Serializable {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+
+    public String getRecoverycode() {
+        return recoverycode;
+    }
+
+    public void setRecoverycode(String recoverycode) {
+        this.recoverycode = recoverycode;
+    }
+
+
+    public Integer getIdStore() {
+        return idStore;
+    }
+
+    public void setIdStore(Integer idStore) {
+        this.idStore = idStore;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (mail != null ? mail.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Account)) {
+            return false;
+        }
+        Account other = (Account) object;
+        if ((this.mail == null && other.mail != null) || (this.mail != null && !this.mail.equals(other.mail))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "fpt.aptech.KHR.Entities.Account[ mail=" + mail + " ]";
     }
 
     public String getPassword() {
@@ -191,14 +239,6 @@ public class Account implements Serializable {
         this.role = role;
     }
 
-    public String getRecoverycode() {
-        return recoverycode;
-    }
-
-    public void setRecoverycode(String recoverycode) {
-        this.recoverycode = recoverycode;
-    }
-
     public boolean getStatus() {
         return status;
     }
@@ -215,37 +255,12 @@ public class Account implements Serializable {
         this.avatar = avatar;
     }
 
-    public Integer getIdStore() {
-        return idStore;
+    public Store getStore() {
+        return store;
     }
 
-    public void setIdStore(Integer idStore) {
-        this.idStore = idStore;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (mail != null ? mail.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Account)) {
-            return false;
-        }
-        Account other = (Account) object;
-        if ((this.mail == null && other.mail != null) || (this.mail != null && !this.mail.equals(other.mail))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "fpt.aptech.KHR.Entities.Account[ mail=" + mail + " ]";
+    public void setStore(Store store) {
+        this.store = store;
     }
     
 }
