@@ -70,6 +70,8 @@ public class RouteWeb {
     public final static String AccountGetUpdateURL = "/account/update";
 
     public final static String AccountGetBlockURL = "/account/lock";
+    
+    public final static String AccountResetPassURL = "/account/resetpass";
 
     //Route Position
     public final static String positionManageURL = "/position/index";

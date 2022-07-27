@@ -105,7 +105,7 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item" th:href="'/account/update?id='+${item.getMail()}">Chỉnh sửa thông tin</a>
 
-                                            <a class="dropdown-item" href="#">Đặt lại mật khẩu</a>
+                                            <a class="dropdown-item" th:href="'/account/resetpass?id='+${item.getMail()}">Đặt lại mật khẩu</a>
 
                                             <a class="dropdown-item" th:href="'/account/lock?id='+${item.getMail()}">Mở / khóa tài khoản</a>
                                         </div>

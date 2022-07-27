@@ -106,10 +106,8 @@ public class AccountController {
         }
         String role = request.getParameter("txtRole");
 
-
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender, encoder.encode(mail), role, true, fileName);
-
 
         if (fileName.equals("") || fileName == null) {
 
@@ -119,9 +117,7 @@ public class AccountController {
 
         }
 
-
         accountRepository.save(account);
-
 
         List<Position> positions = positionServices.findAll();
         for (int i = 0; i < positions.size(); i++) {
@@ -189,11 +185,9 @@ public class AccountController {
             throw new RuntimeException(e);
         }
         String role = request.getParameter("txtRole");
-        
-        
 
         Account account = accountRepository.findByMail(mail);
-        
+
         account.setFullname(name);
         account.setPhone(phone);
         account.setGender(gender);
@@ -217,7 +211,6 @@ public class AccountController {
 
                     if ((id == accountPositions.get(i).getIdPosition().getId()) && (accountPositions.get(i).getMail().getMail().equals(mail))) {
 
-
                         check = false;
                     }
                 }
@@ -229,9 +222,7 @@ public class AccountController {
             }
         }
 
-
         boolean checkAccountPosition = false;
-
 
         int id = 0;
         for (int i = 1; i <= number; i++) {
@@ -252,7 +243,6 @@ public class AccountController {
                     accountPosition.setMail(new Account(mail));
                     accountPosition.setSalary(Integer.parseInt(request.getParameter("checkvalue" + i).toString()));
                     accountPositionRepository.save(accountPosition);
-
 
                 }
             }
@@ -275,7 +265,17 @@ public class AccountController {
         }
         String redirectUrl = "/account/index";
         return "redirect:" + redirectUrl;
+    }
 
+    @RequestMapping(value = {RouteWeb.AccountResetPassURL}, method = RequestMethod.GET)
+    public String ResetPass(Model model, HttpServletRequest request, HttpServletResponse response) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String mail = request.getParameter("id");
+        Account account = accountRepository.findByMail(mail);
+        account.setPassword(encoder.encode("123"));
+        accountRepository.save(account);
+        String redirectUrl = "/account/index";
+        return "redirect:" + redirectUrl;
     }
 
 }
