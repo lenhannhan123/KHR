@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author jthie
+ * @author Admin
  */
 @Entity
 @Table(name = "store")
@@ -29,7 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Store.findAll", query = "SELECT s FROM Store s"),
     @NamedQuery(name = "Store.findById", query = "SELECT s FROM Store s WHERE s.id = :id"),
     @NamedQuery(name = "Store.findByNameStore", query = "SELECT s FROM Store s WHERE s.nameStore = :nameStore"),
-    @NamedQuery(name = "Store.findByAddress", query = "SELECT s FROM Store s WHERE s.address = :address")})
+    @NamedQuery(name = "Store.findByAddress", query = "SELECT s FROM Store s WHERE s.address = :address"),
+    @NamedQuery(name = "Store.findByIsBlock", query = "SELECT s FROM Store s WHERE s.isBlock = :isBlock")})
 public class Store implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,6 +45,8 @@ public class Store implements Serializable {
     @Size(max = 150)
     @Column(name = "Address")
     private String address;
+    @Column(name = "Is_Block")
+    private Integer isBlock;
 
     public Store() {
     }
@@ -74,6 +77,14 @@ public class Store implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Integer getIsBlock() {
+        return isBlock;
+    }
+
+    public void setIsBlock(Integer isBlock) {
+        this.isBlock = isBlock;
     }
 
     @Override

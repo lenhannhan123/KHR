@@ -9,6 +9,7 @@ import fpt.aptech.KHR.Entities.Account;
 
 import java.util.List;
 
+import fpt.aptech.KHR.Entities.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,9 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     @Query("SELECT a FROM Account a WHERE a.mail = :mail")
     Account findByEmail(@PathVariable("mail") String mail);
 
+    @Query("SELECT a FROM Account a WHERE a.idStore = :idStore")
+    List<Account> findByStore(@PathVariable("idStore") Store idStore);
+
     @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.role = 1 AND a.status = 1")
     Account findByEmailAdmin(@PathVariable("mail") String mail);
 
@@ -32,7 +36,7 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     @Query("SELECT a FROM Account a WHERE a.code = :code")
     Account findByCode(@PathVariable("code") String code);
-    
+
     @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.password = :password")
     Account loginAccount(@PathVariable("mail") String mail, @PathVariable("password") String password);
 }
