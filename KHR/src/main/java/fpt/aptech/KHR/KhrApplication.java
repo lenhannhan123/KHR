@@ -23,16 +23,16 @@ public class KhrApplication {
         return new LayoutDialect();
     }
 
-    @Bean
-    public FirebaseMessaging firebaseMessaging() throws IOException {
-        GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ClassPathResource("khr-app-10543-firebase-adminsdk-mbjiy-04c917fe3e.json").getInputStream());
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(googleCredentials)
-                .build();
-        FirebaseApp app = FirebaseApp.initializeApp(options);
-        return FirebaseMessaging.getInstance(app);
-    }
+//    @Bean
+//    public FirebaseMessaging firebaseMessaging() throws IOException {
+//        GoogleCredentials googleCredentials = GoogleCredentials
+//                .fromStream(new ClassPathResource("khr-app-10543-firebase-adminsdk-mbjiy-04c917fe3e.json").getInputStream());
+//        FirebaseOptions options = new FirebaseOptions.Builder()
+//                .setCredentials(googleCredentials)
+//                .build();
+//        FirebaseApp app = FirebaseApp.initializeApp(options);
+//        return FirebaseMessaging.getInstance(app);
+//    }
 
     
 }

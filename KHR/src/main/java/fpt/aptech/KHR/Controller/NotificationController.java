@@ -35,25 +35,25 @@ public class NotificationController {
     @RequestMapping(value = {RouteWeb.notificationURL}, method = RequestMethod.GET)
     public String Index(Model model) {
         model.addAttribute("notificationList", ns.findAll());
-        return "notification/index";
+        return "admin/notification/index";
     }
     @RequestMapping(value = {RouteWeb.notificationAddURL}, method = RequestMethod.GET)
     public String AddPage(Model model) {
          model.addAttribute("accountList", JsonServices.ParseToJson(acs.findAll()));
          model.addAttribute("accountsize",acs.findAll().size());
-        return "notification/add";
+        return "admin/notification/add";
     }
     @RequestMapping(value = {"/notification/create"}, method = RequestMethod.GET)
     public String AddNotification(Model model,HttpServletRequest request, HttpServletResponse response) {
        
-        return "notification/add";
+        return "admin/notification/add";
     }
     @RequestMapping(value = {"/notification/mail"}, method = RequestMethod.GET)
     public String FindNotificationByMail(Model model,HttpServletRequest request, HttpServletResponse response) {
         String mail = request.getParameter("mail").toString();
         Account account = acs.findByMail(mail);
        JsonServices.dd(JsonServices.ParseToJson(ns.findbyAccount(account)), response);
-        return "notification/add";
+        return "admin/notification/add";
     }
     @RequestMapping(value = {"api/notification/mail"}, method = RequestMethod.GET)
     public ResponseEntity<List<AccountNotification>> APINotificationByMail(HttpServletRequest request, HttpServletResponse response) {

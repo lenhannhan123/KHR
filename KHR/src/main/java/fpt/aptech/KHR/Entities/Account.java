@@ -12,6 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -41,8 +43,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Account.findByRole", query = "SELECT a FROM Account a WHERE a.role = :role"),
     @NamedQuery(name = "Account.findByRecoverycode", query = "SELECT a FROM Account a WHERE a.recoverycode = :recoverycode"),
     @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status"),
-    @NamedQuery(name = "Account.findByAvatar", query = "SELECT a FROM Account a WHERE a.avatar = :avatar"),
-    @NamedQuery(name = "Account.findByIdStore", query = "SELECT a FROM Account a WHERE a.idStore = :idStore")})
+    @NamedQuery(name = "Account.findByAvatar", query = "SELECT a FROM Account a WHERE a.avatar = :avatar")})
 public class Account implements Serializable {
 
     @Basic(optional = false)
@@ -55,18 +56,19 @@ public class Account implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "Fullname")
     private String fullname;
+
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "Phone")
     private String phone;
+    
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "Birthdate")
     @Temporal(TemporalType.DATE)
     private Date birthdate;
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "Gender")
@@ -89,8 +91,6 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "account")
-    private Store store;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -98,8 +98,6 @@ public class Account implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "Mail")
     private String mail;
-    @Column(name = "Id_Store")
-    private Integer idStore;
 
     public Account() {
     }
@@ -120,8 +118,8 @@ public class Account implements Serializable {
         this.status = status;
         this.avatar = avatar;
     }
-    
-        public Account(String mail, String fullname, String phone, Date birthdate, boolean gender, String code, String role, boolean status) {
+
+    public Account(String mail, String fullname, String phone, Date birthdate, boolean gender, String code, String role, boolean status) {
         this.mail = mail;
         this.fullname = fullname;
         this.phone = phone;
@@ -140,7 +138,6 @@ public class Account implements Serializable {
         this.mail = mail;
     }
 
-
     public String getRecoverycode() {
         return recoverycode;
     }
@@ -149,14 +146,6 @@ public class Account implements Serializable {
         this.recoverycode = recoverycode;
     }
 
-
-    public Integer getIdStore() {
-        return idStore;
-    }
-
-    public void setIdStore(Integer idStore) {
-        this.idStore = idStore;
-    }
 
     @Override
     public int hashCode() {
@@ -182,6 +171,19 @@ public class Account implements Serializable {
     public String toString() {
         return "fpt.aptech.KHR.Entities.Account[ mail=" + mail + " ]";
     }
+    
+    @JoinColumn(name = "Id_Store", referencedColumnName = "Id")
+    @ManyToOne(optional = false)
+    private Store idStore;
+    
+    public Store getIdStore() {
+        return idStore;
+    }
+
+    public void setIdStore(Store idStore) {
+        this.idStore = idStore;
+    }
+
 
     public String getPassword() {
         return password;
@@ -255,12 +257,5 @@ public class Account implements Serializable {
         this.avatar = avatar;
     }
 
-    public Store getStore() {
-        return store;
-    }
 
-    public void setStore(Store store) {
-        this.store = store;
-    }
-    
 }

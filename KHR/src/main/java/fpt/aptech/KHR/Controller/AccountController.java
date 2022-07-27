@@ -65,7 +65,7 @@ public class AccountController {
     private AccountPositionService accountPositionService;
 
     @RequestMapping(value = {RouteWeb.accountManageURL}, method = RequestMethod.GET)
-    public String AccountList(Model model) {
+    public String AccountList(Model model, HttpServletResponse response) {
         List<Account> list = accountRepository.findAll();
         boolean check = false;
         for (Account item : list) {
@@ -77,14 +77,14 @@ public class AccountController {
         }
         model.addAttribute("list", list);
         model.addAttribute("check", check);
-        return "/account/index";
+        return "admin/account/index";
     }
 
     @RequestMapping(value = {RouteWeb.AccountGetCreateURL}, method = RequestMethod.GET)
     public String GetCreate(Model model) {
         List<Position> positions = positionServices.findAll();
         model.addAttribute("positions", positions);
-        return "/account/create";
+        return "admin/account/create";
     }
 
     @RequestMapping(value = {RouteWeb.AccountGetCreateURL}, method = RequestMethod.POST)
@@ -164,7 +164,7 @@ public class AccountController {
 
         model.addAttribute("positionList", positionList);
 
-        return "/account/update";
+        return "admin/account/update";
     }
 
     @RequestMapping(value = {RouteWeb.AccountGetUpdateURL}, method = RequestMethod.POST)
@@ -181,8 +181,11 @@ public class AccountController {
             throw new RuntimeException(e);
         }
         String role = request.getParameter("txtRole");
+        
+        
 
         Account account = accountRepository.findByMail(mail);
+        
         account.setFullname(name);
         account.setPhone(phone);
         account.setGender(gender);
@@ -209,19 +212,13 @@ public class AccountController {
 
                         check = false;
                     }
-
-
                 }
-
-
             }
 
             if (check == true) {
                 AccountPosition accountPosition1 = new AccountPosition(accountPositions.get(i).getId(), accountPositions.get(i).getSalary(), accountPositions.get(i).getMail(), accountPositions.get(i).getIdPosition());
                 accountPositionService.delete(accountPosition1);
             }
-
-
         }
 
 
@@ -254,7 +251,6 @@ public class AccountController {
         }
 
         String redirectUrl = "/account/index";
-
         return "redirect:" + redirectUrl;
     }
 

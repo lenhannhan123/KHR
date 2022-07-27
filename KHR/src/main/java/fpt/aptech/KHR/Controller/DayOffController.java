@@ -44,7 +44,7 @@ public class DayOffController {
         }
         model.addAttribute("listdateoff", list);
         model.addAttribute("check", check);
-        return "dayoff/index";
+        return "admin/dayoff/index";
     }
         @RequestMapping(value = {"/dayoff/list/approved"}, method = RequestMethod.GET)
     public String ApprovedList(Model model,HttpServletRequest request, HttpServletResponse response) {
@@ -60,7 +60,7 @@ public class DayOffController {
         }
         model.addAttribute("listdateoff", list);
         model.addAttribute("check", check);
-        return "dayoff/index";
+        return "admin/dayoff/index";
     }
             @RequestMapping(value = {"/dayoff/list/denying"}, method = RequestMethod.GET)
     public String DenyingList(Model model,HttpServletRequest request, HttpServletResponse response) {
@@ -76,7 +76,7 @@ public class DayOffController {
         }
         model.addAttribute("listdateoff", list);
         model.addAttribute("check", check);
-        return "dayoff/index";
+        return "admin/dayoff/index";
     }
     @RequestMapping(value = {"/dayoff/list/notcheck"}, method = RequestMethod.GET)
     public String NotCheckList(Model model,HttpServletRequest request, HttpServletResponse response) {
@@ -92,20 +92,20 @@ public class DayOffController {
         }
         model.addAttribute("listdateoff", list);
         model.addAttribute("check", check);
-        return "dayoff/index";
+        return "admin/dayoff/index";
     }
     @RequestMapping(value = {RouteWeb.dayoffapproveURL}, method = RequestMethod.GET)
     public String approved(Model model,HttpServletRequest request, HttpServletResponse response) throws Exception {
         int id = Integer.valueOf(request.getParameter("id"));
         idos.approve(id);
-        String redirectUrl = "/dayoff";
+        String redirectUrl = "dayoff";
         return "redirect:" + redirectUrl;
     }
     @RequestMapping(value = {RouteWeb.dayoffdenyingURL}, method = RequestMethod.GET)
     public String denying( Model model,HttpServletRequest request, HttpServletResponse response) throws Exception {
         int id = Integer.valueOf(request.getParameter("id"));
         idos.denying(id);
-        String redirectUrl = "/dayoff";
+        String redirectUrl = "dayoff";
         return "redirect:" + redirectUrl;
     }
     @RequestMapping(value = {"api/dayoff/add"}, method = RequestMethod.POST)

@@ -12,10 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -46,9 +44,6 @@ public class Store implements Serializable {
     @Size(max = 150)
     @Column(name = "Address")
     private String address;
-    @JoinColumn(name = "Id", referencedColumnName = "Id_Store", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Account account;
 
     public Store() {
     }
@@ -79,14 +74,6 @@ public class Store implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
     }
 
     @Override

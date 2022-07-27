@@ -81,7 +81,7 @@ public class TimelineController {
         model.addAttribute("simpleDateFormat", simpleDateFormat);
 
         model.addAttribute("list", list);
-        return "timeline/index";
+        return "admin/timeline/index";
     }
 
 
@@ -93,7 +93,7 @@ public class TimelineController {
 
         model.addAttribute("ListPosition", ListPosition);
 
-        return "timeline/create";
+        return "admin/timeline/create";
     }
 
 
@@ -210,7 +210,7 @@ public class TimelineController {
         model.addAttribute("Position", PositionJson);
         model.addAttribute("DayoffJson", DayoffJson);
 
-        return "timeline/confirm";
+        return "admin/timeline/confirm";
     }
 
 
@@ -538,7 +538,7 @@ public class TimelineController {
         }
 
 
-        return "timeline/confirm";
+        return "admin/timeline/confirm";
     }
 
 
@@ -789,7 +789,7 @@ public class TimelineController {
 
 
 //        JsonServices.dd("nhan122", response);
-        return "timeline/timelinedit";
+        return "admin/timeline/timelinedit";
     }
 
 
@@ -1100,7 +1100,7 @@ public class TimelineController {
         model.addAttribute("idTimeline", idTimelineStr);
 
 
-        return "timeline/usertimelineindex";
+        return "admin/timeline/usertimelineindex";
     }
 
     @RequestMapping(value = {RouteWeb.TimelineChangeStatusURL}, method = RequestMethod.POST)
@@ -1170,7 +1170,7 @@ public class TimelineController {
         JsonServices.dd(Data, response);
 
 
-        return "timeline/usertimelineindex";
+        return "admin/timeline/usertimelineindex";
     }
 
 
@@ -1225,7 +1225,7 @@ public class TimelineController {
 
         model.addAttribute("data", Data);
 
-        return "timeline/usertimelinedetail";
+        return "admin/timeline/usertimelinedetail";
     }
 
 

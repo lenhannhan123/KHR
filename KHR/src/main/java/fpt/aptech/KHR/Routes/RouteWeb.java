@@ -62,7 +62,7 @@ public class RouteWeb {
 
     //Route Account
     public final static String accountManageURL = "/account/index";
-    String AccountControllerString = accountController.AccountList(model.model);
+//    String AccountControllerString = accountController.AccountList(model.model);
 
     public final static String AccountGetCreateURL = "/account/create";
     String AccountGetCreateController = accountController.GetCreate(model.model);

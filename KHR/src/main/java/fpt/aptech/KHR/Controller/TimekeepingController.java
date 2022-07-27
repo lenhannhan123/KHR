@@ -56,11 +56,11 @@ public class TimekeepingController {
     @Autowired
     IShiftServices shiftServices;
 
-    @RequestMapping(value = "/timekeeping/index", method = RequestMethod.GET)
+    @RequestMapping(value = "timekeeping/index", method = RequestMethod.GET)
     public String index(Model model) {
         model.addAttribute("accountList", accountRepository.findAll());
         model.addAttribute("list", timekeepingServices.findAll());
-        return "timekeeping/index";
+        return "admin/timekeeping/index";
     }
 
     @RequestMapping(value = "/timekeeping/autocomplete", method = RequestMethod.GET)
@@ -77,7 +77,7 @@ public class TimekeepingController {
             model.addAttribute("list", timekeepingServices.search(request.getParameter("mail")));
         }
 
-        return "timekeeping/index";
+        return "admin/timekeeping/index";
     }
 
     @RequestMapping(value = "/api/timekeeping/checkin", method = RequestMethod.POST)
@@ -192,7 +192,7 @@ public class TimekeepingController {
         Account user = accountRepository.findByMail(timekeeping.getMail().getMail());
         model.addAttribute("timekeeping", timekeeping);
         model.addAttribute("user", user);
-        return "timekeeping/update";
+        return "admin/timekeeping/update";
     }
 
     @RequestMapping(value = "/timekeeping/edit/{id}", method = RequestMethod.POST)
