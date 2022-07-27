@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import fpt.aptech.KHR.Services.IPositionServices;
+
 import java.io.IOException;
 
 import static java.lang.System.out;
@@ -104,17 +105,24 @@ public class AccountController {
             throw new RuntimeException(e);
         }
         String role = request.getParameter("txtRole");
-        
-        
+
+
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender, encoder.encode(mail), role, true, fileName);
 
+
+        if (fileName.equals("") || fileName == null) {
+
+        } else {
+            String uploadDir = "src/main/resources/images/user-photos/";
+            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
+        }
+
+
         accountRepository.save(account);
-        
-        String uploadDir = "src/main/resources/images/user-photos/";
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-        
-        
+
+
         List<Position> positions = positionServices.findAll();
         for (int i = 0; i < positions.size(); i++) {
             if (request.getParameter("check" + i) != null) {

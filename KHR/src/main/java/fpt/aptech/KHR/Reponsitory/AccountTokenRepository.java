@@ -5,19 +5,17 @@
  */
 package fpt.aptech.KHR.Reponsitory;
 
-import fpt.aptech.KHR.Entities.Shift;
-import fpt.aptech.KHR.Entities.Store;
+import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.AccountToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- * @author Admin
+ *
+ * @author LÊ HỮU TÂM
  */
-public interface StoreRepository extends JpaRepository<Store, Integer> {
-
-    @Query("SELECT s FROM Store s WHERE s.id = :id")
-    Store findID(@PathVariable("id") int id);
-
+public interface AccountTokenRepository extends JpaRepository<AccountToken, String> {
+    @Query("SELECT d FROM AccountToken d WHERE d.mail = :mail")
+    AccountToken findByMail(@PathVariable("mail") Account mail);
 }
