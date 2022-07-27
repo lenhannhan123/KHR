@@ -113,8 +113,7 @@
                                     </div>
 
                                 </td>
-                                <td th:text="${item.getStatus()}?'Hoạt động':'Bị khóa'" ></td>
-
+                                <td th:style="${item.getStatus()} == FALSE ? 'color:red' : 'color:green'" th:text="${item.getStatus()}?'Hoạt động':'Bị khóa'"></td>
                             </tr>
 
                         </tbody>
