@@ -489,4 +489,15 @@ public class AccountController {
         return "redirect:" + redirectUrl;
     }
 
+
+    @RequestMapping(value = {RouteWeb.RedirectLogout}, method = RequestMethod.GET)
+    public String RedirectLogout(Model model, HttpServletResponse response, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("IdStore");
+        session.removeAttribute("NameStore");
+
+        String redirectUrl = "/logout";
+        return "redirect:" + redirectUrl;
+    }
 }

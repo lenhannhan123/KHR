@@ -140,5 +140,7 @@ public class RouteWeb {
     public final static String BossAccountReset = "boss/account/resetpass";
     public final static String BossAccountBlock = "boss/account/lock";
 
+    public final static String RedirectLogout = "redirectlogout";
+
 
 }

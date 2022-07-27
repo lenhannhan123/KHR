@@ -48,6 +48,7 @@ public class HomeController {
 
                 HttpSession session = request.getSession();
                 session.setAttribute("IdStore", account.getIdStore().getId());
+                session.setAttribute("NameStore", account.getIdStore().getNameStore());
                 return "index";
             case "2":
                 return "redirect:/logout";
