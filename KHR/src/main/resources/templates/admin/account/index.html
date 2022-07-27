@@ -107,7 +107,7 @@
 
                                             <a class="dropdown-item" th:href="'/account/resetpass?id='+${item.getMail()}">Đặt lại mật khẩu</a>
 
-                                            <a class="dropdown-item" th:href="'/account/lock?id='+${item.getMail()}">Mở / khóa tài khoản</a>
+                                            <a class="dropdown-item" th:text="${item.getStatus()}?'Khóa tài khoản':' Mở tài khoản'"  th:href="'/account/lock?id='+${item.getMail()}">  </a>
                                         </div>
 
                                     </div>
