@@ -21,10 +21,10 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     @Query("SELECT a FROM Account a WHERE a.mail = :mail")
     Account findByEmail(@PathVariable("mail") String mail);
 
-    @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.role = 1")
+    @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.role = 1 AND a.status = 1")
     Account findByEmailAdmin(@PathVariable("mail") String mail);
 
-    @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.role = 0")
+    @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.role = 0 AND a.status = 1")
     Account findByEmailUser(@PathVariable("mail") String mail);
 
     @Query("SELECT a FROM Account a WHERE  a.role = 0")
