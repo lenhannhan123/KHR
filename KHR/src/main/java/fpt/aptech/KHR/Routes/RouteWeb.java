@@ -19,7 +19,7 @@ public class RouteWeb {
     HomeController homeController = new HomeController();
     NotificationController notificationController = new NotificationController();
     AccountController accountController = new AccountController();
-    DayOffController dayOffController = new DayOffController();
+    DayOffController dayOffController;
     OverTimeController overTimeController = new OverTimeController();
     TimelineController timelineController = new TimelineController();
     TimekeepingController timekeepingController = new TimekeepingController();

@@ -5,6 +5,8 @@
  */
 package fpt.aptech.KHR.Controller;
 
+import fpt.aptech.KHR.Entities.AccountNotification;
+import fpt.aptech.KHR.Entities.AccountToken;
 import fpt.aptech.KHR.Entities.DayOff;
 import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.Routes.RouteWeb;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import fpt.aptech.KHR.ImpServices.FirebaseMessagingService;
+import fpt.aptech.KHR.Services.INotificationServices;
 
 /**
  *
@@ -30,6 +34,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class DayOffController {
     @Autowired
     IDayOffServices idos;
+    @Autowired
+    INotificationServices ins;
+    
+    private final FirebaseMessagingService firebaseService;
+
+    public DayOffController(FirebaseMessagingService firebaseService) {
+        this.firebaseService = firebaseService;
+    }
     @RequestMapping(value = {RouteWeb.dayoffURL}, method = RequestMethod.GET)
     public String Index(Model model,HttpServletRequest request, HttpServletResponse response) {
         List<DayOff> list = idos.findAll();
@@ -97,7 +109,20 @@ public class DayOffController {
     @RequestMapping(value = {RouteWeb.dayoffapproveURL}, method = RequestMethod.GET)
     public String approved(Model model,HttpServletRequest request, HttpServletResponse response) throws Exception {
         int id = Integer.valueOf(request.getParameter("id"));
+        //String mail = request.getParameter("mail").toString();
+//        fpt.aptech.KHR.Entities.Notification notification = new fpt.aptech.KHR.Entities.Notification();
+//        notification.setTitle("Thông báo chấp nhận nghĩ phép");
+//        notification.setContent("Quản trị viên đã xem và đã chấp nhận yêu cầu xin nghĩ phép của");
+        
+        DayOff di = idos.findById(id);
         idos.approve(id);
+        AccountNotification an = ins.CreateNotificationOnMail(di.getMail().getMail(), "Chấp nhận");
+        if(an!=null){
+        AccountToken tken = ins.findSendPeople(di.getMail().getMail());
+//        firebaseService.sendAllNotification(an);
+        firebaseService.sendNotification(tken.getToken(), "Thông báo ngày nghĩ", "Nhân viên"+di.getMail().getFullname()+"Đã được chấp nhận");
+        }
+    
         String redirectUrl = "/dayoff";
         return "redirect:" + redirectUrl;
     }
