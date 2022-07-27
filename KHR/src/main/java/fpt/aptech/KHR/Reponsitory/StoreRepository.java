@@ -18,6 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface StoreRepository extends JpaRepository<Store, Integer> {
 
     @Query("SELECT s FROM Store s WHERE s.id = :id")
-    Shift findID(@PathVariable("id") int id);
+    Store findID(@PathVariable("id") int id);
 
 }
