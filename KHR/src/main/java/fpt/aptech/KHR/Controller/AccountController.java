@@ -5,15 +5,12 @@
  */
 package fpt.aptech.KHR.Controller;
 
-import fpt.aptech.KHR.Entities.Account;
-import fpt.aptech.KHR.Entities.AccountPosition;
-import fpt.aptech.KHR.Entities.Position;
-import fpt.aptech.KHR.Entities.PositionJS;
-import fpt.aptech.KHR.Entities.Timeline;
+import fpt.aptech.KHR.Entities.*;
 import fpt.aptech.KHR.FileUpload.FileUploadUtil;
 import fpt.aptech.KHR.ImpServices.AccountPositionService;
 import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.ImpServices.PositionServices;
+import fpt.aptech.KHR.ImpServices.StoreService;
 import fpt.aptech.KHR.Reponsitory.AccountPositionRepository;
 import fpt.aptech.KHR.Services.IAccountRepository;
 import fpt.aptech.KHR.Routes.RouteWeb;
@@ -34,6 +31,7 @@ import static java.lang.System.out;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,9 +63,33 @@ public class AccountController {
     @Autowired
     private AccountPositionService accountPositionService;
 
+    @Autowired
+    private StoreService storeService;
+
     @RequestMapping(value = {RouteWeb.accountManageURL}, method = RequestMethod.GET)
-    public String AccountList(Model model, HttpServletResponse response) {
-        List<Account> list = accountRepository.findAll();
+    public String AccountList(Model model, HttpServletResponse response, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+
+        List<Account> list1 = accountRepository.findAll();
+        List<Account> list = new ArrayList<>();
+
+        if (list1.size() > 0) {
+
+            for (Account item : list1
+            ) {
+                if (item.getRole().equals("0") || item.getRole().equals("1") || item.getRole().equals("2")) {
+                    if (item.getIdStore().getId() == IdStore) {
+                        list.add(item);
+                    }
+
+                }
+            }
+
+        }
+
         boolean check = false;
         for (Account item : list) {
             if (item.getMail() != null) {
@@ -91,6 +113,9 @@ public class AccountController {
     @RequestMapping(value = {RouteWeb.AccountGetCreateURL}, method = RequestMethod.POST)
     public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam("image") MultipartFile multipartFile) throws IOException {
 
+        HttpSession session = request.getSession();
+        int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String mail = request.getParameter("txtAccountMail");
         String name = request.getParameter("txtFullName");
@@ -108,7 +133,7 @@ public class AccountController {
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender, encoder.encode(mail), role, true, fileName);
-
+        account.setIdStore(new Store(IdStore));
         if (fileName.equals("") || fileName == null) {
 
         } else {
@@ -186,6 +211,7 @@ public class AccountController {
         }
         String role = request.getParameter("txtRole");
 
+
         Account account = accountRepository.findByMail(mail);
 
         account.setFullname(name);
@@ -193,7 +219,10 @@ public class AccountController {
         account.setGender(gender);
         account.setBirthdate(bday);
         account.setRole(role);
+
+
         accountRepository.save(account);
+//        JsonServices.dd(JsonServices.ParseToJson(account), response);
 
         List<Position> positions = positionServices.findAll();
         List<AccountPosition> accountPositions = accountPositionService.findAll();
@@ -278,4 +307,197 @@ public class AccountController {
         return "redirect:" + redirectUrl;
     }
 
+
+    @RequestMapping(value = {RouteWeb.BossAccountIndex}, method = RequestMethod.GET)
+    public String BossAccountList(Model model, HttpServletResponse response) {
+        List<Account> list1 = accountRepository.findAll();
+
+        List<Account> list = new ArrayList<>();
+
+        for (Account item : list1
+        ) {
+            if (item.getRole().equals("1") || item.getRole().equals("3")) {
+                list.add(item);
+
+            }
+
+        }
+
+        boolean check = false;
+        for (Account item : list) {
+            if (item.getMail() != null) {
+
+                check = true;
+                break;
+            }
+        }
+        model.addAttribute("list", list);
+        model.addAttribute("check", check);
+        return "Boss/account/index";
+    }
+
+    @RequestMapping(value = {RouteWeb.BossAccountCreate}, method = RequestMethod.GET)
+    public String GetCreateBoss(Model model) {
+        List<Store> stores = storeService.FindAl();
+        model.addAttribute("stores", stores);
+        return "Boss/account/create";
+    }
+
+
+    @RequestMapping(value = {RouteWeb.BossAccountCreate}, method = RequestMethod.POST)
+    public String PostCreateBoss(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String mail = request.getParameter("txtAccountMail");
+        String name = request.getParameter("txtFullName");
+        String phone = request.getParameter("txtPhone");
+        boolean gender = Boolean.parseBoolean(request.getParameter("radioGender"));
+        String strBday = request.getParameter("txtBirthDay");
+
+        Date bday = null;
+        try {
+            bday = new SimpleDateFormat("yyyy-mm-dd").parse(strBday);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        String role = request.getParameter("txtRole");
+        String Store = request.getParameter("txtStore");
+
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
+        if (role.equals("3")) {
+            Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender, encoder.encode(mail), role, true, fileName);
+            if (fileName.equals("") || fileName == null) {
+
+            } else {
+                String uploadDir = "src/main/resources/images/user-photos/";
+                FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
+            }
+            accountRepository.save(account);
+        } else {
+            Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender, encoder.encode(mail), role, true, fileName);
+            account.setIdStore(new Store(Integer.parseInt(Store)));
+            if (fileName.equals("") || fileName == null) {
+
+            } else {
+                String uploadDir = "src/main/resources/images/user-photos/";
+                FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
+            }
+            accountRepository.save(account);
+        }
+
+
+        String redirectUrl = "/boss/account/index";
+        return "redirect:" + redirectUrl;
+    }
+
+
+    @RequestMapping(value = {RouteWeb.BossAccountEdit}, method = RequestMethod.GET)
+    public String GetUpdateBoss(Model model, HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+
+        Account account = accountRepository.findByMail(id);
+        model.addAttribute("Account", account);
+
+
+        List<Store> stores = storeService.FindAl();
+        model.addAttribute("stores", stores);
+
+
+        return "boss/account/update";
+    }
+
+    @RequestMapping(value = {RouteWeb.BossAccountEdit}, method = RequestMethod.POST)
+    public String PostUpdateBoss(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String mail = request.getParameter("txtAccountMail");
+        String name = request.getParameter("txtFullName");
+        String phone = request.getParameter("txtPhone");
+        boolean gender = Boolean.parseBoolean(request.getParameter("radioGender"));
+        String strBday = request.getParameter("txtBirthDay");
+
+        Date bday = null;
+        try {
+            bday = new SimpleDateFormat("yyyy-mm-dd").parse(strBday);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        String role = request.getParameter("txtRole");
+        String Store = request.getParameter("txtStore");
+
+        Account account1 = accountRepository.findByMail(mail);
+
+
+        if (role.equals("3")) {
+            account1.setPassword(encoder.encode("123"));
+            account1.setFullname(name);
+            account1.setPhone(phone);
+            account1.setBirthdate(bday);
+            account1.setGender(gender);
+            account1.setCode(encoder.encode(mail));
+            account1.setRole(role);
+            account1.setIdStore(null);
+            accountRepository.save(account1);
+        } else {
+            account1.setPassword(encoder.encode("123"));
+            account1.setFullname(name);
+            account1.setPhone(phone);
+            account1.setBirthdate(bday);
+            account1.setGender(gender);
+            account1.setCode(encoder.encode(mail));
+            account1.setRole(role);
+            ;
+            account1.setIdStore(new Store(Integer.parseInt(Store)));
+
+            accountRepository.save(account1);
+        }
+
+
+        String redirectUrl = "/boss/account/index";
+        return "redirect:" + redirectUrl;
+    }
+
+
+    @RequestMapping(value = {RouteWeb.BossAccountBlock}, method = RequestMethod.GET)
+    public String GetBlockAccountBoss(Model model, HttpServletRequest request, HttpServletResponse response) {
+        String mail = request.getParameter("id");
+        Account account = accountRepository.findByMail(mail);
+        if (account.getStatus() == true) {
+            account.setStatus(false);
+            accountRepository.save(account);
+        } else {
+            account.setStatus(true);
+            accountRepository.save(account);
+        }
+        String redirectUrl = "/boss/account/index";
+        return "redirect:" + redirectUrl;
+    }
+
+    @RequestMapping(value = {RouteWeb.BossAccountReset}, method = RequestMethod.GET)
+    public String ResetPassBoss(Model model, HttpServletRequest request, HttpServletResponse response) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String mail = request.getParameter("id");
+        Account account = accountRepository.findByMail(mail);
+        account.setPassword(encoder.encode("123"));
+        accountRepository.save(account);
+        String redirectUrl = "/boss/account/index";
+        return "redirect:" + redirectUrl;
+    }
+
+
+    @RequestMapping(value = {RouteWeb.RedirectLogout}, method = RequestMethod.GET)
+    public String RedirectLogout(Model model, HttpServletResponse response, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("IdStore");
+        session.removeAttribute("NameStore");
+
+        String redirectUrl = "/logout";
+        return "redirect:" + redirectUrl;
+    }
 }

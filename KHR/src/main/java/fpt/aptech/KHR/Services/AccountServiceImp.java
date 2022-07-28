@@ -6,15 +6,17 @@
 package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.Store;
 import fpt.aptech.KHR.Reponsitory.AccountRepository;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author jthie
  */
 @Service
@@ -61,6 +63,11 @@ public class AccountServiceImp implements IAccountRepository {
     @Override
     public Account findByCode(String code) {
         return repository.findByCode(code);
+    }
+
+    @Override
+    public List<Account> findByStore(Store id) {
+        return repository.findByStore(id);
     }
 
     @Override

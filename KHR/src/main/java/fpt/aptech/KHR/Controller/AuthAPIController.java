@@ -46,14 +46,6 @@ public class AuthAPIController {
     @Autowired
     private AccountServiceImp accountServiceImp;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<Account> login(@RequestBody Account account) {
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-//                account.getMail(), account.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        return new ResponseEntity<>(account, HttpStatus.OK);
-//    }
     @PostMapping("api/auth")
     public ResponseEntity<Account> auth(@RequestBody Account account, HttpServletResponse response) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
