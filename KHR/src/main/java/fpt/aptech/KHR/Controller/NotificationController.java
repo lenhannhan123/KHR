@@ -34,7 +34,16 @@ public class NotificationController {
     AccountService acs;
     @RequestMapping(value = {RouteWeb.notificationURL}, method = RequestMethod.GET)
     public String Index(Model model) {
-        model.addAttribute("notificationList", ns.findAll());
+        List<AccountNotification> list = ns.findAllNotification();
+        boolean check = false;
+        for (AccountNotification item : list) {
+            if (item.getId() != null) {
+                check = true;
+                break;
+            }
+        }
+        model.addAttribute("notificationList", list);
+        model.addAttribute("check", check);
         return "admin/notification/index";
     }
     @RequestMapping(value = {RouteWeb.notificationAddURL}, method = RequestMethod.GET)
@@ -48,28 +57,28 @@ public class NotificationController {
        
         return "admin/notification/add";
     }
-    @RequestMapping(value = {"/notification/mail"}, method = RequestMethod.GET)
-    public String FindNotificationByMail(Model model,HttpServletRequest request, HttpServletResponse response) {
-        String mail = request.getParameter("mail").toString();
-        Account account = acs.findByMail(mail);
-       JsonServices.dd(JsonServices.ParseToJson(ns.findbyAccount(account)), response);
-        return "admin/notification/add";
-    }
-    @RequestMapping(value = {"api/notification/mail"}, method = RequestMethod.GET)
-    public ResponseEntity<List<AccountNotification>> APINotificationByMail(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            String mail = request.getParameter("mail").toString();
-        Account account = acs.findByMail(mail);
-        List<AccountNotification> list = ns.findbyAccount(account);
-        if (list!=null) {
-            return new ResponseEntity<List<AccountNotification>>(list, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
-    }
+//    @RequestMapping(value = {"/notification/mail"}, method = RequestMethod.GET)
+//    public String FindNotificationByMail(Model model,HttpServletRequest request, HttpServletResponse response) {
+//        String mail = request.getParameter("mail");
+//        Account account = acs.findByMail(mail);
+//       JsonServices.dd(JsonServices.ParseToJson(ns.findbyAccount(account)), response);
+//        return "admin/notification/add";
+//    }
+//    @RequestMapping(value = {"api/notification/mail"}, method = RequestMethod.GET)
+//    public ResponseEntity<List<AccountNotification>> APINotificationByMail(HttpServletRequest request, HttpServletResponse response) {
+//        try {
+//            String mail = request.getParameter("mail");
+//        Account account = acs.findByMail(mail);
+//        List<AccountNotification> list = ns.findbyAccount(account);
+//        if (list!=null) {
+//            return new ResponseEntity<List<AccountNotification>>(list, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+//        }
+//    }
     
     
 }

@@ -39,7 +39,7 @@ public class NotificationService implements INotificationServices {
 
     @Override
     public List<AccountNotification> findAllNotification() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return anr.findAll();
     }
 
     @Override

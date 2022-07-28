@@ -15,55 +15,91 @@ and open the template in the editor.
 
     <body>
         <div layout:fragment="content">
-            <table th:align="center">
-                <tr>
-                    <td>
-                        <form>
-                            <input type="text" placeholder="Nội dung thông báo"/>
-                        </form> 
-                    </td>
-                    <td>
-                        <button>Tạo thông báo mới</button> 
-                    </td>
-                </tr>
-            </table>
-            <br>
-            <table th:border="1" th:align="center">
-                <thead>
-                <th>Id Thông Báo</th>
-                <th>Tiêu đề</th>
-                <th>Mức độ</th>
-                <th>Ngày gửi</th>
-                </thead>
-                <tr th:each="c:${notificationList}">   
-                    <th th:text="${c.getId()}"></th>
-                    <th th:text="${c.getTitle()}"></th>
-                    <th th:text="${c.getAccountNotificationList().size()}"></th>
-                    <th th:text="${c.getDateCreate()}"></th>
-                    <th></th>
-                </tr>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Thông báo nghĩ lễ</td>
-                        <td>Tất cả</td>
-                        <td>22/12/2019</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Thông báo nghĩ tết</td>
-                        <td>Một người/Một vài người</td>
-                        <td>10/11/2020</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Thông báo nghĩ trừ lương</td>
-                        <td>Tất cả</td>
-                        <td>01/01/2021</td>
-                    </tr>
+            <h3 class="title-page">Quản lý ngày nghĩ</h3>
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col background-table">
 
-                </tbody>
-            </table>
+
+                    <div class="row" style="margin-bottom:2% ;">
+                        <div class="col-sm-3">
+                            <b style="margin-bottom:2% ;">Từ ngày</b>
+                            <input type="datetime-local" class="form-control input" id="">
+                        </div>
+                        <div class="col-sm-3">
+                            <b style="margin-bottom:2% ;">Đến ngày</b>
+                            <input type="datetime-local" class="form-control input" id="">
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-12" style="margin-top:12% ;">
+                                <a href="#">
+                                    <input type="button" class="btn btn-success form-control button-defualt" value="Tìm Kiếm">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <!--                                <div class="col-sm-12"></div>-->
+                                <div class="col-sm-4" style="margin-top:4% ;">
+                                    <a href="#">
+                                        <input type="button" class="btn btn-success form-control " value="Đã duyệt">
+                                    </a>
+                                </div>
+                                <div class="col-sm-4" style="margin-top:4% ;">
+                                    <a href="#">
+                                        <input type="button" class="btn btn-danger form-control" value="Từ chối">
+                                    </a>
+                                </div>
+                                <div class="col-sm-4" style="margin-top:4% ;">
+                                    <a href="#">
+                                        <input type="button" class="btn btn-warning form-control" value="Chưa duyệt">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" >ID</th>
+                                <th scope="col" >Tiêu Đề</th>
+                                <th scope="col" >Ngày Gửi</th>
+                                <th scope="col" >Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody th:if="${check == false}">
+                            <tr>
+                                <td colspan="5" style="text-align: center"> Không có dữ liệu </td>
+                            </tr>
+
+                        </tbody>
+
+                        <tbody th:if="${check == true}">
+                            <tr th:each="c:${notificationList}">
+                                <td th:text="${c.getIdnotification().getId()}"></td>
+                                <td th:text="${c.getIdnotification().getTitle()}"></td>
+                                <td th:text="${c.getIdnotification().getDateCreate()}"></td>
+                                <td>
+                                    <a th:href="#">
+                                        <button class="button-envent">
+                                            <i class="fas
+                                               fa-check"
+                                               style="color:
+                                               greenyellow"></i>
+                                        </button>
+
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-1"></div>
+
+            </div>
         </div>
     </body>
 
