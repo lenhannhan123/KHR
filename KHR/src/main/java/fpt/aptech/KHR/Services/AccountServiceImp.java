@@ -89,4 +89,9 @@ public class AccountServiceImp implements IAccountRepository {
     public void updatePassword(String password, String mail) {
         repository.updatePassword(password, mail);
     }
+
+    @Override
+    public void updateRecoveryCode(String recoverycode, String mail) {
+        repository.updateRecoveryCode(recoverycode, mail);
+    }
 }

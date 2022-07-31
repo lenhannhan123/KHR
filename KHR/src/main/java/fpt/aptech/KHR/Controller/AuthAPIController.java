@@ -6,9 +6,11 @@
 package fpt.aptech.KHR.Controller;
 
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.Mail;
 import fpt.aptech.KHR.ImpServices.AccountService;
 import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.Services.AccountServiceImp;
+import fpt.aptech.KHR.Services.SendMailService;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
@@ -50,6 +52,9 @@ public class AuthAPIController {
 
     @Autowired
     private AccountServiceImp accountServiceImp;
+    
+    @Autowired
+    private SendMailService sendMailService;
 
     @PostMapping("api/auth")
     public ResponseEntity<Account> auth(@RequestBody Account account, HttpServletResponse response) {
@@ -91,5 +96,20 @@ public class AuthAPIController {
 //    public ResponseEntity<?> forgotPass(@RequestParam("email") String email) {
 //        return ResponseEntity<?>()
 //    }
+    
+    @PostMapping(path = "/test-mail")
+    public ResponseEntity<Mail> testMail(@RequestBody Mail mail) {
+        mail.setSubject(mail.getSubject());
+        mail.setRecipient(mail.getRecipient());
+        mail.setContent(mail.getContent());
+        sendMailService.sendMail(mail);
+        return new ResponseEntity<>(mail, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "api/send-recover-code")
+    public ResponseEntity<String> sendRecoverCode(@RequestBody String mail) {
+        sendMailService.sendRecoveryCode(mail);
+        return new ResponseEntity<String>("Code sent", HttpStatus.OK);
+    }
 
 }

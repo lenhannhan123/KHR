@@ -44,6 +44,8 @@ public interface IAccountRepository {
     
     public void updatePassword(String password, String mail);
     
+    public void updateRecoveryCode(String recoverycode, String mail);
+    
 
 
 }

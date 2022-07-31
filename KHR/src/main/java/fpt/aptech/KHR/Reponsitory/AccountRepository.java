@@ -42,12 +42,17 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.password = :password")
     Account loginAccount(@PathVariable("mail") String mail, @PathVariable("password") String password);
-    
+
     @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.password = :password")
     Account checkOldPass(String mail, String password);
-    
+
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query("UPDATE Account a SET a.password = :password WHERE a.mail = :mail")
     void updatePassword(@Param("password") String password, @Param("mail") String mail);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query("UPDATE Account a SET a.recoverycode = :recoverycode WHERE a.mail = :mail")
+    void updateRecoveryCode(@Param("recoverycode") String recoverycode, @Param("mail") String mail);
 }

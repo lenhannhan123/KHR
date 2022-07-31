@@ -15,4 +15,5 @@ import java.util.List;
 public interface SendMailService {
     public void sendMail(Mail mail);
     List<Mail> findAll();
+    public void sendRecoveryCode(String mail);
 }
