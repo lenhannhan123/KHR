@@ -74,4 +74,19 @@ public class AccountServiceImp implements IAccountRepository {
     public Account findByMailUser(String mail) {
         return repository.findByEmailUser(mail);
     }
+
+    @Override
+    public boolean checkOldPassword(String mail, String password) {
+        if(repository.checkOldPass(mail, password)!=null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public void updatePassword(String password, String mail) {
+        repository.updatePassword(password, mail);
+    }
 }

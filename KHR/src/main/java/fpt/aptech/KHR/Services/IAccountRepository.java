@@ -39,6 +39,11 @@ public interface IAccountRepository {
     public Account findByCode(String code);
 
     public List<Account> findByStore(Store id);
+    
+    public boolean checkOldPassword(String mail, String password);
+    
+    public void updatePassword(String password, String mail);
+    
 
 
 }

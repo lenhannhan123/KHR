@@ -11,7 +11,10 @@ import java.util.List;
 
 import fpt.aptech.KHR.Entities.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
@@ -39,4 +42,12 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.password = :password")
     Account loginAccount(@PathVariable("mail") String mail, @PathVariable("password") String password);
+    
+    @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.password = :password")
+    Account checkOldPass(String mail, String password);
+    
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query("UPDATE Account a SET a.password = :password WHERE a.mail = :mail")
+    void updatePassword(@Param("password") String password, @Param("mail") String mail);
 }
