@@ -7,36 +7,25 @@ package fpt.aptech.KHR.Entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Admin
  */
 @Entity
 @Table(name = "timeline")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Timeline.findAll", query = "SELECT t FROM Timeline t"),
-    @NamedQuery(name = "Timeline.findById", query = "SELECT t FROM Timeline t WHERE t.id = :id"),
-    @NamedQuery(name = "Timeline.findByTimename", query = "SELECT t FROM Timeline t WHERE t.timename = :timename"),
-    @NamedQuery(name = "Timeline.findByStartdate", query = "SELECT t FROM Timeline t WHERE t.startdate = :startdate"),
-    @NamedQuery(name = "Timeline.findByEnddate", query = "SELECT t FROM Timeline t WHERE t.enddate = :enddate"),
-    @NamedQuery(name = "Timeline.findByStatus", query = "SELECT t FROM Timeline t WHERE t.status = :status"),
-    @NamedQuery(name = "Timeline.findByIsDelete", query = "SELECT t FROM Timeline t WHERE t.isDelete = :isDelete")})
+        @NamedQuery(name = "Timeline.findAll", query = "SELECT t FROM Timeline t"),
+        @NamedQuery(name = "Timeline.findById", query = "SELECT t FROM Timeline t WHERE t.id = :id"),
+        @NamedQuery(name = "Timeline.findByTimename", query = "SELECT t FROM Timeline t WHERE t.timename = :timename"),
+        @NamedQuery(name = "Timeline.findByStartdate", query = "SELECT t FROM Timeline t WHERE t.startdate = :startdate"),
+        @NamedQuery(name = "Timeline.findByEnddate", query = "SELECT t FROM Timeline t WHERE t.enddate = :enddate"),
+        @NamedQuery(name = "Timeline.findByStatus", query = "SELECT t FROM Timeline t WHERE t.status = :status"),
+        @NamedQuery(name = "Timeline.findByIsDelete", query = "SELECT t FROM Timeline t WHERE t.isDelete = :isDelete")})
 public class Timeline implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -72,6 +61,19 @@ public class Timeline implements Serializable {
         this.id = id;
         this.isDelete = isDelete;
     }
+
+    @JoinColumn(name = "Id_Store", referencedColumnName = "Id")
+    @ManyToOne(optional = false)
+    private Store idStore;
+
+    public Store getIdStore() {
+        return idStore;
+    }
+
+    public void setIdStore(Store idStore) {
+        this.idStore = idStore;
+    }
+
 
     public Integer getId() {
         return id;
@@ -145,5 +147,5 @@ public class Timeline implements Serializable {
     public String toString() {
         return "fpt.aptech.KHR.Entities.Timeline[ id=" + id + " ]";
     }
-    
+
 }

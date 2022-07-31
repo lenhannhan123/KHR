@@ -62,6 +62,19 @@ public class TimelineController {
 
         List<Timeline> list = timelineServices.findAll();
 
+        HttpSession session = request.getSession();
+        int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getIdStore().getId() == IdStore) {
+            } else {
+                list.remove(list.get(i));
+                i -= 1;
+
+            }
+        }
+        
 
         boolean check = false;
 
@@ -1052,14 +1065,24 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineUsertURL}, method = RequestMethod.GET)
     public String TimelineUser(Model model, HttpServletRequest request, HttpServletResponse response) {
-
         String idTimelineStr = request.getParameter("id").toString();
 
         List<Account> account = accountService.findAllUser();
         List<UserTimelineJS> userTimelineJS = new ArrayList<>();
 
-
+        HttpSession session = request.getSession();
 //        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
+        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+        for (int i = 0; i < account.size(); i++) {
+            if (account.get(i).getIdStore().getId() == Id_Store) {
+            } else {
+                account.remove(account.get(i));
+                i -= 1;
+
+            }
+        }
+
 
         for (Account item : account
         ) {
@@ -1095,7 +1118,7 @@ public class TimelineController {
 
         }
 
-//        JsonServices.dd(Data, response);
+
         model.addAttribute("data", Data);
         model.addAttribute("idTimeline", idTimelineStr);
 
@@ -1138,6 +1161,20 @@ public class TimelineController {
 
         List<Account> account = accountService.findAllUser();
         List<UserTimelineJS> userTimelineJS = new ArrayList<>();
+
+        HttpSession session = request.getSession();
+//        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
+        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+        for (int i = 0; i < account.size(); i++) {
+            if (account.get(i).getIdStore().getId() == Id_Store) {
+            } else {
+                account.remove(account.get(i));
+                i -= 1;
+
+            }
+        }
+
 
         for (Account item : account
         ) {

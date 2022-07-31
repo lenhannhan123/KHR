@@ -59,8 +59,9 @@ public class AddTimeLineActivity extends AppCompatActivity {
         });
     }
 
+    ConfigData configData = new ConfigData();
     private  void GetData(){
-        String mail = ConfigData.userId;
+        String mail = configData.userId(this);
 
         APITimeline.api.getAddTimeLine(mail).enqueue(new Callback<List<ModelString>>() {
             @Override
