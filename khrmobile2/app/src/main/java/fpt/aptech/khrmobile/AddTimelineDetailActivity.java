@@ -67,9 +67,9 @@ public class AddTimelineDetailActivity extends AppCompatActivity implements AddT
         checkTablayoutSelected();
         AddTimeline();
     }
-    ConfigData configData = new ConfigData();
+
     private  void callData(){
-        String idUser = configData.userId(this);
+        String idUser = ConfigData.userId;
         APITimeline.api.getMyTimelineDetail(idSelect,idUser).enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
@@ -251,7 +251,6 @@ public class AddTimelineDetailActivity extends AppCompatActivity implements AddT
         });
     }
 
-
     public  void AddTimeline(){
         Button buttonAdd = findViewById(R.id.Add_timeline_buttonadd);
 
@@ -274,7 +273,7 @@ public class AddTimelineDetailActivity extends AppCompatActivity implements AddT
                 }else {
 
 
-                    String mail = configData.userId(AddTimelineDetailActivity.this);;
+                    String mail = ConfigData.userId;
                     APITimeline.api.CreateTimeline(mail,idSelect,
                             String.valueOf(data12[1]),
                             String.valueOf(data12[2]),

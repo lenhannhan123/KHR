@@ -66,11 +66,11 @@ public class TimekeepingController {
     @Autowired
     IShiftServices shiftServices;
 
-    @RequestMapping(value = "timekeeping/index", method = RequestMethod.GET)
+    @RequestMapping(value = "/timekeeping/index", method = RequestMethod.GET)
     public String index(Model model) {
         model.addAttribute("accountList", accountRepository.findAll());
         model.addAttribute("list", timekeepingServices.findAll());
-        return "admin/timekeeping/index";
+        return "timekeeping/index";
     }
 
     @RequestMapping(value = "/timekeeping/autocomplete", method = RequestMethod.GET)
@@ -95,32 +95,6 @@ public class TimekeepingController {
         Account account = accountRepository.findByMail(mail);
         List<Timekeeping> timekeepings = timekeepingServices.findByAccount(account);
         List<String> years = new ArrayList<>();
-
-        return "admin/timekeeping/index";
-    }
-
-    @RequestMapping(value = "/api/timekeeping/checkin", method = RequestMethod.POST)
-    public ResponseEntity<Timekeeping> checkin(@RequestBody Timekeeping timekeeping, HttpServletResponse response) {
-        try {
-            SimpleDateFormat hour = new SimpleDateFormat("HH");
-            SimpleDateFormat minute = new SimpleDateFormat("mm");
-            SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Account account = accountRepository.findByMail("thanhnhan@gmail.com");
-            timekeeping.setMail(account);
-            Date date = new Date();
-            String dateOfToday = dateFormat.format(date);
-            String timeOfToday = hourFormat.format(date);
-            timekeeping.setTimestart(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
-
-            List<Shift> shiftList = timekeepingServices.findShiftByDate(timekeeping.getTimestart());
-            for (int i = 0; i < shiftList.size(); i++) {
-//                TimelineDetail timelineDetail = timekeepingServices.findTimelineDetailByMailAndShift(timekeeping.getMail(), shiftList.get(i));
-//                if (timelineDetail != null) {
-//                    //JsonServices.dd(JsonServices.ParseToJson(timelineDetail.toString()), response);
-////                    Shift shift = shiftServices.FindOne(timelineDetail.getIdShift().getId());
-////                    timekeeping.setShiftId(shift);
-//                }
 
         for (int i = 0; i < timekeepings.size(); i++) {
             if (!years.contains(simpleDateFormat.format(timekeepings.get(i).getTimestart()))) {
@@ -325,7 +299,7 @@ public class TimekeepingController {
         Account user = accountRepository.findByMail(timekeeping.getMail().getMail());
         model.addAttribute("timekeeping", timekeeping);
         model.addAttribute("user", user);
-        return "admin/timekeeping/update";
+        return "timekeeping/update";
     }
 
     @RequestMapping(value = "/timekeeping/edit/{id}", method = RequestMethod.POST)

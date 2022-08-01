@@ -202,9 +202,9 @@ public class MyTimelineDetailActivity extends AppCompatActivity {
             }
         });
     }
-ConfigData configData = new ConfigData();
+
     private void CallDataMytimeline(){
-        String idUser = configData.userId(this);
+        String idUser = ConfigData.userId;
         APITimeline.api.getMyTimelineDetail(idSelect,idUser).enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {

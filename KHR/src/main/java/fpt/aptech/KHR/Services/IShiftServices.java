@@ -30,6 +30,4 @@ public interface IShiftServices {
     public List<Shift> FindByIDTimeLine(int id);
 
     public List<Shift> findByTime(Date timeStart, Date timeEnd);
-
-    public List<Shift> findByShiftCode(int shiftCode, int id_Timeline);
 }

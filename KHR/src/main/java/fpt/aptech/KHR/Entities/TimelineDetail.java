@@ -17,20 +17,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ *
  * @author Admin
  */
 @Entity
 @Table(name = "timeline_detail")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "TimelineDetail.findAll", query = "SELECT t FROM TimelineDetail t"),
-        @NamedQuery(name = "TimelineDetail.findById", query = "SELECT t FROM TimelineDetail t WHERE t.id = :id"),
-        @NamedQuery(name = "TimelineDetail.findByShiftCode", query = "SELECT t FROM TimelineDetail t WHERE t.shiftCode = :shiftCode"),
-})
+    @NamedQuery(name = "TimelineDetail.findAll", query = "SELECT t FROM TimelineDetail t"),
+    @NamedQuery(name = "TimelineDetail.findById", query = "SELECT t FROM TimelineDetail t WHERE t.id = :id")})
 public class TimelineDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,14 +37,12 @@ public class TimelineDetail implements Serializable {
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Shift_Code")
-    private int shiftCode;
-
     @JoinColumn(name = "Mail", referencedColumnName = "Mail")
     @ManyToOne(optional = false)
     private Account mail;
+    @JoinColumn(name = "Id_Shift", referencedColumnName = "Id")
+    @ManyToOne(optional = false)
+    private Shift idShift;
     @JoinColumn(name = "Id_Timeline", referencedColumnName = "Id")
     @ManyToOne(optional = false)
     private Timeline idTimeline;
@@ -58,12 +54,6 @@ public class TimelineDetail implements Serializable {
         this.id = id;
     }
 
-    public TimelineDetail(Integer id, int shiftCode, int idShift) {
-        this.id = id;
-        this.shiftCode = shiftCode;
-
-    }
-
     public Integer getId() {
         return id;
     }
@@ -72,21 +62,20 @@ public class TimelineDetail implements Serializable {
         this.id = id;
     }
 
-    public int getShiftCode() {
-        return shiftCode;
-    }
-
-    public void setShiftCode(int shiftCode) {
-        this.shiftCode = shiftCode;
-    }
-
-
     public Account getMail() {
         return mail;
     }
 
     public void setMail(Account mail) {
         this.mail = mail;
+    }
+
+    public Shift getIdShift() {
+        return idShift;
+    }
+
+    public void setIdShift(Shift idShift) {
+        this.idShift = idShift;
     }
 
     public Timeline getIdTimeline() {
@@ -121,5 +110,5 @@ public class TimelineDetail implements Serializable {
     public String toString() {
         return "fpt.aptech.KHR.Entities.TimelineDetail[ id=" + id + " ]";
     }
-
+    
 }

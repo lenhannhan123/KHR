@@ -19,7 +19,7 @@ public class RouteWeb {
     HomeController homeController = new HomeController();
     NotificationController notificationController = new NotificationController();
     AccountController accountController = new AccountController();
-    //    DayOffController dayOffController;
+    DayOffController dayOffController = new DayOffController();
     OverTimeController overTimeController = new OverTimeController();
     TimelineController timelineController = new TimelineController();
     TimekeepingController timekeepingController = new TimekeepingController();
@@ -27,10 +27,10 @@ public class RouteWeb {
 
     //    Khu vuc khai bao Route
     public final static String AdminHomeURL = "/home/index";
-
+    String AdminHomeControler = homeController.Index(model.model);
 
     public final static String index1URL = "/login";
-
+    String Index1Controler = homeController.Index(model.model);
 
     //Route Notification
     public final static String notificationURL = "/notification";
@@ -62,7 +62,7 @@ public class RouteWeb {
 
     //Route Account
     public final static String accountManageURL = "/account/index";
-//    String AccountControllerString = accountController.AccountList(model.model);
+    String AccountControllerString = accountController.AccountList(model.model);
 
     public final static String AccountGetCreateURL = "/account/create";
     String AccountGetCreateController = accountController.GetCreate(model.model);
@@ -70,8 +70,6 @@ public class RouteWeb {
     public final static String AccountGetUpdateURL = "/account/update";
 
     public final static String AccountGetBlockURL = "/account/lock";
-
-    public final static String AccountResetPassURL = "/account/resetpass";
 
     //Route Position
     public final static String positionManageURL = "/position/index";
@@ -125,22 +123,5 @@ public class RouteWeb {
 
     public final static String TimelineDetailsURL = "/timeline/detail";
     String TimelineDetailsControler = timelineController.GetCreate(model.model);
-
-
-    public final static String BossStoreIndex = "boss/store/index";
-    public final static String BossStoreCreate = "boss/store/create";
-    public final static String BossStoreEdit = "boss/store/edit";
-
-    public final static String BossStoreBlock = "boss/store/block";
-
-    public final static String BossAccountIndex = "boss/account/index";
-    public final static String BossAccountCreate = "boss/account/create";
-    public final static String BossAccountEdit = "boss/account/update";
-
-    public final static String BossAccountReset = "boss/account/resetpass";
-    public final static String BossAccountBlock = "boss/account/lock";
-
-    public final static String RedirectLogout = "redirectlogout";
-
 
 }

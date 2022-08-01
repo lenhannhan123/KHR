@@ -5,8 +5,8 @@
  */
 package fpt.aptech.KHR.ImpServices;
 
-import fpt.aptech.KHR.Entities.*;
-import fpt.aptech.KHR.Reponsitory.*;
+import fpt.aptech.KHR.Entities.DayOff;
+import fpt.aptech.KHR.Reponsitory.DayOffRepository;
 import fpt.aptech.KHR.Services.IDayOffServices;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,6 @@ import org.springframework.stereotype.Service;
 public class DayOffService implements IDayOffServices{
     @Autowired
     DayOffRepository dor;
-    @Autowired
-    AccountNotificationRepository acnores;
-    @Autowired
-    NotificationRepository notires;
     @Override
     public List<DayOff> findAll() {
         return dor.findAll();
@@ -31,10 +27,7 @@ public class DayOffService implements IDayOffServices{
 
     @Override
     public boolean approve(int id) {
-        
-        
         DayOff dayOff = dor.findID(id);
-        Notification n = new fpt.aptech.KHR.Entities.Notification();
         dayOff.setStatus(Short.valueOf("1"));
         dor.save(dayOff);
         return true;
@@ -66,11 +59,6 @@ public class DayOffService implements IDayOffServices{
     @Override
     public DayOff AddDayOff( DayOff newDayOff) {
         return dor.save(newDayOff);
-    }
-
-    @Override
-    public DayOff findById(int id) {
-        return dor.findID(id);
     }
     
 }

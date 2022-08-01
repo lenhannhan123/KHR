@@ -108,10 +108,4 @@ public class UserTimelineServices implements IUserTimeServices {
     public List<Integer> GetIdTimeline(String mail) {
         return userTimeLineRepository.GetIdtimeline(mail);
     }
-
-    @Override
-    public List<UserTimeline> GetUserTimeline(String mail) {
-        return userTimeLineRepository.GetUserTimelinea(new Account(mail));
-    }
-
 }

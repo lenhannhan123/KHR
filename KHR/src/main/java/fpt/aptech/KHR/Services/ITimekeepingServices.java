@@ -39,6 +39,4 @@ public interface ITimekeepingServices {
     public List<Timekeeping> findAllByDate(int month, int year);
 
     public TimelineDetail findTimelineDetailByMailAndShift(Account mail, Shift id);
-    
-//    public TimelineDetail findTimelineDetailByMailAndShift(Account mail, Shift id);
 }
