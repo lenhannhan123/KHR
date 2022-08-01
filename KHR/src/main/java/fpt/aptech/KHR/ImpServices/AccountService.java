@@ -40,8 +40,20 @@ public class AccountService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account adminaccount = repository.findByMailAdmin(username);
         Account useraccount = repository.findByMailUser(username);
-        Account account = repository.findByMailPos(username);
-        Account pos = repository.findByMail(username);
+
+        Account bossaccount = repository.findByMail(username);
+        Account account = repository.findByMail(username);
+
+
+        if (bossaccount != null) {
+            if (bossaccount.getRole().equals("3")) {
+                List<GrantedAuthority> grantListAdmin = new ArrayList<>();
+                GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");
+                grantListAdmin.add(authority);
+                UserDetails userDetails = new User(bossaccount.getMail(), bossaccount.getPassword(), grantListAdmin);
+                return userDetails;
+            }
+        }
         if (adminaccount != null) {
             List<GrantedAuthority> grantListAdmin = new ArrayList<>();
             GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");

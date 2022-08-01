@@ -47,6 +47,16 @@ public class JsonServices {
         }
     }
 
+    public static void dd(double value, HttpServletResponse response) {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.println(value);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public static String ParseToJson(Object value) {
         ObjectMapper mapper = new ObjectMapper();

@@ -34,7 +34,7 @@
         />
 
     <TextView
-        android:id="@+id/Login_linkforrgetpass"
+        android:id="@+id/btnSendCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -60,27 +60,25 @@
         android:id="@+id/Forgetpass_txtNewPass"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@xml/duongvien_goctron"
         android:ems="10"
+        android:hint="Mật khẩu mới"
         android:inputType="textPersonName"
         android:padding="15dp"
-        android:hint="Mật khẩu mỡi"
-        android:background="@xml/duongvien_goctron"
-        android:textColor="#808080"
-        android:layout_marginTop="20dp"
-        />
+        android:textColor="#808080" />
 
     <EditText
         android:id="@+id/Forgetpass_txtNewPassConfirm"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@xml/duongvien_goctron"
         android:ems="10"
+        android:hint="Nhập lại mật khẩu mới"
         android:inputType="textPersonName"
         android:padding="15dp"
-        android:hint="Nhập lại mmật khẩu mỡi"
-        android:background="@xml/duongvien_goctron"
-        android:textColor="#808080"
-        android:layout_marginTop="20dp"
-        />
+        android:textColor="#808080" />
 
     <Button
         android:id="@+id/Forgetpass_btnSend"

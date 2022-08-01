@@ -1,0 +1,227 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/_layout}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quản lý tài khoản</title>
+
+    <style>
+        .title-card {
+            padding-top: 11%;
+            padding-bottom: 11%;
+            margin-left: 4%;
+            font-weight: bold
+        }
+
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div layout:fragment="content">
+
+    <h3 class="title-page">Thêm tài khoản mới</h3>
+
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col background-table">
+
+            <form action="/account/create" method="POST" enctype="multipart/form-data">
+                <b>Thông tin cơ bản</b>
+                <br>
+
+
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Email
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="email" class="form-control input" placeholder="Địa chỉ email" id="txtAccountMail"
+                               name="txtAccountMail">
+                        <span hidden class="error-text" id="txtAccountMail-Error">Vui lòng nhập email</span>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Họ tên
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="text" class="form-control input" placeholder="Họ tên" id="txtFullName"
+                               name="txtFullName">
+                        <span hidden class="error-text" id="txtFullName-Error">Vui lòng nhập họ tên</span>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Số điện thoại
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="text" class="form-control input" placeholder="Số điện thoại" id="txtPhone"
+                               name="txtPhone">
+                        <span hidden class="error-text" id="txtPhone-Error">Vui lòng nhập SĐT</span>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Giới tính
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="radio" id="Male" value="1" name="radioGender">
+                        <label for="Male">Nam</label><br>
+                        <input type="radio" id="Female" value="0" name="radioGender">
+                        <label for="Female">Nữ</label><br>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Ngày sinh
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="date" class="form-control input" id="txtBirthDay"
+                               name="txtBirthDay">
+                        <span hidden class="error-text" id="txtBirthDay-Error">Vui lòng chọn ngày sinh</span>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Ảnh đại diện
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="file" name="image" accept="image/png, image/jpeg"/>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Quyền
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <select name="txtRole" id="txtRole">
+                            <option value="0">User</option>
+                            <option value="1">Admin</option>
+                            <option value="2">Scan Machine</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Vị trí làm việc
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <table class="table">
+                            <thead class="thead-light">
+                            <tr style="text-align: center ;">
+                                <th scope="col">Lựa chọn</th>
+                                <th scope="col">Vị trí</th>
+                                <th scope="col">Lương năng suất (VNĐ/giờ)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item,stt:${positions}">
+                                <td style="text-align: center ;">
+                                    <div class="pretty p-default p-curve">
+                                        <input type="checkbox" class="checkbox" th:value="${item.getId()}"
+                                               th:name="'check'+${stt.count}">
+
+                                        <div class="state">
+                                            <label></label>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td th:text="${item.getPositionname()}"></td>
+                                <td style="text-align: center ;">
+                                    <input type="number" class="form-control input input-number" min="0"
+                                           th:name="'checkvalue'+${stt.count} " th:value="${item.getSalarydefault()}"
+                                           id="txtSalary">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+
+                <div class="row" style="margin-top: 5%;">
+                    <div class="col-sm-5"></div>
+                    <div class="col-sm-2" style="text-align: center ;">
+                        <input type="submit" class="btn btn-success form-control button-defualt"
+                               value="Lưu dữ liệu">
+                    </div>
+                    <div class="col-sm-5"></div>
+                </div>
+
+
+            </form>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+</body>
+</html>

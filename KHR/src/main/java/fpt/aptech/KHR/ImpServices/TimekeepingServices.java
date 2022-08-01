@@ -82,5 +82,9 @@ public class TimekeepingServices implements ITimekeepingServices {
     public List<Timekeeping> findAllByDate(int month, int year) {
         return timekeepingRepository.findAllByDate(month, year);
     }
+//    @Override
+//    public TimelineDetail findTimelineDetailByMailAndShift(Account mail, Shift id) {
+//        return timekeepingRepository.findTimelineDetailByMailAndShift(mail, id);
+//    }
     
 }
