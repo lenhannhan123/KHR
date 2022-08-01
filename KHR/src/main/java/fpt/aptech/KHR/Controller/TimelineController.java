@@ -65,6 +65,8 @@ public class TimelineController {
         HttpSession session = request.getSession();
         int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
 
+//        JsonServices.dd(IdStore, response);
+
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getIdStore().getId() == IdStore) {
@@ -74,7 +76,7 @@ public class TimelineController {
 
             }
         }
-        
+
 
         boolean check = false;
 
@@ -114,6 +116,7 @@ public class TimelineController {
     public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response) {
         int NumberofPosition = positionServices.CountPosition();
         HttpSession session = request.getSession();
+
 
         session.setAttribute("TimelineName", request.getParameter("TimelineName"));
         session.setAttribute("TimelineStartDay", request.getParameter("TimelineStartDay"));
@@ -319,12 +322,15 @@ public class TimelineController {
             throw new RuntimeException(e);
         }
 
+        int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
+
 
         Timeline timeline = new Timeline();
         timeline.setTimename(TimelineName);
         timeline.setStartdate(TimelineStartDayParse);
         timeline.setEnddate(TimelineEndDayParse);
         timeline.setStatus((short) 0);
+        timeline.setIdStore(new Store(IdStore));
         timeline = timelineServices.Create(timeline);
 
 
@@ -1059,7 +1065,52 @@ public class TimelineController {
         }
 
 
-        JsonServices.dd("Trang Sắp Xếp", response);
+        List<Account> account = accountService.findAllUser();
+
+        HttpSession session = request.getSession();
+        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+        for (int i = 0; i < account.size(); i++) {
+            if (account.get(i).getIdStore().getId() == Id_Store) {
+            } else {
+                account.remove(account.get(i));
+                i -= 1;
+
+            }
+        }
+
+        List<Shift> ListShift = shiftServices.FindByIDTimeLine(Integer.parseInt(idTimelineStr));
+
+        int Number_Position = 0;
+        int People_Shift = 0;
+
+        //Số vị trí làm trong tuần
+        for (Shift item : ListShift
+        ) {
+            Number_Position += item.getNumber();
+        }
+
+        //Số vị trí của 1 người trong tuần
+        People_Shift = Number_Position / account.size();
+        int modPeople_Shift = Number_Position % account.size();
+
+        if (modPeople_Shift > 0) {
+            People_Shift += 1;
+        }
+
+
+        List<JsonProperty> UserPropertyTemplate = new ArrayList<>();
+
+        for (Account item : account) {
+
+
+        }
+
+
+//        JsonServices.dd(People_Shift, response);
+        JsonServices.dd(JsonServices.ParseToJson(account), response);
+
+
         return "errorpage";
     }
 

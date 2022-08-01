@@ -246,8 +246,13 @@ public class AccountController {
             }
 
             if (check == true) {
-                AccountPosition accountPosition1 = new AccountPosition(accountPositions.get(i).getId(), accountPositions.get(i).getSalary(), accountPositions.get(i).getMail(), accountPositions.get(i).getIdPosition());
-                accountPositionService.delete(accountPosition1);
+                if (accountPositions.get(i).getMail().getMail().equals(mail)) {
+
+                    AccountPosition accountPosition1 = new AccountPosition(accountPositions.get(i).getId(), accountPositions.get(i).getSalary(), accountPositions.get(i).getMail(), accountPositions.get(i).getIdPosition());
+                    accountPositionService.delete(accountPosition1);
+                }
+
+
             }
         }
 
