@@ -113,6 +113,8 @@ public class Store implements Serializable {
         return "fpt.aptech.KHR.Entities.Store[ id=" + id + " ]";
     }
 
+
+
     public String getAddress() {
         return address;
     }
