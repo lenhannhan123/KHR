@@ -150,14 +150,6 @@ public class Timeline implements Serializable {
         return "fpt.aptech.KHR.Entities.Timeline[ id=" + id + " ]";
     }
 
-    public String getTimename() {
-        return timename;
-    }
-
-    public void setTimename(String timename) {
-        this.timename = timename;
-    }
-
     public short getIsDelete() {
         return isDelete;
     }

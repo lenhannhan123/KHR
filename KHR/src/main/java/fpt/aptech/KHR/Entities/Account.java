@@ -246,14 +246,6 @@ public class Account implements Serializable {
         this.role = role;
     }
 
-    public String getRecoverycode() {
-        return recoverycode;
-    }
-
-    public void setRecoverycode(String recoverycode) {
-        this.recoverycode = recoverycode;
-    }
-
     public boolean getStatus() {
         return status;
     }
