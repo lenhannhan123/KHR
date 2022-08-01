@@ -24,15 +24,19 @@ public interface ITimekeepingServices {
 
     Timekeeping findByMail(Account mail);
 
+    List<Timekeeping> findByAccount(Account mail);
+
     void checkin(Timekeeping timekeeping);
 
     void checkout(Timekeeping timekeeping);
-    
+
     public List<String> autocomplete(String keyword);
-    
+
     public List<Timekeeping> search(String mail);
-    
+
     public List<Shift> findShiftByDate(Date timeStart);
-    
+
+    public List<Timekeeping> findAllByDate(int month, int year);
+
     public TimelineDetail findTimelineDetailByMailAndShift(Account mail, Shift id);
 }

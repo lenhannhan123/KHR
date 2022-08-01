@@ -16,6 +16,10 @@ public class Account  implements Serializable {
     private boolean status;
     private String avatar;
 
+    public Account(){
+
+    }
+
     public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, short role, String recoverycode, boolean status, String avatar) {
         this.mail = mail;
         this.password = password;

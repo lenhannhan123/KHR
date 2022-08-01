@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnTimekeepingDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@xml/duongvien_goctron"
+        android:backgroundTint="#D2D6D8"
+        android:drawableRight="@drawable/icon19"
+        android:text="Chấm công ngày 04/07/2022"
+        android:textColor="@color/white" />
+</LinearLayout>

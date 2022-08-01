@@ -72,5 +72,15 @@ public class TimekeepingServices implements ITimekeepingServices {
     public TimelineDetail findTimelineDetailByMailAndShift(Account mail, Shift id) {
         return timekeepingRepository.findTimelineDetailByMailAndShift(mail, id);
     }
+
+    @Override
+    public List<Timekeeping> findByAccount(Account mail) {
+        return timekeepingRepository.findByAccount(mail);
+    }
+
+    @Override
+    public List<Timekeeping> findAllByDate(int month, int year) {
+        return timekeepingRepository.findAllByDate(month, year);
+    }
     
 }
