@@ -91,7 +91,6 @@ public class login extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Account account = response.body();
                     startActivity(new Intent(login.this, MainActivity.class).putExtra("data",account));
-                    finish();
                 }
                 else{
                     String message="An error occured, please try again later..";
