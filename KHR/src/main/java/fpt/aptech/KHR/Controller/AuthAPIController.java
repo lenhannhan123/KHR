@@ -111,5 +111,7 @@ public class AuthAPIController {
         sendMailService.sendRecoveryCode(mail);
         return new ResponseEntity<String>("Code sent", HttpStatus.OK);
     }
+    
+    
 
 }

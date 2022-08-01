@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         ScrollView scrollView = findViewById(R.id.scrollView);
         callNav.setDisplay(scrollView,MainActivity.this,0.88);
         buttonWorkSchedule();
+        buttonHomeLogout();
     }
 
 
@@ -92,6 +93,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MainWorkScheduleActivity.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void buttonHomeLogout(){
+        Button buttonLogout = findViewById(R.id.Home_Logout);
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences myPrefs = getSharedPreferences(profilePreferences,
+                        MODE_PRIVATE);
+                SharedPreferences.Editor editor = myPrefs.edit();
+                editor.clear();
+                editor.commit();
+                Intent intent = new Intent(MainActivity.this, login.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
