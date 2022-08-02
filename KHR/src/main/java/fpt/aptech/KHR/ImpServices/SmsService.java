@@ -19,11 +19,10 @@ import org.springframework.util.MultiValueMap;
 @Service
 public class SmsService {
 
-    private final String ACCOUNT_SID = "ACe211d6379a38d62e2a2ae0220eb81c4b";
-
-    private final String AUTH_TOKEN = "9c09e07c3bb0bfc2c9bcadf81a9d67f8";
-
+    public static final String ACCOUNT_SID = System.getenv("TWILIO_ACCOUNT_SID");
+    public static final String AUTH_TOKEN = System.getenv("TWILIO_AUTH_TOKEN");
     private final String FROM_NUMBER = "+19704465883";
+    
 
     public void send(SmsPojo sms) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);

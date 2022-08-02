@@ -1,9 +1,13 @@
-    package fpt.aptech.KHR;
+package fpt.aptech.KHR;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.twilio.Twilio;
+import fpt.aptech.KHR.ImpServices.SmsService;
+import static fpt.aptech.KHR.ImpServices.SmsService.ACCOUNT_SID;
+import static fpt.aptech.KHR.ImpServices.SmsService.AUTH_TOKEN;
 import java.io.IOException;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.boot.SpringApplication;
@@ -15,7 +19,10 @@ import org.springframework.core.io.ClassPathResource;
 public class KhrApplication {
 
     public static void main(String[] args) {
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+//        Twilio.init(SmsService.ACCOUNT_SID, SmsService.AUTH_TOKEN);
         SpringApplication.run(KhrApplication.class, args);
+        
     }
 
     @Bean
@@ -33,8 +40,4 @@ public class KhrApplication {
 //        FirebaseApp app = FirebaseApp.initializeApp(options);
 //        return FirebaseMessaging.getInstance(app);
 //    }
-
-    
 }
-
-

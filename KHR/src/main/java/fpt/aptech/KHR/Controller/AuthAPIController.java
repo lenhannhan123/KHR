@@ -79,7 +79,7 @@ public class AuthAPIController {
         return new ResponseEntity<>(account1, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/sid", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "api/sid", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getProfileImage(String filename) throws IOException {
         ClassPathResource imgFile = new ClassPathResource("images/user-photos/" + filename);
         byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
@@ -90,7 +90,7 @@ public class AuthAPIController {
                 .body(bytes);
     }
 
-    @PostMapping(path = "/change-pass")
+    @PostMapping(path = "api/change-pass")
     public ResponseEntity<?> changePass(@RequestBody Account account, @RequestParam("pass_new") String pass_new) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 account.getMail(), account.getPassword()));
@@ -106,7 +106,7 @@ public class AuthAPIController {
 //    public ResponseEntity<?> forgotPass(@RequestParam("email") String email) {
 //        return ResponseEntity<?>()
 //    }
-    @PostMapping(path = "/test-mail")
+    @PostMapping(path = "api/test-mail")
     public ResponseEntity<Mail> testMail(@RequestBody Mail mail) {
         mail.setSubject(mail.getSubject());
         mail.setRecipient(mail.getRecipient());
@@ -121,7 +121,7 @@ public class AuthAPIController {
         return new ResponseEntity<String>("Code sent", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/sms", method = RequestMethod.POST,
+    @RequestMapping(value = "api/sms", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void smsSubmit(@RequestBody SmsPojo sms) {
         try {
@@ -135,7 +135,7 @@ public class AuthAPIController {
 
     }
 
-    @RequestMapping(value = "/smscallback", method = RequestMethod.POST,
+    @RequestMapping(value = "api/smscallback", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void smsCallback(@RequestBody MultiValueMap<String, String> map) {
         service.receive(map);
