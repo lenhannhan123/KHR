@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.Reponsitory;
 
+import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.Position;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

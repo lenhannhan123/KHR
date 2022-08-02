@@ -30,4 +30,9 @@ public interface UserTimeLineRepository extends JpaRepository<UserTimeline, Inte
 
     @Query(nativeQuery = true, value = "SELECT DISTINCT Id_Timeline  FROM user_timeline WHERE  Mail= :mail")
     List<Integer> GetIdtimeline(@PathVariable("mail") String mail);
+
+
+    @Query("SELECT u FROM UserTimeline u WHERE   u.mail= :mail")
+    List<UserTimeline> GetUserTimelinea(@PathVariable("mail") Account mail);
+
 }
