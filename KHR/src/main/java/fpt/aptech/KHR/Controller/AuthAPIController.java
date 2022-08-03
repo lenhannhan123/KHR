@@ -49,10 +49,10 @@ public class AuthAPIController {
     @Autowired
     private SimpMessagingTemplate webSocket;
 
-    private final String TOPIC_DESTINATION = "/lesson/sms";
+    private final String TOPIC_DESTINATION = "/api/sms";
 
     @Autowired
-    SmsService service;
+    SmsService sendSmsservice;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -79,7 +79,7 @@ public class AuthAPIController {
         return new ResponseEntity<>(account1, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "api/sid", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "api/view-profile-image", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getProfileImage(String filename) throws IOException {
         ClassPathResource imgFile = new ClassPathResource("images/user-photos/" + filename);
         byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
@@ -102,10 +102,6 @@ public class AuthAPIController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect password");
     }
 
-//    @PostMapping(path = "/forgot-pass")
-//    public ResponseEntity<?> forgotPass(@RequestParam("email") String email) {
-//        return ResponseEntity<?>()
-//    }
     @PostMapping(path = "api/test-mail")
     public ResponseEntity<Mail> testMail(@RequestBody Mail mail) {
         mail.setSubject(mail.getSubject());
@@ -115,35 +111,23 @@ public class AuthAPIController {
         return new ResponseEntity<>(mail, HttpStatus.OK);
     }
 
-    @PostMapping(path = "api/send-recover-code")
-    public ResponseEntity<String> sendRecoverCode(@RequestBody String mail) {
+    @PostMapping(path = "api/recover-code-mail")
+    public ResponseEntity<String> sendRecoverCodeMail(@RequestBody String mail) {
         sendMailService.sendRecoveryCode(mail);
         return new ResponseEntity<String>("Code sent", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "api/sms", method = RequestMethod.POST,
+    @RequestMapping(value = "api/recover-code-sms", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void smsSubmit(@RequestBody SmsPojo sms) {
+    public void sendRecoverCodeSms(@RequestBody String mail) {
         try {
-            service.send(sms);
+            sendSmsservice.sendRecoveryCode(mail);
         } catch (Exception e) {
 
-            webSocket.convertAndSend(TOPIC_DESTINATION, getTimeStamp() + ": Error sending the SMS: " + e.getMessage());
+            webSocket.convertAndSend(TOPIC_DESTINATION, sendSmsservice.getTimeStamp() + ": Error sending the SMS: " + e.getMessage());
             throw e;
         }
-        webSocket.convertAndSend(TOPIC_DESTINATION, getTimeStamp() + ": SMS has been sent!: " + sms.getTo());
+        webSocket.convertAndSend(TOPIC_DESTINATION, sendSmsservice.getTimeStamp() + ": SMS has been sent!");
 
     }
-
-    @RequestMapping(value = "api/smscallback", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void smsCallback(@RequestBody MultiValueMap<String, String> map) {
-        service.receive(map);
-        webSocket.convertAndSend(TOPIC_DESTINATION, getTimeStamp() + ": Twilio has made a callback request! Here are the contents: " + map.toString());
-    }
-
-    private String getTimeStamp() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
-    }
-
 }

@@ -19,8 +19,7 @@ import org.springframework.core.io.ClassPathResource;
 public class KhrApplication {
 
     public static void main(String[] args) {
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-//        Twilio.init(SmsService.ACCOUNT_SID, SmsService.AUTH_TOKEN);
+//        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         SpringApplication.run(KhrApplication.class, args);
         
     }

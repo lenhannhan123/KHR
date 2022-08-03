@@ -20,6 +20,7 @@
     <class>fpt.aptech.KHR.Entities.AccountToken</class>
     <class>fpt.aptech.KHR.Entities.Store</class>
     <class>fpt.aptech.KHR.Entities.Mail</class>
+    <class>fpt.aptech.KHR.Entities.Sms</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://14.225.192.108:3306/khr?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="khareerserver"/>
