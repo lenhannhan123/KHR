@@ -164,10 +164,10 @@ public class TimekeepingController {
 
         List<Shift> tempList = new ArrayList<>();
         for (int i = 0; i < timelineDetailList.size(); i++) {
-            Shift shift = shiftServices.FindOne(timelineDetailList.get(i).getIdShift().getId());
-            if (!tempList.contains(shift)) {
-                tempList.add(shift);
-            }
+//            Shift shift = shiftServices.FindOne(timelineDetailList.get(i).getIdShift().getId());
+//            if (!tempList.contains(shift)) {
+//                tempList.add(shift);
+//            }
         }
 
         List<Timekeeping> timekeepings = timekeepingServices.findAll();
