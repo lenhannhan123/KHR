@@ -72,14 +72,16 @@
     </ScrollView>
 
 
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:background="@xml/duongvien_goctron"
-        android:paddingTop="10dp"
         app:menu="@xml/bottom_navigation_menu" />
 
 </LinearLayout>

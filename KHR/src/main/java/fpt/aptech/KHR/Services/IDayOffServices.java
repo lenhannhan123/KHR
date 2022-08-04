@@ -20,4 +20,5 @@ public interface IDayOffServices {
     List<DayOff> findDenyingList();
     List<DayOff> findNotCheck();
     DayOff AddDayOff( DayOff newDayOff);
+    DayOff findById(int id);
 }

@@ -1,0 +1,195 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{Boss/layout/_layout}"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+
+<head>
+    <title>Sửa cửa hàng</title>
+
+    <style>
+
+        .title-card {
+            padding-top: 11%;
+            padding-bottom: 11%;
+            margin-left: 4%;
+            font-weight: bold
+        }
+
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+
+        #addayof {
+            color: #007bff;
+        }
+
+        #addayof:hover {
+            cursor: pointer;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div layout:fragment="content">
+
+    <h3 class="title-page">Sửa cửa hàng</h3>
+
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col background-table">
+
+            <form action="" method="POST"
+                  onsubmit="return checkvalidate()">
+
+
+                <b>Thông tin cơ bản</b>
+                <br>
+
+
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Tên cửa hàng
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="text" hidden class="form-control input" th:value="${store.getId()}" placeholder="Tên cửa hàng" id="Id"
+                               name="Id">
+
+
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="text" class="form-control input" th:value="${store.getNameStore()}" placeholder="Tên cửa hàng" id="Storename"
+                               name="Storename">
+
+                        <span hidden class="error-text" id="Storename-Eror">Vui lòng nhập tên cửa hàng</span>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+
+                <div class="row" style="margin-top: 3%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        Địa chỉ
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top: 1%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+                        <input type="Text" class="form-control input" id="Storeaddresss"
+                               name="Storeaddresss" placeholder="Địa chỉ" th:value="${store.getAddress()}">
+                        <span hidden class="error-text" id="Storeaddresss-Eror">Vui lòng nhập địa chỉ</span>
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+
+                <br><br>
+
+
+                <div class="row" style="margin-top: 4%;">
+                    <div class="col-sm-1"></div>
+                    <div class="col">
+
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6" style="text-align: center ;">
+
+
+                                <input type="submit" class="btn btn-success form-control button-defualt"
+                                       value="Sửa cửa hàng">
+                            </div>
+                            <div class="col-sm-2"></div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>
+
+
+                <!--                        <input type="text" th:value="+${stt}" name="number"/>-->
+
+
+            </form>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+
+    <script th:src="@{/script/GetDayofWeek.js}"></script>
+
+
+    <!--    Validate-->
+    <script>
+        check = true;
+
+        function checkvalidate() {
+
+            check = true;
+
+
+            Storename = document.getElementById("Storename").value;
+            Storeaddresss = document.getElementById("Storeaddresss").value;
+
+            if (Storename.trim() == "" || Storename == null) {
+                document.getElementById("Storename-Eror").hidden = false;
+                check = false;
+            } else {
+                document.getElementById("Storename-Eror").hidden = true;
+            }
+
+            if (Storeaddresss.trim() == "" || Storeaddresss == null) {
+                document.getElementById("Storeaddresss-Eror").hidden = false;
+                check = false;
+            } else {
+                document.getElementById("Storeaddresss-Eror").hidden = true;
+            }
+
+
+            if (check == true) {
+
+                return true;
+            } else {
+                return false;
+
+            }
+
+        }
+
+
+    </script>
+
+    <!--    Add day offf-->
+
+
+
+    </script>
+
+</div>
+
+
+</body>
+
+</html>

@@ -40,8 +40,20 @@ public class AccountService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account adminaccount = repository.findByMailAdmin(username);
         Account useraccount = repository.findByMailUser(username);
-        Account account = repository.findByMailPos(username);
-        Account pos = repository.findByMail(username);
+
+        Account bossaccount = repository.findByMail(username);
+        Account account = repository.findByMail(username);
+
+
+        if (bossaccount != null) {
+            if (bossaccount.getRole().equals("3")) {
+                List<GrantedAuthority> grantListAdmin = new ArrayList<>();
+                GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");
+                grantListAdmin.add(authority);
+                UserDetails userDetails = new User(bossaccount.getMail(), bossaccount.getPassword(), grantListAdmin);
+                return userDetails;
+            }
+        }
         if (adminaccount != null) {
             List<GrantedAuthority> grantListAdmin = new ArrayList<>();
             GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");
@@ -53,12 +65,6 @@ public class AccountService implements UserDetailsService {
             GrantedAuthority userAuthority = new SimpleGrantedAuthority("ROLE_USER");
             grantListUser.add(userAuthority);
             UserDetails userDetails = new User(useraccount.getMail(), useraccount.getPassword(), grantListUser);
-            return userDetails;
-        } else if (pos != null) {
-            List<GrantedAuthority> grantListPos = new ArrayList<>();
-            GrantedAuthority posAuthority = new SimpleGrantedAuthority("ROLE_POS");
-            grantListPos.add(posAuthority);
-            UserDetails userDetails = new User(pos.getMail(), pos.getPassword(), grantListPos);
             return userDetails;
         } else {
             new UsernameNotFoundException("Login failed!");

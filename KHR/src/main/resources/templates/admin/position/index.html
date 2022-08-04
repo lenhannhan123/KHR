@@ -1,0 +1,110 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<head>
+    <title>Quản lý vị trí làm việc</title>
+
+    <style>
+
+        .title-card {
+            padding-top: 11%;
+            padding-bottom: 11%;
+            margin-left: 4%;
+            font-weight: bold
+        }
+
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div layout:fragment="content">
+
+    <h3 class="title-page">Quản lý vị trí làm việc</h3>
+
+
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col background-table" v-for="(value,index) in val">
+            <div class="row" style="margin-bottom:2% ;">
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input" id="" placeholder="Tìm vị trí làm việc...">
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-5"></div>
+                        <div class="col-sm-5" style="margin-bottom:2% ;">
+                            <a href="/position/create">
+                                <input type="button" class="btn btn-success form-control button-defualt"
+                                       value="Thêm mới">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Tên vị trí</th>
+                    <th scope="col">Lương mặc định (VNĐ/giờ)</th>
+                    <th scope="col">Hành động</th>
+
+                </tr>
+                </thead>
+                <tbody th:if="${check == false}">
+                <tr>
+                    <td colspan="5" style="text-align: center"> Không có dữ liệu</td>
+                </tr>
+
+                </tbody>
+
+                <tbody th:if="${check == true}">
+                <tr th:each="item,stt:${list}">
+
+                    <!--                    <th scope="row" th:text="${stt.Count}"></th>-->
+                    <td th:text="${item.getId()}" th:id="${item.getId()}"></td>
+                    <td th:text="${item.getPositionname()}"></td>
+                    <td th:text="${#numbers.formatDecimal(item.getSalarydefault(),3,'POINT',0,'COMMA')}"></td>
+
+                    <td align="center">
+
+                        <div class="dropdown">
+                            <button class="button-envent
+                                                dropdown-toggle" style="margin-right:
+                                                10px;" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-edit"
+                                   style="color:
+                                               #6667AB"></i>
+                            </button>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" th:href="'/position/update?id='+${item.getId()}">Chỉnh sửa
+                                    thông tin</a>
+
+                                <a class="dropdown-item" th:href="'/position/lock?id='+${item.getId()}">Đóng vị trí</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</div>
+</body>
+</html>

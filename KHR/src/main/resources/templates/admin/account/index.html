@@ -1,0 +1,203 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+    <head>
+        <title>Quản lý tài khoản</title>
+
+        <style>
+
+            .title-card {
+                padding-top: 11%;
+                padding-bottom: 11%;
+                margin-left: 4%;
+                font-weight: bold
+            }
+
+            .title-page {
+                text-align: center;
+                margin-top: 2%;
+                margin-bottom: 3%;
+                font-weight: bold
+            }
+
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div layout:fragment="content">
+
+            <h3 class="title-page">Quản lý tài khoản</h3>
+
+
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col background-table">
+
+
+                    <div class="row" style="margin-bottom:2% ;">
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control input" id="" placeholder="Nhập email...">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-5"></div>
+                                <div class="col-sm-5" style="margin-bottom:2% ;">
+                                    <a href="/account/create">
+                                        <input type="button" class="btn btn-success form-control button-defualt" value="Thêm tài khoản">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Email</th>
+                                <th scope="col">QR</th>
+                                <th scope="col">Họ và tên</th>
+                                <th scope="col">Chức năng</th>
+                                <th scope="col">Hành động</th>
+                                <th scope="col">Trạng thái</th>
+
+                            </tr>
+                        </thead>
+                        <tbody th:if="${check == false}">
+                            <tr>
+                                <td colspan="5" style="text-align: center"> Không có dữ liệu </td>
+                            </tr>
+
+                        </tbody>
+
+                        <tbody th:if="${check == true}">
+                            <tr th:each="item,stt:${list}">
+
+                                <!--                    <th scope="row" th:text="${stt.Count}"></th>-->
+                                <td th:text="${item.getMail()}" th:id="${item.getMail()}" ></td>
+                                <td></td>
+                                <td th:text="${item.getFullname()}" ></td>
+                                <td>
+                                    <div th:switch="${item.role}">
+                                        <p th:case="'0'">Nhân viên</p>
+                                        <p th:case="'1'">Quản trị viên</p>
+                                        <p th:case="'2'">Máy quét QR</p>
+                                        <!-- * for default case -->
+                                        <p th:case="*">Chưa có phân quyền</p>
+                                    </div>
+                                </td>
+                                <td align="center">
+
+                                    <div class="dropdown">
+                                        <button class="button-envent
+                                                dropdown-toggle" style="margin-right:
+                                                10px;" type="button" id="dropdownMenuButton"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-edit"
+                                               style="color:
+                                               #6667AB"></i>
+                                        </button>
+
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" th:href="'/account/update?id='+${item.getMail()}">Chỉnh sửa thông tin</a>
+
+                                            <a class="dropdown-item" th:href="'/account/resetpass?id='+${item.getMail()}">Đặt lại mật khẩu</a>
+
+                                            <a class="dropdown-item" th:text="${item.getStatus()}?'Khóa tài khoản':' Mở tài khoản'"  th:href="'/account/lock?id='+${item.getMail()}">  </a>
+                                        </div>
+
+                                    </div>
+
+                                </td>
+                                <td th:style="${item.getStatus()} == FALSE ? 'color:red' : 'color:green'" th:text="${item.getStatus()}?'Hoạt động':'Bị khóa'"></td>
+                            </tr>
+
+                        </tbody>
+
+
+
+                        </tbody>
+                    </table>
+
+                    <button data-toggle="modal"
+                            data-target="#infomationform"  hidden id="openfform">nnn</button>
+                    <form action="/timeline/editname" method="post" >
+                        <div class="modal fade" id="infomationform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+
+
+                                        <h5 class="modal-title modal-title " id="exampleModalLabel">Thông tin lịch làm việc</h5>
+
+
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row" style="margin-top: 1%;">
+                                                    <div class="col-sm-1"></div>
+                                                    <div class="col">
+                                                        <input type="Text" required class="form-control input" id="id"
+                                                               name="id" hidden >
+                                                        <input type="Text" required class="form-control input" id="TimelineName"
+                                                               name="TimelineName" placeholder="Nhập tên lịch làm việc" >
+                                                    </div>
+                                                    <div class="col-sm-1"></div>
+                                                </div>
+
+                                                <input type="submit" hidden id="sumbitdata">
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng bảng</button>
+                                        <input type="submit" data-dismiss="modal" class="btn btn-primary" style="background-color:#6667AB ;"
+                                               value="Lưu dữ liệu" onclick="submitdatafunc()">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-1"></div>
+
+            </div>
+
+            <script>
+                function  openformEdit(id) {
+
+
+
+                    name = document.getElementById("TimelineNames" + id).innerText;
+
+                    document.getElementById("id").value = id;
+
+                    document.getElementById("TimelineName").value = name;
+                    document.getElementById("openfform").click();
+                }
+
+                function submitdatafunc() {
+                    document.getElementById("sumbitdata").click();
+
+                }
+            </script>
+
+        </div>
+
+
+    </body>
+
+</html>

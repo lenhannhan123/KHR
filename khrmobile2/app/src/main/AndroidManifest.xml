@@ -5,10 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <meta-data
-        android:name="com.google.android.actions"
-        android:resource="@xml/netsecurity" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,12 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Khrmobile"
         android:usesCleartextTraffic="true">
-<!--        <activity-->
-<!--            android:name=".TimekeepingActivity"-->
-<!--            android:exported="false" />-->
         <activity
-            android:name=".ScannerActivity"
-            android:exported="false" />
+         android:name=".ScannerActivity"
+         android:exported="false" />
         <activity
             android:name=".QRDisplay"
             android:exported="false" />
@@ -71,13 +64,17 @@
         <!-- android:name=".StartPage" -->
         <!-- android:exported="false" /> -->
         <activity
-            android:name=".TimekeepingActivity"
+            android:name=".StartPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="com.google.android.actions"
+                android:resource="@xml/netsecurity" />
         </activity>
     </application>
 

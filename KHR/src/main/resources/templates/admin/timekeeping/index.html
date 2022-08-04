@@ -1,0 +1,141 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+    <head>
+        <title>Quản lý chấm công</title>
+
+        <style>
+
+            .title-card {
+                padding-top: 11%;
+                padding-bottom: 11%;
+                margin-left: 4%;
+                font-weight: bold
+            }
+
+            .title-page {
+                text-align: center;
+                margin-top: 2%;
+                margin-bottom: 3%;
+                font-weight: bold
+            }
+
+
+        </style>
+        <link rel="stylesheet"
+              href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $("#searchBox").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "http://localhost:7777/timekeeping/autocomplete",
+                            dataType: "json",
+                            data: {
+                                value: request.term
+                            },
+                            success: function (data) {
+                                //alert(data);
+                                console.log(data);
+                                response(data);
+                            }
+                        });
+                    },
+                    minLength: 2
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+
+        <div layout:fragment="content">
+
+            <h3 class="title-page">Quản lý chấm công</h3>        
+
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col background-table">
+
+
+                    <div class="row" style="margin-bottom:2% ;">
+                        
+                            <div class="col-sm-3">
+                                <form th:action="@{/timekeeping/search}" th:method="get">
+                                <input type="text" class="form-control input" placeholder="Nhập email" name="mail" id="searchBox">
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="submit" class="btn btn-success form-control button-defualt" value="Tìm">
+                            </div>
+                        </form>
+
+                    </div>
+
+
+                    <table class="table" style="text-align: center;">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Họ và tên</th>
+                                <th scope="col">Thời gian checkin</th>
+                                <th scope="col">Thời gian checkout</th>
+                                <th scope="col">Số giờ làm</th>
+                                <!--<th scope="col">Ca</th>-->
+                                <th scope="col">Trạng thái</th>
+
+                            </tr>
+                        </thead>                     
+                        <tbody>
+                            <tr th:each="item:${list}">
+                                <td th:text="${item.getId()}"></td>
+                                <td th:text="${item.getMail().getMail()}"></td> 
+                        <div th:each="user:${accountList}">
+                            <td th:if="${user.getMail() == item.getMail().getMail()}" th:text="${user.getFullname()}"></td>
+                        </div>
+
+                        <td th:text="${#dates.format(item.getTimestart(), 'HH:mm dd-MM-yyyy')}"></td>
+                        <td th:text="${#dates.format(item.getTimeend(), 'HH:mm dd-MM-yyyy')}"></td>
+                        <td th:text="${item.getTime()}"></td>
+                        <!--<td th:text="${item.getIdshift()}"></td>-->
+                        <td>
+                            <div class="dropdown">
+                                <button class="button-envent
+                                        dropdown-toggle" style="margin-right:
+                                        10px;" type="button" id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-edit"
+                                       style="color:
+                                       #6667AB"></i>
+                                </button>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" th:href="@{'/timekeeping/update/' + ${item.getId()}}">Chỉnh sửa thông tin</a>
+                                </div>
+
+                            </div>
+
+                        </td>                            
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+
+                </div>
+                <div class="col-sm-1"></div>
+
+            </div>
+
+
+        </div>
+
+
+    </body>
+
+</html>

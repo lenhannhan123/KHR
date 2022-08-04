@@ -6,15 +6,17 @@
 package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.Store;
 import fpt.aptech.KHR.Reponsitory.AccountRepository;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author jthie
  */
 @Service
@@ -64,12 +66,41 @@ public class AccountServiceImp implements IAccountRepository {
     }
 
     @Override
+    public List<Account> findByStore(Store id) {
+        return repository.findByStore(id);
+    }
+
+    @Override
     public Account findByMailUser(String mail) {
         return repository.findByEmailUser(mail);
     }
 
     @Override
-    public Account findByMailPos(String mail) {
-        return repository.findByEmailUser(mail);
+    public boolean checkOldPassword(String mail, String password) {
+        if (repository.checkOldPass(mail, password) != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
+    @Override
+    public boolean checkRecoveryCode(String mail, String recoverycode) {
+        if (repository.checkRecoveryCode(mail, recoverycode) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void updatePassword(String password, String mail) {
+        repository.updatePassword(password, mail);
+    }
+
+    @Override
+    public void updateRecoveryCode(String recoverycode, String mail) {
+        repository.updateRecoveryCode(recoverycode, mail);
+    }
+
 }
