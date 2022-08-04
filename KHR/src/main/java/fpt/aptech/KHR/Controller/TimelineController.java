@@ -1714,6 +1714,8 @@ public class TimelineController {
 
         }
 
+
+
         for (ShiftOnDay item: shiftOnDayList  ) {
 
             for (PositionOnDay item2: item.getPositionOnDays()
@@ -1722,7 +1724,8 @@ public class TimelineController {
                 timelineDetail.setIdTimeline(new Timeline(Integer.parseInt(idTimelineStr)));
                 timelineDetail.setMail(new Account(item2.getMail()));
                 timelineDetail.setShiftCode(item2.getId_Code());
-                timelineDetail.set
+                timelineDetail.setIdPosition(new Position(item2.getPosition_id()));
+                timelineDetailServices.Create(timelineDetail);
             }
 
 

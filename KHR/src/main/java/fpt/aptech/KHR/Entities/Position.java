@@ -45,8 +45,8 @@ public class Position implements Serializable {
     @NotNull
     @Column(name = "Salary_default")
     private int salarydefault;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPosition")
-    private List<TimelineDetail> timelineDetailList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPosition")
+//    private List<TimelineDetail> timelineDetailList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -130,13 +130,13 @@ public class Position implements Serializable {
         return positionname;
     }
 
-    @XmlTransient
-    public List<TimelineDetail> getTimelineDetailList() {
-        return timelineDetailList;
-    }
-
-    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
-        this.timelineDetailList = timelineDetailList;
-    }
+//    @XmlTransient
+//    public List<TimelineDetail> getTimelineDetailList() {
+//        return timelineDetailList;
+//    }
+//
+//    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
+//        this.timelineDetailList = timelineDetailList;
+//    }
 
 }
