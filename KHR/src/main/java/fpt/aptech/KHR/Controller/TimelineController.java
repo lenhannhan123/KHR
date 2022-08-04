@@ -1169,7 +1169,7 @@ public class TimelineController {
                 for (int j = 0; j < number; j++) {
                     PositionOnDay positionOnDay = new PositionOnDay();
                     positionOnDay.setPosition_id(item.getIdPosition().getId());
-                    positionOnDay.setId_Shift(item.getId());
+                    positionOnDay.setShift_Code(i);
                     positionOnDaysList.add(positionOnDay);
                 }
 
