@@ -1051,7 +1051,17 @@ public class TimelineController {
     }
 
 
-    @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.GET)
+    @RequestMapping(value = {RouteWeb.TimelineRedirecrSortURL}, method = RequestMethod.GET)
+    public String TimelineRedirecrSort(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        JsonServices.dd("nhan1", response);
+
+        String redirectUrl = "/timeline/index";
+        return "redirect:" + redirectUrl;
+    }
+
+
+    @RequestMapping(value = {RouteWeb.TimelineSortCreateURL}, method = RequestMethod.GET)
     public String TimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
 
         String idTimelineStr = request.getParameter("id").toString();
