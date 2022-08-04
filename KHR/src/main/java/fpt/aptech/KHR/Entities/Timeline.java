@@ -37,10 +37,7 @@ public class Timeline implements Serializable {
     @NotNull
     @Column(name = "IsDelete")
     private short isDelete;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "is_delete")
-    private short isDelete1;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimeline")
     private List<TimelineDetail> timelineDetailList;
 
@@ -159,13 +156,7 @@ public class Timeline implements Serializable {
         this.isDelete = isDelete;
     }
 
-    public short getIsDelete1() {
-        return isDelete1;
-    }
-
-    public void setIsDelete1(short isDelete1) {
-        this.isDelete1 = isDelete1;
-    }
+  
 
     @XmlTransient
     public List<TimelineDetail> getTimelineDetailList() {
