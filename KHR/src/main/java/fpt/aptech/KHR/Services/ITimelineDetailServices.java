@@ -26,4 +26,6 @@ public interface ITimelineDetailServices {
 
     public TimelineDetail FindOne(int id);
 
+    public List<TimelineDetail> FindbyIdTimeline(int id);
+
 }

@@ -115,13 +115,6 @@ public class Store implements Serializable {
 
 
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     @XmlTransient
     public List<Timeline> getTimelineList() {
@@ -139,6 +132,15 @@ public class Store implements Serializable {
 
     public void setAccountList(List<Account> accountList) {
         this.accountList = accountList;
+    }
+
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
     
 }

@@ -108,6 +108,7 @@ public class RouteWeb {
     String TimelineEditTimelineControler = timelineController.GetCreate(model.model);
 
     public final static String TimelineSortURL = "/timeline/sortwork";
+    public final static String TimelineSortCreateURL = "/timeline/sortwork/create";
     String TimelineSortURLControler = timelineController.GetCreate(model.model);
 
     public final static String TimelineSortRedirectURL = "/timeline/sortwork/redirect";

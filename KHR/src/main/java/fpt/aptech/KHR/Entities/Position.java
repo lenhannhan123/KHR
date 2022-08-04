@@ -8,6 +8,7 @@ package fpt.aptech.KHR.Entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,12 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Position.findBySalarydefault", query = "SELECT p FROM Position p WHERE p.salarydefault = :salarydefault")})
 public class Position implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "Id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -50,8 +45,15 @@ public class Position implements Serializable {
     @NotNull
     @Column(name = "Salary_default")
     private int salarydefault;
-//    @OneToMany(mappedBy = "idPosition")
-//    private List<Shift> shiftList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPosition")
+    private List<TimelineDetail> timelineDetailList;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "Id")
+    private Integer id;
 
     public Position() {
     }
@@ -126,6 +128,15 @@ public class Position implements Serializable {
     @Override
     public String toString() {
         return positionname;
+    }
+
+    @XmlTransient
+    public List<TimelineDetail> getTimelineDetailList() {
+        return timelineDetailList;
+    }
+
+    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
+        this.timelineDetailList = timelineDetailList;
     }
 
 }

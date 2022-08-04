@@ -21,16 +21,16 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
+ *
  * @author Admin
  */
 @Entity
 @Table(name = "timeline_detail")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "TimelineDetail.findAll", query = "SELECT t FROM TimelineDetail t"),
-        @NamedQuery(name = "TimelineDetail.findById", query = "SELECT t FROM TimelineDetail t WHERE t.id = :id"),
-        @NamedQuery(name = "TimelineDetail.findByShiftCode", query = "SELECT t FROM TimelineDetail t WHERE t.shiftCode = :shiftCode"),
-})
+    @NamedQuery(name = "TimelineDetail.findAll", query = "SELECT t FROM TimelineDetail t"),
+    @NamedQuery(name = "TimelineDetail.findById", query = "SELECT t FROM TimelineDetail t WHERE t.id = :id"),
+    @NamedQuery(name = "TimelineDetail.findByShiftCode", query = "SELECT t FROM TimelineDetail t WHERE t.shiftCode = :shiftCode")})
 public class TimelineDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,6 +46,9 @@ public class TimelineDetail implements Serializable {
     @JoinColumn(name = "Mail", referencedColumnName = "Mail")
     @ManyToOne(optional = false)
     private Account mail;
+    @JoinColumn(name = "Id_Position", referencedColumnName = "Id")
+    @ManyToOne(optional = false)
+    private Position idPosition;
     @JoinColumn(name = "Id_Timeline", referencedColumnName = "Id")
     @ManyToOne(optional = false)
     private Timeline idTimeline;
@@ -57,10 +60,9 @@ public class TimelineDetail implements Serializable {
         this.id = id;
     }
 
-    public TimelineDetail(Integer id, int shiftCode, int idShift) {
+    public TimelineDetail(Integer id, int shiftCode) {
         this.id = id;
         this.shiftCode = shiftCode;
-
     }
 
     public Integer getId() {
@@ -79,13 +81,20 @@ public class TimelineDetail implements Serializable {
         this.shiftCode = shiftCode;
     }
 
-
     public Account getMail() {
         return mail;
     }
 
     public void setMail(Account mail) {
         this.mail = mail;
+    }
+
+    public Position getIdPosition() {
+        return idPosition;
+    }
+
+    public void setIdPosition(Position idPosition) {
+        this.idPosition = idPosition;
     }
 
     public Timeline getIdTimeline() {
@@ -120,5 +129,5 @@ public class TimelineDetail implements Serializable {
     public String toString() {
         return "fpt.aptech.KHR.Entities.TimelineDetail[ id=" + id + " ]";
     }
-
+    
 }

@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.ImpServices;
 
+import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Entities.TimelineDetail;
 import fpt.aptech.KHR.Reponsitory.ShiftRepository;
 import fpt.aptech.KHR.Reponsitory.TimelineDetailRepository;
@@ -53,5 +54,10 @@ public class TimelineDetailServices implements ITimelineDetailServices {
     @Override
     public TimelineDetail FindOne(int id) {
         return timelineDetailRepository.findID(id);
+    }
+
+    @Override
+    public List<TimelineDetail> FindbyIdTimeline(int id) {
+        return timelineDetailRepository.findbyIdTimeline(new Timeline(id));
     }
 }

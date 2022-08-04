@@ -10,6 +10,7 @@ import fpt.aptech.KHR.Reponsitory.AccountPositionRepository;
 import fpt.aptech.KHR.Routes.RouteAPI;
 import fpt.aptech.KHR.Routes.RouteWeb;
 import fpt.aptech.KHR.Services.ITimelineServices;
+import io.swagger.models.auth.In;
 import org.json.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +41,9 @@ public class TimelineController {
 
     @Autowired
     TimelineServices timelineServices;
+
+    @Autowired
+    TimelineDetailServices timelineDetailServices;
 
     @Autowired
     PositionServices positionServices;
@@ -1051,12 +1055,32 @@ public class TimelineController {
     }
 
 
-    @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.GET)
+
+    @RequestMapping(value = {RouteWeb.TimelineSortRedirectURL}, method = RequestMethod.GET)
+    public String TimelineSortRedirectURL(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+     int id= Integer.parseInt(request.getParameter("id"))   ;
+
+     List<TimelineDetail>  Listtimeline=  timelineDetailServices.FindbyIdTimeline(id);
+
+
+     if(Listtimeline.size()==0){
+
+         String redirectUrl = "/timeline/sortwork/create?id="+id;
+         return "redirect:" + redirectUrl;
+     }
+
+            JsonServices.dd(JsonServices.ParseToJson(Listtimeline),response);
+        return "admin/timeline/timelinedit";
+    }
+
+    @RequestMapping(value = {RouteWeb.TimelineSortCreateURL}, method = RequestMethod.GET)
     public String TimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
 
 
 
         String idTimelineStr = request.getParameter("id").toString();
+
 
         List<UserTimeline> userTimeline = userTimelineServices.FindIDTimeLine(Integer.parseInt(idTimelineStr));
 
@@ -1171,7 +1195,7 @@ public class TimelineController {
                 for (int j = 0; j < number; j++) {
                     PositionOnDay positionOnDay = new PositionOnDay();
                     positionOnDay.setPosition_id(item.getIdPosition().getId());
-                    positionOnDay.setId_Shift(item.getId());
+                    positionOnDay.setId_Code(i);
                     positionOnDaysList.add(positionOnDay);
                 }
 
@@ -1689,6 +1713,23 @@ public class TimelineController {
             }
 
         }
+
+        for (ShiftOnDay item: shiftOnDayList  ) {
+
+            for (PositionOnDay item2: item.getPositionOnDays()
+                 ) {
+                TimelineDetail timelineDetail = new TimelineDetail();
+                timelineDetail.setIdTimeline(new Timeline(Integer.parseInt(idTimelineStr)));
+                timelineDetail.setMail(new Account(item2.getMail()));
+                timelineDetail.setShiftCode(item2.getId_Code());
+                timelineDetail.set
+            }
+
+
+
+        }
+
+
 
 //        JsonServices.dd(JsonServices.ParseToJson(UserPropertyListTemplate), response);
 //
