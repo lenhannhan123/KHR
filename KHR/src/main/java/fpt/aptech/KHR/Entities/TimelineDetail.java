@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
         @NamedQuery(name = "TimelineDetail.findAll", query = "SELECT t FROM TimelineDetail t"),
         @NamedQuery(name = "TimelineDetail.findById", query = "SELECT t FROM TimelineDetail t WHERE t.id = :id"),
         @NamedQuery(name = "TimelineDetail.findByShiftCode", query = "SELECT t FROM TimelineDetail t WHERE t.shiftCode = :shiftCode"),
-        @NamedQuery(name = "TimelineDetail.findByIdShift", query = "SELECT t FROM TimelineDetail t WHERE t.idShift = :idShift")})
+})
 public class TimelineDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -34,5 +34,5 @@ public interface ITimekeepingServices {
     
     public List<Shift> findShiftByDate(Date timeStart);
     
-    public TimelineDetail findTimelineDetailByMailAndShift(Account mail, Shift id);
+//    public TimelineDetail findTimelineDetailByMailAndShift(Account mail, Shift id);
 }
