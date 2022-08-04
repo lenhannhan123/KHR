@@ -25,7 +25,7 @@ import fpt.aptech.khrmobile.Entities.Account;
 
 public class MainActivity extends AppCompatActivity {
     Account account;
-
+    TextView username;
     Intent intent;
 
     SharedPreferences sharedPreferences;
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView username = findViewById(R.id.textView4);
+        username = findViewById(R.id.textView4);
         Intent intent = getIntent();
         if(intent.getExtras()!=null){
             account = (Account) intent.getSerializableExtra("data");
@@ -58,9 +58,11 @@ public class MainActivity extends AppCompatActivity {
             editor.putString(Avatar, account.getAvatar());
             editor.putString(Code, account.getCode());
             editor.commit();
-            String name = sharedPreferences.getString(MainActivity.Name,null);
-            username.setText("Xin chào " + name);
+            String namekey = sharedPreferences.getString(MainActivity.Name,null);
+            username.setText("Xin chào " + namekey);
 //            Log.e("TAG", "===>" + account.getPhone());
+
+
         }
 
 
@@ -78,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
         ScrollView scrollView = findViewById(R.id.scrollView);
         callNav.setDisplay(scrollView,MainActivity.this,0.88);
         buttonWorkSchedule();
-        buttonHomeLogout();
     }
 
 
@@ -91,23 +92,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MainWorkScheduleActivity.class);
                 startActivity(intent);
-            }
-        });
-    }
-
-    private void buttonHomeLogout(){
-        Button buttonLogout = findViewById(R.id.Home_Logout);
-        buttonLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences myPrefs = getSharedPreferences(profilePreferences,
-                        MODE_PRIVATE);
-                SharedPreferences.Editor editor = myPrefs.edit();
-                editor.clear();
-                editor.commit();
-                Intent intent = new Intent(MainActivity.this, login.class);
-                startActivity(intent);
-                finish();
             }
         });
     }

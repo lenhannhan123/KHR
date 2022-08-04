@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class Timekeeping {
     private int id;
-    private String mail;
     private Date timestart;
     private Date timeend;
     private int time;
-    private int shiftId;
+    private Account mail;
+    private Shift shiftId;
 
     public Timekeeping() {
     }
@@ -21,11 +21,11 @@ public class Timekeeping {
         this.id = id;
     }
 
-    public String getMail() {
+    public Account getMail() {
         return mail;
     }
 
-    public void setMail(String mail) {
+    public void setMail(Account mail) {
         this.mail = mail;
     }
 
@@ -53,11 +53,11 @@ public class Timekeeping {
         this.time = time;
     }
 
-    public int getShiftId() {
+    public Shift getShiftId() {
         return shiftId;
     }
 
-    public void setShiftId(int shiftId) {
+    public void setShiftId(Shift shiftId) {
         this.shiftId = shiftId;
     }
 }

@@ -6,15 +6,13 @@
 package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Account;
-
 import java.util.List;
-
-import fpt.aptech.KHR.Entities.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
+ *
  * @author jthie
  */
 public interface IAccountRepository {
@@ -29,23 +27,15 @@ public interface IAccountRepository {
     public Account findByMail(String mail);
 
     public Account findByMailAdmin(String mail);
-
+    
     public Account findByMailUser(String mail);
+    
+    public Account findByMailPos(String mail);
 
     public List<Account> findAllAdminAccounts();
 
     public List<Account> findAllUserAccounts();
 
     public Account findByCode(String code);
-
-    public List<Account> findByStore(Store id);
-
-    public boolean checkOldPassword(String mail, String password);
-
-    public boolean checkRecoveryCode(String mail, String recoverycode);
-
-    public void updatePassword(String password, String mail);
-
-    public void updateRecoveryCode(String recoverycode, String mail);
-
+    
 }

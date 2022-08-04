@@ -6,7 +6,6 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Shift;
-import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Reponsitory.ShiftRepository;
 import fpt.aptech.KHR.Services.IShiftServices;
 
@@ -67,11 +66,6 @@ public class ShiftServices implements IShiftServices {
     @Override
     public List<Shift> findByTime(Date timeStart, Date timeEnd) {
         return shiftRepository.findShiftByTime(timeStart, timeEnd);
-    }
-
-    @Override
-    public List<Shift> findByShiftCode(int shiftCode, int id_Timeline) {
-        return shiftRepository.findShiftByShiftCode(shiftCode, new Timeline(id_Timeline));
     }
 
 }

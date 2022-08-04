@@ -5,6 +5,11 @@
  */
 package fpt.aptech.KHR.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -60,9 +65,13 @@ public class Timekeeping implements Serializable {
     private int time;
     @JoinColumn(name = "Mail", referencedColumnName = "Mail")
     @ManyToOne(optional = false)
+    //@JsonBackReference
+    @JsonIgnore
     private Account mail;
     @JoinColumn(name = "shift_id", referencedColumnName = "Id")
     @ManyToOne(optional = false)
+    @JsonIgnore
+    //@JsonBackReference
     private Shift shiftId;
 
     public Timekeeping() {

@@ -1,13 +1,9 @@
-package fpt.aptech.KHR;
+    package fpt.aptech.KHR;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.twilio.Twilio;
-import fpt.aptech.KHR.ImpServices.SmsService;
-import static fpt.aptech.KHR.ImpServices.SmsService.ACCOUNT_SID;
-import static fpt.aptech.KHR.ImpServices.SmsService.AUTH_TOKEN;
 import java.io.IOException;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +16,6 @@ public class KhrApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(KhrApplication.class, args);
-        
     }
 
     @Bean
@@ -38,4 +33,8 @@ public class KhrApplication {
 //        FirebaseApp app = FirebaseApp.initializeApp(options);
 //        return FirebaseMessaging.getInstance(app);
 //    }
+
+    
 }
+
+

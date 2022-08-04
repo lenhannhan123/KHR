@@ -43,7 +43,7 @@ public class OverTimeController {
         }
         model.addAttribute("list", list);
         model.addAttribute("check", check);
-        return "admin/overtime/index";
+        return "overtime/index";
     }
   @RequestMapping(value = {"/overtime/list/approved"}, method = RequestMethod.GET)
     public String ApprovedList(Model model,HttpServletRequest request, HttpServletResponse response) {
@@ -59,7 +59,7 @@ public class OverTimeController {
         }
         model.addAttribute("list", list);
         model.addAttribute("check", check);
-        return "admin/overtime/index";
+        return "overtime/index";
     }
             @RequestMapping(value = {"/overtime/list/denying"}, method = RequestMethod.GET)
     public String DenyingList(Model model,HttpServletRequest request, HttpServletResponse response) {
@@ -75,7 +75,7 @@ public class OverTimeController {
         }
         model.addAttribute("list", list);
         model.addAttribute("check", check);
-        return "admin/overtime/index";
+        return "overtime/index";
     }
     @RequestMapping(value = {"/overtime/list/notcheck"}, method = RequestMethod.GET)
     public String NotCheckList(Model model,HttpServletRequest request, HttpServletResponse response) {
@@ -91,7 +91,7 @@ public class OverTimeController {
         }
         model.addAttribute("list", list);
         model.addAttribute("check", check);
-        return "admin/overtime/index";
+        return "overtime/index";
     }
     @RequestMapping(value = {RouteWeb.overtimeapproveURL}, method = RequestMethod.GET)
     public String approved(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -32,7 +32,7 @@ public class PositionController {
     @Autowired
     private PositionServices positionServices;
 
-    @RequestMapping("position/index")
+    @RequestMapping("/position/index")
     public String PositionList(Model model) {
         List<Position> list = positionServices.findAll();
         boolean check = false;
@@ -44,12 +44,12 @@ public class PositionController {
         }
         model.addAttribute("list", list);
         model.addAttribute("check", check);
-        return "admin/position/index";
+        return "/position/index";
     }
 
     @RequestMapping(value = {RouteWeb.PositionGetCreateURL}, method = RequestMethod.GET)
     public String GetCreate(Model model) {
-        return "admin/position/create";
+        return "/position/create";
     }
 
     @RequestMapping(value = {RouteWeb.PositionGetCreateURL}, method = RequestMethod.POST)
@@ -68,7 +68,7 @@ public class PositionController {
         int id = Integer.parseInt(request.getParameter("id"));
         Position position = positionServices.FindOne(id);
         model.addAttribute("Position", position);
-        return "admin/position/update";
+        return "/position/update";
     }
 
     @RequestMapping(value = {RouteWeb.PositionGetUpdateURL}, method = RequestMethod.POST)

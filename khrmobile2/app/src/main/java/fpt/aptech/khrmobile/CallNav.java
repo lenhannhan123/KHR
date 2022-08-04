@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import fpt.aptech.khrmobile.Entities.Account;
 
@@ -23,7 +22,6 @@ public class CallNav {
         this.context = context;
         bottom_navigation.setSelectedItemId(pageactive);
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -42,8 +40,8 @@ public class CallNav {
                     context.startActivity(intent2);
                     return true;
                 case R.id.page_3:
-                    Intent viewProfile = new Intent(context, MainAccountActivity.class);
-                    context.startActivity(viewProfile);
+                    Intent intent1 = new Intent(context, MainAccountActivity.class);
+                    context.startActivity(intent1);
                     return true;
 
             }

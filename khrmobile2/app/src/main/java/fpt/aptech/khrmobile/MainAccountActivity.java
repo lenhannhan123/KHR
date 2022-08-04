@@ -66,7 +66,7 @@ public class MainAccountActivity extends AppCompatActivity {
         context = getApplicationContext();
         int radius = 500; // corner radius, higher value = more rounded
         Glide.with(context)
-                .load("http://" + ConfigData.IP + ":7777/api/view-profile-image?filename=" + avatarkey)
+                .load("http://" + ConfigData.IP + ":7777/sid?filename=" + avatarkey)
 //                .transform(new RoundedCorners(radius))
                 .transform(new CircleCrop())
                 .override(600, 600)
@@ -96,7 +96,6 @@ public class MainAccountActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainAccountActivity.this, MenuChangeAccountActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
@@ -108,7 +107,6 @@ public class MainAccountActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainAccountActivity.this, QRDisplay.class);
                 startActivity(intent);
-                finish();
             }
         });
     }

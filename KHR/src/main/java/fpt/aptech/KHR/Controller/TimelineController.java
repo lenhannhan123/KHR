@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import fpt.aptech.KHR.Entities.*;
 import fpt.aptech.KHR.ImpServices.*;
-import fpt.aptech.KHR.Reponsitory.AccountPositionRepository;
 import fpt.aptech.KHR.Routes.RouteAPI;
 import fpt.aptech.KHR.Routes.RouteWeb;
 import fpt.aptech.KHR.Services.ITimelineServices;
@@ -32,7 +31,10 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 @Controller
 @CrossOrigin(maxAge = 3600)
@@ -53,30 +55,12 @@ public class TimelineController {
     @Autowired
     AccountService accountService;
 
-    @Autowired
-    private AccountPositionRepository accountPositionServices;
-
 
     @RequestMapping(value = {RouteWeb.TimelineIndexURL}, method = RequestMethod.GET)
     public String IndexTimeline(Model model, HttpServletRequest request, HttpServletResponse response) {
 
 
         List<Timeline> list = timelineServices.findAll();
-
-        HttpSession session = request.getSession();
-        int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
-
-//        JsonServices.dd(IdStore, response);
-
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getIdStore().getId() == IdStore) {
-            } else {
-                list.remove(list.get(i));
-                i -= 1;
-
-            }
-        }
 
 
         boolean check = false;
@@ -97,7 +81,7 @@ public class TimelineController {
         model.addAttribute("simpleDateFormat", simpleDateFormat);
 
         model.addAttribute("list", list);
-        return "admin/timeline/index";
+        return "timeline/index";
     }
 
 
@@ -109,7 +93,7 @@ public class TimelineController {
 
         model.addAttribute("ListPosition", ListPosition);
 
-        return "admin/timeline/create";
+        return "timeline/create";
     }
 
 
@@ -117,7 +101,6 @@ public class TimelineController {
     public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response) {
         int NumberofPosition = positionServices.CountPosition();
         HttpSession session = request.getSession();
-
 
         session.setAttribute("TimelineName", request.getParameter("TimelineName"));
         session.setAttribute("TimelineStartDay", request.getParameter("TimelineStartDay"));
@@ -227,7 +210,7 @@ public class TimelineController {
         model.addAttribute("Position", PositionJson);
         model.addAttribute("DayoffJson", DayoffJson);
 
-        return "admin/timeline/confirm";
+        return "timeline/confirm";
     }
 
 
@@ -323,15 +306,12 @@ public class TimelineController {
             throw new RuntimeException(e);
         }
 
-        int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
-
 
         Timeline timeline = new Timeline();
         timeline.setTimename(TimelineName);
         timeline.setStartdate(TimelineStartDayParse);
         timeline.setEnddate(TimelineEndDayParse);
         timeline.setStatus((short) 0);
-        timeline.setIdStore(new Store(IdStore));
         timeline = timelineServices.Create(timeline);
 
 
@@ -558,7 +538,7 @@ public class TimelineController {
         }
 
 
-        return "admin/timeline/confirm";
+        return "timeline/confirm";
     }
 
 
@@ -809,7 +789,7 @@ public class TimelineController {
 
 
 //        JsonServices.dd("nhan122", response);
-        return "admin/timeline/timelinedit";
+        return "timeline/timelinedit";
     }
 
 
@@ -1076,658 +1056,20 @@ public class TimelineController {
         }
 
 
-        List<Account> account = accountService.findAllUser();
-
-        HttpSession session = request.getSession();
-        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
-
-        for (int i = 0; i < account.size(); i++) {
-            if (account.get(i).getIdStore().getId() == Id_Store) {
-            } else {
-                account.remove(account.get(i));
-                i -= 1;
-
-            }
-        }
-
-        List<Shift> ListShift = shiftServices.FindByIDTimeLine(Integer.parseInt(idTimelineStr));
-
-        int Number_Position = 0;
-        int People_Shift = 0;
-
-        //Số vị trí làm trong tuần
-        for (Shift item : ListShift
-        ) {
-            Number_Position += item.getNumber();
-        }
-
-        //Số vị trí của 1 người trong tuần
-        People_Shift = Number_Position / account.size();
-        int modPeople_Shift = Number_Position % account.size();
-
-        if (modPeople_Shift > 0) {
-            People_Shift += 1;
-        }
-
-
-        //Tạo dữ liệu user --> đầu ra UserPropertyListTemplate
-
-        List<JobpriorityModel> UserPropertyListTemplate = new ArrayList<>();
-
-        int number = 0;
-        double randomDouble;
-        int randomInt;
-
-        for (Account item : account) {
-
-            List<PositionTimelineJs> positionTimelineJs = new ArrayList<>();
-            for (int i = 1; i <= 35; i++) {
-                PositionTimelineJs positionTimelineJs1 = new PositionTimelineJs();
-                positionTimelineJs1.setShift(true);
-                positionTimelineJs.add(positionTimelineJs1);
-            }
-
-            JobpriorityModel UserProperty = new JobpriorityModel();
-
-            UserProperty.setId_user(item.getMail());
-            UserProperty.setUser_name(item.getFullname());
-            List<AccountPosition> accountPositions = accountPositionServices.findByEmail(new Account(item.getMail()));
-            UserProperty.setAccountPositions(accountPositions);
-            List<UserTimeline> userTimelineList = userTimelineServices.UserTimeline(Integer.parseInt(idTimelineStr), item.getMail());
-            UserProperty.setshiftList(positionTimelineJs);
-
-            int Shiftcode = 0;
-
-            for (UserTimeline item1 : userTimelineList
-            ) {
-
-                Shiftcode = item1.getShiftcode();
-                UserProperty.getshiftList().get(Shiftcode - 1).setShift(false);
-
-            }
-
-            int j = 0;
-
-            for (PositionTimelineJs item3 : UserProperty.getshiftList()) {
-                if (item3.isShift() == true) {
-                    j += 1;
-                }
-            }
-
-
-            UserProperty.setNumber_position(UserProperty.getAccountPositions().size());
-            UserProperty.setNumber_shift(j);
-            UserProperty.setPeople_Shift(People_Shift);
-            UserPropertyListTemplate.add(UserProperty);
-        }
-
-
-        // Xử lý tạo dữ list để sắp xếp --> đầu ra shiftOnDayList
-
-        List<ShiftOnDay> shiftOnDayList = new ArrayList<>();
-
-        for (int i = 0; i < 35; i++) {
-            number = 0;
-            ShiftOnDay shiftOnDay = new ShiftOnDay();
-            List<PositionOnDay> positionOnDaysList = new ArrayList<>();
-            List<Shift> timelines = shiftServices.findByShiftCode(Integer.parseInt("10" + i), Integer.parseInt(idTimelineStr));
-
-            for (Shift item : timelines) {
-                number = 0;
-                number = item.getNumber();
-
-                for (int j = 0; j < number; j++) {
-                    PositionOnDay positionOnDay = new PositionOnDay();
-                    positionOnDay.setPosition_id(item.getIdPosition().getId());
-                    positionOnDay.setShift_Code(i);
-                    positionOnDaysList.add(positionOnDay);
-                }
-
-            }
-
-            shiftOnDay.setPositionOnDays(positionOnDaysList);
-            shiftOnDayList.add(shiftOnDay);
-
-
-        }
-
-        // Tìm số vị trí mà ít người làm được
-
-
-        List<Position> positionList = positionServices.findAll();
-        List<ModelString> ListPosition = new ArrayList<>();
-        for (Position item : positionList) {
-            ModelString stringdata = new ModelString();
-            stringdata.setData1(String.valueOf(item.getId()));
-            ListPosition.add(stringdata);
-        }
-
-
-        int count = 0;
-        int min = 0, max = 0;
-        for (int i = 0; i < ListPosition.size(); i++) {
-            count = 0;
-            int id_Pos = Integer.parseInt(ListPosition.get(i).getData1());
-//            JsonServices.dd(id_Pos, response);
-
-            for (JobpriorityModel item : UserPropertyListTemplate) {
-                for (AccountPosition item2 : item.getAccountPositions()) {
-                    if (item2.getIdPosition().getId() == id_Pos) {
-                        count += 1;
-                    }
-
-                }
-            }
-
-            ListPosition.get(i).setData2(String.valueOf(count));
-        }
-
-        // Xóa vị trí không ai làm được
-        for (int i = 0; i < ListPosition.size(); i++) {
-            if (Integer.parseInt(ListPosition.get(i).getData2()) == 0) {
-                ListPosition.remove(ListPosition.get(i));
-                i = -1;
-            }
-        }
-        // Sắp xếp
-        ModelString String1 = new ModelString();
-        for (int i = 0; i < ListPosition.size(); i++) {
-            for (int j = i + 1; j < ListPosition.size(); j++) {
-                if (Integer.parseInt(ListPosition.get(i).getData2()) > Integer.parseInt(ListPosition.get(j).getData2())) {
-                    String1.setData1(ListPosition.get(i).getData1());
-                    String1.setData2(ListPosition.get(i).getData2());
-
-                    ListPosition.get(i).setData1(ListPosition.get(j).getData1());
-                    ListPosition.get(i).setData2(ListPosition.get(j).getData2());
-
-                    ListPosition.get(j).setData1(String1.getData1());
-                    ListPosition.get(j).setData2(String1.getData2());
-                }
-            }
-        }
-
-        //Sắp xếp
-
-        Boolean check = true;
-
-        for (ModelString item : ListPosition) {
-
-            for (int i = 0; i < shiftOnDayList.size(); i++) {
-
-
-//                for (PositionOnDay item2 : shiftOnDayList.get(i).getPositionOnDays()) {
-                for (int k = 0; k < shiftOnDayList.get(i).getPositionOnDays().size(); k++) {
-
-
-                    if (Integer.parseInt(item.getData1()) == shiftOnDayList.get(i).getPositionOnDays().get(k).getPosition_id()) {
-
-                        List<JobpriorityModel> UserPropertyList = new ArrayList<>();
-                        UserPropertyList.addAll(UserPropertyListTemplate);
-
-                        //Xoa People_shift 0<=
-                        for (int j = 0; j < UserPropertyList.size(); j++) {
-
-                            if (UserPropertyList.get(j).getPeople_Shift() <= 0) {
-                                UserPropertyList.remove(UserPropertyList.get(j));
-                                j -= 1;
-                            }
-
-                        }
-                        if (UserPropertyList.size() == 1) {
-
-
-                            shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(0).getId_user());
-                            for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                                if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(0).getId_user())) {
-                                    UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                                }
-
-                            }
-                            break;
-                        }
-
-                        //Tìm user làm dc trong 1 ca và có vị trí đó -> đầu ra UserPropertyList
-
-                        for (int j = 0; j < UserPropertyList.size(); j++) {
-
-
-                            if (UserPropertyList.get(j).getshiftList().get(i).isShift() == false) {
-                                UserPropertyList.remove(UserPropertyList.get(j));
-                                j -= 1;
-                            }
-
-                        }
-
-
-                        for (int j = 0; j < UserPropertyList.size(); j++) {
-                            check = true;
-                            for (AccountPosition accpos : UserPropertyList.get(j).getAccountPositions()) {
-                                if (accpos.getIdPosition().getId() == Integer.parseInt(item.getData1())) {
-                                    check = false;
-                                }
-                            }
-
-                            if (check == true) {
-                                UserPropertyList.remove(UserPropertyList.get(j));
-
-                            }
-                        }
-
-                        //Có vị trí khác không
-
-                        boolean checkmail = true;
-
-                        for (int j = 0; j < UserPropertyList.size(); j++) {
-
-                            checkmail = true;
-                            for (PositionOnDay posonday : shiftOnDayList.get(i).getPositionOnDays()) {
-                                if (UserPropertyList.get(j).getId_user().equals(posonday.getMail())) {
-                                    checkmail = false;
-                                }
-                            }
-
-                            if (checkmail == false) {
-
-                                UserPropertyList.remove(UserPropertyList.get(j));
-                                j -= 1;
-                            }
-
-
-                        }
-
-
-                        if (UserPropertyList.size() == 1) {
-
-
-                            shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(0).getId_user());
-                            for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                                if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(0).getId_user())) {
-                                    UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                                }
-
-                            }
-                            break;
-                        } else if (UserPropertyList.size() == 0) {
-                            break;
-                        }
-
-                        //Xóa số lần làm thấp nhất
-
-                        min = 0;
-                        max = 0;
-                        min = UserPropertyList.get(0).getPeople_Shift();
-                        max = UserPropertyList.get(0).getPeople_Shift();
-
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
-                            if (UserPropertyList.get(j).getPeople_Shift() > max) {
-                                max = UserPropertyList.get(j).getPeople_Shift();
-                            }
-                        }
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
-                            if (UserPropertyList.get(j).getPeople_Shift() < min) {
-                                min = UserPropertyList.get(j).getPeople_Shift();
-                            }
-                        }
-
-                        if (min > max) {
-                            for (int j = 1; j < UserPropertyList.size(); j++) {
-                                if (UserPropertyList.get(j).getPeople_Shift() == min) {
-                                    UserPropertyList.remove(UserPropertyList.get(j));
-                                }
-                            }
-                        }
-                        if (UserPropertyList.size() == 1) {
-
-
-                            shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(0).getId_user());
-                            for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                                if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(0).getId_user())) {
-                                    UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                                }
-
-                            }
-                            break;
-                        }
-
-                        //Xóa số ca làm nhiều nhất
-                        max = UserPropertyList.get(0).getNumber_shift();
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
-                            if (UserPropertyList.get(j).getNumber_shift() > max) {
-                                max = UserPropertyList.get(j).getNumber_shift();
-                            }
-                        }
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
-                            if (UserPropertyList.get(j).getNumber_shift() == max) {
-                                UserPropertyList.remove(UserPropertyList.get(j));
-                            }
-                        }
-
-                        if (UserPropertyList.size() == 1) {
-
-
-                            shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(0).getId_user());
-                            for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                                if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(0).getId_user())) {
-                                    UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                                }
-
-                            }
-                            break;
-                        }
-                        //Xóa số ca làm nhiều nhất
-                        max = UserPropertyList.get(0).getNumber_position();
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
-                            if (UserPropertyList.get(j).getNumber_position() > max) {
-                                max = UserPropertyList.get(j).getNumber_position();
-                            }
-                        }
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
-                            if (UserPropertyList.get(j).getNumber_position() == max) {
-                                UserPropertyList.remove(UserPropertyList.get(j));
-                            }
-                        }
-
-                        if (UserPropertyList.size() > 1) {
-
-                            while (true) {
-                                randomDouble = Math.random();
-                                randomDouble = randomDouble * 10 + 1;
-                                randomInt = (int) randomDouble;
-
-                                if (randomInt >= 0 && randomInt < UserPropertyList.size()) {
-                                    break;
-                                }
-                            }
-
-
-                            shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(randomInt).getId_user());
-
-                            for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                                if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(randomInt).getId_user())) {
-                                    UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                                }
-
-                            }
-
-
-//                            UserPropertyList.get(randomInt)
-
-                        } else {
-                            shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(0).getId_user());
-                            for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                                if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(0).getId_user())) {
-                                    UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                                }
-
-                            }
-                        }
-
-
-                    }
-                }
-
-
-            }
-
-
-        }
-
-        for (int i = 0; i < shiftOnDayList.size(); i++) {
-            for (int k = 0; k < shiftOnDayList.get(i).getPositionOnDays().size(); k++) {
-                if (shiftOnDayList.get(i).getPositionOnDays().get(k).getMail() == null) {
-                    List<JobpriorityModel> UserPropertyList = new ArrayList<>();
-                    UserPropertyList.addAll(UserPropertyListTemplate);
-
-                    //Xoa People_shift 0<=
-                    for (int j = 0; j < UserPropertyList.size(); j++) {
-
-                        if (UserPropertyList.get(j).getPeople_Shift() <= 0) {
-                            UserPropertyList.remove(UserPropertyList.get(j));
-                            j -= 1;
-                        }
-
-                    }
-                    if (UserPropertyList.size() == 1) {
-
-
-                        shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(0).getId_user());
-                        for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                            if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(0).getId_user())) {
-                                UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                            }
-
-                        }
-                        break;
-                    }
-
-                    //Tìm user làm dc trong 1 ca và có vị trí đó -> đầu ra UserPropertyList
-
-                    for (int j = 0; j < UserPropertyList.size(); j++) {
-
-
-                        if (UserPropertyList.get(j).getshiftList().get(i).isShift() == false) {
-                            UserPropertyList.remove(UserPropertyList.get(j));
-                            j -= 1;
-                        }
-
-                    }
-
-
-                    for (int j = 0; j < UserPropertyList.size(); j++) {
-                        check = true;
-                        for (AccountPosition accpos : UserPropertyList.get(j).getAccountPositions()) {
-                            if (accpos.getIdPosition().getId() == shiftOnDayList.get(i).getPositionOnDays().get(k).getPosition_id()) {
-                                check = false;
-                            }
-                        }
-
-                        if (check == true) {
-                            UserPropertyList.remove(UserPropertyList.get(j));
-
-                        }
-                    }
-
-                    //Có vị trí khác không
-
-                    boolean checkmail = true;
-
-                    for (int j = 0; j < UserPropertyList.size(); j++) {
-
-                        checkmail = true;
-                        for (PositionOnDay posonday : shiftOnDayList.get(i).getPositionOnDays()) {
-                            if (UserPropertyList.get(j).getId_user().equals(posonday.getMail())) {
-                                checkmail = false;
-                            }
-                        }
-
-                        if (checkmail == false) {
-
-                            UserPropertyList.remove(UserPropertyList.get(j));
-                            j -= 1;
-                        }
-
-
-                    }
-
-
-                    if (UserPropertyList.size() == 1) {
-
-
-                        shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(0).getId_user());
-                        for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                            if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(0).getId_user())) {
-                                UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                            }
-
-                        }
-                        break;
-                    } else if (UserPropertyList.size() > 1) {
-                        while (true) {
-                            randomDouble = Math.random();
-                            randomDouble = randomDouble * 10 + 1;
-                            randomInt = (int) randomDouble;
-
-                            if (randomInt >= 0 && randomInt < UserPropertyList.size()) {
-                                break;
-                            }
-                        }
-
-
-                        shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(randomInt).getId_user());
-
-                        for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                            if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(randomInt).getId_user())) {
-                                UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        for (int i = 0; i < shiftOnDayList.size(); i++) {
-            for (int k = 0; k < shiftOnDayList.get(i).getPositionOnDays().size(); k++) {
-                if (shiftOnDayList.get(i).getPositionOnDays().get(k).getMail() == null) {
-                    List<JobpriorityModel> UserPropertyList = new ArrayList<>();
-                    UserPropertyList.addAll(UserPropertyListTemplate);
-
-
-                    //Tìm user làm dc trong 1 ca và có vị trí đó -> đầu ra UserPropertyList
-
-                    for (int j = 0; j < UserPropertyList.size(); j++) {
-
-
-                        if (UserPropertyList.get(j).getshiftList().get(i).isShift() == false) {
-                            UserPropertyList.remove(UserPropertyList.get(j));
-                            j -= 1;
-                        }
-
-                    }
-
-
-                    for (int j = 0; j < UserPropertyList.size(); j++) {
-                        check = true;
-                        for (AccountPosition accpos : UserPropertyList.get(j).getAccountPositions()) {
-                            if (accpos.getIdPosition().getId() == shiftOnDayList.get(i).getPositionOnDays().get(k).getPosition_id()) {
-                                check = false;
-                            }
-                        }
-
-                        if (check == true) {
-                            UserPropertyList.remove(UserPropertyList.get(j));
-
-                        }
-                    }
-
-                    //Có vị trí khác không
-
-                    boolean checkmail = true;
-
-                    for (int j = 0; j < UserPropertyList.size(); j++) {
-
-                        checkmail = true;
-                        for (PositionOnDay posonday : shiftOnDayList.get(i).getPositionOnDays()) {
-                            if (UserPropertyList.get(j).getId_user().equals(posonday.getMail())) {
-                                checkmail = false;
-                            }
-                        }
-
-                        if (checkmail == false) {
-
-                            UserPropertyList.remove(UserPropertyList.get(j));
-                            j -= 1;
-                        }
-
-
-                    }
-
-
-                    if (UserPropertyList.size() == 1) {
-
-
-                        shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(0).getId_user());
-                        for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                            if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(0).getId_user())) {
-                                UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                            }
-
-                        }
-                        break;
-                    } else if (UserPropertyList.size() > 1) {
-                        while (true) {
-                            randomDouble = Math.random();
-                            randomDouble = randomDouble * 10 + 1;
-                            randomInt = (int) randomDouble;
-
-                            if (randomInt >= 0 && randomInt < UserPropertyList.size()) {
-                                break;
-                            }
-                        }
-
-
-                        shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(randomInt).getId_user());
-
-                        for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                            if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(randomInt).getId_user())) {
-                                UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-//        JsonServices.dd(JsonServices.ParseToJson(UserPropertyListTemplate), response);
-//
-//
-//        JsonServices.dd(People_Shift, response);
-        JsonServices.dd(JsonServices.ParseToJson(shiftOnDayList), response);
-
-
+        JsonServices.dd("Trang Sắp Xếp", response);
         return "errorpage";
     }
 
     @RequestMapping(value = {RouteWeb.TimelineUsertURL}, method = RequestMethod.GET)
     public String TimelineUser(Model model, HttpServletRequest request, HttpServletResponse response) {
+
         String idTimelineStr = request.getParameter("id").toString();
 
         List<Account> account = accountService.findAllUser();
         List<UserTimelineJS> userTimelineJS = new ArrayList<>();
 
-        HttpSession session = request.getSession();
+
 //        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
-        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
-
-        for (int i = 0; i < account.size(); i++) {
-            if (account.get(i).getIdStore().getId() == Id_Store) {
-            } else {
-                account.remove(account.get(i));
-                i -= 1;
-
-            }
-        }
-
 
         for (Account item : account
         ) {
@@ -1763,12 +1105,12 @@ public class TimelineController {
 
         }
 
-
+//        JsonServices.dd(Data, response);
         model.addAttribute("data", Data);
         model.addAttribute("idTimeline", idTimelineStr);
 
 
-        return "admin/timeline/usertimelineindex";
+        return "timeline/usertimelineindex";
     }
 
     @RequestMapping(value = {RouteWeb.TimelineChangeStatusURL}, method = RequestMethod.POST)
@@ -1807,20 +1149,6 @@ public class TimelineController {
         List<Account> account = accountService.findAllUser();
         List<UserTimelineJS> userTimelineJS = new ArrayList<>();
 
-        HttpSession session = request.getSession();
-//        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
-        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
-
-        for (int i = 0; i < account.size(); i++) {
-            if (account.get(i).getIdStore().getId() == Id_Store) {
-            } else {
-                account.remove(account.get(i));
-                i -= 1;
-
-            }
-        }
-
-
         for (Account item : account
         ) {
 
@@ -1852,7 +1180,7 @@ public class TimelineController {
         JsonServices.dd(Data, response);
 
 
-        return "admin/timeline/usertimelineindex";
+        return "timeline/usertimelineindex";
     }
 
 
@@ -1907,7 +1235,7 @@ public class TimelineController {
 
         model.addAttribute("data", Data);
 
-        return "admin/timeline/usertimelinedetail";
+        return "timeline/usertimelinedetail";
     }
 
 

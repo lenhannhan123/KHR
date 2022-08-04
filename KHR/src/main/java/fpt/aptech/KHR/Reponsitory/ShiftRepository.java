@@ -6,7 +6,6 @@
 package fpt.aptech.KHR.Reponsitory;
 
 import fpt.aptech.KHR.Entities.Shift;
-import fpt.aptech.KHR.Entities.Timeline;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +26,4 @@ public interface ShiftRepository extends JpaRepository<Shift, Integer> {
 
     @Query("SELECT s FROM Shift s WHERE s.timestart = :timeStart and s.timeend = :timeEnd")
     List<Shift> findShiftByTime(@PathVariable("timeStart") Date timeStart, @PathVariable("timeEnd") Date timeEnd);
-
-    @Query("SELECT s FROM Shift s WHERE s.shiftcode = :shiftcode and s.idTimeline = :idTimeline ")
-    List<Shift> findShiftByShiftCode(@PathVariable("shiftcode") int shiftcode, @PathVariable("idTimeline") Timeline idTimeline);
 }

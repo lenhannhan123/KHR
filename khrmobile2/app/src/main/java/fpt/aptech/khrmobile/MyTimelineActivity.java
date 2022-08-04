@@ -34,7 +34,7 @@ import retrofit2.Response;
 public class MyTimelineActivity extends AppCompatActivity {
 
     List<Integer> year= new ArrayList<>();
-    ConfigData configData = new ConfigData();
+
     ListView listView;
     List<ModelString> list ;
     MyTimelineAdapter adapter;
@@ -227,9 +227,7 @@ public class MyTimelineActivity extends AppCompatActivity {
 
     private  void GetData(String month, String year){
 
-
-
-        String mail =configData.userId(this);;
+        String mail = ConfigData.userId;
 
         listView = findViewById(R.id.My_timeline_list_view);
 

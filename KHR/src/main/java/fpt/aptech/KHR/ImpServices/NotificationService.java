@@ -7,11 +7,9 @@ package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.AccountNotification;
-import fpt.aptech.KHR.Entities.AccountToken;
 import fpt.aptech.KHR.Entities.Notification;
 import fpt.aptech.KHR.Reponsitory.AccountNotificationRepository;
 import fpt.aptech.KHR.Reponsitory.AccountRepository;
-import fpt.aptech.KHR.Reponsitory.AccountTokenRepository;
 import fpt.aptech.KHR.Reponsitory.NotificationRepository;
 import fpt.aptech.KHR.Services.INotificationServices;
 import java.util.List;
@@ -30,8 +28,6 @@ public class NotificationService implements INotificationServices {
     AccountNotificationRepository anr;
     @Autowired
     AccountRepository ar;
-    @Autowired
-    AccountTokenRepository tk;
     @Override
     public List<Notification> findAll() {
         return nr.findAll();
@@ -39,7 +35,7 @@ public class NotificationService implements INotificationServices {
 
     @Override
     public List<AccountNotification> findAllNotification() {
-       return anr.findAll();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -78,36 +74,8 @@ public class NotificationService implements INotificationServices {
 
     @Override
     public void Seen(AccountNotification accountNotification) {
-        
+        accountNotification.setStatus(true);
+        anr.save(accountNotification);
     }
-        
-        
-    @Override
-    public AccountToken findSendPeople(String mail) {
-        Account a = ar.findByEmail(mail);
-       return tk.findByMail(a);
-    }
-
-    @Override
-    public AccountNotification CreateNotificationOnMail(String mail, String type) {
-        try {
-         Account a = ar.findByEmail(mail);
-         Notification n = new Notification();
-         n.setTitle("Thông báo phản hồi yêu cầu xin nghĩ");
-         n.setContent("Quản trị viên xin trân trọng thông báo.Yêu cầu của nhân viên "+ a.getFullname()+" chúng tôi đã xem xét."+"Bạn đã được "+ type +" với lý do trên.Quản trị viên xin trân trọng thông báo" );
-         Notification odl = nr.save(n);
-         AccountNotification an = new AccountNotification();
-         an.setIdnotification(odl);
-         an.setMail(a);
-         an.setStatus(false);
-         
-         return anr.save(an);
-        } catch (Exception e) {
-            return null;
-        }
-         
-    }
-
-    
     
 }
