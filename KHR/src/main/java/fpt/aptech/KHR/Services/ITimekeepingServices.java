@@ -6,6 +6,8 @@
 package fpt.aptech.KHR.Services;
 
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.AccountPosition;
+import fpt.aptech.KHR.Entities.Position;
 import fpt.aptech.KHR.Entities.Shift;
 import fpt.aptech.KHR.Entities.Timekeeping;
 import fpt.aptech.KHR.Entities.TimelineDetail;
@@ -38,5 +40,9 @@ public interface ITimekeepingServices {
 
     public List<Timekeeping> findAllByDate(int month, int year);
 
-//    public TimelineDetail findTimelineDetailByMailAndShift(Account mail, Shift id);
+    public TimelineDetail findTimelineDetailByMailAndShift(Account mail, int id);
+    
+    public Shift findShiftByShiftCode(int id, Date date, Position idPosition);
+    
+    public List<AccountPosition> findIdPositionByAccount(Account mail);
 }

@@ -7,6 +7,8 @@ package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Services.*;
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.AccountPosition;
+import fpt.aptech.KHR.Entities.Position;
 import fpt.aptech.KHR.Entities.Shift;
 import fpt.aptech.KHR.Entities.Timekeeping;
 import fpt.aptech.KHR.Entities.TimelineDetail;
@@ -68,10 +70,10 @@ public class TimekeepingServices implements ITimekeepingServices {
         return timekeepingRepository.search(mail);
     }
 
-//    @Override
-//    public TimelineDetail findTimelineDetailByMailAndShift(Account mail, Shift id) {
-//        return timekeepingRepository.findTimelineDetailByMailAndShift(mail, id);
-//    }
+    @Override
+    public TimelineDetail findTimelineDetailByMailAndShift(Account mail, int id) {
+        return timekeepingRepository.findTimelineDetailByMailAndShift(mail, id);
+    }
 
     @Override
     public List<Timekeeping> findByAccount(Account mail) {
@@ -81,6 +83,16 @@ public class TimekeepingServices implements ITimekeepingServices {
     @Override
     public List<Timekeeping> findAllByDate(int month, int year) {
         return timekeepingRepository.findAllByDate(month, year);
+    }
+
+    @Override
+    public Shift findShiftByShiftCode(int id, Date date, Position idPosition) {
+        return timekeepingRepository.findShiftByShiftCode(id, date, idPosition);
+    }
+
+    @Override
+    public List<AccountPosition> findIdPositionByAccount(Account mail) {
+        return timekeepingRepository.findIdPositionByAccount(mail);
     }
     
 }

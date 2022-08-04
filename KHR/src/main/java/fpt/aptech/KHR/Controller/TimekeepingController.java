@@ -8,6 +8,7 @@ package fpt.aptech.KHR.Controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.AccountPosition;
 import fpt.aptech.KHR.Entities.Shift;
 import fpt.aptech.KHR.Entities.Timekeeping;
 import fpt.aptech.KHR.Entities.TimelineDetail;
@@ -142,7 +143,6 @@ public class TimekeepingController {
     public ResponseEntity<Timekeeping> checkin(@RequestBody Timekeeping timekeeping, @PathVariable("mail") String _mail, HttpServletResponse response) {
         Account account = accountRepository.findByMail(_mail);
         timekeeping.setMail(account);
-//            JsonServices.dd(JsonServices.ParseToJson(_account), response);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat hour = new SimpleDateFormat("HH");
         SimpleDateFormat minute = new SimpleDateFormat("mm");
@@ -156,6 +156,9 @@ public class TimekeepingController {
         List<Shift> shiftList = timekeepingServices.findShiftByDate(timekeeping.getTimestart());
 
         for (int i = 0; i < shiftList.size(); i++) {
+            TimelineDetail timelineDetail = timekeepingServices.findTimelineDetailByMailAndShift(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 100);
+//            if (timelineDetail != null && !timelineDetailList.contains(timelineDetail) && shiftList.get(i).getIdPosition().equals(timelineDetail.)) {
+//                timelineDetailList.add(timelineDetail);
 //            TimelineDetail timelineDetail = timekeepingServices.findTimelineDetailByMailAndShift(timekeeping.getMail(), shiftList.get(i));
 //            if (timelineDetail != null && !timelineDetailList.contains(timelineDetail)) {
 //                timelineDetailList.add(timelineDetail);
@@ -170,6 +173,20 @@ public class TimekeepingController {
 //            }
         }
 
+        //JsonServices.dd(JsonServices.ParseToJson(timelineDetailList.toString()), response);
+        List<Shift> tempList = new ArrayList<>();
+        List<AccountPosition> accountPositionList = timekeepingServices.findIdPositionByAccount(timekeeping.getMail());
+
+        for (int i = 0; i < timelineDetailList.size(); i++) {
+            for (int j = 0; j < accountPositionList.size(); j++) {
+                Shift shift = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 100, timekeeping.getTimestart(), accountPositionList.get(j).getIdPosition());
+                if(shift != null){
+                    tempList.add(shift);
+                }               
+            }
+        }
+        
+       JsonServices.dd(JsonServices.ParseToJson(tempList.toString()), response);
         List<Timekeeping> timekeepings = timekeepingServices.findAll();
         for (int i = 0; i < timekeepings.size(); i++) {
             for (int j = 0; j < tempList.size(); j++) {
@@ -194,7 +211,7 @@ public class TimekeepingController {
             Date endTime = java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday);
             Long time = endTime.getTime() - beginTime.getTime();
             int checkinMinute = (int) TimeUnit.MILLISECONDS.toMinutes(time);
-            JsonServices.dd(JsonServices.ParseToJson(checkinHour + " " + hourStartOfShift + " " + hourEndOfShift), response);
+            //JsonServices.dd(JsonServices.ParseToJson(checkinHour + " " + hourStartOfShift + " " + hourEndOfShift), response);
             if (checkinHour >= hourStartOfShift && checkinHour <= hourEndOfShift && hourEndOfShift - checkinHour >= 1) {
                 Shift shift = shiftServices.FindOne(tempList.get(i).getId());
                 timekeeping.setShiftId(shift);
@@ -244,7 +261,7 @@ public class TimekeepingController {
 //                    }
 //                }
 //            }
-        timekeepingServices.checkin(timekeeping);
+        //timekeepingServices.checkin(timekeeping);
         return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);
 
     }

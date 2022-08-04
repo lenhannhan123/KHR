@@ -6,9 +6,12 @@
 package fpt.aptech.KHR.Reponsitory;
 
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.AccountPosition;
+import fpt.aptech.KHR.Entities.Position;
 import fpt.aptech.KHR.Entities.Shift;
 
 import fpt.aptech.KHR.Entities.Timekeeping;
+import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Entities.TimelineDetail;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +46,12 @@ public interface TimekeepingRepository extends JpaRepository<Timekeeping, Intege
     @Query("select t from Timekeeping t where MONTH(t.timestart) = :month and YEAR(t.timestart) = :year")
     public List<Timekeeping> findAllByDate(@RequestParam("value") int month, @RequestParam("value") int year);
 
-//    @Query("select t from TimelineDetail t where t.mail = :mail and t.idShift = :id")
-//    public TimelineDetail findTimelineDetailByMailAndShift(@RequestParam("value") Account mail, @RequestParam("value") Shift id);
+    @Query("select t from TimelineDetail t where t.mail = :mail and t.shiftCode = :id")
+    public TimelineDetail findTimelineDetailByMailAndShift(@RequestParam("value") Account mail, @RequestParam("value") int id);
+
+    @Query("SELECT s FROM Shift s WHERE s.shiftcode = :shiftcode and DATE(s.timestart) = :date and s.idPosition = :idPosition")
+    Shift findShiftByShiftCode(@PathVariable("shiftcode") int shiftcode, Date date, Position idPosition);
+
+    @Query("SELECT a FROM AccountPosition a WHERE a.mail = :account")
+    List<AccountPosition> findIdPositionByAccount(@PathVariable("account") Account account);
 }
