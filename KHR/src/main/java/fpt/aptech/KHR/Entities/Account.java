@@ -7,6 +7,7 @@ package fpt.aptech.KHR.Entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,6 +25,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @author jthie
@@ -57,6 +60,7 @@ public class Account implements Serializable {
     private String fullname;
 
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -90,6 +94,8 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
+    private List<TimelineDetail> timelineDetailList;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -240,6 +246,14 @@ public class Account implements Serializable {
         this.role = role;
     }
 
+    public String getRecoverycode() {
+        return recoverycode;
+    }
+
+    public void setRecoverycode(String recoverycode) {
+        this.recoverycode = recoverycode;
+    }
+
     public boolean getStatus() {
         return status;
     }
@@ -254,6 +268,15 @@ public class Account implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    @XmlTransient
+    public List<TimelineDetail> getTimelineDetailList() {
+        return timelineDetailList;
+    }
+
+    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
+        this.timelineDetailList = timelineDetailList;
     }
 
 

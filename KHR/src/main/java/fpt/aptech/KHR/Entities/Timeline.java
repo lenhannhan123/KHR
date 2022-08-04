@@ -7,10 +7,12 @@ package fpt.aptech.KHR.Entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @author Admin
@@ -28,15 +30,26 @@ import javax.xml.bind.annotation.XmlRootElement;
         @NamedQuery(name = "Timeline.findByIsDelete", query = "SELECT t FROM Timeline t WHERE t.isDelete = :isDelete")})
 public class Timeline implements Serializable {
 
+    @Size(max = 50)
+    @Column(name = "Time_name")
+    private String timename;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IsDelete")
+    private short isDelete;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "is_delete")
+    private short isDelete1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimeline")
+    private List<TimelineDetail> timelineDetailList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Size(max = 50)
-    @Column(name = "Time_name")
-    private String timename;
     @Column(name = "Start_date")
     @Temporal(TemporalType.DATE)
     private Date startdate;
@@ -45,10 +58,6 @@ public class Timeline implements Serializable {
     private Date enddate;
     @Column(name = "Status")
     private Short status;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "IsDelete")
-    private short isDelete;
 
     public Timeline() {
     }
@@ -115,13 +124,6 @@ public class Timeline implements Serializable {
         this.status = status;
     }
 
-    public short getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(short isDelete) {
-        this.isDelete = isDelete;
-    }
 
     @Override
     public int hashCode() {
@@ -146,6 +148,39 @@ public class Timeline implements Serializable {
     @Override
     public String toString() {
         return "fpt.aptech.KHR.Entities.Timeline[ id=" + id + " ]";
+    }
+
+    public String getTimename() {
+        return timename;
+    }
+
+    public void setTimename(String timename) {
+        this.timename = timename;
+    }
+
+    public short getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(short isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    public short getIsDelete1() {
+        return isDelete1;
+    }
+
+    public void setIsDelete1(short isDelete1) {
+        this.isDelete1 = isDelete1;
+    }
+
+    @XmlTransient
+    public List<TimelineDetail> getTimelineDetailList() {
+        return timelineDetailList;
+    }
+
+    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
+        this.timelineDetailList = timelineDetailList;
     }
 
 }
