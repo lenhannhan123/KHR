@@ -30,6 +30,9 @@ public class Account  implements Serializable {
         this.avatar = avatar;
     }
 
+    public Account() {
+    }
+
     public String getMail() {
         return mail;
     }

@@ -1,6 +1,5 @@
 package fpt.aptech.khrmobile;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,9 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import fpt.aptech.khrmobile.API.ApiClient;
 import fpt.aptech.khrmobile.Entities.Account;
@@ -32,12 +28,13 @@ public class login extends AppCompatActivity {
     String PASSWORD_KEY = "password";
 
     void openFormForget(){
-        TextView linkforget = findViewById(R.id.Login_linkforrgetpass);
+        TextView linkforget = findViewById(R.id.btnSendCode);
         linkforget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(login.this, ForgetPassPage.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -91,6 +88,7 @@ public class login extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Account account = response.body();
                     startActivity(new Intent(login.this, MainActivity.class).putExtra("data",account));
+                    finish();
                 }
                 else{
                     String message="An error occured, please try again later..";

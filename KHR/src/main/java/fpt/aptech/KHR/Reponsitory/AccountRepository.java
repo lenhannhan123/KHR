@@ -46,6 +46,9 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.password = :password")
     Account checkOldPass(String mail, String password);
 
+    @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.recoverycode = :recoverycode")
+    Account checkRecoveryCode(String mail, String recoverycode);
+
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query("UPDATE Account a SET a.password = :password WHERE a.mail = :mail")
