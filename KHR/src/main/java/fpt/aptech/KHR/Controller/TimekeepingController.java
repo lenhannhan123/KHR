@@ -99,8 +99,8 @@ public class TimekeepingController {
                 TimelineDetail timelineDetail = timekeepingServices.findTimelineDetailByMailAndShift(timekeeping.getMail(), shiftList.get(i));
                 if (timelineDetail != null) {
                     //JsonServices.dd(JsonServices.ParseToJson(timelineDetail.toString()), response);
-                    Shift shift = shiftServices.FindOne(timelineDetail.getIdShift().getId());
-                    timekeeping.setShiftId(shift);
+//                    Shift shift = shiftServices.FindOne(timelineDetail.getIdShift().getId());
+//                    timekeeping.setShiftId(shift);
                 }
 
             }
