@@ -43,6 +43,6 @@ public interface TimekeepingRepository extends JpaRepository<Timekeeping, Intege
     @Query("select t from Timekeeping t where MONTH(t.timestart) = :month and YEAR(t.timestart) = :year")
     public List<Timekeeping> findAllByDate(@RequestParam("value") int month, @RequestParam("value") int year);
 
-    @Query("select t from TimelineDetail t where t.mail = :mail and t.idShift = :id")
-    public TimelineDetail findTimelineDetailByMailAndShift(@RequestParam("value") Account mail, @RequestParam("value") Shift id);
+//    @Query("select t from TimelineDetail t where t.mail = :mail and t.idShift = :id")
+//    public TimelineDetail findTimelineDetailByMailAndShift(@RequestParam("value") Account mail, @RequestParam("value") Shift id);
 }
