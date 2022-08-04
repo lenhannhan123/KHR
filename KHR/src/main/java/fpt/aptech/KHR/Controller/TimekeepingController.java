@@ -194,7 +194,7 @@ public class TimekeepingController {
             Date endTime = java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday);
             Long time = endTime.getTime() - beginTime.getTime();
             int checkinMinute = (int) TimeUnit.MILLISECONDS.toMinutes(time);
-            JsonServices.dd(JsonServices.ParseToJson(checkinHour + " " + hourStartOfShift + " " + hourEndOfShift), response);   
+            JsonServices.dd(JsonServices.ParseToJson(checkinHour + " " + hourStartOfShift + " " + hourEndOfShift), response);
             if (checkinHour >= hourStartOfShift && checkinHour <= hourEndOfShift && hourEndOfShift - checkinHour >= 1) {
                 Shift shift = shiftServices.FindOne(tempList.get(i).getId());
                 timekeeping.setShiftId(shift);
@@ -203,8 +203,10 @@ public class TimekeepingController {
                 Shift shift = shiftServices.FindOne(tempList.get(i).getId());
                 timekeeping.setShiftId(shift);
                 break;
-            } else if(dateFormat.format(tempList.get(i).getTimestart()).compareTo(dateFormat.format(tempList.get(i).getTimeend())) <= 0) {
-                 JsonServices.dd(JsonServices.ParseToJson(checkinMinute), response);           
+            } else if (dateFormat.format(tempList.get(i).getTimestart()).compareTo(dateFormat.format(tempList.get(i).getTimeend())) <= 0) {
+                Date _date = new Date();
+                String _dateString = simpleDateFormat.format(_date);
+                JsonServices.dd(JsonServices.ParseToJson(_dateString), response);
             }
 
         }

@@ -147,7 +147,6 @@ public class Timeline implements Serializable {
         return "fpt.aptech.KHR.Entities.Timeline[ id=" + id + " ]";
     }
 
-
     public short getIsDelete() {
         return isDelete;
     }
