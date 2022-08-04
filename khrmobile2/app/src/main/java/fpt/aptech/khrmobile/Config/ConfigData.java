@@ -7,7 +7,7 @@ import fpt.aptech.khrmobile.MainActivity;
 
 public class ConfigData {
 
-    public static String IP ="172.16.2.196";
+    public static String IP ="192.168.137.1";
     public static final String profilePreferences = "profilepref";
     public static final String Mail = "mailKey";
 
@@ -15,8 +15,6 @@ public class ConfigData {
         SharedPreferences sharedPreferences;
         sharedPreferences = context.getSharedPreferences(profilePreferences, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
        return sharedPreferences.getString(Mail,null);
     }
 

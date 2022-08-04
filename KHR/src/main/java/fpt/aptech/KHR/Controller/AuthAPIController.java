@@ -111,23 +111,41 @@ public class AuthAPIController {
         return new ResponseEntity<>(mail, HttpStatus.OK);
     }
 
+//    Code sample return string for testing purpose
+//    @PostMapping(path = "api/test-recover-code-mail")
+//    public ResponseEntity<String> sendRecoverCodeMail(@RequestBody String mail) {
+//        sendMailService.sendRecoveryCode(mail);
+//        return new ResponseEntity<String>("Code sent", HttpStatus.OK);
+//    }
+
     @PostMapping(path = "api/recover-code-mail")
-    public ResponseEntity<String> sendRecoverCodeMail(@RequestBody String mail) {
-        sendMailService.sendRecoveryCode(mail);
-        return new ResponseEntity<String>("Code sent", HttpStatus.OK);
+    public ResponseEntity<Account> sendRecoverCodeMail(@RequestBody Account account) {
+        sendMailService.sendRecoveryCode(account.getMail());
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "api/recover-code-sms", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void sendRecoverCodeSms(@RequestBody String mail) {
-        try {
-            sendSmsservice.sendRecoveryCode(mail);
-        } catch (Exception e) {
+    @PostMapping(path = "api/recover-code-sms")
+    public ResponseEntity<Account> sendRecoverCodeSms(@RequestBody Account account) {
+        sendSmsservice.sendRecoveryCode(account.getMail());
+        return new ResponseEntity<>(account, HttpStatus.OK);
+    }
 
-            webSocket.convertAndSend(TOPIC_DESTINATION, sendSmsservice.getTimeStamp() + ": Error sending the SMS: " + e.getMessage());
-            throw e;
+//    Code sample return string for testing purpose
+//    @PostMapping(path = "api/recovery-change-pass")
+//    public ResponseEntity<?> recoveryChangePass(@RequestParam String mail, @RequestParam String recoverycode, @RequestParam("pass_new") String pass_new) {
+//        if (accountServiceImp.checkRecoveryCode(mail, recoverycode) == true) {
+//            accountServiceImp.updatePassword(passwordEncoder.encode(pass_new), mail);
+//            return new ResponseEntity<>("New password saved!", HttpStatus.OK);
+//        }
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect recovery code");
+//    }
+
+    @PostMapping(path = "api/recovery-change-pass")
+    public ResponseEntity<Account> recoveryChangePass(@RequestBody Account account) {
+        if (accountServiceImp.checkRecoveryCode(account.getMail(), account.getRecoverycode()) == true) {
+            accountServiceImp.updatePassword(passwordEncoder.encode(account.getPassword()), account.getMail());
+            return new ResponseEntity<>(account, HttpStatus.OK);
         }
-        webSocket.convertAndSend(TOPIC_DESTINATION, sendSmsservice.getTimeStamp() + ": SMS has been sent!");
-
+        return new ResponseEntity<>(account, HttpStatus.BAD_REQUEST);
     }
 }

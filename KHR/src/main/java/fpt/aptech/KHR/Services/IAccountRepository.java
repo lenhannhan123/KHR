@@ -39,13 +39,13 @@ public interface IAccountRepository {
     public Account findByCode(String code);
 
     public List<Account> findByStore(Store id);
-    
-    public boolean checkOldPassword(String mail, String password);
-    
-    public void updatePassword(String password, String mail);
-    
-    public void updateRecoveryCode(String recoverycode, String mail);
-    
 
+    public boolean checkOldPassword(String mail, String password);
+
+    public boolean checkRecoveryCode(String mail, String recoverycode);
+
+    public void updatePassword(String password, String mail);
+
+    public void updateRecoveryCode(String recoverycode, String mail);
 
 }

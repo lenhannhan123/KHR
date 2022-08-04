@@ -25,7 +25,7 @@ import fpt.aptech.khrmobile.Entities.Account;
 
 public class MainActivity extends AppCompatActivity {
     Account account;
-    TextView username;
+
     Intent intent;
 
     SharedPreferences sharedPreferences;
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        username = findViewById(R.id.textView4);
+        TextView username = findViewById(R.id.textView4);
         Intent intent = getIntent();
         if(intent.getExtras()!=null){
             account = (Account) intent.getSerializableExtra("data");
@@ -58,11 +58,9 @@ public class MainActivity extends AppCompatActivity {
             editor.putString(Avatar, account.getAvatar());
             editor.putString(Code, account.getCode());
             editor.commit();
-            String namekey = sharedPreferences.getString(MainActivity.Name,null);
-            username.setText("Xin chào " + namekey);
+            String name = sharedPreferences.getString(MainActivity.Name,null);
+            username.setText("Xin chào " + name);
 //            Log.e("TAG", "===>" + account.getPhone());
-
-
         }
 
 

@@ -77,10 +77,18 @@ public class AccountServiceImp implements IAccountRepository {
 
     @Override
     public boolean checkOldPassword(String mail, String password) {
-        if(repository.checkOldPass(mail, password)!=null){
+        if (repository.checkOldPass(mail, password) != null) {
             return true;
+        } else {
+            return false;
         }
-        else{
+    }
+
+    @Override
+    public boolean checkRecoveryCode(String mail, String recoverycode) {
+        if (repository.checkRecoveryCode(mail, recoverycode) != null) {
+            return true;
+        } else {
             return false;
         }
     }
@@ -94,4 +102,5 @@ public class AccountServiceImp implements IAccountRepository {
     public void updateRecoveryCode(String recoverycode, String mail) {
         repository.updateRecoveryCode(recoverycode, mail);
     }
+
 }
