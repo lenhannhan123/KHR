@@ -156,10 +156,10 @@ public class TimekeepingController {
         List<Shift> shiftList = timekeepingServices.findShiftByDate(timekeeping.getTimestart());
 
         for (int i = 0; i < shiftList.size(); i++) {
-            TimelineDetail timelineDetail = timekeepingServices.findTimelineDetailByMailAndShift(timekeeping.getMail(), shiftList.get(i));
-            if (timelineDetail != null && !timelineDetailList.contains(timelineDetail)) {
-                timelineDetailList.add(timelineDetail);
-            }
+//            TimelineDetail timelineDetail = timekeepingServices.findTimelineDetailByMailAndShift(timekeeping.getMail(), shiftList.get(i));
+//            if (timelineDetail != null && !timelineDetailList.contains(timelineDetail)) {
+//                timelineDetailList.add(timelineDetail);
+//            }
         }
 
         List<Shift> tempList = new ArrayList<>();

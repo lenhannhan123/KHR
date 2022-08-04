@@ -1054,6 +1054,8 @@ public class TimelineController {
     @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.GET)
     public String TimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
 
+
+
         String idTimelineStr = request.getParameter("id").toString();
 
         List<UserTimeline> userTimeline = userTimelineServices.FindIDTimeLine(Integer.parseInt(idTimelineStr));
