@@ -5,10 +5,15 @@
  */
 package fpt.aptech.KHR.ImpServices;
 
+import java.util.Date;
 import fpt.aptech.KHR.Entities.*;
 import fpt.aptech.KHR.Reponsitory.*;
 import fpt.aptech.KHR.Services.IDayOffServices;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,8 @@ public class DayOffService implements IDayOffServices{
     AccountNotificationRepository acnores;
     @Autowired
     NotificationRepository notires;
+    @Autowired
+    AccountRepository accountRepository;
     @Override
     public List<DayOff> findAll() {
         return dor.findAll();
@@ -71,6 +78,26 @@ public class DayOffService implements IDayOffServices{
     @Override
     public DayOff findById(int id) {
         return dor.findID(id);
+    }
+
+    @Override
+    public List<DayOff> findByMail(String mail) {
+        Account acc = accountRepository.findByEmail(mail);
+        return dor.findByMail(acc);
+    }
+
+    @Override
+    public List<DayOff> findByDate(String start, String end) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+            Date s1 = dateFormat.parse(start);
+            Date s2 = dateFormat.parse(end);
+            List<DayOff> dayOffs = dor.findByDate(s1, s2);
+            return dayOffs;
+        } catch (ParseException ex) {
+            Logger.getLogger(DayOffService.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
 }
