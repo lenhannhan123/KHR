@@ -1,0 +1,345 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<head>
+    <title>Lịch làm việc</title>
+
+    <style>
+
+        .title-card {
+            padding-top: 11%;
+            padding-bottom: 11%;
+            margin-left: 4%;
+            font-weight: bold
+        }
+
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+
+        #btncolor {
+            background-color: rgb(102, 103, 171);
+            color: white;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <!--CND VueJs-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js"></script>
+
+    <h3 class="title-page">Lịch làm việc</h3>
+
+    <div id="myApp">
+        <div class="row">
+
+            <div class="col background-table">
+                <div class="row">
+                    <!-- <div class="col-sm-1"></div> -->
+                    <div class="col background-table">
+
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-1" id="Timelinedetail-button-active">
+                                <button class="btn btn-light"
+                                        style="border-radius: 20px;padding: 2px 1.1rem; margin-top: 10px;"
+                                        :id="[numberofday[1].ischoose ? 'btncolor' :  '']" v-on:click="setday(1)">
+                                    Thứ 2
+                                </button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-light"
+                                        style="border-radius: 20px;padding: 2px 1.1rem; margin-top: 10px;"
+                                        :id="[numberofday[2].ischoose ? 'btncolor' :  '']" v-on:click="setday(2)">
+                                    Thứ 3
+                                </button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-light"
+                                        style="border-radius: 20px;padding: 2px 1.1rem; margin-top: 10px;"
+                                        :id="[numberofday[3].ischoose ? 'btncolor' :  '']" v-on:click="setday(3)">
+                                    Thứ 4
+                                </button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-light"
+                                        style="border-radius: 20px;padding: 2px 1.1rem; margin-top: 10px;"
+                                        :id="[numberofday[4].ischoose ? 'btncolor' :  '']" v-on:click="setday(4)">
+                                    Thứ 5
+                                </button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-light"
+                                        style="border-radius: 20px;padding: 2px 1.1rem; margin-top: 10px;"
+                                        :id="[numberofday[5].ischoose ? 'btncolor' :  '']" v-on:click="setday(5)">
+                                    Thứ 6
+                                </button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-light"
+                                        style="border-radius: 20px;padding: 2px 1.1rem; margin-top: 10px;"
+                                        :id="[numberofday[6].ischoose ? 'btncolor' :  '']" v-on:click="setday(6)">
+                                    Thứ 7
+                                </button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-light"
+                                        style="border-radius: 20px;padding: 2px 1.1rem; margin-top: 10px;"
+                                        :id="[numberofday[7].ischoose ? 'btncolor' :  '']" v-on:click="setday(7)">
+                                    Chủ nhật
+                                </button>
+                            </div>
+
+                            <div class="col" style="text-align: right;">
+                                <div class="row">
+                                    <div class="col"></div>
+                                    <div class="col">
+                                        <input type="button" class="btn btn-success form-control button-defualt"
+                                               style="background-color: #6667AB" value="Lưu dữ liệu" id="button-login">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" id="border-timelinedetail">
+
+                            <div style="margin: 3% auto;" class="col-sm-4"  v-for="(item,index) in datadishplay" :key="index" v-if="index >= daychoosee*5-5 && index<daychoosee*5 " >
+                                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                            <b v-text="item.names">Ca sáng</b>
+                                            <br>
+                                            <b v-text="item.names1">Ca sáng</b>
+
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr id="" class="hover-click">
+
+
+                                        <td style="text-align:left ; padding:1.5rem" >
+
+                                          <div  v-for="(item1,index1) in item.positiom" :key="index">
+                                                <b v-text="item1.nameposition"></b> : <span v-text="item1.usermail"></span>
+                                              <br />
+                                              <br />
+
+
+                                          </div>
+
+
+                                        </td>
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div >
+
+
+
+                        </div>
+
+
+                    </div>
+                    <!-- <div class="col-sm-1"></div> -->
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <textarea th:text="${Listtimeline}" hidden id="TimelineData"></textarea>
+    <textarea th:text="${positionList}" hidden id="TimelineEnPosition"></textarea>
+    <textarea th:text="${accountLList}" hidden id="TimeLineUser"></textarea>
+
+    <script>
+        var App = new Vue({
+            el: "#myApp",
+            created() {
+                this.load();
+            },
+            data() {
+                return {
+                    DataList: [],
+                    PositionList: [],
+                    Userlist: [],
+                    numberofday: [],
+                    test: true,
+                    daychoosee: 0,
+                    numberday: 0,
+                    positiontmp: [],
+                    datadishplay:[],
+                    dataposdishplay:[]
+
+
+                }
+
+            },
+            methods: {
+                load: function () {
+
+
+                    DataList = JSON.parse(document.getElementById("TimelineData").value);
+                    PositionList = JSON.parse(document.getElementById("TimelineEnPosition").value);
+                    Userlist = JSON.parse(document.getElementById("TimeLineUser").value);
+
+
+                    this.DataList = DataList;
+                    this.PositionList = PositionList;
+                    this.Userlist = Userlist;
+
+
+                    this.SetNumberofDay();
+
+                    this.setCreatedata();
+                },
+
+                SetNumberofDay: function () {
+                    this.numberofday.push({thu: "Thứ ", ischoose: false, number:1  * 5})
+                    for (let i = 2; i <= 8; i++) {
+                        if (i < 8) {
+                            this.numberofday.push({thu: "Thứ " + i, ischoose: false, number: i  * 5})
+
+                        } else {
+                            this.numberofday.push({thu: "Chủ nhật", ischoose: false, number: i * 5})
+
+                        }
+
+
+                    }
+
+                    this.numberofday[1].ischoose = true
+                    this.daychoosee = 1;
+                    this.numberday = this.numberofday[1].number
+
+                    console.log(this.numberofday);
+                },
+
+                setday: function (i) {
+                    this.numberofday[this.daychoosee].ischoose = false
+                    this.numberofday[i].ischoose = true
+                    this.daychoosee = i;
+                    this.numberday = this.numberofday[this.daychoosee].number
+                },
+
+
+                setCreatedata: function () {
+
+                    let usermail = "";
+                    for (let i = 0; i < 35; i++) {
+                        this.positiontmp = []
+                        this.dataposdishplay=[]
+                        for (let j = 0; j < this.PositionList.length; j++) {
+                            this.positiontmp.push({idPosition: this.PositionList[j].id, usermail: "",nameposition:this.PositionList[j].positionname})
+                        }
+
+
+                        for (let k = 0; k < this.positiontmp.length; k++) {
+                            usermail = ""
+                            for (let j = 0; j < this.DataList.length; j++) {
+
+                                if (this.DataList[j].shiftCode == i) {
+                                    if (this.positiontmp[k].idPosition == this.DataList[j].idPosition.id) {
+
+                                        usermail+=this.DataList[j].mail.mail+", "
+                                    }
+
+
+                                }
+                            }
+                            this.positiontmp[k].usermail = usermail
+
+
+                        }
+
+                        this.datadishplay.push({names : "" , names1:"", positiom: this.positiontmp })
+                        this.dataposdishplay=[]
+
+
+                        // console.log( this.DataList);
+                        this.positiontmp = [];
+                    }
+
+
+                     count =0;
+                    for (let i = 0; i < 35; i++){
+
+                        switch (count) {
+
+                            case 0:
+                                this.datadishplay[i].names = " Ca sáng"
+                                this.datadishplay[i].names1 = "06:00 - 10:00)"
+                                break;
+                            case 1:
+                                this.datadishplay[i].names = " Ca trưa "
+                                this.datadishplay[i].names1 = "(10:00 - 14:00)"
+                                break;
+                            case 2:
+                                this.datadishplay[i].names = " Ca chiều  "
+                                this.datadishplay[i].names1 = "(14:00 - 18:00)"
+                                break;
+                            case 3:
+                                this.datadishplay[i].names = "Ca tối  "
+                                this.datadishplay[i].names1 = "(18:00 - 22:00)"
+                                break;
+                            default:
+                                this.datadishplay[i].names = "Ca đêm  "
+                                this.datadishplay[i].names1 = "(22:00 - 06:00)"
+                                    break
+
+                        }
+                        count+=1;
+
+                        if(count>4){
+                            count=0;
+                        }
+
+                    }
+                    console.log( this.datadishplay);
+
+
+                },
+
+
+                submit: function () {
+
+
+                    document.getElementById("submit-text").value = JSON.stringify(this.data);
+                    document.getElementById("btn-submit").click();
+                    // console.log(this.data);
+
+
+                }
+            }
+
+        })
+    </script>
+
+</div>
+
+
+</body>
+
+</html>

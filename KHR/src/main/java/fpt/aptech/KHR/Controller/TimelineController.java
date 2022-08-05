@@ -1,5 +1,6 @@
 package fpt.aptech.KHR.Controller;
 
+import antlr.collections.impl.LList;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +12,7 @@ import fpt.aptech.KHR.Routes.RouteAPI;
 import fpt.aptech.KHR.Routes.RouteWeb;
 import fpt.aptech.KHR.Services.ITimelineServices;
 import io.swagger.models.auth.In;
+import javafx.geometry.Pos;
 import org.json.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1068,10 +1070,12 @@ public class TimelineController {
 
          String redirectUrl = "/timeline/sortwork/create?id="+id;
          return "redirect:" + redirectUrl;
+     }else {
+         String redirectUrl = "/timeline/sortwork?id="+id;
+         return "redirect:" + redirectUrl;
      }
 
-            JsonServices.dd(JsonServices.ParseToJson(Listtimeline),response);
-        return "admin/timeline/timelinedit";
+
     }
 
     @RequestMapping(value = {RouteWeb.TimelineSortCreateURL}, method = RequestMethod.GET)
@@ -1738,11 +1742,33 @@ public class TimelineController {
 //
 //
 //        JsonServices.dd(People_Shift, response);
-        JsonServices.dd(JsonServices.ParseToJson(shiftOnDayList), response);
-
-
-        return "errorpage";
+        String redirectUrl = "/timeline/sortwork?id="+idTimelineStr ;
+        return "redirect:" + redirectUrl;
     }
+
+
+    @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.GET)
+    public String GetTimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        int id= Integer.parseInt(request.getParameter("id"))   ;
+        List<TimelineDetail>  Listtimeline=  timelineDetailServices.FindbyIdTimeline(id);
+
+        List<Position> positionList = positionServices.findAll();
+        List<Account> accountLList= accountService.findAll();
+
+        String ListtimelineString = JsonServices.ParseToJson(Listtimeline);
+        String positionListString = JsonServices.ParseToJson(positionList);
+        String accountLListString = JsonServices.ParseToJson(accountLList);
+
+
+
+        request.setAttribute("Listtimeline",ListtimelineString);
+        request.setAttribute("positionList",positionListString);
+        request.setAttribute("accountLList",accountLListString);
+
+        return "admin/timeline/timelinedetail";
+    }
+
 
     @RequestMapping(value = {RouteWeb.TimelineUsertURL}, method = RequestMethod.GET)
     public String TimelineUser(Model model, HttpServletRequest request, HttpServletResponse response) {
