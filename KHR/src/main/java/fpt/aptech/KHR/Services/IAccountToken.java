@@ -5,10 +5,15 @@
  */
 package fpt.aptech.KHR.Services;
 
+import fpt.aptech.KHR.Entities.AccountToken;
+import java.util.List;
+
 /**
  *
  * @author LÊ HỮU TÂM
  */
 public interface IAccountToken {
-    
+    AccountToken NewToken(AccountToken accountToken);
+    List<AccountToken> GetTokenByMail(String mail);
+    AccountToken GetToken(String token);
 }
