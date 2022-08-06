@@ -17,17 +17,17 @@
         android:textColor="@color/white"
         android:textSize="13pt"
         android:textStyle="bold"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="10dp"
         android:text="Đăng nhập"
 
         />
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="312dp"
         android:layout_height="161dp"
-        app:srcCompat="@drawable/logo"
-        android:layout_marginBottom="60dp"
-        />
+        android:layout_marginBottom="20dp"
+        app:srcCompat="@drawable/logo" />
 
     <EditText
         android:id="@+id/Login_txtUsername"
@@ -72,8 +72,26 @@
         android:textSize="8pt"
         android:textColor="#4ACADC"
         android:text="Quên mật khẩu"
+        android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/others"
+        android:layout_above="@id/google_btn"
+        android:text="hoặc đăng nhập bằng"
+        android:textColor="@color/white"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/google_btn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="20dp"
+        app:srcCompat="@drawable/google" />
 
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package fpt.aptech.khrmobile;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -15,6 +16,12 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,8 +33,6 @@ import fpt.aptech.khrmobile.Entities.Account;
 public class MainActivity extends AppCompatActivity {
     Account account;
 
-    Intent intent;
-
     SharedPreferences sharedPreferences;
     public static final String profilePreferences = "profilepref";
     public static final String Mail = "mailKey";
@@ -38,17 +43,27 @@ public class MainActivity extends AppCompatActivity {
     public static final String Avatar = "avatarKey";
     public static final String Code = "codeKey";
 
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if(acct != null){
+            String personName = acct.getDisplayName();
+            String personEmail = acct.getEmail();
+        }
+
         TextView username = findViewById(R.id.textView4);
         Intent intent = getIntent();
         if(intent.getExtras()!=null){
             account = (Account) intent.getSerializableExtra("data");
-//            username.setText("Xin chào " + account.getFullname());
             sharedPreferences = getSharedPreferences(profilePreferences, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(Mail, account.getMail());
@@ -116,10 +131,12 @@ public class MainActivity extends AppCompatActivity {
                         MODE_PRIVATE);
                 SharedPreferences.Editor editor = myPrefs.edit();
                 editor.clear();
-                editor.commit();
+                editor.apply();
+                finish();
+                gsc.signOut();
                 Intent intent = new Intent(MainActivity.this, login.class);
                 startActivity(intent);
-                finish();
+
             }
         });
     }
