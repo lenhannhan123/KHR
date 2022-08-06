@@ -24,14 +24,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class NotificationService implements INotificationServices {
+
     @Autowired
     NotificationRepository nr;
     @Autowired
     AccountNotificationRepository anr;
     @Autowired
     AccountRepository ar;
-    @Autowired
-    AccountTokenRepository tk;
+
     @Override
     public List<Notification> findAll() {
         return nr.findAll();
@@ -39,75 +39,56 @@ public class NotificationService implements INotificationServices {
 
     @Override
     public List<AccountNotification> findAllNotification() {
-       return anr.findAll();
+        return anr.findAll();
     }
 
     @Override
-    public boolean AddNotification(Notification notification) {
-        nr.save(notification);
-        return true;
+    public Notification AddNotification(Notification notification) {
+
+        return nr.save(notification);
     }
 
     @Override
-    public void SendAllPeople(Notification notification) {
-        List<Account> accounts = ar.findAll();
-        for (Account account : accounts) {
-            AccountNotification accountNotification = new AccountNotification();
-            accountNotification.setIdnotification(notification);
-            accountNotification.setMail(account);
-            accountNotification.setStatus(false);
-            anr.save(accountNotification);
-        }
-    }
-
-    @Override
-    public void SendAnyPeople(Notification notification, List<Account> listAccount) {
-        for (Account account : listAccount) {
-            AccountNotification accountNotification = new AccountNotification();
-            accountNotification.setIdnotification(notification);
-            accountNotification.setMail(account);
-            accountNotification.setStatus(false);
-            anr.save(accountNotification);
-        }
-    }
-
-    @Override
-    public List<AccountNotification> findbyAccount(Account account) {
-        return anr.findByEmail(account);
-    }
-
-    @Override
-    public void Seen(AccountNotification accountNotification) {
-        
-    }
-        
-        
-    @Override
-    public AccountToken findSendPeople(String mail) {
-        Account a = ar.findByEmail(mail);
-       return tk.findByMail(a);
+    public List<AccountNotification> findbyAccount(String mail) {
+        Account a = ar.findByEmailUser(mail);
+        return anr.findByEmail(a);
     }
 
     @Override
     public AccountNotification CreateNotificationOnMail(String mail, String type) {
         try {
-         Account a = ar.findByEmail(mail);
-         Notification n = new Notification();
-         n.setTitle("Thông báo phản hồi yêu cầu xin nghĩ");
-         n.setContent("Quản trị viên xin trân trọng thông báo.Yêu cầu của nhân viên "+ a.getFullname()+" chúng tôi đã xem xét."+"Bạn đã được "+ type +" với lý do trên.Quản trị viên xin trân trọng thông báo" );
-         Notification odl = nr.save(n);
-         AccountNotification an = new AccountNotification();
-         an.setIdnotification(odl);
-         an.setMail(a);
-         an.setStatus(false);
-         
-         return anr.save(an);
+            Account a = ar.findByEmail(mail);
+            Notification n = new Notification();
+            n.setTitle("Thông báo phản hồi yêu cầu xin nghĩ");
+            n.setContent("Quản trị viên xin trân trọng thông báo.Yêu cầu của nhân viên " + a.getFullname() + " chúng tôi đã xem xét." + "Bạn đã được " + type + " với lý do trên.Quản trị viên xin trân trọng thông báo");
+            Notification odl = nr.save(n);
+            AccountNotification an = new AccountNotification();
+            an.setIdnotification(odl);
+            an.setMail(a);
+            an.setStatus(false);
+
+            return anr.save(an);
         } catch (Exception e) {
             return null;
         }
-         
+
     }
 
-    
-    
+    @Override
+    public List<AccountNotification> findNotificationByAny(int idnotifacation) {
+        Notification n = nr.findById(idnotifacation);
+        return anr.findByNotifications(n);
+    }
+
+    @Override
+    public AccountNotification AddAccountNotification(AccountNotification accountNotification) {
+        return anr.save(accountNotification);
+    }
+
+    @Override
+    public AccountNotification Seen(AccountNotification accountNotification) {
+        accountNotification.setStatus(true);
+        return anr.save(accountNotification);
+    }
+
 }

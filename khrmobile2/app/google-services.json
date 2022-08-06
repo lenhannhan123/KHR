@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "226362090225",
+    "project_id": "khr-app-10543",
+    "storage_bucket": "khr-app-10543.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226362090225:android:b909424ed943e3d60dff50",
+        "android_client_info": {
+          "package_name": "fpt.aptech.fcmclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226362090225-1e6qldej6cgevehtqe8hjh2cjudgjvg8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB_yUGS3ld9ekfTipwb7Gjg0A989vB4t0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226362090225-1e6qldej6cgevehtqe8hjh2cjudgjvg8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226362090225:android:fee5a6b6cf9880950dff50",
+        "android_client_info": {
+          "package_name": "fpt.aptech.khrmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226362090225-1e6qldej6cgevehtqe8hjh2cjudgjvg8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB_yUGS3ld9ekfTipwb7Gjg0A989vB4t0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226362090225-1e6qldej6cgevehtqe8hjh2cjudgjvg8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

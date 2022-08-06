@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         callNav.setDisplay(scrollView,MainActivity.this,0.88);
         buttonWorkSchedule();
         buttonHomeLogout();
+        buttonDayOff();
     }
 
 
@@ -90,6 +91,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MainWorkScheduleActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+    private void buttonDayOff(){
+        Button button2 = findViewById(R.id.Home_Leaveoff);
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DayOffActivity.class);
                 startActivity(intent);
             }
         });
