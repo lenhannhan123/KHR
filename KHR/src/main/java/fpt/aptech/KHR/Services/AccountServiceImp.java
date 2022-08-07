@@ -8,6 +8,7 @@ package fpt.aptech.KHR.Services;
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.Store;
 import fpt.aptech.KHR.Reponsitory.AccountRepository;
+import java.util.Date;
 
 import java.util.HashSet;
 import java.util.List;
@@ -109,6 +110,11 @@ public class AccountServiceImp implements IAccountRepository {
             return repository.search(keyword);
         }
         return repository.findAll();
+    }
+
+    @Override
+    public void updateBasicInfoMobile(String fullname, String phone, Date birthdate, boolean gender, String mail) {
+        repository.updateBasicInfoMobile(fullname, phone, birthdate, gender, mail);
     }
 
 }

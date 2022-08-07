@@ -6,10 +6,12 @@
 package fpt.aptech.KHR.Controller;
 
 import fpt.aptech.KHR.Entities.Account;
+import fpt.aptech.KHR.Entities.AccountPosition;
 import fpt.aptech.KHR.Entities.Mail;
 import fpt.aptech.KHR.Entities.SmsPojo;
 import fpt.aptech.KHR.ImpServices.AccountService;
 import fpt.aptech.KHR.ImpServices.SmsService;
+import fpt.aptech.KHR.Reponsitory.AccountPositionRepository;
 import fpt.aptech.KHR.Services.AccountServiceImp;
 import fpt.aptech.KHR.Services.SendMailService;
 import java.io.IOException;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -65,6 +68,9 @@ public class AuthAPIController {
 
     @Autowired
     private SendMailService sendMailService;
+
+    @Autowired
+    private AccountPositionRepository accountPositionRepository;
 
     @PostMapping("api/auth")
     public ResponseEntity<Account> auth(@RequestBody Account account, HttpServletResponse response) {
@@ -117,7 +123,6 @@ public class AuthAPIController {
 //        sendMailService.sendRecoveryCode(mail);
 //        return new ResponseEntity<String>("Code sent", HttpStatus.OK);
 //    }
-
     @PostMapping(path = "api/recover-code-mail")
     public ResponseEntity<Account> sendRecoverCodeMail(@RequestBody Account account) {
         sendMailService.sendRecoveryCode(account.getMail());
@@ -139,7 +144,6 @@ public class AuthAPIController {
 //        }
 //        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect recovery code");
 //    }
-
     @PostMapping(path = "api/recovery-change-pass")
     public ResponseEntity<Account> recoveryChangePass(@RequestBody Account account) {
         if (accountServiceImp.checkRecoveryCode(account.getMail(), account.getRecoverycode()) == true) {
@@ -147,5 +151,18 @@ public class AuthAPIController {
             return new ResponseEntity<>(account, HttpStatus.OK);
         }
         return new ResponseEntity<>(account, HttpStatus.BAD_REQUEST);
+    }
+
+//    WIP
+//    @PostMapping(path = "api/get-positions")
+//    public ResponseEntity<Account> getJobPositions(@RequestBody Account account, @RequestParam("email") String email) {
+//        List<AccountPosition> listAccountPositions = accountPositionRepository.findByEmail(account.getMail());
+//    }
+
+
+    @PostMapping(path = "api/change-profile-info")
+    public ResponseEntity<Account> changeBasicInfo(@RequestBody Account account) {
+        accountServiceImp.updateBasicInfoMobile(account.getFullname(), account.getPhone(), account.getBirthdate(), true, account.getMail());
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 }
