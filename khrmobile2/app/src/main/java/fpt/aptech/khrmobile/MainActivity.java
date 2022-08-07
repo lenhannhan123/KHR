@@ -32,6 +32,7 @@ import fpt.aptech.khrmobile.Entities.Account;
 
 public class MainActivity extends AppCompatActivity {
     Account account;
+    TextView username;
 
     SharedPreferences sharedPreferences;
     public static final String profilePreferences = "profilepref";
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String Gender = "genderKey";
     public static final String Avatar = "avatarKey";
     public static final String Code = "codeKey";
+
+
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             String personEmail = acct.getEmail();
         }
 
-        TextView username = findViewById(R.id.textView4);
+        username = findViewById(R.id.textView4);
         Intent intent = getIntent();
         if(intent.getExtras()!=null){
             account = (Account) intent.getSerializableExtra("data");
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString(Birthday, DateFormat.getDateInstance().format(account.getBirthdate()));
             editor.putString(Avatar, account.getAvatar());
             editor.putString(Code, account.getCode());
+            editor.putString(Gender, String.valueOf(account.isGender()));
             editor.commit();
             String name = sharedPreferences.getString(MainActivity.Name,null);
             username.setText("Xin chào " + name);
@@ -135,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 gsc.signOut();
                 Intent intent = new Intent(MainActivity.this, login.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
             }
