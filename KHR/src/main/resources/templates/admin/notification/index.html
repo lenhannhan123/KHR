@@ -10,12 +10,12 @@ and open the template in the editor.
 
     <head>
         <title>AdminLTE 3 | Dashboard</title>
-
+         <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </head>
 
     <body>
         <div layout:fragment="content">
-            <h3 class="title-page">Quản lý ngày nghĩ</h3>
+            <h3 class="title-page">Quản lý Thông Báo</h3>
             <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col background-table">
@@ -36,26 +36,6 @@ and open the template in the editor.
                                 <a href="#">
                                     <input type="button" class="btn btn-success form-control button-defualt" value="Tìm Kiếm">
                                 </a>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="row">
-                                <!--                                <div class="col-sm-12"></div>-->
-                                <div class="col-sm-4" style="margin-top:4% ;">
-                                    <a href="#">
-                                        <input type="button" class="btn btn-success form-control " value="Đã duyệt">
-                                    </a>
-                                </div>
-                                <div class="col-sm-4" style="margin-top:4% ;">
-                                    <a href="#">
-                                        <input type="button" class="btn btn-danger form-control" value="Từ chối">
-                                    </a>
-                                </div>
-                                <div class="col-sm-4" style="margin-top:4% ;">
-                                    <a href="#">
-                                        <input type="button" class="btn btn-warning form-control" value="Chưa duyệt">
-                                    </a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -79,18 +59,16 @@ and open the template in the editor.
 
                         <tbody th:if="${check == true}">
                             <tr th:each="c:${notificationList}">
-                                <td th:text="${c.getIdnotification().getId()}"></td>
-                                <td th:text="${c.getIdnotification().getTitle()}"></td>
-                                <td th:text="${c.getIdnotification().getDateCreate()}"></td>
-                                <td>
-                                    <a th:href="#">
+                                <td th:text="${c.getId()}"></td>
+                                <td th:text="${c.getTitle()}"></td>
+                                <td th:text="${c.getDateCreate()}"></td>
+                                <td><a th:href="'/../../notification/details?id='+${c.getId()}"> 
                                         <button class="button-envent">
                                             <i class="fas
                                                fa-check"
                                                style="color:
                                                greenyellow"></i>
                                         </button>
-
                                     </a>
                                 </td>
                             </tr>

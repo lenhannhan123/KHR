@@ -10,6 +10,7 @@ import fpt.aptech.KHR.Entities.Account;
 import java.util.List;
 
 import fpt.aptech.KHR.Entities.Store;
+import java.util.Date;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -58,4 +59,13 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     @Transactional
     @Query("UPDATE Account a SET a.recoverycode = :recoverycode WHERE a.mail = :mail")
     void updateRecoveryCode(@Param("recoverycode") String recoverycode, @Param("mail") String mail);
+
+    @Query("SELECT a FROM Account a WHERE CONCAT(a.mail,' ', a.fullname,' ', a.status) LIKE %?1%")
+    public List<Account> search(String keyword);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query("UPDATE Account a SET a.fullname = :fullname , a.phone = :phone , a.birthdate = :birthdate , a.gender = :gender WHERE a.mail = :mail")
+    void updateBasicInfoMobile(@Param("fullname") String fullname, @Param("phone") String phone, @Param("birthdate") Date birthdate, @Param("gender") boolean gender, @Param("mail") String mail);
+
 }

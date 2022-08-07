@@ -1,5 +1,6 @@
 package fpt.aptech.khrmobile;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -15,6 +16,12 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,8 +32,7 @@ import fpt.aptech.khrmobile.Entities.Account;
 
 public class MainActivity extends AppCompatActivity {
     Account account;
-
-    Intent intent;
+    TextView username;
 
     SharedPreferences sharedPreferences;
     public static final String profilePreferences = "profilepref";
@@ -39,16 +45,28 @@ public class MainActivity extends AppCompatActivity {
     public static final String Code = "codeKey";
 
 
+
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView username = findViewById(R.id.textView4);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if(acct != null){
+            String personName = acct.getDisplayName();
+            String personEmail = acct.getEmail();
+        }
+
+        username = findViewById(R.id.textView4);
         Intent intent = getIntent();
         if(intent.getExtras()!=null){
             account = (Account) intent.getSerializableExtra("data");
-//            username.setText("Xin chào " + account.getFullname());
             sharedPreferences = getSharedPreferences(profilePreferences, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(Mail, account.getMail());
@@ -57,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString(Birthday, DateFormat.getDateInstance().format(account.getBirthdate()));
             editor.putString(Avatar, account.getAvatar());
             editor.putString(Code, account.getCode());
+            editor.putString(Gender, String.valueOf(account.isGender()));
             editor.commit();
             String name = sharedPreferences.getString(MainActivity.Name,null);
             username.setText("Xin chào " + name);
@@ -79,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         callNav.setDisplay(scrollView,MainActivity.this,0.88);
         buttonWorkSchedule();
         buttonHomeLogout();
+        buttonDayOff();
     }
 
 
@@ -94,6 +114,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void buttonDayOff(){
+        Button button2 = findViewById(R.id.Home_Leaveoff);
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DayOffActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
     private void buttonHomeLogout(){
         Button buttonLogout = findViewById(R.id.Home_Logout);
@@ -104,10 +135,13 @@ public class MainActivity extends AppCompatActivity {
                         MODE_PRIVATE);
                 SharedPreferences.Editor editor = myPrefs.edit();
                 editor.clear();
-                editor.commit();
-                Intent intent = new Intent(MainActivity.this, login.class);
-                startActivity(intent);
+                editor.apply();
                 finish();
+                gsc.signOut();
+                Intent intent = new Intent(MainActivity.this, login.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
             }
         });
     }

@@ -116,23 +116,23 @@ public class Store implements Serializable {
 
 
 
-    @XmlTransient
-    public List<Timeline> getTimelineList() {
-        return timelineList;
-    }
+//    @XmlTransient
+//    public List<Timeline> getTimelineList() {
+//        return timelineList;
+//    }
+//
+//    public void setTimelineList(List<Timeline> timelineList) {
+//        this.timelineList = timelineList;
+//    }
 
-    public void setTimelineList(List<Timeline> timelineList) {
-        this.timelineList = timelineList;
-    }
-
-    @XmlTransient
-    public List<Account> getAccountList() {
-        return accountList;
-    }
-
-    public void setAccountList(List<Account> accountList) {
-        this.accountList = accountList;
-    }
+//    @XmlTransient
+//    public List<Account> getAccountList() {
+//        return accountList;
+//    }
+//
+//    public void setAccountList(List<Account> accountList) {
+//        this.accountList = accountList;
+//    }
 
 
     public String getAddress() {

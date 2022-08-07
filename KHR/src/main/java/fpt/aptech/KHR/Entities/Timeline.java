@@ -39,8 +39,8 @@ public class Timeline implements Serializable {
     private short isDelete;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimeline")
-    private List<TimelineDetail> timelineDetailList;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTimeline")
+//    private List<TimelineDetail> timelineDetailList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -151,14 +151,14 @@ public class Timeline implements Serializable {
 
   
 
-    @XmlTransient
-    public List<TimelineDetail> getTimelineDetailList() {
-        return timelineDetailList;
-    }
-
-    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
-        this.timelineDetailList = timelineDetailList;
-    }
+//    @XmlTransient
+//    public List<TimelineDetail> getTimelineDetailList() {
+//        return timelineDetailList;
+//    }
+//
+//    public void setTimelineDetailList(List<TimelineDetail> timelineDetailList) {
+//        this.timelineDetailList = timelineDetailList;
+//    }
 
 
 

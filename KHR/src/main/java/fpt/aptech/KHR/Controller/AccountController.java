@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -67,13 +68,13 @@ public class AccountController {
     private StoreService storeService;
 
     @RequestMapping(value = {RouteWeb.accountManageURL}, method = RequestMethod.GET)
-    public String AccountList(Model model, HttpServletResponse response, HttpServletRequest request) {
+    public String AccountList(Model model, @Param("keyword") String keyword ,HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
 
 
-        List<Account> list1 = accountRepository.findAll();
+        List<Account> list1 = accountRepository.listAll(keyword);
         List<Account> list = new ArrayList<>();
 
         if (list1.size() > 0) {
@@ -98,8 +99,10 @@ public class AccountController {
                 break;
             }
         }
+        
         model.addAttribute("list", list);
         model.addAttribute("check", check);
+        model.addAttribute("keyword", keyword);
         return "admin/account/index";
     }
 

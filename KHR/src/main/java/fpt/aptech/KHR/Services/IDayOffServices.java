@@ -21,4 +21,6 @@ public interface IDayOffServices {
     List<DayOff> findNotCheck();
     DayOff AddDayOff( DayOff newDayOff);
     DayOff findById(int id);
+    List<DayOff> findByMail(String mail);
+    List<DayOff> findByDate(String start,String end);
 }

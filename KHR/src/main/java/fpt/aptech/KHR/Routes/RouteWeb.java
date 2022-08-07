@@ -17,7 +17,7 @@ public class RouteWeb {
 
     //    Khu vuc new Model
     HomeController homeController = new HomeController();
-    NotificationController notificationController = new NotificationController();
+//    NotificationController notificationController = new NotificationController();
     AccountController accountController = new AccountController();
     //    DayOffController dayOffController;
     OverTimeController overTimeController = new OverTimeController();
@@ -34,7 +34,7 @@ public class RouteWeb {
 
     //Route Notification
     public final static String notificationURL = "/notification";
-    String NotificationControler = notificationController.Index(model.model);
+    //String NotificationControler = notificationController.Index(model.model);
 
     public final static String notificationAddURL = "/notification/add";
     //String NotificationAddControler = notificationController.AddPage(model.model);

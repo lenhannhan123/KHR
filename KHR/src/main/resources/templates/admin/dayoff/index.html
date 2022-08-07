@@ -20,22 +20,22 @@ and open the template in the editor.
                 <div class="col-sm-1"></div>
                 <div class="col background-table">
 
-
+                    <form action="/../../dayoff/list/search" method="POST">
                     <div class="row" style="margin-bottom:2% ;">
+                        
                         <div class="col-sm-3">
                             <b style="margin-bottom:2% ;">Từ ngày</b>
-                            <input type="datetime-local" class="form-control input" id="">
+                            <input type="datetime-local" name="startdate" class="form-control input" id="">
                         </div>
                         <div class="col-sm-3">
-                            <b style="margin-bottom:2% ;">Đến ngày</b>
-                            <input type="datetime-local" class="form-control input" id="">
+                            <b style="margin-bottom:2% ;">Đến ngày</b>  
+                            <input type="datetime-local" name="enddate" class="form-control input" id="">
                         </div>
                         <div class="col-sm-2">
                                 <div class="col-sm-6"></div>
                                 <div class="col-sm-12" style="margin-top:12% ;">
-                                    <a href="#">
-                                        <input type="button" class="btn btn-success form-control button-defualt" value="Tìm Kiếm">
-                                    </a>
+                                 <input type="submit" class="btn btn-success form-control button-defualt" value="Tìm Kiếm">
+ 
                                 </div>
                         </div>
                         <div class="col-sm-4">
@@ -59,6 +59,8 @@ and open the template in the editor.
                             </div>
                         </div>
                     </div>
+                </form>    
+                    
 
 
                     <table class="table">
@@ -84,7 +86,7 @@ and open the template in the editor.
 
                         <tbody th:if="${check == true}">
                             <tr th:each="c:${listdateoff}">
-                                <td th:text="${c.getId()}"></td>
+                                <td></td>
                                 <td th:text="${c.getMail().getMail()}"></td>
                                 <td th:text="${c.getMail().getFullname()}"></td>
                                 <td th:text="${c.getStartdate()}"></td>
@@ -101,7 +103,7 @@ and open the template in the editor.
                                 <td>
                                     <div th:switch="${c.getStatus()}"> 
                                         <div th:case="'0'">
-                                            <a th:href="'/../dayoff/approved?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn xóa ?')">
+                                            <a th:href="'/../dayoff/approved?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn đồng ý với yêu cầu này ?')">
                                                 <button class="button-envent">
                                                     <i class="fas
                                                        fa-check"
@@ -110,7 +112,7 @@ and open the template in the editor.
                                                 </button>
 
                                             </a>
-                                            <a th:href="'/../dayoff/denying?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn muốn xóa ?')">
+                                            <a th:href="'/../dayoff/denying?id='+${c.getId()}" onclick="javascript:return confirm('Bạn có chắc chắn từ chối yêu cầu này ?')">
                                                 <button class="button-envent">
                                                     <i class="fas
                                                        fa-angry"

@@ -4,13 +4,78 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html lang="en" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AdminLTE 3 | Dashboard</title>
+         <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </head>
+
     <body>
-        <div>TODO write content</div>
+        <div layout:fragment="content">
+            <h3 class="title-page">Thông tin chi tiết</h3>
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col background-table">
+
+
+                    <div class="row" style="margin-bottom:2% ;">
+                        <div class="col-sm-3">
+                            <label>Nội dung</label>
+                            <p th:text="${ifomation}"></p>
+                        </div>
+                        
+                    </div>
+                    <H6 class="title-page">Danh sách người nhận</H6>   
+
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" >Mail</th>
+                                <th scope="col" >Tên đầy đủ</th>
+                                <th scope="col" >Số Điện Thoại</th>
+                                <th scope="col" >Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody th:if="${check == false}">
+                            <tr>
+                                <td colspan="5" style="text-align: center"> Không có dữ liệu </td>
+                            </tr>
+
+                        </tbody>
+
+                        <tbody th:if="${check == true}">
+                            <tr th:each="c:${notificationaccountList}">
+                                <td th:text="${c.getMail().getMail()}"></td>
+                                <td th:text="${c.getMail().getFullname()}"></td>
+                                <td th:text="${c.getMail().getPhone()}"></td>
+                                <td>
+                                    <div th:switch="${c.getStatus()}"> 
+                                        <p th:case=true style="color: yellow"><b>Chưa xem</b></p>
+                                        <p th:case=false style="color: green"><b>Đã xem</b></p>
+                                    </div>
+                                </td>
+<!--                                <td th:text="${c.getDateCreate()}"></td>-->
+<!--                                <td><a th:href="/../notifacation/details?id='+${c.getId()}">
+                                        <button class="button-envent">
+                                            <i class="fas
+                                               fa-check"
+                                               style="color:
+                                               greenyellow"></i>
+                                        </button>
+                                    </a>
+                                </td>-->
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-1"></div>
+
+            </div>
+        </div>
     </body>
+
 </html>

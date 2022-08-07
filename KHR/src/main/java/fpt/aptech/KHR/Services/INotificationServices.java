@@ -18,11 +18,10 @@ import java.util.List;
 public interface INotificationServices {
     List<Notification> findAll();
     List<AccountNotification> findAllNotification();
-    boolean AddNotification(Notification notification);
-    void SendAllPeople(Notification notification );
-    void SendAnyPeople(Notification notification,List<Account> listAccount);
-    List<AccountNotification> findbyAccount(Account account);
-    void Seen(AccountNotification accountNotification);
-    AccountToken findSendPeople(String mail);
+    List<AccountNotification> findNotificationByAny(int idnotifacation);
+    Notification AddNotification(Notification notification);
+    List<AccountNotification> findbyAccount(String mail);
     AccountNotification CreateNotificationOnMail(String mail,String type);
+    AccountNotification AddAccountNotification(AccountNotification accountNotification);
+    AccountNotification Seen(AccountNotification accountNotification);
 }
