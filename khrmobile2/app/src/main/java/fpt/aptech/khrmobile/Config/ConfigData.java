@@ -7,7 +7,7 @@ import fpt.aptech.khrmobile.MainActivity;
 
 public class ConfigData {
 
-    public static String IP ="192.168.137.1";
+    public static String IP ="192.168.1.22";
     public static final String profilePreferences = "profilepref";
     public static final String Mail = "mailKey";
 

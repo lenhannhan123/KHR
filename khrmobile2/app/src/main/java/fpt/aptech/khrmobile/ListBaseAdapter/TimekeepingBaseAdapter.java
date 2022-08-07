@@ -46,26 +46,13 @@ public class TimekeepingBaseAdapter extends BaseAdapter {
             viewTimekeeping = convertView;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         Timekeeping timekeeping = (Timekeeping) getItem(position);
-        String shiftType = "";
-        if (timeFormat.format(timekeeping.getTimestart()).compareTo("05:45:00") >= 0 && timeFormat.format(timekeeping.getTimeend()).compareTo("10:15:00") <= 0) {
-            shiftType = "Ca sáng";
-        } else if (timeFormat.format(timekeeping.getTimestart()).compareTo("09:45:00") >= 0 && timeFormat.format(timekeeping.getTimeend()).compareTo("14:15:00") <= 0) {
-            shiftType = "Ca trưa";
-        } else if(timeFormat.format(timekeeping.getTimestart()).compareTo("13:45:00") >= 0 && timeFormat.format(timekeeping.getTimeend()).compareTo("18:15:00") <= 0) {
-            shiftType = "Ca chiều";
-        } else if(timeFormat.format(timekeeping.getTimestart()).compareTo("17:45:00") >= 0 && timeFormat.format(timekeeping.getTimeend()).compareTo("22:15:00") <= 0){
-            shiftType = "Ca tối";
-        } else if(timeFormat.format(timekeeping.getTimestart()).compareTo("21:45:00") >= 0 && timeFormat.format(timekeeping.getTimeend()).compareTo("06:15:00") <= 0){
-            shiftType = "Ca đêm";
-        }
-
 
         ((Button) viewTimekeeping.findViewById(R.id.btnTimekeepingDetail)).
 
-        setText(shiftType + " Ngày " + dateFormat.format(timekeeping.getTimestart()));
+        setText("Ca " + simpleDateFormat.format(timekeeping.getTimestart()));
 
         return viewTimekeeping;
     }

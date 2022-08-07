@@ -97,9 +97,9 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
-    @JoinTable(name = "account_token", joinColumns = {
-        @JoinColumn(name = "Mail", referencedColumnName = "Mail")}, inverseJoinColumns = {
-        @JoinColumn(name = "Mail", referencedColumnName = "Mail")})
+//    @JoinTable(name = "account_token", joinColumns = {
+//    @JoinColumn(name = "Mail", referencedColumnName = "Mail")}, inverseJoinColumns = {
+//    @JoinColumn(name = "Mail", referencedColumnName = "Mail")})
     @ManyToMany
     private List<Account> accountList;
     @ManyToMany(mappedBy = "accountList")

@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import java.lang.reflect.Type;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -39,12 +40,14 @@ public class TimekeepingActivity extends AppCompatActivity {
     ListView listView;
     TimekeepingBaseAdapter timekeepingBaseAdapter;
     Button btnSearchTimekeeping;
+    int month = 0;
+    int year = 0;
 
     private void setSpinnerMonth() {
         spinnerMonth = findViewById(R.id.spinnerMonth);
         List<String> months = new ArrayList<>();
         months.add("Chọn tháng");
-        for (int i = 0; i < 12; i++) {
+        for (int i = 1; i <= 12; i++) {
             months.add("Tháng " + String.valueOf(i));
         }
 
@@ -78,7 +81,7 @@ public class TimekeepingActivity extends AppCompatActivity {
                 addConverterFactory(GsonConverterFactory.create(gson)).
                 build();
         service = retrofit.create(TimekeepingService.class);
-        Call<List<String>> call = service.getYear("thanhnhan@gmail.com");
+        Call<List<String>> call = service.getYear("nhan@gmail.com");
         call.enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
@@ -122,7 +125,7 @@ public class TimekeepingActivity extends AppCompatActivity {
                 .build();
 
         service = retrofit.create(TimekeepingService.class);
-        Call<List<Timekeeping>> call = service.findByAccount("thanhnhan@gmail.com");
+        Call<List<Timekeeping>> call = service.findByAccount("nhan@gmail.com");
         call.enqueue(new Callback<List<Timekeeping>>() {
             @Override
             public void onResponse(Call<List<Timekeeping>> call, Response<List<Timekeeping>> response) {
@@ -144,31 +147,50 @@ public class TimekeepingActivity extends AppCompatActivity {
 
     private void searchTimekeeping(){
         btnSearchTimekeeping = findViewById(R.id.btnSearchTimekeeping);
-        Spinner spinnerMonth = findViewById(R.id.spinnerMonth);
+        spinnerMonth = findViewById(R.id.spinnerMonth);
         spinnerYear = findViewById(R.id.spinnerYear);
         listView = findViewById(R.id.listView);
         timekeepings = new ArrayList<>();
-        timekeepings.clear();
+        month = 0;
+        year = 0;
 
         btnSearchTimekeeping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String month = spinnerMonth.getSelectedItem().toString();
-                String year = spinnerYear.getSelectedItem().toString();
+
+                if(spinnerYear.getSelectedItem().equals("Chọn năm")){
+                    year = 0;
+                }else{
+                    year = Integer.parseInt(spinnerYear.getSelectedItem().toString());
+                }
+
+                //int year = Integer.parseInt(spinnerYear.getSelectedItem().toString());
+
+                for (int i = 0; i <= 12; i++){
+                    if(spinnerMonth.getSelectedItem().toString().contains(String.valueOf(i))){
+                        month = i;
+                    }else if(spinnerMonth.getSelectedItem().toString().equals("Chọn tháng")){
+                        month = 0;
+                    }
+                }
+
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("http://" + ConfigData.IP + ":7777/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
                 service = retrofit.create(TimekeepingService.class);
-                Call<List<Timekeeping>> call = service.findAllByDate(Integer.parseInt(month), Integer.parseInt(year));
+                Call<List<Timekeeping>> call = service.findAllByDate("nhan@gmail.com", month, year);
                 call.enqueue(new Callback<List<Timekeeping>>() {
                     @Override
                     public void onResponse(Call<List<Timekeeping>> call, Response<List<Timekeeping>> response) {
-                        timekeepings.addAll(response.body());
-                        timekeepingBaseAdapter = new TimekeepingBaseAdapter(timekeepings);
-                        timekeepingBaseAdapter.notifyDataSetChanged();
-                        listView.setAdapter(timekeepingBaseAdapter);
+                        if(response.isSuccessful() && month != 0 && year != 0){
+                            timekeepings.clear();
+                            timekeepings.addAll(response.body());
+                            timekeepingBaseAdapter = new TimekeepingBaseAdapter(timekeepings);
+                            timekeepingBaseAdapter.notifyDataSetChanged();
+                            listView.setAdapter(timekeepingBaseAdapter);
+                        }
                     }
 
                     @Override

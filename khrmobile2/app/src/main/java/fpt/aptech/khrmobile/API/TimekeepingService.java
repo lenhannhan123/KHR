@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 
 public interface TimekeepingService {
     @GET("/api/timekeeping/findAllByDate")
-    Call<List<Timekeeping>> findAllByDate(@Path("month") int month, @Path("month") int year);
+    Call<List<Timekeeping>> findAllByDate(@Query("mail") String mail, @Query("month") int month, @Query("year") int year);
 
     @GET("/api/timekeeping/accountList")
     Call<List<Account>> accountList();

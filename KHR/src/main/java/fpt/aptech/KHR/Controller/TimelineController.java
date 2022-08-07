@@ -1722,7 +1722,7 @@ public class TimelineController {
                 timelineDetail.setIdTimeline(new Timeline(Integer.parseInt(idTimelineStr)));
                 timelineDetail.setMail(new Account(item2.getMail()));
                 timelineDetail.setShiftCode(item2.getId_Code());
-                timelineDetail.set
+//                timelineDetail.set
             }
 
 

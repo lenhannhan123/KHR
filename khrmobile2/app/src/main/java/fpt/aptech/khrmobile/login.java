@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import fpt.aptech.khrmobile.API.ApiClient;
@@ -98,8 +99,12 @@ public class login extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
-                String message = t.getLocalizedMessage();
-                Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
+//                String message = t.getLocalizedMessage();
+//                Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(login.this);
+                builder.setTitle("Error");
+                builder.setMessage(t.getMessage());
+                builder.show();
             }
         });
     }
