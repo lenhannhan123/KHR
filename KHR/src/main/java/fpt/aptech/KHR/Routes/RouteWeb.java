@@ -17,7 +17,7 @@ public class RouteWeb {
 
     //    Khu vuc new Model
     HomeController homeController = new HomeController();
-    NotificationController notificationController = new NotificationController();
+//    NotificationController notificationController = new NotificationController();
     AccountController accountController = new AccountController();
     //    DayOffController dayOffController;
     OverTimeController overTimeController = new OverTimeController();

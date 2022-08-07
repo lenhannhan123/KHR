@@ -58,4 +58,7 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     @Transactional
     @Query("UPDATE Account a SET a.recoverycode = :recoverycode WHERE a.mail = :mail")
     void updateRecoveryCode(@Param("recoverycode") String recoverycode, @Param("mail") String mail);
+
+    @Query("SELECT a FROM Account a WHERE CONCAT(a.mail,' ', a.fullname,' ', a.status) LIKE %?1%")
+    public List<Account> search(String keyword);
 }

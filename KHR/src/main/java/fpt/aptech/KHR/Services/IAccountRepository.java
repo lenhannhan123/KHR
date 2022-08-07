@@ -48,4 +48,6 @@ public interface IAccountRepository {
 
     public void updateRecoveryCode(String recoverycode, String mail);
 
+    public List<Account> listAll(String keyword);
+
 }

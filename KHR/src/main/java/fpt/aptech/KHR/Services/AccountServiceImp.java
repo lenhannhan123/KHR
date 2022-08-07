@@ -103,4 +103,12 @@ public class AccountServiceImp implements IAccountRepository {
         repository.updateRecoveryCode(recoverycode, mail);
     }
 
+    @Override
+    public List<Account> listAll(String keyword) {
+        if (keyword != null) {
+            return repository.search(keyword);
+        }
+        return repository.findAll();
+    }
+
 }
