@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         buttonWorkSchedule();
         buttonHomeLogout();
         buttonDayOff();
+        timekeepingBtn();
     }
 
 
@@ -146,8 +147,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void timekeepingBtn(){
+        Button button1 = findViewById(R.id.Home_btnTimekeeping);
 
-
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, TimekeepingActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
 
 }

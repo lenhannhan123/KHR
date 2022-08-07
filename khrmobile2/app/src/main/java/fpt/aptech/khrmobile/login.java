@@ -1,6 +1,7 @@
 package fpt.aptech.khrmobile;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -180,12 +181,8 @@ public class login extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
-//                String message = t.getLocalizedMessage();
-//                Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
-                AlertDialog.Builder builder = new AlertDialog.Builder(login.this);
-                builder.setTitle("Error");
-                builder.setMessage(t.getMessage());
-                builder.show();
+                String message = t.getLocalizedMessage();
+                Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
             }
         });
     }
