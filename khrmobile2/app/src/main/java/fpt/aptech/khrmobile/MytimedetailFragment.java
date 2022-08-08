@@ -81,7 +81,7 @@ public class MytimedetailFragment extends Fragment {
             if(data.size()>0){
                 setCalender();
             }else {
-                Toast.makeText(view.getContext(),"Khong co du lieu",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext(),"Khong co du lieu",Toast.LENGTH_SHORT).show();
             }
 
 

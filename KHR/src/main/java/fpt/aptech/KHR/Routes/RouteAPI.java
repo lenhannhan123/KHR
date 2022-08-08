@@ -45,4 +45,10 @@ public class RouteAPI {
 
     public final static String TimelineGetAddTimeline = "api/timeline/addtimeline/list";
     public final static String CheckAuth = "api/auth/signin";
+
+    public final static String GetTimeLineSort = "api/timeline/gettimelinedetail";
+
+    public final static String GetTimeLineSort1 = "api/timeline/sort/gettimeline";
+
+    public final static String GetTimeLineSortDetail = "api/timeline/sort/gettimelinedetail";
 }
