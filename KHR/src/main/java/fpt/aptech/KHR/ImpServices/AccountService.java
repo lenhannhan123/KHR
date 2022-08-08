@@ -6,14 +6,11 @@
 package fpt.aptech.KHR.ImpServices;
 
 import fpt.aptech.KHR.Entities.Account;
-import fpt.aptech.KHR.Entities.UserTimeline;
 import fpt.aptech.KHR.Reponsitory.AccountRepository;
 import fpt.aptech.KHR.Services.IAccountRepository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +26,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AccountService implements UserDetailsService {
-
+    
     @Autowired
     IAccountRepository repository;
 
@@ -43,7 +40,6 @@ public class AccountService implements UserDetailsService {
 
         Account bossaccount = repository.findByMail(username);
         Account account = repository.findByMail(username);
-
 
         if (bossaccount != null) {
             if (bossaccount.getRole().equals("3")) {
@@ -87,5 +83,4 @@ public class AccountService implements UserDetailsService {
     public Account loginAccount(String mail, String password) {
         return accountRepository.loginAccount(mail, password);
     }
-
 }

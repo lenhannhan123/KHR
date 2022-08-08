@@ -10,6 +10,7 @@ import fpt.aptech.KHR.Entities.Account;
 import java.util.List;
 
 import fpt.aptech.KHR.Entities.Store;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +46,11 @@ public interface IAccountRepository {
     public boolean checkRecoveryCode(String mail, String recoverycode);
 
     public void updatePassword(String password, String mail);
+    
+    public void updateBasicInfoMobile(String fullname, String phone, Date birthdate, boolean gender, String mail);
 
     public void updateRecoveryCode(String recoverycode, String mail);
+
+    public List<Account> listAll(String keyword);
 
 }

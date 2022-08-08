@@ -100,11 +100,22 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
-
-    
-//       @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
-//    private List<TimelineDetail> timelineDetailList;
-
+//    @JoinTable(name = "account_token", joinColumns = {
+//    @JoinColumn(name = "Mail", referencedColumnName = "Mail")}, inverseJoinColumns = {
+//    @JoinColumn(name = "Mail", referencedColumnName = "Mail")})
+//    @ManyToMany
+//    private List<Account> accountList;
+//    @ManyToMany(mappedBy = "accountList")
+//    private List<Account> accountList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mail")
+    private List<TimelineDetail> timelineDetailList;
+//    private static final long serialVersionUID = 1L;
+//    @Id
+//    @Basic(optional = false)
+//    @NotNull
+//    @Size(min = 1, max = 100)
+//    @Column(name = "Mail")
+//    private String mail;
 
     public Account() {
     }
