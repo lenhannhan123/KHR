@@ -27,6 +27,7 @@ public class KhrApplication {
         FirebaseApp app = FirebaseApp.initializeApp(options);
         return FirebaseMessaging.getInstance(app);
     }
+    
     public static void main(String[] args) {
         SpringApplication.run(KhrApplication.class, args);
         

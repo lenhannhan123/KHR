@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class DayOffActivity extends AppCompatActivity {
     DayOffServices dayOffServices;
     List<DayOff> dayOffsList;
     RecyclerView recyclerView;
-    ImageButton addbuton;
+    Button addbuton;
     TextView tvtotal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +59,20 @@ public class DayOffActivity extends AppCompatActivity {
         callNav.setDisplay(scrollView,DayOffActivity.this,0.8);
         buttonBack();
 
-
+        addbuton=findViewById(R.id.btnregesdayoff);
         recyclerView = findViewById(R.id.rvcdayoff);
         tvtotal = findViewById(R.id.textTotalday);
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
         dayOffServices = DayOffUtillAPI.getAccountDayoff();
         setDropItem();
         GetTokenData();
+        addbuton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DayOffActivity.this, RegisterDayoffActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
     private void buttonBack(){
