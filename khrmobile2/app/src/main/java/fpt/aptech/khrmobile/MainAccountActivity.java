@@ -57,11 +57,19 @@ public class MainAccountActivity extends AppCompatActivity {
         String phonekey = sharedpreferences.getString(MainActivity.Phone,null);
         String birthdaykey = sharedpreferences.getString(MainActivity.Birthday,null);
         String avatarkey = sharedpreferences.getString(MainActivity.Avatar, null);
+        String genderkey = sharedpreferences.getString(MainActivity.Gender, null);
 
         username.setText(namekey);
         mail.setText(mailkey);
         phone.setText(phonekey);
         birthday.setText(birthdaykey);
+        if(genderkey == "true"){
+            gender.setText("Nam");
+        }
+        else{
+            gender.setText("Nữ");
+        }
+
 
         context = getApplicationContext();
         int radius = 500; // corner radius, higher value = more rounded

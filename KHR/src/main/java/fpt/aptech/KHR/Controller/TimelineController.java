@@ -1057,30 +1057,28 @@ public class TimelineController {
     }
 
 
-
     @RequestMapping(value = {RouteWeb.TimelineSortRedirectURL}, method = RequestMethod.GET)
     public String TimelineSortRedirectURL(Model model, HttpServletRequest request, HttpServletResponse response) {
 
-     int id= Integer.parseInt(request.getParameter("id"))   ;
+        int id = Integer.parseInt(request.getParameter("id"));
 
-     List<TimelineDetail>  Listtimeline=  timelineDetailServices.FindbyIdTimeline(id);
+        List<TimelineDetail> Listtimeline = timelineDetailServices.FindbyIdTimeline(id);
 
 
-     if(Listtimeline.size()==0){
+        if (Listtimeline.size() == 0) {
 
-         String redirectUrl = "/timeline/sortwork/create?id="+id;
-         return "redirect:" + redirectUrl;
-     }else {
-         String redirectUrl = "/timeline/sortwork?id="+id;
-         return "redirect:" + redirectUrl;
-     }
+            String redirectUrl = "/timeline/sortwork/create?id=" + id;
+            return "redirect:" + redirectUrl;
+        } else {
+            String redirectUrl = "/timeline/sortwork?id=" + id;
+            return "redirect:" + redirectUrl;
+        }
 
 
     }
 
     @RequestMapping(value = {RouteWeb.TimelineSortCreateURL}, method = RequestMethod.GET)
     public String TimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
-
 
 
         String idTimelineStr = request.getParameter("id").toString();
@@ -1293,19 +1291,7 @@ public class TimelineController {
                             }
 
                         }
-                        if (UserPropertyList.size() == 1) {
 
-
-                            shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(0).getId_user());
-                            for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                                if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(0).getId_user())) {
-                                    UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                                }
-
-                            }
-                            break;
-                        }
 
                         //Tìm user làm dc trong 1 ca và có vị trí đó -> đầu ra UserPropertyList
 
@@ -1330,7 +1316,7 @@ public class TimelineController {
 
                             if (check == true) {
                                 UserPropertyList.remove(UserPropertyList.get(j));
-
+                                j -= 1;
                             }
                         }
 
@@ -1513,19 +1499,7 @@ public class TimelineController {
                         }
 
                     }
-                    if (UserPropertyList.size() == 1) {
 
-
-                        shiftOnDayList.get(i).getPositionOnDays().get(k).setMail(UserPropertyList.get(0).getId_user());
-                        for (int j = 0; j < UserPropertyListTemplate.size(); j++) {
-                            if (UserPropertyListTemplate.get(j).getId_user().equals(UserPropertyList.get(0).getId_user())) {
-                                UserPropertyListTemplate.get(j).setPeople_Shift(UserPropertyListTemplate.get(j).getPeople_Shift() - 1);
-
-                            }
-
-                        }
-                        break;
-                    }
 
                     //Tìm user làm dc trong 1 ca và có vị trí đó -> đầu ra UserPropertyList
 
@@ -1550,7 +1524,7 @@ public class TimelineController {
 
                         if (check == true) {
                             UserPropertyList.remove(UserPropertyList.get(j));
-
+                            j -= 1;
                         }
                     }
 
@@ -1649,7 +1623,7 @@ public class TimelineController {
 
                         if (check == true) {
                             UserPropertyList.remove(UserPropertyList.get(j));
-
+                            j -= 1;
                         }
                     }
 
@@ -1719,11 +1693,10 @@ public class TimelineController {
         }
 
 
+        for (ShiftOnDay item : shiftOnDayList) {
 
-        for (ShiftOnDay item: shiftOnDayList  ) {
-
-            for (PositionOnDay item2: item.getPositionOnDays()
-                 ) {
+            for (PositionOnDay item2 : item.getPositionOnDays()
+            ) {
                 TimelineDetail timelineDetail = new TimelineDetail();
                 timelineDetail.setIdTimeline(new Timeline(Integer.parseInt(idTimelineStr)));
                 timelineDetail.setMail(new Account(item2.getMail()));
@@ -1733,16 +1706,14 @@ public class TimelineController {
             }
 
 
-
         }
-
 
 
 //        JsonServices.dd(JsonServices.ParseToJson(UserPropertyListTemplate), response);
 //
 //
 //        JsonServices.dd(People_Shift, response);
-        String redirectUrl = "/timeline/sortwork?id="+idTimelineStr ;
+        String redirectUrl = "/timeline/sortwork?id=" + idTimelineStr;
         return "redirect:" + redirectUrl;
     }
 
@@ -1750,23 +1721,162 @@ public class TimelineController {
     @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.GET)
     public String GetTimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
 
-        int id= Integer.parseInt(request.getParameter("id"))   ;
-        List<TimelineDetail>  Listtimeline=  timelineDetailServices.FindbyIdTimeline(id);
+        int id = Integer.parseInt(request.getParameter("id"));
+        List<TimelineDetail> Listtimeline = timelineDetailServices.FindbyIdTimeline(id);
 
         List<Position> positionList = positionServices.findAll();
-        List<Account> accountLList= accountService.findAll();
+        List<Account> list1 = accountService.findAll();
 
+        HttpSession session = request.getSession();
+        int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+        List<Account> accountLList = new ArrayList<>();
+
+        if (list1.size() > 0) {
+
+            for (Account item : list1
+            ) {
+                if (item.getRole().equals("0")) {
+                    if (item.getIdStore().getId() == IdStore) {
+                        accountLList.add(item);
+                    }
+
+                }
+            }
+
+        }
+
+        List<AccountPosition> accountPositionList = accountPositionServices.findAll();
+
+        String userTimelineListString = JsonServices.ParseToJson(accountPositionList);
         String ListtimelineString = JsonServices.ParseToJson(Listtimeline);
         String positionListString = JsonServices.ParseToJson(positionList);
         String accountLListString = JsonServices.ParseToJson(accountLList);
 
-
-
-        request.setAttribute("Listtimeline",ListtimelineString);
-        request.setAttribute("positionList",positionListString);
-        request.setAttribute("accountLList",accountLListString);
+        request.setAttribute("ListAccountposition", userTimelineListString);
+        request.setAttribute("Listtimeline", ListtimelineString);
+        request.setAttribute("positionList", positionListString);
+        request.setAttribute("accountLList", accountLListString);
 
         return "admin/timeline/timelinedetail";
+    }
+
+    @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.POST)
+    public String PostTimelineSort(Model model, HttpServletRequest request, HttpServletResponse response,@RequestParam String data) {
+
+
+//        JsonServices.dd(data,response);
+//        JsonServices.dd(data,response);
+
+        List<TimelineDetail> ListTimelineDetail = new ArrayList<>();
+
+
+        JSONArray jsonArr;
+        try {
+            jsonArr = new JSONArray(data);
+
+            for (int i = 0; i < jsonArr.length(); i++) {
+                TimelineDetail timelineDetail = new TimelineDetail();
+
+
+                JSONObject jsonObj = null;
+                jsonObj = jsonArr.getJSONObject(i);
+
+                timelineDetail.setId((int) jsonObj.get("id"));
+                timelineDetail.setShiftCode((int) jsonObj.get("shiftCode"));
+                timelineDetail.setMail(new Account((String) jsonObj.get("mail")));
+                timelineDetail.setIdPosition(new Position((int) jsonObj.get("idPosition")));
+                timelineDetail.setIdTimeline(new Timeline((int) jsonObj.get("idTimeline")));
+
+//                JSONObject jsonObj1 = null;
+//                jsonObj1 = jsonArr.getJSONObject((String)jsonObj.get("shiftCode"));
+
+
+
+                ListTimelineDetail.add(timelineDetail);
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+//        JsonServices.dd(JsonServices.ParseToJson(ListTimelineDetail),response);
+
+        List<TimelineDetail> Listtimeline = timelineDetailServices.FindbyIdTimeline(ListTimelineDetail.get(0).getIdTimeline().getId());
+
+        boolean check=true;
+        for (TimelineDetail item:Listtimeline ) {
+            check=true;
+
+            for (TimelineDetail item1:ListTimelineDetail ) {
+
+                if (item1.getId()>0){
+
+                    if(String.valueOf(item1.getId()).equals(String.valueOf(item.getId()))){
+                        check=false;
+                    }
+
+                }
+
+
+
+            }
+
+            if (check==true){
+                timelineDetailServices.Delete(item.getId());
+            }
+        }
+        boolean check1=true;
+
+        for (TimelineDetail item:Listtimeline ) {
+
+
+            for (TimelineDetail item1:ListTimelineDetail ) {
+                check1=true;
+
+                if (item1.getId()>0){
+                    if(String.valueOf(item1.getId()).equals(String.valueOf(item.getId()))){
+
+                        if(String.valueOf(item1.getMail().getMail()).equals(String.valueOf(item.getMail().getMail()))){
+                            check1=false;
+                        }
+
+                        if(String.valueOf(item1.getIdPosition().getId()).equals(String.valueOf(item.getIdPosition().getId()))){
+                            check1=false;
+                        }
+
+                        if (check1==false){
+                            item.setMail(accountService.findByMail(item1.getMail().getMail()));
+                            item.setIdPosition(positionServices.FindOne(item1.getIdPosition().getId()));
+                            timelineDetailServices.Edit(item);
+
+                        }
+
+
+
+                    }
+
+                }
+            }
+        }
+
+
+        for (TimelineDetail item1:ListTimelineDetail ) {
+
+            if (item1.getId()==0){
+               TimelineDetail timelineDetail = new TimelineDetail();
+                timelineDetail.setIdTimeline(new Timeline(item1.getIdTimeline().getId()));
+                timelineDetail.setIdPosition(new Position( item1.getIdPosition().getId()));
+                timelineDetail.setMail(new Account(item1.getMail().getMail()));
+                timelineDetail.setShiftCode(item1.getShiftCode());
+                timelineDetailServices.Create(timelineDetail);
+
+            }
+        }
+
+
+
+        String redirectUrl = "/timeline/index" ;
+        return "redirect:" + redirectUrl;
     }
 
 

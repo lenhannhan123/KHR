@@ -39,9 +39,13 @@
 
 
                     <div class="row" style="margin-bottom:2% ;">
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control input" id="" placeholder="Nhập email...">
-                        </div>
+                        <form class="col-sm-3" th:action="@{/account/index}">
+                            <input class="form-control input" placeholder="Nhập email hoặc tên..." type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
+                            &nbsp;
+                            <input class="btn btn-success button-defualt" type="submit" value="Search" />
+                            &nbsp;
+                            <input class="btn btn-success button-defualt" type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+                        </form>
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-5"></div>
@@ -192,6 +196,12 @@
                 function submitdatafunc() {
                     document.getElementById("sumbitdata").click();
 
+                }
+            </script>
+
+            <script type="text/javascript">
+                function clearSearch() {
+                    window.location = "[[@{/account/index}]]";
                 }
             </script>
 

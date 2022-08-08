@@ -43,11 +43,11 @@ public interface TimekeepingRepository extends JpaRepository<Timekeeping, Intege
     @Query("select s from Shift s where DATE(s.timestart) = :timestart")
     public List<Shift> findShiftByDate(@RequestParam("value") Date timestart);
 
-    @Query("select t from Timekeeping t where MONTH(t.timestart) = :month and YEAR(t.timestart) = :year")
-    public List<Timekeeping> findAllByDate(@RequestParam("value") int month, @RequestParam("value") int year);
+    @Query("select t from Timekeeping t where t.mail = :mail and MONTH(t.timestart) = :month and YEAR(t.timestart) = :year")
+    public List<Timekeeping> findAllByDate(@RequestParam("value") Account mail, @RequestParam("value") int month, @RequestParam("value") int year);
 
-    @Query("select t from TimelineDetail t where t.mail = :mail and t.shiftCode = :id")
-    public TimelineDetail findTimelineDetailByMailAndShift(@RequestParam("value") Account mail, @RequestParam("value") int id);
+    @Query("select t from TimelineDetail t where t.mail = :mail and t.shiftCode = :id and t.idPosition = :Id_Position and t.idTimeline = :idTimeline")
+    public List<TimelineDetail> findTimelineDetailList(@RequestParam("value") Account mail, @RequestParam("value") int id, @RequestParam("value") Position Id_Position, @RequestParam("value") Timeline idTimeline);
 
     @Query("SELECT s FROM Shift s WHERE s.shiftcode = :shiftcode and DATE(s.timestart) = :date and s.idPosition = :idPosition")
     Shift findShiftByShiftCode(@PathVariable("shiftcode") int shiftcode, Date date, Position idPosition);

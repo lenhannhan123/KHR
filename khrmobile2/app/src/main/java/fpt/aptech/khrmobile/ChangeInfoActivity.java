@@ -1,8 +1,5 @@
 package fpt.aptech.khrmobile;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,12 +10,24 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.textview.MaterialTextView;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class ChangeInfoActivity extends AppCompatActivity {
+    MaterialTextView tvDate;
+    MaterialButton btnPickDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,22 +44,52 @@ public class ChangeInfoActivity extends AppCompatActivity {
         ScrollView scrollView = findViewById(R.id.scrollView);
         callNav.setDisplay(scrollView,ChangeInfoActivity.this,0.8);
 
+
+        pickDate();
         buttonBack();
         ChangeSpinner();
 
     }
 
+    private void pickDate(){
+        btnPickDate = findViewById(R.id.btn_pickDate);
+        btnPickDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog();
+            }
+
+
+        });
+    }
+
+    private void showDatePickerDialog() {
+        tvDate = findViewById(R.id.tv_Date);
+
+        MaterialDatePicker<Long> materialDatePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build();
+
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+            @Override
+            public void onPositiveButtonClick(Long selection) {
+                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                calendar.setTimeInMillis(selection);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate  = format.format(calendar.getTime());
+                tvDate.setText(formattedDate);
+            }
+        });
+        materialDatePicker.show(getSupportFragmentManager(),"TAG");
+
+
+    }
+
 
     private void ChangeSpinner(){
-
-
-
         Spinner  spnCategory = (Spinner) findViewById(R.id.Info_spinner_gender);
 
         List<String> list = new ArrayList<>();
         list.add("Nam");
         list.add("Nữ");
-
 
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,list);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);

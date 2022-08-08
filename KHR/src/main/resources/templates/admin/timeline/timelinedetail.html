@@ -26,6 +26,14 @@
             color: white;
         }
 
+        .edit_shift {
+            font-weight: normal;
+            color: deepskyblue;
+        }
+
+        .edit_shift:hover {
+            cursor: pointer;
+        }
 
     </style>
 
@@ -104,7 +112,8 @@
                                 <div class="row">
                                     <div class="col"></div>
                                     <div class="col">
-                                        <input type="button" class="btn btn-success form-control button-defualt"
+                                        <input type="button" v-on:click="submit"
+                                               class="btn btn-success form-control button-defualt"
                                                style="background-color: #6667AB" value="Lưu dữ liệu" id="button-login">
 
                                     </div>
@@ -116,7 +125,8 @@
 
                         <div class="row" id="border-timelinedetail">
 
-                            <div style="margin: 3% auto;" class="col-sm-4"  v-for="(item,index) in datadishplay" :key="index" v-if="index >= daychoosee*5-5 && index<daychoosee*5 " >
+                            <div style="margin: 3% auto;" class="col-sm-4" v-for="(item,index) in datadishplay"
+                                 :key="index" v-if="index >= daychoosee*5-5 && index<daychoosee*5 ">
                                 <table class="table table-bordered" style="width:80% ; margin:0px auto">
                                     <thead>
                                     <tr>
@@ -125,7 +135,10 @@
                                             <b v-text="item.names">Ca sáng</b>
                                             <br>
                                             <b v-text="item.names1">Ca sáng</b>
-
+                                            <br/>
+                                            <br/>
+                                            <span class="edit_shift"
+                                                  v-on:click="openModal(index)">Chỉnh sửa ca làm</span>
 
                                         </th>
                                     </tr>
@@ -134,15 +147,16 @@
                                     <tr id="" class="hover-click">
 
 
-                                        <td style="text-align:left ; padding:1.5rem" >
+                                        <td style="text-align:left ; padding:1.5rem">
 
-                                          <div  v-for="(item1,index1) in item.positiom" :key="index">
-                                                <b v-text="item1.nameposition"></b> : <span v-text="item1.usermail"></span>
-                                              <br />
-                                              <br />
+                                            <div v-for="(item1,index1) in item.positiom" :key="index">
+                                                <b v-text="item1.nameposition"></b> : <span
+                                                    v-text="item1.usermail"></span>
+                                                <br/>
+                                                <br/>
 
 
-                                          </div>
+                                            </div>
 
 
                                         </td>
@@ -151,8 +165,7 @@
 
                                     </tbody>
                                 </table>
-                            </div >
-
+                            </div>
 
 
                         </div>
@@ -168,11 +181,97 @@
 
         </div>
 
+        <button type="button" id="openmodal" class="btn btn-primary" hidden data-toggle="modal"
+                data-target="#exampleModal">
+            Launch demo modal
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Chỉnh sửa thông tin</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row" style=" margin-bottom: 5%;text-align: center; font-weight: bold ">
+                            <div class="col-sm-4">Tên nhân viên</div>
+                            <div class="col-sm-4">Vị trí</div>
+                            <div class="col-sm-4">Hành động</div>
+
+                        </div>
+
+                        <div class="row" style="text-align: center; margin-top: 3%"
+                             v-for="(item12,index12) in formopentmp" :key="index" v-show="item12.is_display">
+                            <div class="col-sm-5">
+                                <select class="form-control input" :id="'id_account'+index12" :value="item12.mail1"
+                                        v-model="formopentmp[index12].mail1" v-on:change="changemail(index12)">
+                                    <option v-for="(item,index) in Userlist" :key="index" :value="item.mail"
+                                            v-text="item.mail"></option>
+                                </select>
+
+                            </div>
+                            <div class="col-sm-5">
+                                <select class="form-control input" :id="'id_position'+index12"
+                                        :value="item12.id_position1" v-model="formopentmp[index12].id_position1"
+                                        :disable="item12.select_pos_display"
+                                >
+                                    <option v-for="(item,index) in item12.tmp_position1" :key="index"
+                                            :value="item.idPosition.id"
+                                            v-text="item.idPosition.positionname"></option>
+                                </select>
+
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="button-envent" style="margin-right:10px;" id="trash" type="button"
+                                        v-on:click="deleteitem(index12)">
+                                    <i class="fas fa-trash" style="color: #FF1E00"></i>
+                                </button>
+
+                            </div>
+                        </div>
+
+                        <div class="row" style=" margin-top:5%;text-align: center; font-weight: bold ">
+
+                            <div class="col">
+                                <span class="edit_shift" v-on:click="addposition">Thêm vị trí mới</span>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="close_form" class="btn btn-secondary" data-dismiss="modal">Đóng
+                        </button>
+                        <button type="button" class="btn btn-primary" v-on:click="saveposition">Lưu dữ liệu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <form method="post" hidden>
+
+            <textarea name="data" id="submit-text"></textarea>
+            <input type="submit" id="btn-submit">
+
+        </form>
+
     </div>
 
     <textarea th:text="${Listtimeline}" hidden id="TimelineData"></textarea>
     <textarea th:text="${positionList}" hidden id="TimelineEnPosition"></textarea>
     <textarea th:text="${accountLList}" hidden id="TimeLineUser"></textarea>
+    <textarea th:text="${ListAccountposition}" hidden id="ListAccountposition"></textarea>
+
 
     <script>
         var App = new Vue({
@@ -190,8 +289,11 @@
                     daychoosee: 0,
                     numberday: 0,
                     positiontmp: [],
-                    datadishplay:[],
-                    dataposdishplay:[]
+                    datadishplay: [],
+                    dataposdishplay: [],
+                    formopentmp: [],
+                    shift_code_tmp: 0,
+                    ListAccountposition: []
 
 
                 }
@@ -204,11 +306,13 @@
                     DataList = JSON.parse(document.getElementById("TimelineData").value);
                     PositionList = JSON.parse(document.getElementById("TimelineEnPosition").value);
                     Userlist = JSON.parse(document.getElementById("TimeLineUser").value);
+                    ListAccountposition = JSON.parse(document.getElementById("ListAccountposition").value);
 
 
                     this.DataList = DataList;
                     this.PositionList = PositionList;
                     this.Userlist = Userlist;
+                    this.ListAccountposition = ListAccountposition;
 
 
                     this.SetNumberofDay();
@@ -217,10 +321,10 @@
                 },
 
                 SetNumberofDay: function () {
-                    this.numberofday.push({thu: "Thứ ", ischoose: false, number:1  * 5})
+                    this.numberofday.push({thu: "Thứ ", ischoose: false, number: 1 * 5})
                     for (let i = 2; i <= 8; i++) {
                         if (i < 8) {
-                            this.numberofday.push({thu: "Thứ " + i, ischoose: false, number: i  * 5})
+                            this.numberofday.push({thu: "Thứ " + i, ischoose: false, number: i * 5})
 
                         } else {
                             this.numberofday.push({thu: "Chủ nhật", ischoose: false, number: i * 5})
@@ -234,7 +338,7 @@
                     this.daychoosee = 1;
                     this.numberday = this.numberofday[1].number
 
-                    console.log(this.numberofday);
+
                 },
 
                 setday: function (i) {
@@ -246,13 +350,41 @@
 
 
                 setCreatedata: function () {
+                    this.datadishplay = []
 
                     let usermail = "";
                     for (let i = 0; i < 35; i++) {
                         this.positiontmp = []
-                        this.dataposdishplay=[]
+                        this.dataposdishplay = []
+
                         for (let j = 0; j < this.PositionList.length; j++) {
-                            this.positiontmp.push({idPosition: this.PositionList[j].id, usermail: "",nameposition:this.PositionList[j].positionname})
+                            this.positiontmp.push({
+                                idPosition: this.PositionList[j].id,
+                                usermail: "",
+                                nameposition: this.PositionList[j].positionname
+                            })
+                        }
+                        count = 0
+
+                        for (let k = 0; k < this.positiontmp.length; k++) {
+                            count = 0
+                            for (let j = 0; j < this.DataList.length; j++) {
+
+                                if (this.DataList[j].shiftCode == i) {
+                                    if (this.positiontmp[k].idPosition == this.DataList[j].idPosition.id) {
+
+                                        count += 1;
+                                    }
+
+
+                                }
+                            }
+                            if (count == 0) {
+                                this.positiontmp.splice(k, 1)
+                                k -= 1;
+                            }
+
+
                         }
 
 
@@ -263,7 +395,7 @@
                                 if (this.DataList[j].shiftCode == i) {
                                     if (this.positiontmp[k].idPosition == this.DataList[j].idPosition.id) {
 
-                                        usermail+=this.DataList[j].mail.mail+", "
+                                        usermail += this.DataList[j].mail.mail + ", "
                                     }
 
 
@@ -274,17 +406,16 @@
 
                         }
 
-                        this.datadishplay.push({names : "" , names1:"", positiom: this.positiontmp })
-                        this.dataposdishplay=[]
+                        this.datadishplay.push({names: "", names1: "", positiom: this.positiontmp})
+                        this.dataposdishplay = []
 
 
-                        // console.log( this.DataList);
                         this.positiontmp = [];
                     }
 
 
-                     count =0;
-                    for (let i = 0; i < 35; i++){
+                    count = 0;
+                    for (let i = 0; i < 35; i++) {
 
                         switch (count) {
 
@@ -307,28 +438,265 @@
                             default:
                                 this.datadishplay[i].names = "Ca đêm  "
                                 this.datadishplay[i].names1 = "(22:00 - 06:00)"
-                                    break
+                                break
 
                         }
-                        count+=1;
+                        count += 1;
 
-                        if(count>4){
-                            count=0;
+                        if (count > 4) {
+                            count = 0;
                         }
 
                     }
-                    console.log( this.datadishplay);
 
 
                 },
 
+                openModal: function (iddata) {
+                    this.shift_code_tmp = iddata;
+                    this.formopentmp = [];
+
+                    // console.log(this.DataList);
+
+
+                    id = 0;
+                    mail = "";
+                    id_position = 0;
+                    position_name = "";
+                    id_timeline = 0;
+                    shift_code = 0;
+
+                    for (let i = 0; i < this.DataList.length; i++) {
+                        id = 0;
+                        mail = "";
+                        id_position = 0;
+                        id_timeline = 0;
+                        shift_code = 0;
+                        tmp_position = [];
+
+                        if (this.DataList[i].shiftCode == iddata) {
+                            id = this.DataList[i].id;
+                            mail = this.DataList[i].mail.mail;
+                            id_position = this.DataList[i].idPosition.id;
+                            tmp_position = this.ListAccountposition.filter(function (value) {
+                                // if(item.mail.mail==mail){
+                                tmpdata = [];
+                                tmpdata = value
+                                if (mail == tmpdata.mail.mail) {
+
+                                    return tmpdata.idPosition;
+                                }
+                            })
+
+
+                            console.log(tmp_position);
+
+                            id_timeline = this.DataList[i].idTimeline.id;
+                            shift_code = this.DataList[i].shiftCode;
+                            this.formopentmp.push({
+                                id1: id,
+                                mail1: mail,
+                                id_position1: id_position,
+                                id_timeline1: id_timeline,
+                                shift_code1: shift_code,
+                                tmp_position1: tmp_position,
+                                is_display: true,
+                                select_pos_display: true,
+
+                            });
+                        }
+
+
+                    }
+
+                    // console.log(this.formopentmp);
+
+
+                    document.getElementById("openmodal").click();
+                },
+
+
+                addposition: function () {
+                    this.formopentmp.push({
+                        id1: 0,
+                        mail1: "",
+                        id_position1: 0,
+                        id_timeline1: this.DataList[0].idTimeline.id,
+                        shift_code1: this.shift_code_tmp,
+                        is_display: true,
+                        select_pos_display: false
+                    });
+                },
+
+                deleteitem: function (index12) {
+
+                    // alert(index12);
+                    this.formopentmp[index12].is_display = false;
+                },
+
+                saveposition: function () {
+
+                    // console.log(this.formopentmp);
+                    //
+                    console.log(this.DataList);
+
+                    //Xoa
+                    for (let j = 0; j < this.formopentmp.length; j++) {
+                        for (let i = 0; i < this.DataList.length; i++) {
+                            if (this.formopentmp[j].id1 > 0 && this.formopentmp[j].id1 == this.DataList[i].id && this.formopentmp[j].is_display == false) {
+                                this.DataList.splice(i, 1);
+
+                            }
+
+                            if (this.formopentmp[j].id1 == 0 && this.DataList[i].mail.mail == this.formopentmp[j].mail1 && this.DataList[i].idPosition.id == this.formopentmp[j].id_position1 && this.formopentmp[j].is_display == false) {
+                                this.DataList.splice(i, 1);
+
+                            }
+                        }
+
+                    }
+                    //Sua
+                    for (let j = 0; j < this.formopentmp.length; j++) {
+                        for (let i = 0; i < this.DataList.length; i++) {
+                            if (this.formopentmp[j].id1 > 0 && this.formopentmp[j].id1 == this.DataList[i].id && this.formopentmp[j].is_display == true) {
+                                this.DataList[i].mail = this.generateAccount(this.formopentmp[j].mail1)
+                                this.DataList[i].idPosition = this.generatePosition(this.formopentmp[j].id_position1)
+                                // console.log(this.DataList[i].mail)
+                            }
+                        }
+
+                    }
+
+                    //Them
+                    for (let j = 0; j < this.formopentmp.length; j++) {
+
+                        if (this.formopentmp[j].id1 == 0 && this.formopentmp[j].is_display == true) {
+
+                            checkdata = true
+                            for (let i = 0; i < this.DataList.length; i++) {
+                                if (this.DataList[i].mail.mail == this.formopentmp[j].mail1 &&
+
+                                    this.DataList[i].id == 0 &&
+                                    this.DataList[i].shiftCode == this.shift_code_tmp
+                                ) {
+                                    checkdata = false
+                                }
+
+                            }
+
+                            if (checkdata == true) {
+
+                                mail1 = this.generateAccount(this.formopentmp[j].mail1)
+                                idPosition1 = this.generatePosition(this.formopentmp[j].id_position1)
+                                id1 = 0;
+                                idTimeline1 = this.DataList[0].idTimeline;
+                                shift_codee1 = this.shift_code_tmp;
+                                this.DataList.push({
+                                    id: id1,
+                                    idPosition: idPosition1,
+                                    idTimeline: idTimeline1,
+                                    mail: mail1,
+                                    shiftCode: shift_codee1
+                                })
+                            }
+
+
+                            // console.log("nhan")
+
+                            // this.DataList.push({
+                            //     id: "nhan"
+                            //
+                            // })
+                            // console.log(this.DataList[i].mail)
+                        }
+
+
+                    }
+
+
+                    console.log(this.DataList);
+
+                    this.setCreatedata();
+
+
+                    document.getElementById("close_form").click();
+
+                },
+
+                changemail: function (index) {
+
+                    // this.formopentmp[index].id_position = 0;
+                    mail = this.formopentmp[index].mail1;
+                    Strr = "";
+
+                    tmp_position = this.ListAccountposition.filter(function (value) {
+                        // if(item.mail.mail==mail){
+                        tmpdata = [];
+                        tmpdata = value
+                        if (mail == tmpdata.mail.mail) {
+
+                            return tmpdata.idPosition;
+                        }
+                    })
+
+                    this.formopentmp[index].tmp_position1 = tmp_position;
+
+                },
+
+                generatePosition: function (id) {
+
+                    for (let i = 0; i < this.PositionList.length; i++) {
+                        if (this.PositionList[i].id == id) {
+
+                            return this.PositionList[i]
+                        }
+                    }
+
+                },
+                generateAccount: function (mail) {
+                    for (let i = 0; i < this.Userlist.length; i++) {
+                        if (this.Userlist[i].mail == mail) {
+
+                            return this.Userlist[i]
+                        }
+                    }
+                },
 
                 submit: function () {
 
 
-                    document.getElementById("submit-text").value = JSON.stringify(this.data);
+                    // console.log(this.DataList);
+                    //
+                    // axios.post(`/timeline/sortwork`, {
+                    //     datalist: JSON.stringify(this.DataList)
+                    // })
+                    //     .then(response => {
+                    //
+                    //         console.log(response.body)
+                    //     })
+                    //     .catch(e => {
+                    //         this.errors.push(e)
+                    //     })
+
+                    // console.log(this.DataList);
+
+                    dataString = [];
+                    for (let i = 0; i < this.DataList.length; i++) {
+                        dataString.push({
+                            id: this.DataList[i].id,
+                            shiftCode: this.DataList[i].shiftCode,
+                            idPosition: this.DataList[i].idPosition.id,
+                            idTimeline: this.DataList[i].idTimeline.id,
+                            mail:  this.DataList[i].mail.mail
+                        })
+
+                    }
+
+                    // console.log(dataString);
+
+
+                    document.getElementById("submit-text").value = JSON.stringify(dataString);
                     document.getElementById("btn-submit").click();
-                    // console.log(this.data);
 
 
                 }
