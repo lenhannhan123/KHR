@@ -17,16 +17,16 @@ import org.springframework.core.io.ClassPathResource;
 
 @SpringBootApplication
 public class KhrApplication {
-//    @Bean
-//    public FirebaseMessaging firebaseMessaging() throws IOException {
-//        GoogleCredentials googleCredentials = GoogleCredentials
-//                .fromStream(new ClassPathResource("khr-app-10543-firebase-adminsdk-mbjiy-ccaae4a813.json").getInputStream());
-//        FirebaseOptions options = new FirebaseOptions.Builder()
-//                .setCredentials(googleCredentials)
-//                .build();
-//        FirebaseApp app = FirebaseApp.initializeApp(options);
-//        return FirebaseMessaging.getInstance(app);
-//    }
+    @Bean
+    public FirebaseMessaging firebaseMessaging() throws IOException {
+        GoogleCredentials googleCredentials = GoogleCredentials
+                .fromStream(new ClassPathResource("khr-app-10543-firebase-adminsdk-mbjiy-ccaae4a813.json").getInputStream());
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(googleCredentials)
+                .build();
+        FirebaseApp app = FirebaseApp.initializeApp(options);
+        return FirebaseMessaging.getInstance(app);
+    }
     public static void main(String[] args) {
         SpringApplication.run(KhrApplication.class, args);
         

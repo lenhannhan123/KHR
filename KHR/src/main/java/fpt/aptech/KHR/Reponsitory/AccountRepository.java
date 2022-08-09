@@ -68,4 +68,6 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     @Query("UPDATE Account a SET a.fullname = :fullname , a.phone = :phone , a.birthdate = :birthdate , a.gender = :gender WHERE a.mail = :mail")
     void updateBasicInfoMobile(@Param("fullname") String fullname, @Param("phone") String phone, @Param("birthdate") Date birthdate, @Param("gender") boolean gender, @Param("mail") String mail);
 
+    @Query("SELECT a FROM Account a WHERE a.mail = :mail AND a.googleid = :googleid")
+    Account checkGoogleId(String mail, String googleid);
 }

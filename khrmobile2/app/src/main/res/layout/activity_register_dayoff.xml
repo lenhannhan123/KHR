@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".RegisterDayoffActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    tools:context=".DayOffActivity">
 
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_scrollUp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_height="520dp">
 
         <LinearLayout
             android:layout_width="409dp"
@@ -61,7 +68,6 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="20dp"
                 android:background="@xml/button_serch"
-                android:drawableRight="@drawable/common_google_signin_btn_icon_dark"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:pointerIcon="text" />
@@ -115,9 +121,16 @@
                 android:background="@xml/button_submit_tt"
                 android:text="Gửi yêu cầu"
                 android:textColor="@color/white" />
-
-
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@xml/duongvien_goctron"
+        app:menu="@xml/bottom_navigation_menu" />
+</LinearLayout>

@@ -16,6 +16,13 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".TimekeepingDetail"
+            android:name=".WorkScheduleDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddScheduleTimelineDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WorkscheduleActivity"
             android:exported="false" />
 
         <meta-data

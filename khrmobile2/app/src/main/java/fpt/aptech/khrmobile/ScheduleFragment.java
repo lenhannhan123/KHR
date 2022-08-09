@@ -18,17 +18,18 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddTimelineFragment#newInstance} factory method to
+ * Use the {@link ScheduleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddTimelineFragment extends Fragment {
-
+public class ScheduleFragment extends Fragment {
     View view;
     ArrayList<String> data = new ArrayList<>();
     String stt;
     String position;
 
-    private  ISendataListener  mISendataListener;
+
+    private ScheduleFragment.ISendataListener mISendataListener;
+
 
     public interface ISendataListener{
         void sendData(String position, String stt);
@@ -43,7 +44,7 @@ public class AddTimelineFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AddTimelineFragment() {
+    public ScheduleFragment() {
         // Required empty public constructor
     }
 
@@ -53,11 +54,11 @@ public class AddTimelineFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AddTimelineFragment.
+     * @return A new instance of fragment ScheduleFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddTimelineFragment newInstance(String param1, String param2) {
-        AddTimelineFragment fragment = new AddTimelineFragment();
+    public static ScheduleFragment newInstance(String param1, String param2) {
+        ScheduleFragment fragment = new ScheduleFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -78,8 +79,8 @@ public class AddTimelineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_add_timeline, container, false);
 
+        view = inflater.inflate(R.layout.fragment_schedule, container, false);
         Bundle bundle = getArguments();
         if(bundle!=null){
             data.addAll(bundle.getStringArrayList("data"));
@@ -96,6 +97,7 @@ public class AddTimelineFragment extends Fragment {
         }
         onClickButton();
         return view;
+
     }
 
     private void  setCalender(){
@@ -150,26 +152,26 @@ public class AddTimelineFragment extends Fragment {
             switch (item){
                 case "1":
                     Button button1 =view.findViewById(R.id.Btn_Shift11);
-                    ViewCompat.setBackgroundTintList(button1, ContextCompat.getColorStateList(view.getContext(), R.color.red));
+                    ViewCompat.setBackgroundTintList(button1, ContextCompat.getColorStateList(view.getContext(), R.color.green));
 //                    button1.setBackgroundColor();
                     break;
                 case "2":
                     Button button2 =view.findViewById(R.id.Btn_Shift12);
-                    ViewCompat.setBackgroundTintList(button2, ContextCompat.getColorStateList(view.getContext(), R.color.red));
+                    ViewCompat.setBackgroundTintList(button2, ContextCompat.getColorStateList(view.getContext(), R.color.green));
                     break;
                 case "3":
 
                     Button button3 =view.findViewById(R.id.Btn_Shift13);
-                    ViewCompat.setBackgroundTintList(button3, ContextCompat.getColorStateList(view.getContext(), R.color.red));
+                    ViewCompat.setBackgroundTintList(button3, ContextCompat.getColorStateList(view.getContext(), R.color.green));
 
                     break;
                 case "4":
                     Button button4 =view.findViewById(R.id.Btn_Shift14);
-                    ViewCompat.setBackgroundTintList(button4, ContextCompat.getColorStateList(view.getContext(), R.color.red));
+                    ViewCompat.setBackgroundTintList(button4, ContextCompat.getColorStateList(view.getContext(), R.color.green));
                     break;
                 default:
                     Button button5 =view.findViewById(R.id.Btn_Shift15);
-                    ViewCompat.setBackgroundTintList(button5, ContextCompat.getColorStateList(view.getContext(), R.color.red));
+                    ViewCompat.setBackgroundTintList(button5, ContextCompat.getColorStateList(view.getContext(), R.color.green));
                     break;
 
             }
@@ -233,11 +235,11 @@ public class AddTimelineFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mISendataListener =(ISendataListener) view;
+        mISendataListener =(ScheduleFragment.ISendataListener) view;
 
-        if (context instanceof AddTimelineDetailActivity)
+        if (context instanceof AddScheduleTimelineDetailActivity)
 //            this.listener = (DemoFragmentInterface) context;
-        mISendataListener =(ISendataListener) context;
+            mISendataListener =(ScheduleFragment.ISendataListener) context;
         else
             throw new RuntimeException("must implement onViewSelected!");
 
