@@ -14,12 +14,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Khrmobile"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".WorkScheduleDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddScheduleTimelineDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WorkscheduleActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/string.default_notification_channel_id" />
+
         <activity
-         android:name=".ScannerActivity"
-         android:exported="false" />
+            android:name=".TimekeepingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ScannerActivity"
+            android:exported="false" />
         <activity
             android:name=".QRDisplay"
             android:exported="false" />
@@ -85,6 +99,7 @@
                 android:name="com.google.android.actions"
                 android:resource="@xml/netsecurity" />
         </activity>
+
         <service
             android:name=".Services.MessageFirebaseService"
             android:enabled="true"

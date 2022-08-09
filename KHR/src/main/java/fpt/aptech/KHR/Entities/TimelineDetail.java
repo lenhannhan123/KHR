@@ -43,7 +43,7 @@ public class TimelineDetail implements Serializable {
     @NotNull
     @Column(name = "Shift_Code")
     private int shiftCode;
-       @JoinColumn(name = "Mail", referencedColumnName = "Mail")
+    @JoinColumn(name = "Mail", referencedColumnName = "Mail")
     @ManyToOne(optional = false)
     private Account mail;
     @JoinColumn(name = "Id_Position", referencedColumnName = "Id")

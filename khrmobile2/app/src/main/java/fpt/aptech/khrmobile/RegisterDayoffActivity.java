@@ -178,6 +178,11 @@ public class RegisterDayoffActivity extends AppCompatActivity {
         dayOffServices.AddDayOff(off).enqueue(new Callback<DayOff>() {
             @Override
             public void onResponse(Call<DayOff> call, Response<DayOff> response) {
+                if (response.isSuccessful()){
+                    System.out.println("thanh cong");
+                }else {
+                    System.out.println("Errro");
+                }
 
             }
 
@@ -185,7 +190,6 @@ public class RegisterDayoffActivity extends AppCompatActivity {
             public void onFailure(Call<DayOff> call, Throwable t) {
                 System.out.println(t);
             }
-
 
 
         });

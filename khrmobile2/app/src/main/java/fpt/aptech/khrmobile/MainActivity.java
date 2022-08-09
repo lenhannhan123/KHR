@@ -107,8 +107,6 @@ public class MainActivity extends AppCompatActivity {
         buttonWorkSchedule();
         buttonHomeLogout();
         buttonDayOff();
-
-
     }
 
     private void checkGoogleId(Account account){
