@@ -160,7 +160,7 @@ public class AuthAPIController {
 //    }
     @PostMapping(path = "api/change-profile-info")
     public ResponseEntity<Account> changeBasicInfo(@RequestBody Account account) {
-        accountServiceImp.updateBasicInfoMobile(account.getFullname(), account.getPhone(), account.getBirthdate(), true, account.getMail());
+        accountServiceImp.updateBasicInfoMobile(account.getFullname(), account.getPhone(), account.getBirthdate(), account.getGender(), account.getMail());
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 

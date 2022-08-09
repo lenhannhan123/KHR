@@ -1,10 +1,13 @@
 package fpt.aptech.khrmobile;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -28,6 +31,10 @@ import java.util.TimeZone;
 public class ChangeInfoActivity extends AppCompatActivity {
     MaterialTextView tvDate;
     MaterialButton btnPickDate;
+    EditText editTextFullName;
+    EditText editTextPhone;
+    Spinner spnCategory;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,22 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
         ScrollView scrollView = findViewById(R.id.scrollView);
         callNav.setDisplay(scrollView,ChangeInfoActivity.this,0.8);
+
+
+        editTextFullName = findViewById(R.id.Info_txtMail);
+        editTextPhone = findViewById(R.id.Info_txtPhone);
+        tvDate = findViewById(R.id.tv_Date);
+        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.profilePreferences, Context.MODE_PRIVATE);
+        String namekey = sharedpreferences.getString(MainActivity.Name,null);
+        String mailkey = sharedpreferences.getString(MainActivity.Mail,null);
+        String phonekey = sharedpreferences.getString(MainActivity.Phone,null);
+        String birthdaykey = sharedpreferences.getString(MainActivity.Birthday,null);
+        String genderkey = sharedpreferences.getString(MainActivity.Gender, null);
+
+        editTextFullName.setText(namekey);
+        editTextPhone.setText(phonekey);
+//        tvDate.setText(birthdaykey);
+        tvDate.setText(birthdaykey);
 
 
         pickDate();
@@ -85,8 +108,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
 
     private void ChangeSpinner(){
-        Spinner  spnCategory = (Spinner) findViewById(R.id.Info_spinner_gender);
-
+        spnCategory = (Spinner) findViewById(R.id.Info_spinner_gender);
         List<String> list = new ArrayList<>();
         list.add("Nam");
         list.add("Nữ");
@@ -95,6 +117,17 @@ public class ChangeInfoActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 
         spnCategory.setAdapter(adapter);
+
+        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.profilePreferences, Context.MODE_PRIVATE);
+        String genderkey = sharedpreferences.getString(MainActivity.Gender, null);
+        if(genderkey == "true"){
+            spnCategory.setSelection(0);
+        }
+        else if(genderkey == "false"){
+            spnCategory.setSelection(1);
+        }
+
+
         spnCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
