@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         buttonWorkSchedule();
         buttonHomeLogout();
         buttonDayOff();
+        timekeepingBtn();
     }
 
     private void checkGoogleId(Account account){
@@ -177,6 +178,18 @@ public class MainActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
+            }
+        });
+    }
+
+    private void timekeepingBtn(){
+        Button button1 = findViewById(R.id.Home_btnTimekeeping);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, TimekeepingActivity.class);
+                startActivity(intent);
             }
         });
     }

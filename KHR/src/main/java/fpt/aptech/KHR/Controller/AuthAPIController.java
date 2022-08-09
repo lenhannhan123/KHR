@@ -169,14 +169,6 @@ public class AuthAPIController {
         accountServiceImp.checkGoogleId(account.getMail(), account.getGoogleid());
         Account account1 = accountService.findByMail(account.getMail());
         return new ResponseEntity<>(account1, HttpStatus.OK);
-//        return new ResponseEntity<>(account, HttpStatus.OK);
-//        if (check != null) {
-//            Account account1 = accountService.findByMail(account.getMail());
-//            return new ResponseEntity<>(account1, HttpStatus.OK);
-//        }
-//        else{
-//            return new ResponseEntity<>(account, HttpStatus.BAD_REQUEST);
-//        }
 
     }
 
