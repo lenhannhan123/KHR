@@ -1,38 +1,36 @@
 package fpt.aptech.khrmobile;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.text.DateFormat;
 
+import fpt.aptech.khrmobile.API.ApiClient;
 import fpt.aptech.khrmobile.Entities.Account;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     Account account;
     TextView username;
+
 
     SharedPreferences sharedPreferences;
     public static final String profilePreferences = "profilepref";
@@ -44,26 +42,37 @@ public class MainActivity extends AppCompatActivity {
     public static final String Avatar = "avatarKey";
     public static final String Code = "codeKey";
 
-
-
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server))
+                .requestEmail()
+                .build();
         gsc = GoogleSignIn.getClient(this,gso);
+
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if(acct != null){
             String personName = acct.getDisplayName();
-            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Log.e("TAG", "===>" + personId);
+            username = findViewById(R.id.textView4);
+            username.setText("Xin chào " + personName);
+            //Call API to check email and google id
+            //get account info and save it to sharePreferences (locate in checkGoogleId)
+            Account account = new Account();
+            account.setMail(acct.getEmail());
+            account.setGoogleid(acct.getId());
+            checkGoogleId(account);
         }
 
         username = findViewById(R.id.textView4);
+
         Intent intent = getIntent();
         if(intent.getExtras()!=null){
             account = (Account) intent.getSerializableExtra("data");
@@ -79,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
             editor.commit();
             String name = sharedPreferences.getString(MainActivity.Name,null);
             username.setText("Xin chào " + name);
-//            Log.e("TAG", "===>" + account.getPhone());
         }
 
 
@@ -99,8 +107,37 @@ public class MainActivity extends AppCompatActivity {
         buttonWorkSchedule();
         buttonHomeLogout();
         buttonDayOff();
+
+
     }
 
+    private void checkGoogleId(Account account){
+        Call<Account> call = ApiClient.getService().checkGoogleId(account);
+        call.enqueue(new Callback<Account>() {
+            @Override
+            public void onResponse(Call<Account> call, Response<Account> response) {
+                if(response.isSuccessful()){
+                    Account account = response.body();
+                    //If account return matched Backend with Google ID, save backend data into sharedpreference
+                    sharedPreferences = getSharedPreferences(profilePreferences, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(Mail, account.getMail());
+                    editor.putString(Name, account.getFullname());
+                    editor.putString(Phone, account.getPhone());
+                    editor.putString(Birthday, DateFormat.getDateInstance().format(account.getBirthdate()));
+                    editor.putString(Avatar, account.getAvatar());
+                    editor.putString(Code, account.getCode());
+                    editor.putString(Gender, String.valueOf(account.isGender()));
+                    editor.commit();
+                }
+            }
+            @Override
+            public void onFailure(Call<Account> call, Throwable t) {
+                String message="An error occured, please try again later..";
+                Toast.makeText(MainActivity.this,message,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
     private void buttonWorkSchedule(){

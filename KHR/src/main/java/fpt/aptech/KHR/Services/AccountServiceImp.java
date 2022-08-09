@@ -117,4 +117,9 @@ public class AccountServiceImp implements IAccountRepository {
         repository.updateBasicInfoMobile(fullname, phone, birthdate, gender, mail);
     }
 
+    @Override
+    public Account checkGoogleId(String mail, String googleid) {
+        return repository.checkGoogleId(mail, googleid);
+    }
+
 }
