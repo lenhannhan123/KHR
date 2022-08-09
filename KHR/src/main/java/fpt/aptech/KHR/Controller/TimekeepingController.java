@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.AccountPosition;
+import fpt.aptech.KHR.Entities.Position;
 import fpt.aptech.KHR.Entities.Shift;
 import fpt.aptech.KHR.Entities.Timekeeping;
 import fpt.aptech.KHR.Entities.TimelineDetail;
@@ -139,6 +140,29 @@ public class TimekeepingController {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<List<Timekeeping>>(timekeepingList, HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/api/timekeeping/detailId", method = RequestMethod.GET)
+    public ResponseEntity<Integer> detailId(@RequestParam("id") int id, HttpServletResponse response) {
+        return new ResponseEntity<Integer>(timekeepingServices.detailId(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/timekeeping/detail", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> detail(@RequestParam("shiftId") int id, HttpServletResponse response) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+        Shift shift = timekeepingServices.findShiftByTimekeeping(id);
+        List<String> dataList = new ArrayList<>();
+        dataList.add(simpleDateFormat.format(shift.getTimestart()));
+        dataList.add(hourFormat .format(shift.getTimestart()));
+        Position position = timekeepingServices.findPositionAccountById(shift.getIdPosition().getId());
+        dataList.add(position.getPositionname());
+//        JsonServices.dd(JsonServices.ParseToJson(dataList.toString()), response);
+        if (dataList.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<List<String>>(dataList, HttpStatus.OK);
         }
     }
 

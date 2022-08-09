@@ -1,5 +1,8 @@
 package fpt.aptech.khrmobile;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -36,12 +39,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ScannerActivity extends AppCompatActivity {
     TimekeepingService service;
     private CodeScanner mCodeScanner;
+    public static final String profilePreferences = "profilepref";
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
 
+        sharedPreferences = getSharedPreferences(profilePreferences, Context.MODE_PRIVATE);
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
 //        mCodeScanner.setCamera(1);
@@ -95,10 +101,10 @@ public class ScannerActivity extends AppCompatActivity {
                         if(_result.verified){
                             Timekeeping timekeeping = new Timekeeping();
                             String _hash = account.getMail();
-                            AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
-                            builder.setTitle("Information");
-                            builder.setMessage(_hash);
-                            builder.show();
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
+//                            builder.setTitle("Information");
+//                            builder.setMessage(_hash);
+//                            builder.show();
                             checkin(new Timekeeping(), _hash);
                             //checkout(timekeeping, _hash);
                         }
@@ -145,7 +151,7 @@ public class ScannerActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Toast.makeText(ScannerActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(ScannerActivity.this, "Hôm nay bạn không có ca làm việc!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ScannerActivity.this, "Không tìm thấy ca của bạn!", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -173,7 +179,7 @@ public class ScannerActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Toast.makeText(ScannerActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(ScannerActivity.this, "Hôm nay bạn không có ca!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ScannerActivity.this, "Không tìm thấy ca của bạn!", Toast.LENGTH_LONG).show();
                 }
             }
 

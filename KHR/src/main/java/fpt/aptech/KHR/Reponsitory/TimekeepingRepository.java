@@ -51,7 +51,13 @@ public interface TimekeepingRepository extends JpaRepository<Timekeeping, Intege
 
     @Query("SELECT s FROM Shift s WHERE s.shiftcode = :shiftcode and DATE(s.timestart) = :date and s.idPosition = :idPosition")
     Shift findShiftByShiftCode(@PathVariable("shiftcode") int shiftcode, Date date, Position idPosition);
+    
+    @Query("SELECT t.shiftId.id FROM Timekeeping t WHERE t.id = :id")
+    Integer detailId(@PathVariable("value") int id);
 
-    @Query("SELECT a FROM AccountPosition a WHERE a.mail = :account")
-    List<AccountPosition> findIdPositionByAccount(@PathVariable("account") Account account);
+    @Query("SELECT p FROM Position p WHERE p.id = :id")
+    Position findPositionAccountById(@PathVariable("value") int id);
+    
+     @Query("select s from Shift s where s.id = :id")
+    public Shift findShiftByTimekeeping(@RequestParam("value") int id);
 }
