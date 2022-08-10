@@ -25,7 +25,6 @@
             android:exported="false" />
         <activity
             android:name=".TimekeepingDetail"
-            android:name=".WorkScheduleDetailActivity"
             android:exported="false" />
         <activity
             android:name=".AddScheduleTimelineDetailActivity"
