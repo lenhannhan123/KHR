@@ -39,7 +39,7 @@ public class AccountService implements UserDetailsService {
         Account useraccount = repository.findByMailUser(username);
 
         Account bossaccount = repository.findByMail(username);
-        Account account = repository.findByMail(username);
+        Account scanner = repository.findByMail(username);
 
         if (bossaccount != null) {
             if (bossaccount.getRole().equals("3")) {
@@ -62,7 +62,16 @@ public class AccountService implements UserDetailsService {
             grantListUser.add(userAuthority);
             UserDetails userDetails = new User(useraccount.getMail(), useraccount.getPassword(), grantListUser);
             return userDetails;
-        } else {
+        } else if (scanner != null) {
+            if (scanner.getRole().equals("2")) {
+                List<GrantedAuthority> grantListAdmin = new ArrayList<>();
+                GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_SCANNER");
+                grantListAdmin.add(authority);
+                UserDetails userDetails = new User(bossaccount.getMail(), bossaccount.getPassword(), grantListAdmin);
+                return userDetails;
+            }
+        }
+        else {
             new UsernameNotFoundException("Login failed!");
         }
         return null;

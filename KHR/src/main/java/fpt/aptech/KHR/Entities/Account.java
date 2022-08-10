@@ -34,20 +34,23 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "account")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
-        @NamedQuery(name = "Account.findByMail", query = "SELECT a FROM Account a WHERE a.mail = :mail"),
-        @NamedQuery(name = "Account.findByPassword", query = "SELECT a FROM Account a WHERE a.password = :password"),
-        @NamedQuery(name = "Account.findByFullname", query = "SELECT a FROM Account a WHERE a.fullname = :fullname"),
-        @NamedQuery(name = "Account.findByPhone", query = "SELECT a FROM Account a WHERE a.phone = :phone"),
-        @NamedQuery(name = "Account.findByBirthdate", query = "SELECT a FROM Account a WHERE a.birthdate = :birthdate"),
-        @NamedQuery(name = "Account.findByGender", query = "SELECT a FROM Account a WHERE a.gender = :gender"),
-        @NamedQuery(name = "Account.findByCode", query = "SELECT a FROM Account a WHERE a.code = :code"),
-        @NamedQuery(name = "Account.findByRole", query = "SELECT a FROM Account a WHERE a.role = :role"),
-        @NamedQuery(name = "Account.findByRecoverycode", query = "SELECT a FROM Account a WHERE a.recoverycode = :recoverycode"),
-        @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status"),
-        @NamedQuery(name = "Account.findByAvatar", query = "SELECT a FROM Account a WHERE a.avatar = :avatar")})
+    @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
+    @NamedQuery(name = "Account.findByMail", query = "SELECT a FROM Account a WHERE a.mail = :mail"),
+    @NamedQuery(name = "Account.findByPassword", query = "SELECT a FROM Account a WHERE a.password = :password"),
+    @NamedQuery(name = "Account.findByFullname", query = "SELECT a FROM Account a WHERE a.fullname = :fullname"),
+    @NamedQuery(name = "Account.findByPhone", query = "SELECT a FROM Account a WHERE a.phone = :phone"),
+    @NamedQuery(name = "Account.findByBirthdate", query = "SELECT a FROM Account a WHERE a.birthdate = :birthdate"),
+    @NamedQuery(name = "Account.findByGender", query = "SELECT a FROM Account a WHERE a.gender = :gender"),
+    @NamedQuery(name = "Account.findByCode", query = "SELECT a FROM Account a WHERE a.code = :code"),
+    @NamedQuery(name = "Account.findByRole", query = "SELECT a FROM Account a WHERE a.role = :role"),
+    @NamedQuery(name = "Account.findByRecoverycode", query = "SELECT a FROM Account a WHERE a.recoverycode = :recoverycode"),
+    @NamedQuery(name = "Account.findByStatus", query = "SELECT a FROM Account a WHERE a.status = :status"),
+    @NamedQuery(name = "Account.findByAvatar", query = "SELECT a FROM Account a WHERE a.avatar = :avatar"),
+    @NamedQuery(name = "Account.findByGoogleid", query = "SELECT a FROM Account a WHERE a.googleid = :googleid")})
+
 public class Account implements Serializable {
-        @Id
+
+    @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -100,6 +103,9 @@ public class Account implements Serializable {
     @Size(max = 100)
     @Column(name = "Avatar")
     private String avatar;
+    @Size(max = 255)
+    @Column(name = "Google_id")
+    private String googleid;
 //    @JoinTable(name = "account_token", joinColumns = {
 //    @JoinColumn(name = "Mail", referencedColumnName = "Mail")}, inverseJoinColumns = {
 //    @JoinColumn(name = "Mail", referencedColumnName = "Mail")})
@@ -164,7 +170,6 @@ public class Account implements Serializable {
         this.recoverycode = recoverycode;
     }
 
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -201,7 +206,6 @@ public class Account implements Serializable {
     public void setIdStore(Store idStore) {
         this.idStore = idStore;
     }
-
 
     public String getPassword() {
         return password;
@@ -259,8 +263,6 @@ public class Account implements Serializable {
         this.role = role;
     }
 
-
-
     public boolean getStatus() {
         return status;
     }
@@ -277,6 +279,14 @@ public class Account implements Serializable {
         this.avatar = avatar;
     }
 
+    public String getGoogleid() {
+        return googleid;
+    }
+
+    public void setGoogleid(String googleid) {
+        this.googleid = googleid;
+    }
+
 //    @XmlTransient
 //    public List<TimelineDetail> getTimelineDetailList() {
 //        return timelineDetailList;
@@ -286,6 +296,4 @@ public class Account implements Serializable {
 //        this.timelineDetailList = timelineDetailList;
 //    }
 //    
-
-
 }

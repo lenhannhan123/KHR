@@ -3,11 +3,9 @@ package fpt.aptech.khrmobile.Config;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import fpt.aptech.khrmobile.MainActivity;
-
 public class ConfigData {
 
-    public static String IP ="192.168.0.197";
+    public static String IP ="192.168.0.167";
     public static final String profilePreferences = "profilepref";
     public static final String Mail = "mailKey";
 

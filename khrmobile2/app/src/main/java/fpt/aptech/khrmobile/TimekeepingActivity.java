@@ -141,7 +141,7 @@ public class TimekeepingActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Timekeeping>> call, Response<List<Timekeeping>> response) {
                 timekeepings.addAll(response.body());
-                timekeepingBaseAdapter = new TimekeepingBaseAdapter(timekeepings);
+                timekeepingBaseAdapter = new TimekeepingBaseAdapter(timekeepings, getApplicationContext());
                 timekeepingBaseAdapter.notifyDataSetChanged();
                 listView.setAdapter(timekeepingBaseAdapter);
             }
@@ -198,7 +198,7 @@ public class TimekeepingActivity extends AppCompatActivity {
                         if(response.isSuccessful() && month != 0 && year != 0){
                             timekeepings.clear();
                             timekeepings.addAll(response.body());
-                            timekeepingBaseAdapter = new TimekeepingBaseAdapter(timekeepings);
+                            timekeepingBaseAdapter = new TimekeepingBaseAdapter(timekeepings, getApplicationContext());
                             timekeepingBaseAdapter.notifyDataSetChanged();
                             listView.setAdapter(timekeepingBaseAdapter);
                         }else if(month == 0){

@@ -18,14 +18,11 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -52,6 +49,8 @@ public class login extends AppCompatActivity {
     String USERNAME_KEY = "user";
     String PASSWORD_KEY = "password";
     TokenServices tokenServices;
+
+
     void openFormForget(){
         TextView linkForget = findViewById(R.id.btnSendCode);
         linkForget.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +77,6 @@ public class login extends AppCompatActivity {
         Intent signInIntent = gsc.getSignInIntent();
         someActivityResultLauncher.launch(signInIntent);
     }
-
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -87,32 +85,15 @@ public class login extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         // There are no request codes
                         Intent data = result.getData();
-                        navigateToSecondActivity();
+                        navigateToLogin();
                     }
                 }
             }
     );
 
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode == 1000){
-//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//            try {
-//                task.getResult(ApiException.class);
-//
-//            }catch (ApiException e){
-//                Toast.makeText(getApplicationContext(),"Lỗi ApiException",Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
-
-    private void navigateToSecondActivity() {
-
+    private void navigateToLogin() {
         Intent intent = new Intent(login.this, MainActivity.class);
         startActivity(intent);
-        finish();
     }
 
     void login(){
@@ -156,7 +137,9 @@ public class login extends AppCompatActivity {
         Login_txtUsername.setText(sharedPreferences.getString(USERNAME_KEY,""));
         Login_txtPassword.setText(sharedPreferences.getString(PASSWORD_KEY,""));
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
         gsc = GoogleSignIn.getClient(this,gso);
         signInGoogle();
 

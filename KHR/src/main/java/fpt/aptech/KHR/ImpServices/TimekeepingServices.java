@@ -92,8 +92,18 @@ public class TimekeepingServices implements ITimekeepingServices {
     }
 
     @Override
-    public List<AccountPosition> findIdPositionByAccount(Account mail) {
-        return timekeepingRepository.findIdPositionByAccount(mail);
+    public Position findPositionAccountById(int id) {
+        return timekeepingRepository.findPositionAccountById(id);
+    }
+
+    @Override
+    public Shift findShiftByTimekeeping(int id) {
+        return timekeepingRepository.findShiftByTimekeeping(id);
+    }
+
+    @Override
+    public Integer detailId(int id) {
+        return timekeepingRepository.detailId(id);
     }
     
 }

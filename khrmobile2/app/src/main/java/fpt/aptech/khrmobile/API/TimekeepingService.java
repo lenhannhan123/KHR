@@ -31,4 +31,10 @@ public interface TimekeepingService {
 
     @POST("/api/timekeeping/checkout/{mail}")
     Call<Timekeeping> checkout(@Body Timekeeping timekeeping, @Path("mail") String mail);
+
+    @GET("/api/timekeeping/detailId")
+    Call<Integer> detailId(@Query("id") int id);
+
+    @GET("/api/timekeeping/detail")
+    Call<List<String>> detail(@Query("shiftId") int id);
 }

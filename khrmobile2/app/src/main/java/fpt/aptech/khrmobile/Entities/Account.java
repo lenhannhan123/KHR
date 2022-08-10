@@ -15,6 +15,7 @@ public class Account  implements Serializable {
     private String recoverycode;
     private boolean status;
     private String avatar;
+    private String googleid;
 
     public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, short role, String recoverycode, boolean status, String avatar) {
         this.mail = mail;
@@ -120,4 +121,14 @@ public class Account  implements Serializable {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
+    public String getGoogleid() {
+        return googleid;
+    }
+
+    public void setGoogleid(String googleid) {
+        this.googleid = googleid;
+    }
+
+
 }

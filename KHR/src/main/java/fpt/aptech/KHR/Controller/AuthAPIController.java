@@ -158,11 +158,18 @@ public class AuthAPIController {
 //    public ResponseEntity<Account> getJobPositions(@RequestBody Account account, @RequestParam("email") String email) {
 //        List<AccountPosition> listAccountPositions = accountPositionRepository.findByEmail(account.getMail());
 //    }
-
-
     @PostMapping(path = "api/change-profile-info")
     public ResponseEntity<Account> changeBasicInfo(@RequestBody Account account) {
-        accountServiceImp.updateBasicInfoMobile(account.getFullname(), account.getPhone(), account.getBirthdate(), true, account.getMail());
+        accountServiceImp.updateBasicInfoMobile(account.getFullname(), account.getPhone(), account.getBirthdate(), account.getGender(), account.getMail());
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
+
+    @PostMapping(path = "api/checkGoogleId")
+    public ResponseEntity<Account> checkGoogleId(@RequestBody Account account) {
+        accountServiceImp.checkGoogleId(account.getMail(), account.getGoogleid());
+        Account account1 = accountService.findByMail(account.getMail());
+        return new ResponseEntity<>(account1, HttpStatus.OK);
+
+    }
+
 }
