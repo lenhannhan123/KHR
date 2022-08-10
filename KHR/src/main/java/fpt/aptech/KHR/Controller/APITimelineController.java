@@ -9,6 +9,7 @@ import fpt.aptech.KHR.Entities.*;
 import fpt.aptech.KHR.ImpServices.*;
 import fpt.aptech.KHR.Routes.RouteAPI;
 import fpt.aptech.KHR.Routes.RouteWeb;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -681,7 +682,7 @@ public class APITimelineController {
 
 
 
-    @RequestMapping(value = {RouteAPI.GetReportSendata}, method = RequestMethod.GET)
+    @RequestMapping(value = {RouteAPI.GetReportSendata}, method = RequestMethod.POST)
     public void GetReportSendata(Model model, HttpServletRequest request, HttpServletResponse response) {
 
         String mycode = request.getParameter("mycode").toString();
@@ -694,64 +695,32 @@ public class APITimelineController {
 
         String IdPos = request.getParameter("idpos").toString();
 
+        String content = request.getParameter("content").toString();
+        int posfrom=0;
 
+        List<TimelineDetail> timelineDetail = timelineDetailServices.FindbyShiftcode(Integer.parseInt(mycode), new Timeline(Integer.parseInt(Idtimeline)));
 
+        for (TimelineDetail item:timelineDetail ) {
 
-        List<ModelString> modelStringList = new ArrayList<>();
-        ModelString modelString = new ModelString();
-
-
-
-        List<TimelineDetail> timelineDetail = timelineDetailServices.FindbyShiftcode(Integer.parseInt(mycode),new Timeline(Integer.parseInt(Idtimeline)));
-        for (TimelineDetail item1:timelineDetail     ) {
-            if(item1.getMail().getMail().equals(yourmail)){
-
-                modelString.setData1("Người này cũng đang làm ở ca bạn đổi");
-                modelStringList.add(modelString);
-                JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
-            }
-        }
-
-
-
-
-        List<TimelineDetail>  timelineDetail1 = timelineDetailServices.FindbyShiftcode(Integer.parseInt(yourcode),new Timeline(Integer.parseInt(Idtimeline)));
-
-        for (TimelineDetail item1:timelineDetail1     ) {
-            if(item1.getMail().getMail().equals(mymail)){
-                modelString.setData1("Bạn đang làm ca bạn sắp đổi");
-                modelStringList.add(modelString);
-                JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
-
-            }
-        }
-
-
-
-
-
-
-        List<AccountPosition> accountPositionList = accountPositionService.findByEmail(new Account(yourmail));
-
-        boolean check=false;
-        for (AccountPosition item :accountPositionList   ) {
-            if (item.getIdPosition().getId().toString().equals(IdPos) ){
-                check=true;
+            if(item.getMail().getMail().equals(mymail)){
+                posfrom = item.getIdPosition().getId();
             }
 
         }
 
-        if (check == false){
 
-            modelString.setData1("Người bạn đổi không làm được vị trí bạn đang làm");
-            modelStringList.add(modelString);
-            JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
 
-        }
-
-        modelString.setData1("done");
-        modelStringList.add(modelString);
-        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+        TransferData transferData = new TransferData();
+        transferData.setName(mymail +"Xin đổi ca ");
+        transferData.setContent(content);
+        transferData.setShiftcodefrom(Integer.parseInt(mycode));
+        transferData.setShiftcodeto(Integer.parseInt(yourcode));
+        transferData.setPositionfrom(posfrom);
+        transferData.setPositionto(Integer.parseInt(IdPos));
+        transferData.setMailfrom(mymail);
+        transferData.setMailto(yourmail);
+        transferData.setIdTimeline(Integer.parseInt(Idtimeline));
+        transferData.setStatus(0);
 
 
 
