@@ -53,6 +53,36 @@ public interface APITimeline {
     Call<List<ModelString>>  GetTimeLineSortDetail (@Query("id") String id,
                                           @Query("shiftcode") String shiftcode);
 
+    @GET("report/choose")
+    Call<List<ModelString>> GetReportChooseTimeline (@Query("mail") String mail);
+    @GET("report/mydate")
+    Call<List<ModelString>> GetReportMyDate (@Query("mail") String mail,
+                                                     @Query("id") String id
+                                                     );
+
+    @GET("report/myshift")
+    Call<List<ModelString>> GetReportMyShift (@Query("mail") String mail,
+                                             @Query("id") String id,
+                                              @Query("number") String number
+    );
+    @GET("report/youruser")
+    Call<List<ModelString>> GetReportYourUser (@Query("code") String code,
+                                              @Query("id") String id,
+                                              @Query("position") String position
+    );
+
+    @GET("report/myposition")
+    Call<List<ModelString>> GetReportMyPosition (@Query("mail") String mail);
+
+    @GET("report/checkposition")
+    Call<List<ModelString>> GetReportCheckPosition (@Query("mycode") String mydate,
+                                                    @Query("yourcode") String yourdate,
+                                                    @Query("id") String id,
+                                                    @Query("mymail") String mymail,
+                                                    @Query("yourmail") String yourmail,
+                                                    @Query("idpos") String idpos
+    );
+
     @POST("createtimeuser")
     Call<List<String>> CreateTimeline (@Query("mail") String mail,
                                  @Query("idTimeline") String idTimeline,

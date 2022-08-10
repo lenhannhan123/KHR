@@ -15,6 +15,15 @@
         android:theme="@style/Theme.Khrmobile"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".CreateTransferActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainRequestTransferActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainTransferActivity"
+            android:exported="false" />
+        <activity
             android:name=".WorkScheduleDetailActivity"
             android:exported="false" />
         <activity

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -32,6 +33,9 @@ public class APITimelineController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    AccountPositionService accountPositionService;
 
     @Autowired
     PositionServices positionServices;
@@ -380,6 +384,378 @@ public class APITimelineController {
         JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
 
 
+    }
+
+    @RequestMapping(value = {RouteAPI.GetReportChooseTimeline}, method = RequestMethod.GET)
+    public void GetReportChooseTimeline(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String idUser = request.getParameter("mail").toString();
+        List<Integer> ListTimeline =   userTimelineServices.GetIdTimeline(idUser);
+
+       int Store = accountService.findByMail(idUser).getIdStore().getId();
+        long Todaymili = Long.parseLong(JsonServices.ParseToJson(new Date()).toString()) ;
+
+//
+//        JsonServices.dd(JsonServices.ParseToJson(ListTimeline), response);
+            List<Timeline> timelineList = new ArrayList<>();
+
+
+        for (Integer item: ListTimeline ) {
+
+            Timeline timeline = timelineServices.FindOne(item);
+            long Datemili = Long.parseLong(JsonServices.ParseToJson(timeline.getEnddate()).toString()) ;
+
+            if ((timeline.getIdStore().getId() == Store) && (Datemili > Todaymili)){
+
+                timelineList.add(timeline);
+            }
+
+
+        }
+
+        List<ModelString> modelStringList = new ArrayList<>();
+
+        for (Timeline item :timelineList  ) {
+            ModelString modelString = new ModelString();
+            modelString.setData1(item.getId().toString());
+            modelString.setData2(item.getTimename());
+            modelStringList.add(modelString);
+        }
+
+        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+    }
+
+
+    @RequestMapping(value = {RouteAPI.GetReportMyDate}, method = RequestMethod.GET)
+    public void GetReportMyDate(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String idUser = request.getParameter("mail").toString();
+        String idTimeliine = request.getParameter("id").toString();
+
+        Timeline timeline = timelineServices.FindOne(Integer.parseInt(idTimeliine));
+
+        long today = Long.parseLong(JsonServices.ParseToJson(new Date()).toString()) ;
+        long startday = Long.parseLong(JsonServices.ParseToJson(timeline.getStartdate()).toString()) ;
+        List<ModelString> stringList =new ArrayList<>();
+
+        if(startday<today){
+
+            long millinumeberday = today-startday;
+            long numberday =  millinumeberday / 86400000;
+            numberday+=1;
+
+            for (long i = numberday+2; i <=8 ; i++) {
+                ModelString  modelString = new ModelString();
+
+                if(i<8){
+                    modelString.setData2("Thứ "+i);
+
+                }else {
+                    modelString.setData2("Chủ Nhật");
+                }
+                modelString.setData1(String.valueOf(i));
+                stringList.add(modelString);
+
+            }
+
+        }else {
+
+            for (long i = 2; i <=8 ; i++) {
+                ModelString  modelString = new ModelString();
+
+                if(i<8){
+                    modelString.setData2("Thứ "+i);
+
+                }else {
+                    modelString.setData2("Chủ Nhật");
+                }
+                modelString.setData1(String.valueOf(i));
+                stringList.add(modelString);
+
+            }
+        }
+
+        JsonServices.dd(JsonServices.ParseToJson(stringList),response);
+
+//        JsonServices.dd(JsonServices.ParseToJson(timeline),response);
+
+
+//        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+    }
+
+
+    @RequestMapping(value = {RouteAPI.GetReportMyShift}, method = RequestMethod.GET)
+    public void GetReportMyShift(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String idUser = request.getParameter("mail").toString();
+        String idTimeliine = request.getParameter("id").toString();
+        String number = request.getParameter("number").toString();
+        final int shiftcodemin = (Integer.parseInt(number)-2)*5;
+        List<ModelString> modelStringList = new ArrayList<>();
+
+        List<TimelineDetail> timelineDetailList = timelineDetailServices.FindbyIdTimeline(Integer.parseInt(idTimeliine));
+
+        for (int i = 0; i <timelineDetailList.size() ; i++) {
+
+            if((timelineDetailList.get(i).getShiftCode()>=shiftcodemin)&&(timelineDetailList.get(i).getShiftCode()<(shiftcodemin+5))){
+
+            }else {
+                timelineDetailList.remove(timelineDetailList.get(i));
+                i-=1;
+            }
+
+
+        }
+
+        for (int i = 0; i <timelineDetailList.size() ; i++) {
+
+            if (!timelineDetailList.get(i).getMail().getMail().equals(idUser)){
+
+                timelineDetailList.remove(timelineDetailList.get(i));
+                i-=1;
+            }
+        }
+
+        for (int i = 0; i <timelineDetailList.size() ; i++) {
+
+            int code= timelineDetailList.get(i).getShiftCode();
+
+            ModelString modelString = new ModelString();
+            modelString.setData1(String.valueOf(code));
+
+            switch (code-shiftcodemin){
+
+                case 0:
+                    modelString.setData2("Ca sáng");
+                    break;
+                case 1:
+                    modelString.setData2("Ca trưa");
+                    break;
+                case 2:
+                    modelString.setData2("Ca chiều");
+                    break;
+                case 3:
+                    modelString.setData2("Ca tối");
+                    break;
+                default:
+                    modelString.setData2("Ca đêm");
+                    break;
+
+            }
+
+            modelStringList.add(modelString);
+
+        }
+
+
+        JsonServices.dd(JsonServices.ParseToJson(modelStringList),response);
+
+
+    }
+
+
+    @RequestMapping(value = {RouteAPI.GetReportMyPosition}, method = RequestMethod.GET)
+    public void GetReportMyPosition(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String idUser = request.getParameter("mail").toString();
+
+        List<AccountPosition> accountPositionList = new ArrayList<>();
+        accountPositionList = accountPositionService.findByEmail(new Account(idUser));
+
+        List<ModelString> modelStringList = new ArrayList<>();
+
+        for (AccountPosition item: accountPositionList   ) {
+            ModelString modelString = new ModelString();
+            modelString.setData1(item.getIdPosition().getId().toString());
+            modelString.setData2(item.getIdPosition().getPositionname());
+            modelStringList.add(modelString);
+        }
+
+
+        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+    }
+
+    @RequestMapping(value = {RouteAPI.GetReportYourUser}, method = RequestMethod.GET)
+    public void GetReportYourUser(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String Shiftcode = request.getParameter("code").toString();
+        String id = request.getParameter("id").toString();
+        String Position = request.getParameter("position").toString();
+
+        List<TimelineDetail> timelineDetail = timelineDetailServices.FindbyShiftcode(Integer.parseInt(Shiftcode),new Timeline(Integer.parseInt(id)));
+        List<ModelString> modelStringList = new ArrayList<>();
+                if(timelineDetail.size()>0){
+                    for (TimelineDetail item2: timelineDetail ) {
+                        if(item2.getIdPosition().getId().toString().equals(Position)){
+                            ModelString ModelString = new ModelString();
+                            ModelString.setData1(item2.getMail().getMail());
+                            ModelString.setData2(item2.getMail().getMail());
+                            modelStringList.add(ModelString);
+                        }
+
+
+                    }
+                }
+
+        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+    }
+
+
+
+    @RequestMapping(value = {RouteAPI.GetReportCheckPosition}, method = RequestMethod.GET)
+    public void GetReportCheckPosition(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+            String mycode = request.getParameter("mycode").toString();
+        String yourcode = request.getParameter("yourcode").toString();
+
+        String Idtimeline = request.getParameter("id").toString();
+
+        String mymail = request.getParameter("mymail").toString();
+        String yourmail = request.getParameter("yourmail").toString();
+
+        String IdPos = request.getParameter("idpos").toString();
+
+
+
+
+        List<ModelString> modelStringList = new ArrayList<>();
+        ModelString modelString = new ModelString();
+
+
+
+            List<TimelineDetail> timelineDetail = timelineDetailServices.FindbyShiftcode(Integer.parseInt(mycode),new Timeline(Integer.parseInt(Idtimeline)));
+            for (TimelineDetail item1:timelineDetail     ) {
+                    if(item1.getMail().getMail().equals(yourmail)){
+
+                        modelString.setData1("Người này cũng đang làm ở ca bạn đổi");
+                        modelStringList.add(modelString);
+                        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+                    }
+            }
+
+
+
+
+        List<TimelineDetail>  timelineDetail1 = timelineDetailServices.FindbyShiftcode(Integer.parseInt(yourcode),new Timeline(Integer.parseInt(Idtimeline)));
+
+            for (TimelineDetail item1:timelineDetail1     ) {
+                if(item1.getMail().getMail().equals(mymail)){
+                    modelString.setData1("Bạn đang làm ca bạn sắp đổi");
+                    modelStringList.add(modelString);
+                    JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+
+                }
+            }
+
+
+
+
+
+
+        List<AccountPosition> accountPositionList = accountPositionService.findByEmail(new Account(yourmail));
+
+        boolean check=false;
+        for (AccountPosition item :accountPositionList   ) {
+            if (item.getIdPosition().getId().toString().equals(IdPos) ){
+                check=true;
+            }
+
+        }
+
+        if (check == false){
+
+            modelString.setData1("Người bạn đổi không làm được vị trí bạn đang làm");
+            modelStringList.add(modelString);
+            JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+
+        }
+
+        modelString.setData1("done");
+        modelStringList.add(modelString);
+        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+
+
+
+//        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+    }
+
+
+
+    @RequestMapping(value = {RouteAPI.GetReportSendata}, method = RequestMethod.GET)
+    public void GetReportSendata(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String mycode = request.getParameter("mycode").toString();
+        String yourcode = request.getParameter("yourcode").toString();
+
+        String Idtimeline = request.getParameter("id").toString();
+
+        String mymail = request.getParameter("mymail").toString();
+        String yourmail = request.getParameter("yourmail").toString();
+
+        String IdPos = request.getParameter("idpos").toString();
+
+
+
+
+        List<ModelString> modelStringList = new ArrayList<>();
+        ModelString modelString = new ModelString();
+
+
+
+        List<TimelineDetail> timelineDetail = timelineDetailServices.FindbyShiftcode(Integer.parseInt(mycode),new Timeline(Integer.parseInt(Idtimeline)));
+        for (TimelineDetail item1:timelineDetail     ) {
+            if(item1.getMail().getMail().equals(yourmail)){
+
+                modelString.setData1("Người này cũng đang làm ở ca bạn đổi");
+                modelStringList.add(modelString);
+                JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+            }
+        }
+
+
+
+
+        List<TimelineDetail>  timelineDetail1 = timelineDetailServices.FindbyShiftcode(Integer.parseInt(yourcode),new Timeline(Integer.parseInt(Idtimeline)));
+
+        for (TimelineDetail item1:timelineDetail1     ) {
+            if(item1.getMail().getMail().equals(mymail)){
+                modelString.setData1("Bạn đang làm ca bạn sắp đổi");
+                modelStringList.add(modelString);
+                JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+
+            }
+        }
+
+
+
+
+
+
+        List<AccountPosition> accountPositionList = accountPositionService.findByEmail(new Account(yourmail));
+
+        boolean check=false;
+        for (AccountPosition item :accountPositionList   ) {
+            if (item.getIdPosition().getId().toString().equals(IdPos) ){
+                check=true;
+            }
+
+        }
+
+        if (check == false){
+
+            modelString.setData1("Người bạn đổi không làm được vị trí bạn đang làm");
+            modelStringList.add(modelString);
+            JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+
+        }
+
+        modelString.setData1("done");
+        modelStringList.add(modelString);
+        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
+
+
+
+//        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
     }
 
 

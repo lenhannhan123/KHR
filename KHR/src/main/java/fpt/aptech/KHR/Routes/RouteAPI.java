@@ -51,4 +51,18 @@ public class RouteAPI {
     public final static String GetTimeLineSort1 = "api/timeline/sort/gettimeline";
 
     public final static String GetTimeLineSortDetail = "api/timeline/sort/gettimelinedetail";
+
+    public final static String GetReportChooseTimeline = "api/timeline/report/choose";
+
+    public final static String GetReportMyDate = "api/timeline/report/mydate";
+
+    public final static String GetReportMyShift = "api/timeline/report/myshift";
+
+    public final static String GetReportMyPosition= "api/timeline/report/myposition";
+
+    public final static String GetReportYourUser= "api/timeline/report/youruser";
+
+    public final static String GetReportCheckPosition= "api/timeline/report/checkposition";
+
+    public final static String GetReportSendata= "api/timeline/report/sendata";
 }

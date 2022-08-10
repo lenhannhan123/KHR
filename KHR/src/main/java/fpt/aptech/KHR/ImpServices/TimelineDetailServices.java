@@ -60,4 +60,9 @@ public class TimelineDetailServices implements ITimelineDetailServices {
     public List<TimelineDetail> FindbyIdTimeline(int id) {
         return timelineDetailRepository.findbyIdTimeline(new Timeline(id));
     }
+
+    @Override
+    public   List<TimelineDetail> FindbyShiftcode(int shiftcode, Timeline id) {
+        return timelineDetailRepository.findbyIdShiftcode(shiftcode,id);
+    }
 }
