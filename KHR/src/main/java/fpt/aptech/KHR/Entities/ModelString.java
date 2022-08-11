@@ -101,5 +101,22 @@ public class ModelString {
     String data8;
     String data9;
     String data10;
-    
+    String data12;
+    String data11;
+
+    public String getData12() {
+        return data12;
+    }
+
+    public void setData12(String data12) {
+        this.data12 = data12;
+    }
+
+    public String getData11() {
+        return data11;
+    }
+
+    public void setData11(String data11) {
+        this.data11 = data11;
+    }
 }

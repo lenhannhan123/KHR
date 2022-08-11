@@ -17,45 +17,43 @@ import fpt.aptech.khrmobile.API.APITimeline;
 import fpt.aptech.khrmobile.Config.ConfigData;
 import fpt.aptech.khrmobile.Entities.ModelString;
 import fpt.aptech.khrmobile.ListBaseAdapter.Transfer1Adapter;
+import fpt.aptech.khrmobile.ListBaseAdapter.Transfer2Adapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainRequestTransferActivity extends AppCompatActivity {
+public class MainConfirmTransferActivity extends AppCompatActivity {
 
     ListView listView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_request_transfer);
-
+        setContentView(R.layout.activity_main_confirm_transfer);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.action_bar_main_request_transfer);
+        getSupportActionBar().setCustomView(R.layout.action_bar_main_confirm_transfer);
 
         BottomNavigationView bottom_navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         CallNav callNav = new CallNav();
-        callNav.call(bottom_navigation,R.id.page_1,MainRequestTransferActivity.this);
+        callNav.call(bottom_navigation,R.id.page_1,MainConfirmTransferActivity.this);
         buttonBack();
-        add_request();
+
 
         listView = findViewById(R.id.Transfer_ListView);
         GetData();
-
     }
-
     ConfigData configData = new ConfigData();
-
 
     private void GetData() {
 
-        String mail =configData.userId(MainRequestTransferActivity.this);
+        String mail =configData.userId(MainConfirmTransferActivity.this);
 
-        APITimeline.api.GetReport1(mail).enqueue(new Callback<List<ModelString>>() {
+        APITimeline.api.GetReport2(mail).enqueue(new Callback<List<ModelString>>() {
             @Override
             public void onResponse(Call<List<ModelString>> call, Response<List<ModelString>> response) {
                 List<ModelString> data =response.body();
-                Transfer1Adapter baseAdapter = new Transfer1Adapter(MainRequestTransferActivity.this,data,MainRequestTransferActivity.this);
+                Transfer2Adapter baseAdapter = new Transfer2Adapter(MainConfirmTransferActivity.this,data,MainConfirmTransferActivity.this);
                 listView.setAdapter(baseAdapter);
                 baseAdapter.notifyDataSetChanged();
             }
@@ -68,25 +66,14 @@ public class MainRequestTransferActivity extends AppCompatActivity {
 
     }
 
-    private void add_request(){
-        ImageButton button = findViewById(R.id.add_request);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainRequestTransferActivity.this, CreateTransferActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-    }
     private void buttonBack(){
         ImageButton button = findViewById(R.id.btn_Work_schedule_back);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainRequestTransferActivity.this, MainTransferActivity.class);
+                Intent intent = new Intent(MainConfirmTransferActivity.this, MainTransferActivity.class);
                 startActivity(intent);
             }
         });

@@ -93,6 +93,20 @@ public interface APITimeline {
                                                     @Query("content") String content
     );
 
+    @GET("report/getreport1")
+    Call<List<ModelString>> GetReport1 (@Query("mail") String mail);
+    @GET("report/getreport2")
+    Call<List<ModelString>> GetReport2 (@Query("mail") String mail);
+
+    @GET("report/getreport1detail")
+    Call<List<ModelString>> GetReport1Detail (@Query("id") String id);
+
+    @GET("report/getConfirm")
+    Call<List<ModelString>> GetConfirm (@Query("id") String id,
+                                        @Query("status") String status,
+                                        @Query("response") String response
+                                        );
+
     @POST("createtimeuser")
     Call<List<String>> CreateTimeline (@Query("mail") String mail,
                                  @Query("idTimeline") String idTimeline,

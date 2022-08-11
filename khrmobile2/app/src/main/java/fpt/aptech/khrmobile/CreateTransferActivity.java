@@ -240,7 +240,7 @@ public class CreateTransferActivity extends AppCompatActivity {
                     }
                 });
 
-                Intent intent = new Intent(CreateTransferActivity.this, MainRequestTransferActivity.class);
+                Intent intent = new Intent(CreateTransferActivity.this, MainTransferActivity.class);
                 startActivity(intent);
             }
         });

@@ -8,11 +8,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.List;
+
+import fpt.aptech.khrmobile.API.APITimeline;
+import fpt.aptech.khrmobile.Config.ConfigData;
+import fpt.aptech.khrmobile.Entities.ModelString;
+import fpt.aptech.khrmobile.ListBaseAdapter.MyTimelineAdapter;
+import fpt.aptech.khrmobile.ListBaseAdapter.Transfer1Adapter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainTransferActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +42,13 @@ public class MainTransferActivity extends AppCompatActivity {
         ScrollView scrollView = findViewById(R.id.scrollView);
         callNav.setDisplay(scrollView,MainTransferActivity.this,0.8);
 
+
+
         buttonBack();
         btn_send_transfer();
+        btn_cofirm();
+        
+
     }
 
 
@@ -46,6 +64,19 @@ public class MainTransferActivity extends AppCompatActivity {
             }
         });
     }
+
+    private  void btn_cofirm() {
+        Button button = findViewById(R.id.btn_cofirm);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainTransferActivity.this, MainConfirmTransferActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
     private void buttonBack(){
         ImageButton button = findViewById(R.id.btn_Work_schedule_back);

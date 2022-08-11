@@ -44,7 +44,7 @@
 
                 <Button
 
-                    android:id="@+id/btn_Schedule"
+                    android:id="@+id/btn_cofirm"
                     android:layout_width="10dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"

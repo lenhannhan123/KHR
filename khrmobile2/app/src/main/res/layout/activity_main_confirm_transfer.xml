@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    tools:context=".MainRequestTransferActivity">
+    tools:context=".MainConfirmTransferActivity">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -42,6 +42,5 @@
         android:layout_marginRight="50dp"
         android:background="@xml/duongvien_goctron"
         app:menu="@xml/bottom_navigation_menu" />
-
 
 </LinearLayout>
