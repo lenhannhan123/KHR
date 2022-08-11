@@ -170,22 +170,7 @@ public class CreateTransferActivity extends AppCompatActivity {
                     return;
                 }
 
-               String  content =  Content.getText().toString();
-
-                if(content.trim().equals("")){
-                    check=false;
-                    Toast.makeText(CreateTransferActivity.this, "Vui lòng nhập nội dung yêu cầu", Toast.LENGTH_SHORT).show();
-                }
-                if (check == true) {
-                    buttonSubmit.setVisibility(View.VISIBLE);
-                } else {
-
-                    return;
-                }
-
-
-
-//                Chọn vị trí
+                // Chọn vị trí
 
                 String yourmaill = spnYourUser.getSelectedItem().toString();
                 if (yourmaill.equals("Chọn nhân viên")) {
@@ -197,15 +182,66 @@ public class CreateTransferActivity extends AppCompatActivity {
                 } else {
                     return;
                 }
-//                Chọn nhân viên
+
+                String content = Content.getText().toString();
+
+                if (content.trim().equals("")) {
+                    check = false;
+                    Toast.makeText(CreateTransferActivity.this, "Vui lòng nhập nội dung yêu cầu", Toast.LENGTH_SHORT).show();
+                }
+                if (check == true) {
+                    buttonSubmit.setVisibility(View.VISIBLE);
+                } else {
+
+                    return;
+                }
+
+//----------------------------
+
+                String MyShiftitem = spnMyshift.getSelectedItem().toString();
+                String MyShifti = "";
+                for (ModelString item12 : MyShift) {
+                    if (item12.getData2().equals(MyShiftitem)) {
+                        MyShifti = item12.getData1();
+                    }
+                }
+
+                String YourShifttem = spnYourshift.getSelectedItem().toString();
+                String YourShifti = "";
+                for (ModelString item12 : YourShift) {
+                    if (item12.getData2().equals(YourShifttem)) {
+                        YourShifti = item12.getData1();
+                    }
+                }
+
+                String mymaili = configData.userId(CreateTransferActivity.this);
+
+
+                String item = spnMyPosition.getSelectedItem().toString();
+                String Position = "";
+                for (ModelString item12 : MyPosition) {
+                    if (item12.getData2().equals(item)) {
+                        Position = item12.getData1();
+                    }
+                }
+
+
+                APITimeline.api.PostReportSendata(MyShifti, YourShifti, String.valueOf(id), mymaili, yourmaill, Position,content).enqueue(new Callback<List<ModelString>>() {
+                    @Override
+                    public void onResponse(Call<List<ModelString>> call, Response<List<ModelString>> response) {
 
 
 
+                    }
 
+                    @Override
+                    public void onFailure(Call<List<ModelString>> call, Throwable t) {
 
+                    }
+                });
 
-
-
+                Intent intent = new Intent(CreateTransferActivity.this, MainRequestTransferActivity.class);
+                startActivity(intent);
             }
         });
 

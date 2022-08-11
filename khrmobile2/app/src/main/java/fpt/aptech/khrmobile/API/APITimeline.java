@@ -83,6 +83,16 @@ public interface APITimeline {
                                                     @Query("idpos") String idpos
     );
 
+    @POST("report/sendata")
+    Call<List<ModelString>> PostReportSendata (@Query("mycode") String mydate,
+                                                    @Query("yourcode") String yourdate,
+                                                    @Query("id") String id,
+                                                    @Query("mymail") String mymail,
+                                                    @Query("yourmail") String yourmail,
+                                                    @Query("idpos") String idpos,
+                                                    @Query("content") String content
+    );
+
     @POST("createtimeuser")
     Call<List<String>> CreateTimeline (@Query("mail") String mail,
                                  @Query("idTimeline") String idTimeline,

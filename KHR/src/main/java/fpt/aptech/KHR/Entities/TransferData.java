@@ -68,8 +68,7 @@ public class TransferData implements Serializable {
     @Size(max = 100)
     @Column(name = "Mailto")
     private String mailto;
-    @Basic(optional = false)
-    @NotNull
+
     @Column(name = "IdTimeline")
     private int idTimeline;
     @Size(max = 200)

@@ -64,5 +64,5 @@ public class RouteAPI {
 
     public final static String GetReportCheckPosition= "api/timeline/report/checkposition";
 
-    public final static String GetReportSendata= "api/timeline/report/sendata";
+    public final static String PostReportSendata= "api/timeline/report/sendata";
 }

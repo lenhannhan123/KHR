@@ -10,6 +10,7 @@ import fpt.aptech.KHR.Reponsitory.TimekeepingRepository;
 import fpt.aptech.KHR.Reponsitory.TransferRepository;
 import fpt.aptech.KHR.Services.ITransfer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  *
  * @author Admin
  */
+@Service
 public class TransferService implements ITransfer {
 
     @Autowired

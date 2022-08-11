@@ -36,6 +36,9 @@ public class APITimelineController {
     AccountService accountService;
 
     @Autowired
+    TransferService transferService;
+
+    @Autowired
     AccountPositionService accountPositionService;
 
     @Autowired
@@ -682,8 +685,8 @@ public class APITimelineController {
 
 
 
-    @RequestMapping(value = {RouteAPI.GetReportSendata}, method = RequestMethod.POST)
-    public void GetReportSendata(Model model, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = {RouteAPI.PostReportSendata}, method = RequestMethod.POST)
+    public void PostReportSendata(Model model, HttpServletRequest request, HttpServletResponse response) {
 
         String mycode = request.getParameter("mycode").toString();
         String yourcode = request.getParameter("yourcode").toString();
@@ -722,7 +725,7 @@ public class APITimelineController {
         transferData.setIdTimeline(Integer.parseInt(Idtimeline));
         transferData.setStatus(0);
 
-
+        transferService.Create(transferData);
 
 //        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
     }
