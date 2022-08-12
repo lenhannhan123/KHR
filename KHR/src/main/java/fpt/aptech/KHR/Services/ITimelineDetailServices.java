@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.Services;
 
+import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Entities.TimelineDetail;
 
 import java.util.List;
@@ -27,5 +28,7 @@ public interface ITimelineDetailServices {
     public TimelineDetail FindOne(int id);
 
     public List<TimelineDetail> FindbyIdTimeline(int id);
+
+    public   List<TimelineDetail> FindbyShiftcode(int shiftcode, Timeline id);
 
 }

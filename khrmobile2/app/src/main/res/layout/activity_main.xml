@@ -128,16 +128,16 @@
 
                 <Button
 
-                    android:id="@+id/Home_btnOT"
+                    android:id="@+id/Home_btnTransfer"
                     android:layout_width="10dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:layout_weight="1"
                     android:background="@xml/duongvien_gocbo"
-                    android:drawableTop="@drawable/icon5"
+                    android:drawableTop="@drawable/icon25"
                     android:paddingTop="10dp"
-                    android:text="\n Tăng ca"
+                    android:text="\n Chuyển ca"
                     android:textSize="5pt"
                     app:backgroundTint="#B06BDB" />
 

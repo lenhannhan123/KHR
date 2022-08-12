@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TimekeepingDetail">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+    <TextView
+        android:text="Ca làm:"
+        android:textSize="20dp"
+        android:padding="10dp" />
+    <TextView
+        android:id="@+id/txtTimekeepingName"
+        android:text=""
+        android:gravity="right"
+        android:textSize="20dp"
+        android:padding="10dp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:text="Ngày làm:"
+            android:textSize="20dp"
+            android:padding="10dp" />
+        <TextView
+            android:id="@+id/txtTimekeepingDate"
+            android:text=""
+            android:gravity="right"
+            android:textSize="20dp"
+            android:padding="10dp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:text="Vị trí làm việc:"
+            android:textSize="20dp"
+            android:padding="10dp" />
+        <TextView
+            android:id="@+id/txtAccountPosition"
+            android:text=""
+            android:gravity="right"
+            android:textSize="20dp"
+            android:padding="10dp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:text="Giờ vào:"
+            android:textSize="20dp"
+            android:padding="10dp" />
+        <TextView
+            android:id="@+id/txtTimeStart"
+            android:text=""
+            android:gravity="right"
+            android:textSize="20dp"
+            android:padding="10dp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:text="Giờ ra:"
+            android:textSize="20dp"
+            android:padding="10dp" />
+        <TextView
+            android:id="@+id/txtTimeEnd"
+            android:text=""
+            android:gravity="right"
+            android:textSize="20dp"
+            android:padding="10dp" />
+
+    </TableRow>
+
+</TableLayout>

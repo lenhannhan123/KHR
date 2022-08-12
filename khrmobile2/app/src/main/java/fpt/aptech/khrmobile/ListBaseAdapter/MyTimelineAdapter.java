@@ -78,8 +78,8 @@ public class MyTimelineAdapter extends BaseAdapter {
 
                 }
 
-                intent.putExtra("data", text);
-                intent.putExtra("idSelect", idSelect);
+
+
 
                 context.startActivity(intent);
             }

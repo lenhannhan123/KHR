@@ -45,5 +45,9 @@ public interface ITimekeepingServices {
     
     public Shift findShiftByShiftCode(int id, Date date, Position idPosition);
     
-    public List<AccountPosition> findIdPositionByAccount(Account mail);
+    public Position findPositionAccountById(int id);
+    
+    public Shift findShiftByTimekeeping(int id);
+    
+    public Integer detailId(int id);
 }

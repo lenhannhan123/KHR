@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".CreateTransferActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_scrollUp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:padding="5dp"
+                    android:text="Chọn Timeline"
+                    android:textSize="8pt"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/Choose_timeline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo_mautim"
+                    android:ems="10"
+                    android:padding="15dp"
+                    android:textColor="#808080" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:padding="5dp"
+                    android:text="Chọn thông tin ca làm của bạn"
+                    android:textSize="8pt"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:padding="5dp"
+                    android:text="Chọn ca"
+                    android:textSize="8pt"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="347dp"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/Choosee_my_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_weight="1"
+                        android:background="@xml/duongvien_gocbo_mautim"
+                        android:ems="10"
+                        android:padding="15dp"
+                        android:textColor="#808080" />
+
+                    <Spinner
+                        android:id="@+id/Choosee_my_shiftcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_weight="1"
+                        android:background="@xml/duongvien_gocbo_mautim"
+                        android:ems="10"
+                        android:padding="15dp"
+                        android:textColor="#808080" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:padding="5dp"
+                    android:text="Chọn thông tin ca làm chuyển"
+                    android:textSize="8pt"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:padding="5dp"
+                    android:text="Chọn ca"
+                    android:textSize="8pt"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="347dp"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/Choosee_your_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_weight="1"
+                        android:background="@xml/duongvien_gocbo_mautim"
+                        android:ems="10"
+                        android:padding="15dp"
+                        android:textColor="#808080" />
+
+                    <Spinner
+                        android:id="@+id/Choosee_your_shiftcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_weight="1"
+                        android:background="@xml/duongvien_gocbo_mautim"
+                        android:ems="10"
+                        android:padding="15dp"
+                        android:textColor="#808080" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:padding="5dp"
+                    android:text="Chọn vị trí"
+                    android:textSize="8pt"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="347dp"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/Choosee_your_position"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo_mautim"
+                    android:ems="10"
+                    android:padding="15dp"
+                    android:textColor="#808080" />
+
+
+                <Spinner
+                    android:id="@+id/Choosee_your_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo_mautim"
+                    android:ems="10"
+                    android:padding="15dp"
+                    android:textColor="#808080" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:padding="5dp"
+                    android:text="Nhập nội dung yêu cầu"
+                    android:textSize="8pt"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/Content"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@xml/duongvien_gocbo_mautim"
+                    android:ems="10"
+                    android:hint="Nhập nội dung yêu cầu"
+                    android:inputType="text|textMultiLine"
+                    android:gravity="top"
+                    android:padding="15dp"
+                    android:textColor="#808080"
+
+                    />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/buttonSubmit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gửi yêu cầu" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@xml/duongvien_goctron"
+        android:paddingTop="10dp"
+        app:menu="@xml/bottom_navigation_menu" />
+
+</LinearLayout>
