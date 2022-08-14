@@ -20,15 +20,15 @@ public class RouteAPI {
     TimelineController timelineController = new TimelineController();
 
     public final static String TimelineListAPI = "api/timeline/index";
-    String TimelineListAPIControler = timelineController.GetCreate(model.model);
+//    String TimelineListAPIControler = timelineController.GetCreate(model.model);
 
     public final static String CheckAccountStatusAPI = "api/timeline/checkaccount";
-    String CheckAccountStatusControler = timelineController.GetCreate(model.model);
+//    String CheckAccountStatusControler = timelineController.GetCreate(model.model);
 
     // api timekeeping
 
     public final static String CreateUserAPI = "api/timeline/createtimeuser";
-    String CreateUserControler = timelineController.GetCreate(model.model);
+//    String CreateUserControler = timelineController.GetCreate(model.model);
 
     // api timekeeping
     TimekeepingController timekeepingController = new TimekeepingController();
