@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 
-@SpringBootApplication
+@SpringBootApplication  
 public class KhrApplication {
     @Bean
     public FirebaseMessaging firebaseMessaging() throws IOException {

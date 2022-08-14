@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,44 +50,44 @@ public class RegisterDayoffActivity extends AppCompatActivity {
         btsummit = findViewById(R.id.btnoffsubmit);
         tokenServices = TokenUtilAPI.getTokenServices();
         dayOffServices = DayOffUtillAPI.getAccountDayoff();
-        Calendar calendar = Calendar.getInstance();
-        final int year = calendar.get(Calendar.YEAR);
-        final int month = calendar.get(Calendar.MONTH);
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
-        etstart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(RegisterDayoffActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        month = month+1;
-                        if(month<10){
-                            //String date = year+"-0"+month+"-"+day;
-                            if(day<10){
-                                String date = year+"-0"+month+"-0"+day;
-                                etstart.setText(date);
+            Calendar calendar = Calendar.getInstance();
+            final int year = calendar.get(Calendar.YEAR);
+            final int month = calendar.get(Calendar.MONTH);
+            final int day = calendar.get(Calendar.DAY_OF_MONTH);
+            etstart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(RegisterDayoffActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                            month = month+1;
+                            if(month<10){
+                                //String date = year+"-0"+month+"-"+day;
+                                if(day<10){
+                                    String date = year+"-0"+month+"-0"+day;
+                                    etstart.setText(date);
+                                }else{
+                                    String date = year+"-0"+month+"-"+day;
+                                    etstart.setText(date);
+                                }
+
                             }else{
-                                String date = year+"-0"+month+"-"+day;
-                                etstart.setText(date);
+                                if(day<10){
+                                    String date = year+"-"+month+"-0"+day;
+                                    etstart.setText(date);
+                                }else{
+                                    String date = year+"-"+month+"-"+day;
+                                    etstart.setText(date);
+                                }
                             }
 
-                        }else{
-                            if(day<10){
-                                String date = year+"-"+month+"-0"+day;
-                                etstart.setText(date);
-                            }else{
-                                String date = year+"-"+month+"-"+day;
-                                etstart.setText(date);
-                            }
                         }
 
-                    }
+                    },year,month,day);
+                    datePickerDialog.show();
+                }
 
-                },year,month,day);
-                datePickerDialog.show();
-            }
-
-        });
+            });
         etend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,6 +180,7 @@ public class RegisterDayoffActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<DayOff> call, Response<DayOff> response) {
                 if (response.isSuccessful()){
+                    //Toast.makeText(RegisterDayoffActivity.this,)
                     System.out.println("thanh cong");
                 }else {
                     System.out.println("Errro");
