@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Path;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,6 +44,8 @@ public class TimelineController {
 
     @Autowired
     TimelineServices timelineServices;
+    @Autowired
+    TransferService transferService;
 
     @Autowired
     TimelineDetailServices timelineDetailServices;
@@ -94,11 +97,12 @@ public class TimelineController {
                 break;
             }
         }
+        model.addAttribute("check", check);
         String pattern = "dd-MM-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
 
-        model.addAttribute("check", check);
+
 
         model.addAttribute("simpleDateFormat", simpleDateFormat);
 
@@ -1209,6 +1213,8 @@ public class TimelineController {
 
         }
 
+
+
         // Tìm số vị trí mà ít người làm được
 
 
@@ -1267,6 +1273,8 @@ public class TimelineController {
         //Sắp xếp
 
         Boolean check = true;
+        int mincurrentshift=0;
+        int  count1=0;
 
         for (ModelString item : ListPosition) {
 
@@ -1359,6 +1367,29 @@ public class TimelineController {
                             break;
                         }
 
+
+                        mincurrentshift = (i/5)*5;
+
+
+                        for (int j = 0; j < UserPropertyList.size(); j++) {
+                            count1=0;
+                            for (int l = mincurrentshift; l <mincurrentshift+5 ; l++) {
+                                for (int m = 0; m < shiftOnDayList.get(l).getPositionOnDays().size(); m++) {
+                                    if(UserPropertyList.get(j).getId_user().equals(shiftOnDayList.get(l).getPositionOnDays().get(m).getMail())){
+
+                                        count1+=1;
+                                    }
+                                }
+
+//
+
+                            }
+                            if(count1>2){
+                                UserPropertyList.remove(UserPropertyList.get(j));
+                                j-=1;
+                            }
+                        }
+
                         //Xóa số lần làm thấp nhất
 
                         min = 0;
@@ -1366,19 +1397,19 @@ public class TimelineController {
                         min = UserPropertyList.get(0).getPeople_Shift();
                         max = UserPropertyList.get(0).getPeople_Shift();
 
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
+                        for (int j = 0; j < UserPropertyList.size(); j++) {
                             if (UserPropertyList.get(j).getPeople_Shift() > max) {
                                 max = UserPropertyList.get(j).getPeople_Shift();
                             }
                         }
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
+                        for (int j = 0; j < UserPropertyList.size(); j++) {
                             if (UserPropertyList.get(j).getPeople_Shift() < min) {
                                 min = UserPropertyList.get(j).getPeople_Shift();
                             }
                         }
 
                         if (min > max) {
-                            for (int j = 1; j < UserPropertyList.size(); j++) {
+                            for (int j = 0; j < UserPropertyList.size(); j++) {
                                 if (UserPropertyList.get(j).getPeople_Shift() == min) {
                                     UserPropertyList.remove(UserPropertyList.get(j));
                                 }
@@ -1400,12 +1431,12 @@ public class TimelineController {
 
                         //Xóa số ca làm nhiều nhất
                         max = UserPropertyList.get(0).getNumber_shift();
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
+                        for (int j = 0; j < UserPropertyList.size(); j++) {
                             if (UserPropertyList.get(j).getNumber_shift() > max) {
                                 max = UserPropertyList.get(j).getNumber_shift();
                             }
                         }
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
+                        for (int j = 0; j < UserPropertyList.size(); j++) {
                             if (UserPropertyList.get(j).getNumber_shift() == max) {
                                 UserPropertyList.remove(UserPropertyList.get(j));
                             }
@@ -1426,12 +1457,12 @@ public class TimelineController {
                         }
                         //Xóa số ca làm nhiều nhất
                         max = UserPropertyList.get(0).getNumber_position();
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
+                        for (int j = 0; j < UserPropertyList.size(); j++) {
                             if (UserPropertyList.get(j).getNumber_position() > max) {
                                 max = UserPropertyList.get(j).getNumber_position();
                             }
                         }
-                        for (int j = 1; j < UserPropertyList.size(); j++) {
+                        for (int j = 0; j < UserPropertyList.size(); j++) {
                             if (UserPropertyList.get(j).getNumber_position() == max) {
                                 UserPropertyList.remove(UserPropertyList.get(j));
                             }
@@ -2080,6 +2111,111 @@ public class TimelineController {
         model.addAttribute("data", Data);
 
         return "admin/timeline/usertimelinedetail";
+    }
+
+    @RequestMapping(value = {RouteWeb.IndexTrans}, method = RequestMethod.GET)
+    public String IndexTrans(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+
+
+            List<TransferData> transferDataList= transferService.findAll();
+            request.setAttribute("list",transferDataList);
+        boolean check = false;
+
+        for (TransferData item : transferDataList) {
+            if (item.getId() != null) {
+
+                check = true;
+                break;
+            }
+        }
+        model.addAttribute("check", check);
+
+        return "admin/transfer/index";
+    }
+
+    @RequestMapping(value = {RouteWeb.DetailTrans}, method = RequestMethod.GET)
+    public String DetailTrans(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String Id= request.getParameter("id");
+
+
+
+        TransferData transferData = transferService.FindOne(Integer.parseInt(Id));
+
+        Timeline timeline = timelineServices.FindOne(transferData.getIdTimeline());
+        String time = timeline.getTimename() + " Từ ngày " + timeline.getStartdate() + " Đến ngày " + timeline.getEnddate();
+
+        Position position1  = positionServices.FindOne(transferData.getPositionfrom());
+        Position position2  = positionServices.FindOne(transferData.getPositionto());
+
+
+        int thu1 = (transferData.getShiftcodefrom() / 5) + 2;
+        int thu2 = (transferData.getShiftcodeto() / 5) + 2;
+        int ca1 = (transferData.getShiftcodefrom() % 5) + 1;
+        int ca2 = (transferData.getShiftcodeto() % 5) + 1;
+
+        ModelString modelString = new ModelString();
+        modelString.setData1(transferData.getName());
+        modelString.setData2(time);
+        modelString.setData3("Thứ "+ thu1 + " (Ca "+ca1+")");
+        modelString.setData4("Thứ "+thu2 + " (Ca "+ca2+")");
+        modelString.setData5(position1.getPositionname());
+        modelString.setData6(position2.getPositionname());
+        modelString.setData7(transferData.getMailfrom());
+        modelString.setData8(transferData.getMailto());
+        modelString.setData9(transferData.getContent());
+        modelString.setData10(transferData.getStatus().toString());
+        modelString.setData11(transferData.getResponse());
+        modelString.setData12(transferData.getId().toString());
+
+        request.setAttribute("model",modelString);
+
+        return "admin/transfer/detail";
+    }
+
+    @RequestMapping(value = {RouteWeb.DetailTrans}, method = RequestMethod.POST)
+    public String PostDetailTrans(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String Id_trans, @RequestParam String Status, @RequestParam String response_content) {
+
+
+        TransferData transferData = transferService.FindOne(Integer.parseInt(Id_trans));
+
+        if(Status.equals("4")){
+            transferData.setStatus(4);
+            transferData.setResponse(response_content);
+            transferService.Edit(transferData);
+
+        }else if (Status.equals("3")){
+            transferData.setStatus(3);
+            transferService.Edit(transferData);
+
+            List<TimelineDetail> timelineDetail1 = timelineDetailServices.FindbyIdTimeline(transferData.getIdTimeline());
+
+            for (TimelineDetail item :timelineDetail1   ) {
+                if(item.getShiftCode()==transferData.getShiftcodefrom() &&   item.getMail().getMail().equals(transferData.getMailfrom())  &&item.getIdPosition().getId() == transferData.getPositionfrom()){
+                    item.setMail(accountService.findByMail(transferData.getMailto()));
+                    timelineDetailServices.Edit(item);
+
+                }
+            }
+
+            for (TimelineDetail item :timelineDetail1   ) {
+                if(item.getShiftCode()==transferData.getShiftcodeto()  &&   item.getMail().getMail().equals(transferData.getMailto())&&  item.getIdPosition().getId() == transferData.getPositionto()){
+                    item.setMail(accountService.findByMail(transferData.getMailfrom()));
+                    timelineDetailServices.Edit(item);
+                    break;
+                }
+            }
+
+        }
+
+
+
+
+
+
+        String redirectUrl = "/transfer/index" ;
+        return "redirect:" + redirectUrl;
     }
 
 

@@ -125,6 +125,10 @@ public class AccountController {
         String phone = request.getParameter("txtPhone");
         boolean gender = Boolean.parseBoolean(request.getParameter("radioGender"));
         String strBday = request.getParameter("txtBirthDay");
+        if(strBday.equals("")||strBday==null){
+            strBday = "2000-01-01";
+        }
+        
 
         Date bday = null;
         try {
@@ -138,7 +142,7 @@ public class AccountController {
         Account account = new Account(mail, encoder.encode("123"), name, phone, bday, gender, encoder.encode(mail), role, true, fileName);
         account.setIdStore(new Store(IdStore));
         if (fileName.equals("") || fileName == null) {
-
+            account.setAvatar("defaultUserIcon.png");
         } else {
             String uploadDir = "src/main/resources/images/user-photos/";
             FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);

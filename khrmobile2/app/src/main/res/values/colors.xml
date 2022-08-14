@@ -14,4 +14,5 @@
     <color name="approved_deny">#f22c2c</color>
     <color name="approved_check">#d6da25</color>
     <color name="color_button">#6667ab</color>
+    <color name="green">#12CA24</color>
 </resources>

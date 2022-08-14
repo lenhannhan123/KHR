@@ -42,6 +42,71 @@ public interface APITimeline {
     @GET("addtimeline/list")
     Call<List<ModelString>> getAddTimeLine (@Query("mail") String mail);
 
+    @GET("gettimelinedetail")
+    Call<List<ModelString>> GetTimeLineSort (@Query("mail") String mail);
+
+    @GET("sort/gettimeline")
+    Call<List<String>>  GetTimeLineSort1 (@Query("id") String id,
+                                              @Query("mail") String mail);
+
+    @GET("sort/gettimelinedetail")
+    Call<List<ModelString>>  GetTimeLineSortDetail (@Query("id") String id,
+                                          @Query("shiftcode") String shiftcode);
+
+    @GET("report/choose")
+    Call<List<ModelString>> GetReportChooseTimeline (@Query("mail") String mail);
+    @GET("report/mydate")
+    Call<List<ModelString>> GetReportMyDate (@Query("mail") String mail,
+                                                     @Query("id") String id
+                                                     );
+
+    @GET("report/myshift")
+    Call<List<ModelString>> GetReportMyShift (@Query("mail") String mail,
+                                             @Query("id") String id,
+                                              @Query("number") String number
+    );
+    @GET("report/youruser")
+    Call<List<ModelString>> GetReportYourUser (@Query("code") String code,
+                                              @Query("id") String id,
+                                              @Query("position") String position
+    );
+
+    @GET("report/myposition")
+    Call<List<ModelString>> GetReportMyPosition (@Query("mail") String mail);
+
+    @GET("report/checkposition")
+    Call<List<ModelString>> GetReportCheckPosition (@Query("mycode") String mydate,
+                                                    @Query("yourcode") String yourdate,
+                                                    @Query("id") String id,
+                                                    @Query("mymail") String mymail,
+                                                    @Query("yourmail") String yourmail,
+                                                    @Query("idpos") String idpos
+    );
+
+    @POST("report/sendata")
+    Call<List<ModelString>> PostReportSendata (@Query("mycode") String mydate,
+                                                    @Query("yourcode") String yourdate,
+                                                    @Query("id") String id,
+                                                    @Query("mymail") String mymail,
+                                                    @Query("yourmail") String yourmail,
+                                                    @Query("idpos") String idpos,
+                                                    @Query("content") String content
+    );
+
+    @GET("report/getreport1")
+    Call<List<ModelString>> GetReport1 (@Query("mail") String mail);
+    @GET("report/getreport2")
+    Call<List<ModelString>> GetReport2 (@Query("mail") String mail);
+
+    @GET("report/getreport1detail")
+    Call<List<ModelString>> GetReport1Detail (@Query("id") String id);
+
+    @GET("report/getConfirm")
+    Call<List<ModelString>> GetConfirm (@Query("id") String id,
+                                        @Query("status") String status,
+                                        @Query("response") String response
+                                        );
+
     @POST("createtimeuser")
     Call<List<String>> CreateTimeline (@Query("mail") String mail,
                                  @Query("idTimeline") String idTimeline,

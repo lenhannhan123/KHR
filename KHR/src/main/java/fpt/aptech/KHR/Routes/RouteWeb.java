@@ -145,5 +145,11 @@ public class RouteWeb {
 
     public final static String RedirectLogout = "redirectlogout";
 
+    public final static String IndexTrans = "transfer/index";
+
+    public final static String DetailTrans = "transfer/detail";
+
+
+
 
 }

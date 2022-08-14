@@ -14,6 +14,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Khrmobile"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Transferdetail2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".MainConfirmTransferActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Transferdetail1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateTransferActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainRequestTransferActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainTransferActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TimekeepingDetail"
+            android:exported="false" />
+        <activity
+            android:name=".AddScheduleTimelineDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WorkscheduleActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

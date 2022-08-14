@@ -89,8 +89,6 @@ public class AddTimelineFragment extends Fragment {
 
             if(data.size()>0){
                 setCalender();
-            }else {
-                Toast.makeText(view.getContext(),"Khong co du lieu",Toast.LENGTH_SHORT).show();
             }
 
 

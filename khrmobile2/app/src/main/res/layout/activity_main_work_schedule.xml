@@ -44,7 +44,7 @@
 
                 <Button
 
-                    android:id="@+id/Accoun_change_btnPass"
+                    android:id="@+id/btn_cofirm"
                     android:layout_width="10dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
