@@ -60,6 +60,7 @@ public class NotificationController {
 
 @RequestMapping(value = {RouteWeb.notificationURL}, method = RequestMethod.GET)
     public String Index(Model model, HttpServletRequest request, HttpServletResponse response) {
+    request.setAttribute("sidebar","7");
         //List<Notification> list = ns.findAll();
         List<Notification> listlike = new ArrayList<>();
         List<Notification> listend = new ArrayList<>();
@@ -96,6 +97,7 @@ public class NotificationController {
     }
         @RequestMapping(value = {"/notification/details"}, method = RequestMethod.GET)
     public String Details(Model model, HttpServletRequest request, HttpServletResponse response) {
+            request.setAttribute("sidebar","7");
         int id = Integer.valueOf(request.getParameter("id"));
         List<AccountNotification> list = ns.findNotificationByAny(id);
         String content = null;
@@ -114,6 +116,7 @@ public class NotificationController {
     }
         @RequestMapping(value = {RouteWeb.notificationAddURL}, method = RequestMethod.GET)
     public String AddPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+            request.setAttribute("sidebar","7");
         List<Account> accounts = acs.findAll();
         HttpSession session = request.getSession();
         List<Account> list = new ArrayList<>();
@@ -132,6 +135,7 @@ public class NotificationController {
     }
         @RequestMapping(value = {"/notification/save"}, method = RequestMethod.POST)
     public String AddNotification(Model model, HttpServletRequest request, HttpServletResponse response) throws FirebaseMessagingException {
+            request.setAttribute("sidebar","7");
         String title = request.getParameter("NotificationName");
         String content = request.getParameter("NotificationContent");
         String typesend = request.getParameter("TypeSend");
@@ -200,6 +204,7 @@ public class NotificationController {
         @RequestMapping(value = {"api/notification/token"}, method = RequestMethod.GET)
     public ResponseEntity<List<AccountNotification>> APINotificationByMail(HttpServletRequest request, HttpServletResponse response
     ) {
+            request.setAttribute("sidebar","7");
         try {
             String mail = request.getParameter("token");
             AccountToken atk = accToken.GetToken(mail);
@@ -220,6 +225,7 @@ public class NotificationController {
         @RequestMapping(value = {"api/notification/token/search"}, method = RequestMethod.GET)
     public ResponseEntity<List<AccountNotification>> APINotificationSearchMail(HttpServletRequest request, HttpServletResponse response
     ) {
+            request.setAttribute("sidebar","7");
         try {
             String mail = request.getParameter("token");
             String year = request.getParameter("year");
@@ -241,6 +247,7 @@ public class NotificationController {
     public ResponseEntity<AccountNotification> APISeenNotifacation(@RequestBody AccountNotification accountNotification, HttpServletRequest request,
             HttpServletResponse response
     ) {
+        request.setAttribute("sidebar","7");
         // Account acc = request.getParameter("mail")
         try {
             AccountNotification accountNotificationnew = ns.Seen(accountNotification);

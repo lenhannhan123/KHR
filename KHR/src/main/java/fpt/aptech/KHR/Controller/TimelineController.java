@@ -80,57 +80,13 @@ public class TimelineController {
     @Autowired
     FirebaseMessagingService firebaseMessagingService;
 
-    public  void sendtoMail(String Title, String content, HttpServletRequest request, List<Account> account){
 
-
-
-        List<UserTimelineJS> userTimelineJS = new ArrayList<>();
-
-        HttpSession session = request.getSession();
-//        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
-        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
-
-        for (int i = 0; i < account.size(); i++) {
-            if (account.get(i).getIdStore().getId() == Id_Store) {
-            } else {
-                account.remove(account.get(i));
-                i -= 1;
-
-            }
-        }
-
-        for (Account item: account ) {
-
-            Notification n = new Notification();
-            Date date = new Date();
-            n.setTitle(Title);
-            n.setContent(content);
-            n.setDateCreate(date);
-            Notification ni = ns.AddNotification(n);
-            List<AccountToken> listToken = accToken.GetTokenByMail(item.getMail());
-            List<String> listtokenstring = new ArrayList<>();
-            for (AccountToken accountToken : listToken) {
-                listtokenstring.add(accountToken.getToken());
-            }
-            AccountNotification accountNotification = new AccountNotification();
-            accountNotification.setIdnotification(ni);
-            accountNotification.setMail(item);
-            accountNotification.setStatus(false);
-            AccountNotification s = ns.AddAccountNotification(accountNotification);
-            try {
-                firebaseMessagingService.sendMorePeople(s, listtokenstring);
-            } catch (FirebaseMessagingException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-    }
 
 
     @RequestMapping(value = {RouteWeb.TimelineIndexURL}, method = RequestMethod.GET)
     public String IndexTimeline(Model model, HttpServletRequest request, HttpServletResponse response) {
 
-
+        request.setAttribute("sidebar","4");
         List<Timeline> list = timelineServices.findAll();
 
         HttpSession session = request.getSession();
@@ -173,8 +129,8 @@ public class TimelineController {
 
 
     @RequestMapping(value = {RouteWeb.TimelineGetCreateURL}, method = RequestMethod.GET)
-    public String GetCreate(Model model) {
-
+    public String GetCreate(Model model, HttpServletRequest request) {
+        request.setAttribute("sidebar","4");
 
         List<Position> ListPosition = positionServices.findAll();
 
@@ -186,6 +142,7 @@ public class TimelineController {
 
     @RequestMapping(value = RouteWeb.TimelineGetCreateURL, method = RequestMethod.POST)
     public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","4");
         int NumberofPosition = positionServices.CountPosition();
         HttpSession session = request.getSession();
 
@@ -225,6 +182,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineConfirmURL}, method = RequestMethod.GET)
     public String GetCofirm(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","4");
 
         List<Position> positionList = positionServices.findAll();
         HttpSession session = request.getSession();
@@ -304,7 +262,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineConfirmURL}, method = RequestMethod.POST)
     public String PostCofirm(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String data) {
-
+        request.setAttribute("sidebar","4");
 //        JsonServices.dd(data, response);
 
         List<ShiftJS> ListShiftJS = new ArrayList<>();
@@ -580,7 +538,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineCheckStartdayURL}, method = RequestMethod.POST)
     public String CheckStartDay(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String data = request.getParameter("timelinedtartday").toString();
 
         Date TimelineStartDayParse;
@@ -607,7 +565,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineCheckEnddayURL}, method = RequestMethod.POST)
     public String CheckEndDay(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String data = request.getParameter("timelineendday").toString();
 
         Date TimelineEndDayParse;
@@ -635,7 +593,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineDeleteURL}, method = RequestMethod.GET)
     public String DeleteTimeLine(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String id = request.getParameter("id").toString();
 
         timelineServices.Delete(Integer.parseInt(id));
@@ -647,7 +605,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineEditNameURL}, method = RequestMethod.POST)
     public String TimelineEditName(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String id = request.getParameter("id").toString();
 
         String Name = request.getParameter("TimelineName").toString();
@@ -664,7 +622,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineEditTimelineURL}, method = RequestMethod.GET)
     public String TimelineGetEdit(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String idTimelineStr = request.getParameter("id").toString();
 
         int idTimeline = Integer.parseInt(idTimelineStr);
@@ -901,7 +859,7 @@ public class TimelineController {
     @RequestMapping(value = {RouteWeb.TimelineEditTimelineURL}, method = RequestMethod.POST)
     public String TimelinePostEdit(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String data, @RequestParam int idtimelineform) {
         List<ShiftJS> ListShiftJS = new ArrayList<>();
-
+        request.setAttribute("sidebar","4");
 
         JSONArray jsonArr;
         try {
@@ -1138,7 +1096,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineSortRedirectURL}, method = RequestMethod.GET)
     public String TimelineSortRedirectURL(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         int id = Integer.parseInt(request.getParameter("id"));
 
         List<TimelineDetail> Listtimeline = timelineDetailServices.FindbyIdTimeline(id);
@@ -1233,7 +1191,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineSortCreateURL}, method = RequestMethod.GET)
     public String TimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
 
         String idTimelineStr = request.getParameter("id").toString();
 
@@ -1937,8 +1895,9 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.GET)
     public String GetTimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         int id = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("IdTimeline",id);
         List<TimelineDetail> Listtimeline = timelineDetailServices.FindbyIdTimeline(id);
 
         List<Position> positionList = positionServices.findAll();
@@ -1980,7 +1939,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.POST)
     public String PostTimelineSort(Model model, HttpServletRequest request, HttpServletResponse response,@RequestParam String data) throws Exception {
-
+        request.setAttribute("sidebar","4");
 
 //        JsonServices.dd(data,response);
 //        JsonServices.dd(data,response);
@@ -2152,7 +2111,7 @@ public class TimelineController {
     @RequestMapping(value = {RouteWeb.TimelineUsertURL}, method = RequestMethod.GET)
     public String TimelineUser(Model model, HttpServletRequest request, HttpServletResponse response) {
         String idTimelineStr = request.getParameter("id").toString();
-
+        request.setAttribute("sidebar","4");
         List<Account> account = accountService.findAllUser();
         List<UserTimelineJS> userTimelineJS = new ArrayList<>();
 
@@ -2241,7 +2200,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineChangeStatusURL}, method = RequestMethod.POST)
     public String TimelineChangeStatus(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+        request.setAttribute("sidebar","4");
         String idTimelineStr = request.getParameter("id").toString();
 
         List<Account> account = accountService.findAllUser();
@@ -2345,7 +2304,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineReloadTimeURL}, method = RequestMethod.POST)
     public String TimelineUserReload(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
 
         String idTimelineStr = request.getParameter("id").toString();
 
@@ -2420,7 +2379,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineDetailsURL}, method = RequestMethod.GET)
     public String DetailTimelineUser(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String mail = request.getParameter("mail");
         int idTimeline = Integer.parseInt(request.getParameter("id"));
 
@@ -2472,10 +2431,217 @@ public class TimelineController {
         return "admin/timeline/usertimelinedetail";
     }
 
+
+    @RequestMapping(value = {RouteWeb.TimelineReport}, method = RequestMethod.GET)
+    public String TimelineReport(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","4");
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        List<Account> account = accountService.findAllUser();
+        List<UserTimelineJS> userTimelineJS = new ArrayList<>();
+
+        HttpSession session = request.getSession();
+//        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
+        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+        for (int i = 0; i < account.size(); i++) {
+            if (account.get(i).getIdStore().getId() == Id_Store) {
+            } else {
+                account.remove(account.get(i));
+                i -= 1;
+
+            }
+        }
+
+        // Số lượng người làm được trong 1 ca
+
+        List<UserTimeline> userTimelineList = new ArrayList<>();
+        userTimelineList = userTimelineServices.FindIDTimeLine(id);
+
+        for (int i = 0; i <userTimelineList.size() ; i++) {
+
+            Short s =  Short.valueOf(String.valueOf(userTimelineList.get(i).getShiftcode() - 1) ) ;
+            userTimelineList.get(i).setShiftcode(s);
+            userTimelineList.set(i,userTimelineList.get(i));
+        }
+
+
+        List<Integer> listtime = new ArrayList<>();
+        for (int i = 0; i <35 ; i++) {
+            listtime.add(0);
+        }
+
+        for (int i = 0; i <userTimelineList.size() ; i++) {
+          int pos=  userTimelineList.get(i).getShiftcode();
+            listtime.set(pos,listtime.get(pos)+1);
+
+        }
+        for (int i = 0; i <35 ; i++) {
+            listtime.set(i,account.size()-listtime.get(i));
+        }
+
+        request.setAttribute("listtime",JsonServices.ParseToJson(listtime));
+
+
+
+
+
+
+        //
+
+        List<Position> positionList = positionServices.findAll();
+        List<ModelString> ListPosition = new ArrayList<>();
+        for (Position item : positionList) {
+            ModelString stringdata = new ModelString();
+            stringdata.setData1(String.valueOf(item.getId()));
+            stringdata.setData3(item.getPositionname());
+            ListPosition.add(stringdata);
+        }
+
+        List<JobpriorityModel> UserPropertyListTemplate =new ArrayList<>();
+
+
+
+        for (Account item:account   ) {
+            JobpriorityModel jobpriorityModel = new JobpriorityModel();
+            jobpriorityModel.setId_user(item.getMail());
+            jobpriorityModel.setAccountPositions(accountPositionServices.findByEmail(new Account(item.getMail())));
+            UserPropertyListTemplate.add(jobpriorityModel);
+        }
+
+
+        int count = 0;
+        int min = 0, max = 0;
+        for (int i = 0; i < ListPosition.size(); i++) {
+            count = 0;
+            int id_Pos = Integer.parseInt(ListPosition.get(i).getData1());
+//            JsonServices.dd(id_Pos, response);
+
+            for (JobpriorityModel item : UserPropertyListTemplate) {
+                for (AccountPosition item2 : item.getAccountPositions()) {
+                    if (item2.getIdPosition().getId() == id_Pos) {
+                        count += 1;
+                    }
+
+                }
+            }
+
+            ListPosition.get(i).setData2(String.valueOf(count));
+        }
+
+        // Xóa vị trí không ai làm được
+        for (int i = 0; i < ListPosition.size(); i++) {
+            if (Integer.parseInt(ListPosition.get(i).getData2()) == 0) {
+                ListPosition.remove(ListPosition.get(i));
+                i = -1;
+            }
+        }
+        // Sắp xếp
+        ModelString String1 = new ModelString();
+        for (int i = 0; i < ListPosition.size(); i++) {
+            for (int j = i + 1; j < ListPosition.size(); j++) {
+                if (Integer.parseInt(ListPosition.get(i).getData2()) > Integer.parseInt(ListPosition.get(j).getData2())) {
+                    String1.setData1(ListPosition.get(i).getData1());
+                    String1.setData2(ListPosition.get(i).getData2());
+
+                    ListPosition.get(i).setData1(ListPosition.get(j).getData1());
+                    ListPosition.get(i).setData2(ListPosition.get(j).getData2());
+
+                    ListPosition.get(j).setData1(String1.getData1());
+                    ListPosition.get(j).setData2(String1.getData2());
+                }
+            }
+        }
+
+        request.setAttribute("listpos",JsonServices.ParseToJson(ListPosition));
+
+
+
+
+
+
+
+
+
+        //
+
+
+
+        List<TimelineDetail> timelineDetails = timelineDetailServices.FindbyIdTimeline(id);
+        List<ModelString> modelStringList = new ArrayList<>();
+        for (Account item:account   ) {
+            ModelString modelString = new ModelString();
+            modelString.setData1(item.getMail());
+            modelString.setData3(item.getFullname());
+            modelStringList.add(modelString);
+        }
+
+        int count1=0;
+//        for (ModelString item : modelStringList){
+            for (int i = 0; i <modelStringList.size() ; i++) {
+
+
+            count1=0;
+            for (TimelineDetail item2 :timelineDetails ){
+                if(modelStringList.get(i).getData1().equals(item2.getMail().getMail())){
+                    count1+=1;
+                }
+
+            }
+                modelStringList.get(i).setData2(String.valueOf(count1));
+        }
+
+
+
+        for (int i = 0; i < modelStringList.size(); i++) {
+            for (int j = i; j <modelStringList.size() ; j++) {
+                if(Integer.parseInt(modelStringList.get(j).getData2()) < Integer.parseInt(modelStringList.get(i).getData2())){
+                    ModelString modelString = new ModelString();
+                    modelString.setData1(modelStringList.get(j).getData1());
+                    modelString.setData2(modelStringList.get(j).getData2());
+                    modelString.setData3(modelStringList.get(j).getData3());
+
+
+                    modelStringList.get(j).setData1(modelStringList.get(i).getData1());
+                    modelStringList.get(j).setData2(modelStringList.get(i).getData2());
+                    modelStringList.get(j).setData3(modelStringList.get(i).getData3());
+
+
+                    modelStringList.get(i).setData1(modelString.getData1());
+                    modelStringList.get(i).setData2(modelString.getData2());
+                    modelStringList.get(i).setData3(modelString.getData3());
+                }
+
+            }
+
+        }
+
+
+        for (int i = 0; i < modelStringList.size(); i++) {
+
+            if(Integer.parseInt(modelStringList.get(i).getData2())>3){
+                modelStringList.get(i).setData4("true");
+            }else {
+                modelStringList.get(i).setData4("false");
+            }
+
+        }
+
+
+        request.setAttribute("listuser",modelStringList);
+
+        return "admin/timeline/report";
+    }
+
+
+
+
+
+    // Trans
     @RequestMapping(value = {RouteWeb.IndexTrans}, method = RequestMethod.GET)
     public String IndexTrans(Model model, HttpServletRequest request, HttpServletResponse response) {
 
-
+        request.setAttribute("sidebar","9");
 
             List<TransferData> transferDataList= transferService.findAll();
             request.setAttribute("list",transferDataList);
@@ -2495,7 +2661,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.DetailTrans}, method = RequestMethod.GET)
     public String DetailTrans(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","9");
         String Id= request.getParameter("id");
 
 
@@ -2535,7 +2701,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.DetailTrans}, method = RequestMethod.POST)
     public String PostDetailTrans(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String Id_trans, @RequestParam String Status, @RequestParam String response_content) throws Exception {
-
+        request.setAttribute("sidebar","9");
 
         TransferData transferData = transferService.FindOne(Integer.parseInt(Id_trans));
 

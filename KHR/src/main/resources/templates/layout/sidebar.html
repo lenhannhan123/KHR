@@ -28,8 +28,8 @@
                 <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
                 <li class="nav-item sd ">
-                    <a th:href="@{/home/index}" class="nav-link active-link ">
-                        <div class="nav-item-color-active ">
+                    <a th:href="@{/home/index}" class="nav-link " id="a-1">
+                        <div class="nav-item-color " id="div-1" >
                             <!-- <i class="nav-icon " style="color:white "></i> -->
                             <!-- <img src="images/icon/adminhome.svg " width="20px " srcset=" "> -->
                             <i class="fas fa-home "></i>
@@ -43,8 +43,8 @@
 
                 </li>
                 <li class="nav-item sd ">
-                    <a href="/account/index" class="nav-link ">
-                        <div class="nav-item-color ">
+                    <a href="/account/index" id="a-2" class="nav-link ">
+                        <div class="nav-item-color " id="div-2">
                             <i class="fas fa-user "></i>
 
                             <p style="margin-left: 8% ">
@@ -57,8 +57,8 @@
 
                 </li>
                 <li class="nav-item sd ">
-                    <a href="/position/index" class="nav-link ">
-                        <div class="nav-item-color ">
+                    <a href="/position/index" class="nav-link " id="a-3" >
+                        <div class="nav-item-color " id="div-3">
                             <i class="fas fa-user-plus "></i>
 
                             <p style="margin-left: 8% ">
@@ -71,8 +71,8 @@
 
                 </li>
                 <li class="nav-item sd ">
-                    <a th:href="@{/timeline/index}" class="nav-link ">
-                        <div class="nav-item-color ">
+                    <a th:href="@{/timeline/index}" class="nav-link " id="a-4">
+                        <div class="nav-item-color " id="div-4">
                             <!-- <i class="nav-icon fas fa-tachometer-alt "></i> -->
                             <i class="fas fa-calendar "></i>
 
@@ -86,8 +86,8 @@
 
                 </li>
                 <li class="nav-item sd ">
-                    <a th:href="@{/timekeeping/index}" class="nav-link ">
-                        <div class="nav-item-color ">
+                    <a th:href="@{/timekeeping/index}" class="nav-link " id="a-5">
+                        <div class="nav-item-color " id="div-5">
                             <!-- <i class="nav-icon fas fa-tachometer-alt "></i> -->
                             <i class="fas fa-clock "></i>
 
@@ -101,8 +101,8 @@
 
                 </li>
                 <li class="nav-item sd ">
-                    <a th:href="@{/api/salary/index}" class="nav-link ">
-                        <div class="nav-item-color ">
+                    <a th:href="@{/api/salary/index}" class="nav-link " id="a-6">
+                        <div class="nav-item-color " id="div-6">
                             <!-- <i class="nav-icon fas fa-tachometer-alt "></i> -->
                             <i class="fas fa-edit "></i>
 
@@ -117,8 +117,8 @@
                 </li>
 
                 <li class="nav-item sd ">
-                    <a th:href="@{/notification}" class="nav-link ">
-                        <div class="nav-item-color ">
+                    <a th:href="@{/notification}" class="nav-link " id="a-7">
+                        <div class="nav-item-color " id="div-7">
                             <!-- <i class="nav-icon fas fa-tachometer-alt "></i> -->
                             <i class="fas fa-comments "></i>
 
@@ -133,8 +133,8 @@
                 </li>
 
                 <li class="nav-item sd ">
-                    <a th:href="@{/dayoff}" class="nav-link ">
-                        <div class="nav-item-color ">
+                    <a th:href="@{/dayoff}" class="nav-link " id="a-8">
+                        <div class="nav-item-color " id="div-8">
                             <!-- <i class="nav-icon fas fa-tachometer-alt "></i> -->
                             <i class="fas fa-business-time"></i>
 
@@ -149,8 +149,8 @@
                 </li>
 
                 <li class="nav-item sd ">
-                    <a th:href="@{/transfer/index}" class="nav-link ">
-                        <div class="nav-item-color ">
+                    <a th:href="@{/transfer/index}" class="nav-link " id="a-9">
+                        <div class="nav-item-color " id="div-9">
                             <!-- <i class="nav-icon fas fa-tachometer-alt "></i> -->
                             <i class="fas fa-exchange-alt"></i>
 
@@ -181,13 +181,32 @@
                     </a>
 
                 </li>
-
+                <textarea id="sidebar" th:text="${sidebar}" hidden></textarea>
 
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
+
+
+
+    <script>
+        addchoose();
+
+        function addchoose() {
+            number=1;
+            number = parseInt(document.getElementById("sidebar").innerText);
+
+            // console.log(number);
+
+            document.getElementById("a-"+number).className += "active-link ";
+            document.getElementById("div-"+number).className = "nav-item-color-active";
+
+        }
+
+    </script>
+
 </aside>
 
 

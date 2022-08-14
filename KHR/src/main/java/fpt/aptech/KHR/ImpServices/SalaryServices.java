@@ -42,8 +42,8 @@ public class SalaryServices implements ISalaryServices {
     }
 
     @Override
-    public List<Shift> findShiftByDate(Date timestart, Date timeend) {
-        return salaryRepository.findShiftByDate(timestart, timeend);
+    public List<Timekeeping> findTimekeepingByDate(Date timestart, Date timeend, Account mail) {
+        return salaryRepository.findTimekeepingByDate(timestart, timeend, mail);
     }
 
     @Override
@@ -65,6 +65,16 @@ public class SalaryServices implements ISalaryServices {
     @Override
     public Salary findOneByDate(String mail, int month, int year) {
         return salaryRepository.findOneByDate(mail, month, year);
+    }
+
+    @Override
+    public Salary findOne(int id) {
+        return salaryRepository.findOne(id);
+    }
+
+    @Override
+    public void delete(Salary salary) {
+        salaryRepository.delete(salary);
     }
 
 }

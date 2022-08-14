@@ -33,6 +33,10 @@ public class HomeController {
     @RequestMapping(value = {RouteWeb.AdminHomeURL}, method = RequestMethod.GET)
     public String Index(Model model, HttpServletRequest request, HttpServletResponse response) {
 
+
+        request.setAttribute("sidebar","1");
+
+
         String idUser = request.getRemoteUser();
         Account account = accountRepository.findByMail(idUser);
 
@@ -49,6 +53,7 @@ public class HomeController {
                 HttpSession session = request.getSession();
                 session.setAttribute("IdStore", account.getIdStore().getId());
                 session.setAttribute("NameStore", account.getIdStore().getNameStore());
+
                 return "index";
             case "2":
                 return "redirect:/logout";
