@@ -127,6 +127,8 @@ public class TimekeepingServices implements ITimekeepingServices {
         return timekeepingRepository.findMaxShiftCodeInTimelineDetail();
     }
 
+
+    @Override
     public void delete(Timekeeping timekeeping) {
         timekeepingRepository.delete(timekeeping);
     }

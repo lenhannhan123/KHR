@@ -58,6 +58,6 @@ public interface ITimekeepingServices {
     public TimelineDetail findTimelineDetail(Account mail, int id, Timeline idTimeline);
 
     public int findMaxShiftCodeInTimelineDetail();
-
+    
     public void delete(Timekeeping timekeeping);
 }
