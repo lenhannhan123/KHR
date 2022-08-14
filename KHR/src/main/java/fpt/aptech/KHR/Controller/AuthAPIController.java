@@ -172,11 +172,7 @@ public class AuthAPIController {
         return new ResponseEntity<>(account, HttpStatus.BAD_REQUEST);
     }
 
-//    WIP
-//    @PostMapping(path = "api/get-positions")
-//    public ResponseEntity<Account> getJobPositions(@RequestBody Account account, @RequestParam("email") String email) {
-//        List<AccountPosition> listAccountPositions = accountPositionRepository.findByEmail(account.getMail());
-//    }
+
     @PostMapping(path = "api/change-profile-info")
     public ResponseEntity<Account> changeProfileInfo(@RequestBody Account account) {
         accountServiceImp.updateBasicInfoMobile(account.getFullname(), account.getPhone(), account.getBirthdate(), account.getGender(), account.getMail());
@@ -195,6 +191,7 @@ public class AuthAPIController {
 //        accountServiceImp.findByMail(account.getMail());
 //        return new ResponseEntity<>(account, HttpStatus.OK);
 //    }
+    
     @RequestMapping(value = {RouteAPI.GetProfileInfo}, method = RequestMethod.GET)
     public void getProfileInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 
@@ -232,21 +229,6 @@ public class AuthAPIController {
         JsonServices.dd(JsonServices.ParseToJson(modelStrings), response);
     }
 
-//    @RequestMapping(value = {RouteAPI.UpdatePhotoProfile}, method = RequestMethod.POST)
-//    public void updatePhotoProfile(@RequestParam("file") MultipartFile file, @RequestParam("mail") String mail) throws IOException {
-//        //Upload file to source static image
-//        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//        String uploadDir = "src/main/resources/static/images/user-photos/";
-//        FileUploadUtil.saveFile(uploadDir, fileName, file);
-//
-//        //update user photo
-//        Account account = new Account();
-//        account = accountServiceImp.findByMail(mail);
-//        account.setAvatar(fileName);
-//        accountServiceImp.save(account);
-//
-//    }
-
     @RequestMapping(value = {RouteAPI.UpdatePhotoProfile}, method = RequestMethod.POST)
     public ResponseEntity<Account> updatePhotoProfile(@RequestParam("avatar") MultipartFile file, @RequestParam("mail") String mail) throws IOException {
         //Upload file to source static image
@@ -279,6 +261,7 @@ public class AuthAPIController {
                     modelString.setData2(account.getMail());
                     modelString.setData3(pass);
                     modelString.setData4(account.getRole());
+                    modelString.setData5(String.valueOf(account.getStatus()));
                     JsonServices.dd(JsonServices.ParseToJson(modelString),response);
                     return;
 
@@ -295,8 +278,6 @@ public class AuthAPIController {
                 return;
 
             }
-
-
         }
         else {
             modelString.setData1("Tài khoản hoặc mật khẩu không đúng");

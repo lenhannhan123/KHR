@@ -602,7 +602,7 @@ public class TimelineController {
         }
 
 
-        return "timeline/confirm";
+        return "admin/timeline/confirm";
     }
 
     @RequestMapping(value = {RouteWeb.TimelineCheckEnddayURL}, method = RequestMethod.POST)
