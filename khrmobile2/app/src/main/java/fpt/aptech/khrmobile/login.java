@@ -1,7 +1,6 @@
 package fpt.aptech.khrmobile;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -153,8 +153,14 @@ public class login extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Account account = response.body();
                     sendRegistrationToServer(account);
-                    startActivity(new Intent(login.this, MainActivity.class).putExtra("data",account));
-                    finish();
+                    if(String.valueOf(account.getRole()).equals("2")){
+                        startActivity(new Intent(login.this, ScannerActivity.class));
+                        finish();
+                    }else{
+                        startActivity(new Intent(login.this, MainActivity.class).putExtra("data",account));
+                        finish();
+                    }
+
                 }
                 else{
                     String message="An error occured, please try again later..";
