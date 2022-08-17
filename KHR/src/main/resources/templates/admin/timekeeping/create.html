@@ -3,7 +3,7 @@
       layout:decorate="~{layout/_layout}">
 
     <head>
-        <title>Chỉnh sửa chấm công</title>
+        <title>Tạo chấm công</title>
 
         <style>
 
@@ -23,6 +23,31 @@
 
 
         </style>
+        <link rel="stylesheet"
+              href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $("#timeStart").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "http://localhost:7777/timekeeping/",
+                            dataType: "json",
+                            data: {
+                                value: request.term                                
+                            },
+                            success: function (data) {
+                                alert(data);
+                                console.log(data);
+                                response(data);
+                            }
+                        });
+                    },
+                    minLength: 2
+                });
+            });
+        </script>
 
     </head>
 
@@ -30,13 +55,13 @@
 
         <div layout:fragment="content">
 
-            <h3 class="title-page">Chỉnh sửa chấm công</h3>
+            <h3 class="title-page">Tạo chấm công</h3>
 
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col background-table">
 
-                    <form th:action="@{'/timekeeping/edit/' + ${timekeeping.getId()}}" method="post" name="_form">  
+                    <form th:action="@{/timekeeping/save}" method="post" name="_form">  
 
                         <div class="row" style="margin-top: 3%;">
                             <div class="col-sm-1"></div>
@@ -49,20 +74,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="text" class="form-control input" th:value="${timekeeping.getMail().getMail()}" id="" name="" readonly="">
-                            </div>
-                            <div class="col-sm-1"></div>
-                        </div>
-
-                        <div class="row" style="margin-top: 3%;">
-                            <div class="col-sm-1"></div>
-                            <div class="col">Họ tên</div>
-                        </div>
-
-                        <div class="row" style="margin-top: 1%;">
-                            <div class="col-sm-1"></div>
-                            <div class="col">
-                                <input type="text" class="form-control input" id="" name="" th:value="${user.getFullname()}" readonly="">
+                                <input type="text" class="form-control input" id="mail" name="mail">
                             </div>
                             <div class="col-sm-1"></div>
                         </div>
@@ -81,11 +93,11 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Thời gian vào" oninput="validateTimeStart();" id="timeStart" th:value="${#dates.format(timekeeping.getTimestart(), 'HH:mm')}"
+                                <input type="text" class="form-control input" placeholder="Thời gian vào" oninput="validateTimeStart();" id="timeStart"
                                        name="timeStart">
                             </div>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Ngày" oninput="validateDateStart();" id="dateStart" th:value="${#dates.format(timekeeping.getTimestart(), 'dd-MM-yyyy')}"
+                                <input type="text" class="form-control input" placeholder="Ngày" oninput="validateDateStart();" id="dateStart"
                                        name="dateStart">
                             </div>
                             <div class="col-sm-1"></div>
@@ -104,11 +116,11 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Thời gian ra" id="timeEnd" oninput="validateTimeEnd();" th:value="${#dates.format(timekeeping.getTimeend(), 'HH:mm')}"
+                                <input type="text" class="form-control input" placeholder="Thời gian ra" id="timeEnd" oninput="validateTimeEnd();"
                                        name="timeEnd">
                             </div>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Ngày" oninput="validateDateEnd();" id="dateEnd" th:value="${#dates.format(timekeeping.getTimeend(), 'dd-MM-yyyy')}"
+                                <input type="text" class="form-control input" placeholder="Ngày" oninput="validateDateEnd();" id="dateEnd"
                                        name="dateEnd">
                             </div>
                             <div class="col-sm-1"></div>
@@ -124,7 +136,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col input-group mb-3">
-                                <input type="text" class="form-control input" placeholder="Thời gian làm việc" id="time" th:value="${timekeeping.getTime()}"
+                                <input type="text" class="form-control input" placeholder="Thời gian làm việc" id="time"
                                        name="time" readonly="">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">Giờ</span>
@@ -173,11 +185,12 @@
 
 <script th:src="@{/script/cleave.js}"></script>
 <script>
+
     var timeStartFormat = new Cleave('#timeStart', {
         time: true,
         timePattern: ['h', 'm']
     });
-    
+
     var dateStartFormat = new Cleave('#dateStart', {
         date: true,
         delimiter: '-',
@@ -188,7 +201,7 @@
         time: true,
         timePattern: ['h', 'm']
     });
-    
+
     var dateStartFormat = new Cleave('#dateEnd', {
         date: true,
         delimiter: '-',
@@ -224,7 +237,7 @@
             btnSubmit.style.background = '#6667AB';
         }
     }
-    
+
     function validateDateStart() {
         var val = document.getElementById('dateStart').value;
         if (val.length < 10) {
@@ -238,7 +251,7 @@
             btnSubmit.style.background = '#6667AB';
         }
     }
-    
+
     function validateDateEnd() {
         var val = document.getElementById('dateEnd').value;
         if (val.length < 10) {
@@ -252,5 +265,6 @@
             btnSubmit.style.background = '#6667AB';
         }
     }
+
 
 </script>
