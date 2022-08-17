@@ -59,16 +59,28 @@ public class NotificationController {
 //    }
 
     @RequestMapping(value = {RouteWeb.notificationURL}, method = RequestMethod.GET)
-    public String Index(Model model,HttpServletRequest request, HttpServletResponse response) {
+    public String Index(Model model, HttpServletRequest request, HttpServletResponse response) {
         //List<Notification> list = ns.findAll();
         List<Notification> listlike = new ArrayList<>();
+        List<Notification> listend = new ArrayList<>();
         List<AccountNotification> listnotifacation = ns.findAllNotification();
         HttpSession session = request.getSession();
         int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
-        for(int i = listnotifacation.size()-1;i>=0;i--){
-            //for(int i = listlike.size()-1;i>=0;i--)
-            if(listnotifacation.get(i).getMail().getIdStore().getId()==IdStore){
+        for (int i = listnotifacation.size() - 1; i >= 0; i--) {
+//            for (int j = listlike.size() - 1; j >= 0; j--) {
+//                if (listlike.get(j).getId() == listnotifacation.get(i).getId()) {
+//                    if (listnotifacation.get(i).getMail().getIdStore().getId() == IdStore) {
+//                        listlike.add(listnotifacation.get(i).getIdnotification());
+//                    }
+//                }
+//            }
+            if (listnotifacation.get(i).getMail().getIdStore().getId() == IdStore) {
                 listlike.add(listnotifacation.get(i).getIdnotification());
+            }
+        }
+        for (int i = 0; i < listlike.size(); i++) {
+            if (!listend.contains(listlike.get(i))) {
+                listend.add(listlike.get(i));
             }
         }
         boolean check = false;
@@ -78,7 +90,7 @@ public class NotificationController {
                 break;
             }
         }
-        model.addAttribute("notificationList", listlike);
+        model.addAttribute("notificationList", listend);
         model.addAttribute("check", check);
         return "admin/notification/index";
     }
@@ -144,7 +156,7 @@ public class NotificationController {
             for (int i = 0; i < user.length; i++) {
                 Account account = acs.findByMail(user[i]);
                 List<AccountToken> listToken = accToken.GetTokenByMail(user[i]);
-                
+
                 for (AccountToken accountToken : listToken) {
                     listtokenstring.add(accountToken.getToken());
                 }
@@ -173,7 +185,7 @@ public class NotificationController {
             for (int i = 0; i < list.size(); i++) {
                 Account account = acs.findByMail(list.get(i).getMail());
                 List<AccountToken> listToken = accToken.GetTokenByMail(list.get(i).getMail());
-                
+
                 for (AccountToken accountToken : listToken) {
                     listtokenstring.add(accountToken.getToken());
                 }
@@ -184,7 +196,7 @@ public class NotificationController {
                 ns.AddAccountNotification(accountNotification);
             }
             firebaseMessagingService.sendAllPeople(check, listtokenstring);
-            
+
         }
         return "redirect:/notification";
     }
@@ -196,70 +208,63 @@ public class NotificationController {
 //        return "admin/notification/add";
 //    }
 
-        @RequestMapping(value = {"api/notification/token"}, method = RequestMethod.GET)
-        public ResponseEntity<List<AccountNotification>> APINotificationByMail
-        (HttpServletRequest request, HttpServletResponse response
-        
-            ) {
+    @RequestMapping(value = {"api/notification/token"}, method = RequestMethod.GET)
+    public ResponseEntity<List<AccountNotification>> APINotificationByMail(HttpServletRequest request, HttpServletResponse response
+    ) {
         try {
-                String mail = request.getParameter("token");
-                AccountToken atk = accToken.GetToken(mail);
-                List<AccountNotification> list = ns.findbyAccount(atk.getMail().getMail());
-                List<AccountNotification> listdayoff = new ArrayList<AccountNotification>();
-                for (int i = list.size() - 1; i >= 0; i--) {
-                    listdayoff.add(list.get(i));
-                }
-                if (listdayoff != null) {
-                    return new ResponseEntity<List<AccountNotification>>(listdayoff, HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                }
-            } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            String mail = request.getParameter("token");
+            AccountToken atk = accToken.GetToken(mail);
+            List<AccountNotification> list = ns.findbyAccount(atk.getMail().getMail());
+            List<AccountNotification> listdayoff = new ArrayList<AccountNotification>();
+            for (int i = list.size() - 1; i >= 0; i--) {
+                listdayoff.add(list.get(i));
             }
+            if (listdayoff != null) {
+                return new ResponseEntity<List<AccountNotification>>(listdayoff, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
+    }
 
-        @RequestMapping(value = {"api/notification/token/search"}, method = RequestMethod.GET)
-        public ResponseEntity<List<AccountNotification>> APINotificationSearchMail
-        (HttpServletRequest request, HttpServletResponse response
-        
-            ) {
+    @RequestMapping(value = {"api/notification/token/search"}, method = RequestMethod.GET)
+    public ResponseEntity<List<AccountNotification>> APINotificationSearchMail(HttpServletRequest request, HttpServletResponse response
+    ) {
         try {
-                String mail = request.getParameter("token");
-                String year = request.getParameter("year");
-                AccountToken atk = accToken.GetToken(mail);
-                List<AccountNotification> list = ns.findbyAccount(atk.getMail().getMail());
-                List<AccountNotification> listbyyear = new ArrayList<AccountNotification>();
+            String mail = request.getParameter("token");
+            String year = request.getParameter("year");
+            AccountToken atk = accToken.GetToken(mail);
+            List<AccountNotification> list = ns.findbyAccount(atk.getMail().getMail());
+            List<AccountNotification> listbyyear = new ArrayList<AccountNotification>();
 
-                if (list != null) {
-                    return new ResponseEntity<List<AccountNotification>>(list, HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                }
-            } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            if (list != null) {
+                return new ResponseEntity<List<AccountNotification>>(list, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
+    }
 
-        @RequestMapping(value = {"api/notification/seen"}, method = RequestMethod.POST)
-        public ResponseEntity<AccountNotification> APISeenNotifacation
-        (@RequestBody
-        AccountNotification accountNotification, HttpServletRequest request
-        , HttpServletResponse response
-        
-            ) {
+    @RequestMapping(value = {"api/notification/seen"}, method = RequestMethod.POST)
+    public ResponseEntity<AccountNotification> APISeenNotifacation(@RequestBody AccountNotification accountNotification, HttpServletRequest request,
+            HttpServletResponse response
+    ) {
         // Account acc = request.getParameter("mail")
         try {
-                AccountNotification accountNotificationnew = ns.Seen(accountNotification);
-                if (accountNotificationnew != null) {
-                    return new ResponseEntity<AccountNotification>(accountNotificationnew, HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                }
-            } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            AccountNotification accountNotificationnew = ns.Seen(accountNotification);
+            if (accountNotificationnew != null) {
+                return new ResponseEntity<AccountNotification>(accountNotificationnew, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
+    }
 //    @RequestMapping(value = {"api/notification/demos"}, method = RequestMethod.GET)
 //    @ResponseBody
 //    public BatchResponse APINotifiByMail(HttpServletRequest request, HttpServletResponse response) {
@@ -281,4 +286,4 @@ public class NotificationController {
 //       
 //    }
 
-    }
+}

@@ -9,6 +9,7 @@ import fpt.aptech.KHR.ImpServices.SmsService;
 import static fpt.aptech.KHR.ImpServices.SmsService.ACCOUNT_SID;
 import static fpt.aptech.KHR.ImpServices.SmsService.AUTH_TOKEN;
 import java.io.IOException;
+import java.security.SecureRandom;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,10 +22,12 @@ public class KhrApplication {
     public FirebaseMessaging firebaseMessaging() throws IOException {
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource("khr-app-10543-firebase-adminsdk-mbjiy-ccaae4a813.json").getInputStream());
+        SecureRandom random = new SecureRandom();
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(googleCredentials)
                 .build();
-        FirebaseApp app = FirebaseApp.initializeApp(options);
+        String name = String.valueOf(random.nextInt()); 
+        FirebaseApp app = FirebaseApp.initializeApp(options,name);
         return FirebaseMessaging.getInstance(app);
     }
     public static void main(String[] args) {
