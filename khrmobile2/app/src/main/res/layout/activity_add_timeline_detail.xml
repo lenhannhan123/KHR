@@ -94,7 +94,7 @@
                     android:layout_marginTop="470dp"
                     android:textAlignment="center"
                     android:textColor="@color/red"
-                    android:text="Vui lòng chọn ngày bạn không làm được \n Vui lòng chọn út nhất 1 ca nghỉ" />
+                    android:text="Vui lòng chọn ngày bạn không làm được " />
 
                 <Button
                     android:id="@+id/Add_timeline_buttonadd"

@@ -52,6 +52,8 @@ public class APITimelineController {
 
     @Autowired
     TimelineServices timelineServices;
+    @Autowired
+    TimelineAcceptService timelineAcceptService;
 
     @RequestMapping(value = {RouteAPI.Timelinecheckmytimeline}, method = RequestMethod.GET)
     public void page(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -64,7 +66,7 @@ public class APITimelineController {
         String year = request.getParameter("year").toString();
 
 
-        List<Integer> data = userTimelineServices.GetIdTimeline(idUser);
+        List<Integer> data = timelineAcceptService.GetIdTimeline(idUser);
 
         List<ModelString> data1 = new ArrayList<>();
 

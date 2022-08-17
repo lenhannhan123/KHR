@@ -65,6 +65,9 @@ public class TimelineController {
     @Autowired
     private AccountPositionRepository accountPositionServices;
 
+    @Autowired
+    TimelineAcceptService timelineAcceptService;
+
 
     @RequestMapping(value = {RouteWeb.TimelineIndexURL}, method = RequestMethod.GET)
     public String IndexTimeline(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -608,6 +611,20 @@ public class TimelineController {
 
         int idTimeline = Integer.parseInt(idTimelineStr);
 
+
+        List<TimelineDetail> timelineDetailList = timelineDetailServices.FindbyIdTimeline(idTimeline);
+
+        if(timelineDetailList.size()>0){
+            request.setAttribute("Texterror","Vui lòng xem và chỉnh sửa ở mục Xem lịch làm việc. Tính năng chỉnh sửa Timeline mẫu sẽ bị khóa khi đã có lịch làm việc");
+            request.setAttribute("Backlink","/timeline/index");
+            return "admin/timeline/error";
+        }
+
+
+
+
+
+
         List<Shift> ListShifts = shiftServices.FindByIDTimeLine(idTimeline);
         Timeline timeline = timelineServices.FindOne(idTimeline);   //
 
@@ -1068,6 +1085,81 @@ public class TimelineController {
 
         List<TimelineDetail> Listtimeline = timelineDetailServices.FindbyIdTimeline(id);
 
+        Timeline timeline = timelineServices.FindOne(id);
+
+        if(timeline.getStatus()==1){
+
+            request.setAttribute("Texterror","Vui lòng tắt chức năng cho phép nhân viên thêm lịch làm việc trước khi sắp xếp và đàm bảo rằng tất cả nhân viên điều đã thêm lịch làm việc của họ");
+            request.setAttribute("Backlink","/timeline/index");
+            return "admin/timeline/error" ;
+        }
+
+
+
+
+
+
+        List<Account> account = accountService.findAllUser();
+
+        HttpSession session = request.getSession();
+        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+        for (int i = 0; i < account.size(); i++) {
+            if (account.get(i).getIdStore().getId() == Id_Store) {
+            } else {
+                account.remove(account.get(i));
+                i -= 1;
+
+            }
+        }
+
+        List<TimeAccept> timeAcceptList = timelineAcceptService.FindAl();
+        boolean check1 =false;
+
+
+        for (int i = 0; i < timeAcceptList.size(); i++) {
+            if (timeAcceptList.get(i).getIdtimeline()==id){
+
+            }else {
+                timeAcceptList.remove(timeAcceptList.get(i));
+                i-=1;
+            }
+
+
+        }
+
+        if(timeAcceptList.size()==0){
+
+            request.setAttribute("Texterror","Vui lòng vào mục Timeline nhân viên và bật chế độ cho nhân viên thêm timeline trước khi sắp xấp công việc");
+            request.setAttribute("Backlink","/timeline/index");
+            return "admin/timeline/error" ;
+
+        }
+
+        for (TimeAccept item: timeAcceptList ) {
+             check1 =false;
+            for (Account item2: account  ) {
+                if(item2.getMail().equals(item.getIduser()) ){
+                    check1 =true;
+
+                }
+
+            }
+
+            if( check1 ==false){
+
+                request.setAttribute("Texterror","Nhân viên chưa cập nhật hết lịch làm việc");
+                request.setAttribute("Backlink","/timeline/index");
+                return "admin/timeline/error" ;
+
+            }
+        }
+
+
+//        request.setAttribute("Texterror","Done");
+//        request.setAttribute("Backlink","/timeline/index");
+//        return "admin/timeline/error" ;
+
 
         if (Listtimeline.size() == 0) {
 
@@ -1089,13 +1181,6 @@ public class TimelineController {
 
 
         List<UserTimeline> userTimeline = userTimelineServices.FindIDTimeLine(Integer.parseInt(idTimelineStr));
-
-        if (userTimeline == null) {
-            model.addAttribute("Texterror", "Vui lòng cho nhân viên thêm timeline trước khi sắp xếp lịch");
-            model.addAttribute("Backlink", "/timeline/index");
-            return "errorpage";
-
-        }
 
 
         List<Account> account = accountService.findAllUser();
@@ -1370,7 +1455,7 @@ public class TimelineController {
 
                         mincurrentshift = (i/5)*5;
 
-
+//                      Xóa user làm nhiều ca trong 1 ngày
                         for (int j = 0; j < UserPropertyList.size(); j++) {
                             count1=0;
                             for (int l = mincurrentshift; l <mincurrentshift+5 ; l++) {
@@ -1581,6 +1666,26 @@ public class TimelineController {
 
                     }
 
+                    //                      Xóa user làm nhiều ca trong 1 ngày
+                    for (int j = 0; j < UserPropertyList.size(); j++) {
+                        count1=0;
+                        for (int l = mincurrentshift; l <mincurrentshift+5 ; l++) {
+                            for (int m = 0; m < shiftOnDayList.get(l).getPositionOnDays().size(); m++) {
+                                if(UserPropertyList.get(j).getId_user().equals(shiftOnDayList.get(l).getPositionOnDays().get(m).getMail())){
+
+                                    count1+=1;
+                                }
+                            }
+
+//
+
+                        }
+                        if(count1>2){
+                            UserPropertyList.remove(UserPropertyList.get(j));
+                            j-=1;
+                        }
+                    }
+
 
                     if (UserPropertyList.size() == 1) {
 
@@ -1678,6 +1783,26 @@ public class TimelineController {
                         }
 
 
+                    }
+
+                    //                      Xóa user làm nhiều ca trong 1 ngày
+                    for (int j = 0; j < UserPropertyList.size(); j++) {
+                        count1=0;
+                        for (int l = mincurrentshift; l <mincurrentshift+5 ; l++) {
+                            for (int m = 0; m < shiftOnDayList.get(l).getPositionOnDays().size(); m++) {
+                                if(UserPropertyList.get(j).getId_user().equals(shiftOnDayList.get(l).getPositionOnDays().get(m).getMail())){
+
+                                    count1+=1;
+                                }
+                            }
+
+//
+
+                        }
+                        if(count1>2){
+                            UserPropertyList.remove(UserPropertyList.get(j));
+                            j-=1;
+                        }
                     }
 
 
@@ -1935,14 +2060,33 @@ public class TimelineController {
         for (Account item : account
         ) {
 
+           List<TimeAccept> timeAccept= timelineAcceptService.FindAl();
+
+            for (int i = 0; i <timeAccept.size() ; i++) {
+
+                if (!(timeAccept.get(i).getIduser().equals(item.getMail()) && timeAccept.get(i).getIdtimeline() == Integer.parseInt(idTimelineStr)) ){
+                    timeAccept.remove(timeAccept.get(i));
+                    i-=1;
+                }
+
+            }
+
+            boolean checkl = false;
+
+            if(timeAccept.size() >0){
+                checkl =true;
+            }
+
             userTimelineJS.add(new UserTimelineJS(
                             item.getMail(),
                             item.getFullname(),
-                            userTimelineServices.CheckUser(Integer.parseInt(idTimelineStr), item.getMail())
+                            checkl
                     )
             );
 
         }
+
+
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -1964,6 +2108,14 @@ public class TimelineController {
         } else {
             model.addAttribute("status", true);
 
+        }
+
+        List<TimelineDetail> timelineDetailList = timelineDetailServices.FindbyIdTimeline(Integer.parseInt(idTimelineStr));
+
+        if(timelineDetailList.size()>0){
+            model.addAttribute("status1", false);
+        }else {
+            model.addAttribute("status1", true);
         }
 
 
@@ -2027,10 +2179,27 @@ public class TimelineController {
         for (Account item : account
         ) {
 
+            List<TimeAccept> timeAccept= timelineAcceptService.FindAl();
+
+            for (int i = 0; i <timeAccept.size() ; i++) {
+
+                if (!(timeAccept.get(i).getIduser().equals(item.getMail()) && timeAccept.get(i).getIdtimeline() == Integer.parseInt(idTimelineStr)) ){
+                    timeAccept.remove(timeAccept.get(i));
+                    i-=1;
+                }
+
+            }
+
+            boolean checkl = false;
+
+            if(timeAccept.size() >0){
+                checkl =true;
+            }
+
             userTimelineJS.add(new UserTimelineJS(
                             item.getMail(),
                             item.getFullname(),
-                            userTimelineServices.CheckUser(Integer.parseInt(idTimelineStr), item.getMail())
+                            checkl
                     )
             );
 
@@ -2356,6 +2525,25 @@ public class TimelineController {
             }
         }
 
+        List<TimeAccept> timelineAcceptServiceList = timelineAcceptService.FindAl();
+
+        boolean check11=false;
+        for (TimeAccept item :timelineAcceptServiceList  ) {
+            if(item.getIdtimeline() ==idTimeline && item.getIduser().equals(mail) ){
+                check11=true;
+            }
+        }
+        if(check11 ==false){
+
+            TimeAccept timeAccept = new TimeAccept();
+            timeAccept.setIdtimeline(idTimeline);
+            timeAccept.setIduser(mail);
+            timelineAcceptService.Create(timeAccept);
+        }
+
+
+
+
         List<String> str = new ArrayList<>();
         str.add("Thêm thành công");
 
@@ -2364,6 +2552,33 @@ public class TimelineController {
 
 //        return new ResponseEntity<Object>(list, HttpStatus.OK);
     }
+
+    @RequestMapping(value = {RouteWeb.datauser}, method = RequestMethod.GET)
+    public void datauser(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        
+        List<Account> account = accountService.findAllUser();
+
+
+        for (int i = 0; i < account.size(); i++) {
+            if (account.get(i).getIdStore().getId() == id) {
+            } else {
+                account.remove(account.get(i));
+                i -= 1;
+
+            }
+        }
+        List<String> modelStringList = new ArrayList<>();
+        for(Account item: account){
+            modelStringList.add(item.getMail());
+
+        }
+
+        JsonServices.dd(JsonServices.ParseToJson(modelStringList),response);
+
+    }
+
 
 
 }
