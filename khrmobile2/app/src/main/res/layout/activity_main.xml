@@ -158,6 +158,44 @@
 
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="127dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <Button
+
+                    android:id="@+id/Btn_message"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo"
+                    android:drawableTop="@drawable/icon20"
+                    android:paddingTop="10dp"
+                    android:text="\n Nhắn tin"
+                    android:textSize="5pt"
+                    app:backgroundTint="#fab299" />
+
+                <Button
+
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo"
+                    android:drawableTop="@drawable/icon6"
+                    android:paddingTop="10dp"
+                    android:text="\n Đăng xuất"
+                    android:textSize="5pt"
+                    app:backgroundTint="#DA4468"
+                    android:visibility="invisible"/>
+
+
+            </LinearLayout>
 
 
         </LinearLayout>

@@ -150,6 +150,6 @@ public class RouteWeb {
     public final static String DetailTrans = "transfer/detail";
 
 
-
+    public final static String datauser = "api/get/datauser";
 
 }

@@ -18,7 +18,11 @@
         android:theme="@style/Theme.Khrmobile"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Upload_Reg_Photo"
+            android:name=".MessageDetailsActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+        <activity
+            android:name=".MessageAccountActivity"
             android:exported="false" />
         <activity
             android:name=".Transferdetail2Activity"
@@ -34,6 +38,9 @@
             android:exported="false" />
         <activity
             android:name=".MainRequestTransferActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WorkScheduleDetailActivity"
             android:exported="false" />
         <activity
             android:name=".MainTransferActivity"

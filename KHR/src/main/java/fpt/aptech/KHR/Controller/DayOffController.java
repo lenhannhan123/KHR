@@ -213,7 +213,7 @@ public class DayOffController {
         Date date = new Date();
         n.setTitle("Thông báo chấp thuận yêu cầu xin nghĩ");
         n.setContent("Đơn xin nghĩ phép của bạn "+di.getMail().getFullname()+" đã được xét duyệt cho phép nghĩ với thời gian "+di.getStartdate().toString()+" đến "+di.getEnddate()+"/n"
-        +"Với lý do "+di.getContent()+" Bạn được nghĩ tổng cộng "+di.getDaynumber()+" (ngày)."+"\n"
+        +"Với lý do "+di.getContent()+" Bạn được nghỉ tổng cộng "+di.getDaynumber()+" (ngày)."+"\n"
         +"Chúng tôi rất cảm thông và hi vọng bạn có thể quay lại làm việc vào ngày sớm nhất ."+"\n"
         +" Xin cảm ơn"
         );
@@ -255,7 +255,7 @@ public class DayOffController {
         n.setContent("Đơn xin nghĩ phép của bạn "+di.getMail().getFullname()+" đã bị từ chối xét duyệt cho phép nghĩ với thời gian "+di.getStartdate().toString()+" đến "+di.getEnddate()
         +"\n"
         +"Với lý do "+di.getContent()+"\n"
-        +"Thời gian nghĩ của bạn hoặc lý do nghĩ không phù hợp !"        
+        +"Thời gian nghĩ của bạn hoặc lý do nghỉ không phù hợp !"        
         +"Chúng tôi rất cảm thông với yêu cầu cảu bạn."+"\n"
         +"Chúc bạn một ngày tốt lành."+"\n"
         +"Xin cảm ơn."
@@ -288,7 +288,7 @@ public class DayOffController {
             DayOff newdf = idos.findById(df.getId());
             if (newdf != null) {
                 return new ResponseEntity<DayOff>(newdf, HttpStatus.OK);
-            } else {
+            } else {    
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {

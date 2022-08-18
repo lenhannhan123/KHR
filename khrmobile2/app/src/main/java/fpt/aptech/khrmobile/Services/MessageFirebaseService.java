@@ -8,14 +8,23 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.List;
+
+import fpt.aptech.khrmobile.API.MessingAPI;
 import fpt.aptech.khrmobile.Entities.AccountToken;
+import fpt.aptech.khrmobile.Entities.ModelString;
+import fpt.aptech.khrmobile.ListBaseAdapter.MessageItemAdapter;
+import fpt.aptech.khrmobile.MessageDetailsActivity;
 import fpt.aptech.khrmobile.NotificationActivity;
 import fpt.aptech.khrmobile.R;
 import fpt.aptech.khrmobile.ServicesImp.TokenUtilAPI;
@@ -64,6 +73,35 @@ public class MessageFirebaseService extends FirebaseMessagingService {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
+//    private void getMessage(){
+//        sharedPreferencesProfile = getSharedPreferences("login", MODE_PRIVATE);
+//
+//        MessingAPI.api.getMessage(email,idSelect).enqueue(new Callback<List<ModelString>>() {
+//
+//            @Override
+//            public void onResponse(Call<List<ModelString>> call, Response<List<ModelString>> response) {
+//                if(response.isSuccessful()){
+//                    MessageList = response.body();
+//                    //Toast.makeText(MessageAccountActivity.this, ContacList.toString(), Toast.LENGTH_SHORT).show();
+//                    MessageItemAdapter messingAccountAdapter = new MessageItemAdapter(MessageList, MessageDetailsActivity.this);
+//                    context = getApplicationContext();
+//                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+//                    mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//                    recyclerMessage.setLayoutManager(mLayoutManager);
+//                    recyclerMessage.setItemAnimator(new DefaultItemAnimator());
+//                    recyclerMessage.setAdapter(messingAccountAdapter);
+//                }else {
+//                    Toast.makeText(MessageDetailsActivity.this, "faill!", Toast.LENGTH_SHORT).show();
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<ModelString>> call, Throwable t) {
+//                Toast.makeText(MessageDetailsActivity.this, "Connect error, unable to find classes!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     @Override
     public void onNewToken(@NonNull String token) {
