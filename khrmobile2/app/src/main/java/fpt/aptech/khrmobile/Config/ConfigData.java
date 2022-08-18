@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 public class ConfigData {
 
 
-    public static String IP ="192.168.0.181";
+    public static String IP ="192.168.0.184";
 
     public static final String profilePreferences = "profilepref";
     public static final String Mail = "mailKey";

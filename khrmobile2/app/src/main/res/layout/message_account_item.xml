@@ -5,16 +5,16 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:layout_height="80dp"
-    android:background="@xml/avatar_mess"
+    android:id="@+id/linenearavarta"
     android:backgroundTint="#CCCCFF"
     android:layout_margin="5dp">
 
     <ImageView
         android:id="@+id/message_image_item"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         app:srcCompat="@drawable/icon1"
-        android:layout_marginTop="15dp"
+        android:background="@xml/avatar_mess"
         />
 
     <TextView

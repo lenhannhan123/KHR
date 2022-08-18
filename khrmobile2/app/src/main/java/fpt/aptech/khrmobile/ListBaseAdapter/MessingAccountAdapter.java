@@ -6,17 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 
 import java.util.List;
 
 import fpt.aptech.khrmobile.Config.ConfigData;
 import fpt.aptech.khrmobile.Entities.ModelString;
+import fpt.aptech.khrmobile.MessageDetailsActivity;
 import fpt.aptech.khrmobile.R;
 
 public class MessingAccountAdapter extends RecyclerView.Adapter<MessingAccountAdapter.MessingAccountHodlder>{
@@ -47,8 +50,8 @@ public class MessingAccountAdapter extends RecyclerView.Adapter<MessingAccountAd
         Glide.with(context)
                 .load("http://" + ConfigData.IP + ":7777/api/view-profile-image?filename=" +modelStringsa.getData1() )
 //                .transform(new RoundedCorners(radius))
-//                .transform(new CircleCrop())
-                .override(400, 400)
+                .transform(new CircleCrop())
+                .override(500, 500)
 //                .error(R.drawable.icon5)
                 .into(holder.imageView);
     }
@@ -62,22 +65,28 @@ public class MessingAccountAdapter extends RecyclerView.Adapter<MessingAccountAd
     public class MessingAccountHodlder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView tvtitle;
+        LinearLayout linearLayout;
         public MessingAccountHodlder(@NonNull View itemView) {
             super(itemView);
             imageView=itemView.findViewById(R.id.message_image_item);
             tvtitle=itemView.findViewById(R.id.message_text_item);
 
-//            imageView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    ModelString classed =Testlist.get(getAdapterPosition());
-//                    String text = classed.getData1().toString();
-//                    String idSelect = classed.getData5();
-//                    Intent intent = new Intent(context, TestDetailsActivity.class);
-//                    intent.putExtra("idSelect", idSelect);
-//                    context.startActivity(intent);
-//                }
-//            });
+            linearLayout=itemView.findViewById(R.id.linenearavarta);
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ModelString classed =MessingAccountlist.get(getAdapterPosition());
+                    Intent intent = new Intent(context, MessageDetailsActivity.class);
+                    String idSelect = classed.getData3();
+                    String name = classed.getData2();
+                    String avatar = classed.getData1();
+                    intent.putExtra("idSelect", idSelect);
+                    intent.putExtra("name", name);
+                    intent.putExtra("avatar", avatar);
+                    //System.out.println(classed.getData5());
+                    context.startActivity(intent);
+                }
+            });
 
         }
     }

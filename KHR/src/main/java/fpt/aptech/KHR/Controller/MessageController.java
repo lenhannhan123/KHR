@@ -95,11 +95,12 @@ public class MessageController {
         List<ModelString> modelStringout = new ArrayList<>();
         modelString.setData1(request.getParameter("send"));
         modelString.setData2(request.getParameter("to"));
-        Account acc = accountRepository.findByMail(modelString.getData1());
+        //Account acc = accountRepository.findByMail(modelString.getData1());
         Account acc2 = accountRepository.findByMail(modelString.getData2());
 
         if (acc2 != null) {
-            List<MessageAccount> list = iMessageservices.findSendTo(acc.getMail(), acc.getMail());
+            List<MessageAccount> list = iMessageservices.findSendTo(modelString.getData2(),modelString.getData1());
+            //JsonServices.dd(JsonServices.ParseToJson(list), response);
             for (int i = 0; i < list.size(); i++) {
                 ModelString out = new ModelString();
                 MessageAccount account = list.get(i);
@@ -164,7 +165,7 @@ public class MessageController {
         ModelString out1 = new ModelString();
         int is = (ma.size()-1);
         out1.setData5(acc.getIdStore().getId().toString());
-        out1.setData1(acc.getAvatar());
+        out1.setData1("Logoicon.png");
         out1.setData2(acc.getIdStore().getNameStore());
         out1.setData3(ma.get(is).getMesssageContent());
         Date date = new Date();
@@ -178,17 +179,17 @@ public class MessageController {
         modelStringout.add(out1);
         List<MessageAccount> list = iMessageservices.findSendAccount(acc.getMail());
         //      JsonServices.dd(JsonServices.ParseToJson(modelStringout),response); 
-        for (int i = 0; i < list.size(); i++) {
+        //for (int i = 0; i < list.size(); i++) {
             ModelString out = new ModelString();
-            MessageAccount account = list.get(i);
+            MessageAccount account = list.get(list.size()-1);
             Account accc = accountRepository.findByMail(account.getIdReceive());
             if (accc != null) {
                 out.setData5(accc.getMail());
                 out.setData1(accc.getAvatar());
                 out.setData2(accc.getFullname());
-                out.setData3(list.get(i).getMesssageContent());
+                out.setData3(account.getMesssageContent());
                 Date date2 = new Date();
-                Date dateStart2 = new SimpleDateFormat("yyyy-MM-dd").parse(list.get(i).getCreateDate().toString());
+                Date dateStart2 = new SimpleDateFormat("yyyy-MM-dd").parse(account.getCreateDate().toString());
                 int num1 = Numday(dateStart2, date2);
                 if (num1 <= 0) {
                     out.setData4("Hôm nay");
@@ -196,7 +197,7 @@ public class MessageController {
                     out.setData4(String.valueOf(num) + "Ngày trước");
                 }
                 modelStringout.add(out);
-            }
+            //}
             
         }
 

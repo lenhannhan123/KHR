@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class MessageItemAdapter extends RecyclerView.Adapter<MessageItemAdapter.
         Glide.with(context)
                 .load("http://" + ConfigData.IP + ":7777/api/view-profile-image?filename=" +modelStringsa.getData1() )
 //                .transform(new RoundedCorners(radius))
-//                .transform(new CircleCrop())
+                .transform(new CircleCrop())
                 .override(200, 200)
 //                .error(R.drawable.icon5)
                 .into(holder.imageView);
