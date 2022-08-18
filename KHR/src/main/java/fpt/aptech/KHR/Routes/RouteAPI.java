@@ -73,4 +73,13 @@ public class RouteAPI {
     public final static String GetReport2= "api/timeline/report/getreport2";
 
     public final static String GetConfirm= "api/timeline/report/getConfirm";
+    
+    public final static String GetProfileInfo= "api/get-profile-info";
+    
+    public final static String GetAccountPositions= "api/get-account-position";
+    
+    public final static String UploadFile= "api/upload-file";
+    
+    
+    
 }

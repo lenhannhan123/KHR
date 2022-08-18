@@ -93,7 +93,7 @@
 
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
-                            <div class="col">
+                            <div class="col-sm-2">
                                 <div th:switch="${Account.getGender()}">
                                     <div th:case="true">
                                         <input type="radio" id="Male" value="true" name="radioGender" checked>
@@ -108,8 +108,10 @@
                                         <label for="Female">Nữ</label><br>
                                     </div>
                                 </div>
+                                <div>
+                                    <img th:src="@{'/images/user-photos/' + ${Account.getAvatar()}}" width="200"/>
+                                </div>
                             </div>
-                            <div class="col-sm-1"></div>
                         </div>
 
                         <div class="row" style="margin-top: 3%;">

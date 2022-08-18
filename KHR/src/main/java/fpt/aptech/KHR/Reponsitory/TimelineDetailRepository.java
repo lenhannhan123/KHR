@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.Reponsitory;
 
+import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.Timeline;
 import fpt.aptech.KHR.Entities.TimelineDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +28,9 @@ public interface TimelineDetailRepository extends JpaRepository<TimelineDetail, 
 
     @Query("SELECT t FROM TimelineDetail t WHERE t.shiftCode = :shiftCode AND t.idTimeline = :idTimeline")
     List<TimelineDetail> findbyIdShiftcode(@PathVariable("shiftCode") int shiftCode,@PathVariable("idTimeline") Timeline idTimeline);
-
+    
+    
+    @Query("SELECT t FROM TimelineDetail t WHERE t.idTimeline = :idTimeline AND t.mail = :mail")
+    List<TimelineDetail> findbyIdTimelineAndMail(@PathVariable("idTimeline") Timeline idTimeline, @PathVariable("mail") Account mail);
 
 }

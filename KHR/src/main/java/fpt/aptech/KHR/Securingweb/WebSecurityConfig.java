@@ -2,7 +2,6 @@ package fpt.aptech.KHR.Securingweb;
 
 import fpt.aptech.KHR.ImpServices.AccountService;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -78,6 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //enabling swagger-ui part for visual documentation
         registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
     }
 
 }

@@ -10,6 +10,7 @@ import fpt.aptech.KHR.Entities.AccountPosition;
 import fpt.aptech.KHR.Entities.Mail;
 import fpt.aptech.KHR.Entities.ModelString;
 import fpt.aptech.KHR.Entities.SmsPojo;
+import fpt.aptech.KHR.FileUpload.FileUploadUtil;
 import fpt.aptech.KHR.ImpServices.AccountService;
 import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.ImpServices.SmsService;
@@ -17,7 +18,14 @@ import fpt.aptech.KHR.Reponsitory.AccountPositionRepository;
 import fpt.aptech.KHR.Routes.RouteAPI;
 import fpt.aptech.KHR.Services.AccountServiceImp;
 import fpt.aptech.KHR.Services.SendMailService;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import static java.lang.System.out;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -34,17 +42,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Admin
@@ -92,7 +105,8 @@ public class AuthAPIController {
 
     @RequestMapping(value = "api/view-profile-image", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getProfileImage(String filename) throws IOException {
-        ClassPathResource imgFile = new ClassPathResource("images/user-photos/" + filename);
+//        ClassPathResource imgFile = new ClassPathResource("images/user-photos/" + filename);
+        ClassPathResource imgFile = new ClassPathResource("static/images/user-photos/" + filename);
         byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
 
         return ResponseEntity
@@ -181,16 +195,14 @@ public class AuthAPIController {
 //        accountServiceImp.findByMail(account.getMail());
 //        return new ResponseEntity<>(account, HttpStatus.OK);
 //    }
-    
     @RequestMapping(value = {RouteAPI.GetProfileInfo}, method = RequestMethod.GET)
     public void getProfileInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 
         String mail = request.getParameter("mail");
-        
-        Account account = new Account();
-        
-        account = accountServiceImp.findByMail(mail);
 
+        Account account = new Account();
+
+        account = accountServiceImp.findByMail(mail);
 
         ModelString modelString = new ModelString();
         modelString.setData1(account.getFullname());
@@ -200,8 +212,33 @@ public class AuthAPIController {
         modelString.setData5(String.valueOf(account.getGender()));
         modelString.setData6(account.getAvatar());
 
-
         JsonServices.dd(JsonServices.ParseToJson(modelString), response);
+    }
+
+    @RequestMapping(value = {RouteAPI.GetAccountPositions}, method = RequestMethod.GET)
+    public void getAccountPositions(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String mail = request.getParameter("mail");
+        List<AccountPosition> accountPosition = accountPositionRepository.findByEmail(new Account(mail));
+
+        List<ModelString> modelStrings = new ArrayList<>();
+
+        for (AccountPosition item : accountPosition) {
+            ModelString modelString = new ModelString();
+            modelString.setData1(item.getIdPosition().getPositionname());
+            modelStrings.add(modelString);
+
+        }
+        JsonServices.dd(JsonServices.ParseToJson(modelStrings), response);
+    }
+
+    @RequestMapping(value = {RouteAPI.UploadFile}, method = RequestMethod.POST)
+    public void uploadFile(@RequestParam("file") MultipartFile file) throws IOException{
+        out.println(file.getOriginalFilename());
+        out.println(file.getContentType());
+        String uploadDir = "src/main/resources/static/images/user-photos/";
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        FileUploadUtil.saveFile(uploadDir, fileName, file);
     }
 
 }
