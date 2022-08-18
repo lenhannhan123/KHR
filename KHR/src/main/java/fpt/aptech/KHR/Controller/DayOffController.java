@@ -288,7 +288,7 @@ public class DayOffController {
             DayOff newdf = idos.findById(df.getId());
             if (newdf != null) {
                 return new ResponseEntity<DayOff>(newdf, HttpStatus.OK);
-            } else {
+            } else {    
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {

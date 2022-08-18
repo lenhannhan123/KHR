@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Khrmobile"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".MessageDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MessageAccountActivity"
             android:exported="false" />
         <activity

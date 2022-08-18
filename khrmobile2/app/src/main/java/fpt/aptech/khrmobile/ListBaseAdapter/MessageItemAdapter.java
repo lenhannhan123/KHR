@@ -1,7 +1,6 @@
 package fpt.aptech.khrmobile.ListBaseAdapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,36 +18,35 @@ import fpt.aptech.khrmobile.Config.ConfigData;
 import fpt.aptech.khrmobile.Entities.ModelString;
 import fpt.aptech.khrmobile.R;
 
-public class MessingAccountAdapter extends RecyclerView.Adapter<MessingAccountAdapter.MessingAccountHodlder>{
+public class MessageItemAdapter extends RecyclerView.Adapter<MessageItemAdapter.MessingAccountHodlder> {
     List<ModelString> MessingAccountlist;
     Context context;
 
-    public MessingAccountAdapter(List<ModelString> MessingAccountlist, Context context) {
+    public MessageItemAdapter(List<ModelString> MessingAccountlist, Context context) {
         this.MessingAccountlist=MessingAccountlist;
         this.context=context;
     }
 
     @NonNull
     @Override
-    public MessingAccountAdapter.MessingAccountHodlder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MessageItemAdapter.MessingAccountHodlder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.message_account_item,parent,false);
-        return new MessingAccountAdapter.MessingAccountHodlder(view);
+        View view = inflater.inflate(R.layout.message_item,parent,false);
+        return new MessageItemAdapter.MessingAccountHodlder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessingAccountHodlder holder, int position) {
+    public void onBindViewHolder(@NonNull MessageItemAdapter.MessingAccountHodlder holder, int position) {
         ModelString modelStringsa = MessingAccountlist.get(position);
-        holder.tvtitle.setText(modelStringsa.getData2());
-        //holder.tvdate.setText(modelStringsa.getData2());
+        holder.tvconten.setText(modelStringsa.getData3());
+        holder.tvdatesend.setText(modelStringsa.getData4());
+        holder.tvname.setText(modelStringsa.getData2());
         //holder.imageView.setImageResource(Integer.parseInt(modelStringsa.getData4()));
-
-
         Glide.with(context)
                 .load("http://" + ConfigData.IP + ":7777/api/view-profile-image?filename=" +modelStringsa.getData1() )
 //                .transform(new RoundedCorners(radius))
 //                .transform(new CircleCrop())
-                .override(400, 400)
+                .override(200, 200)
 //                .error(R.drawable.icon5)
                 .into(holder.imageView);
     }
@@ -61,12 +59,13 @@ public class MessingAccountAdapter extends RecyclerView.Adapter<MessingAccountAd
 
     public class MessingAccountHodlder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView tvtitle;
+        TextView tvname,tvconten,tvdatesend;
         public MessingAccountHodlder(@NonNull View itemView) {
             super(itemView);
-            imageView=itemView.findViewById(R.id.message_image_item);
-            tvtitle=itemView.findViewById(R.id.message_text_item);
-
+            imageView=itemView.findViewById(R.id.imgMavatar);
+            tvconten=itemView.findViewById(R.id.tvMcontent);
+            tvdatesend=itemView.findViewById(R.id.tvMSendTime);
+            tvname=itemView.findViewById(R.id.tvMName);
 //            imageView.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
