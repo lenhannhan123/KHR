@@ -5,14 +5,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import fpt.aptech.KHR.Entities.*;
 import fpt.aptech.KHR.ImpServices.*;
 import fpt.aptech.KHR.Reponsitory.AccountPositionRepository;
 import fpt.aptech.KHR.Routes.RouteAPI;
 import fpt.aptech.KHR.Routes.RouteWeb;
+import fpt.aptech.KHR.Services.IAccountToken;
 import fpt.aptech.KHR.Services.ITimelineServices;
 import io.swagger.models.auth.In;
 import javafx.geometry.Pos;
+import jdk.nashorn.internal.ir.RuntimeNode;
 import org.json.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +46,12 @@ import java.util.*;
 public class TimelineController {
 
     @Autowired
+    NotificationService ns;
+
+    @Autowired
+    IAccountToken accToken;
+
+    @Autowired
     TimelineServices timelineServices;
     @Autowired
     TransferService transferService;
@@ -67,6 +76,55 @@ public class TimelineController {
 
     @Autowired
     TimelineAcceptService timelineAcceptService;
+
+    @Autowired
+    FirebaseMessagingService firebaseMessagingService;
+
+    public  void sendtoMail(String Title, String content, HttpServletRequest request, List<Account> account){
+
+
+
+        List<UserTimelineJS> userTimelineJS = new ArrayList<>();
+
+        HttpSession session = request.getSession();
+//        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
+        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+        for (int i = 0; i < account.size(); i++) {
+            if (account.get(i).getIdStore().getId() == Id_Store) {
+            } else {
+                account.remove(account.get(i));
+                i -= 1;
+
+            }
+        }
+
+        for (Account item: account ) {
+
+            Notification n = new Notification();
+            Date date = new Date();
+            n.setTitle(Title);
+            n.setContent(content);
+            n.setDateCreate(date);
+            Notification ni = ns.AddNotification(n);
+            List<AccountToken> listToken = accToken.GetTokenByMail(item.getMail());
+            List<String> listtokenstring = new ArrayList<>();
+            for (AccountToken accountToken : listToken) {
+                listtokenstring.add(accountToken.getToken());
+            }
+            AccountNotification accountNotification = new AccountNotification();
+            accountNotification.setIdnotification(ni);
+            accountNotification.setMail(item);
+            accountNotification.setStatus(false);
+            AccountNotification s = ns.AddAccountNotification(accountNotification);
+            try {
+                firebaseMessagingService.sendMorePeople(s, listtokenstring);
+            } catch (FirebaseMessagingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
 
 
     @RequestMapping(value = {RouteWeb.TimelineIndexURL}, method = RequestMethod.GET)
@@ -1865,6 +1923,9 @@ public class TimelineController {
         }
 
 
+
+
+
 //        JsonServices.dd(JsonServices.ParseToJson(UserPropertyListTemplate), response);
 //
 //
@@ -1918,7 +1979,7 @@ public class TimelineController {
     }
 
     @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.POST)
-    public String PostTimelineSort(Model model, HttpServletRequest request, HttpServletResponse response,@RequestParam String data) {
+    public String PostTimelineSort(Model model, HttpServletRequest request, HttpServletResponse response,@RequestParam String data) throws Exception {
 
 
 //        JsonServices.dd(data,response);
@@ -2030,6 +2091,58 @@ public class TimelineController {
         }
 
 
+        List<Account> account = accountService.findAllUser();
+
+
+        HttpSession session = request.getSession();
+//        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
+        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+        for (int i = 0; i < account.size(); i++) {
+            if (account.get(i).getIdStore().getId() == Id_Store) {
+            } else {
+                account.remove(account.get(i));
+                i -= 1;
+
+            }
+        }
+        Timeline timeline = timelineServices.FindOne(ListTimelineDetail.get(0).getIdTimeline().getId());
+
+        for (Account item: account ) {
+
+
+            Notification n = new Notification();
+            Date date = new Date();
+            n.setTitle("Đã cập nhật "+timeline.getTimename());
+            n.setContent("Admin đã cập nhật  "+timeline.getTimename()+ ". Vui lòng vào mục lịch làm việc để xem mình làm ngày nào trong tuần đó nhé");
+            n.setDateCreate(date);
+            Notification ni = ns.AddNotification(n);
+            List<AccountToken> listToken = accToken.GetTokenByMail(item.getMail());
+            List<String> listtokenstring = new ArrayList<>();
+            for (AccountToken accountToken : listToken) {
+                if(accountToken.getToken()!=null){
+                    listtokenstring.add(accountToken.getToken());
+
+
+                }
+                ;
+            }
+            //JsonServices.dd(JsonServices.ParseToJson(listtokenstring),response);
+            AccountNotification accountNotification = new AccountNotification();
+            accountNotification.setIdnotification(ni);
+            accountNotification.setMail(item);
+            accountNotification.setStatus(false);
+            AccountNotification s = ns.AddAccountNotification(accountNotification);
+            if (listtokenstring.size()>0){
+                firebaseMessagingService.sendMorePeople(s, listtokenstring);
+            }
+
+                //JsonServices.dd(JsonServices.ParseToJson( firebaseMessagingService.sendMorePeople(s, listtokenstring)), response);
+
+
+
+        }
+
 
         String redirectUrl = "/timeline/index" ;
         return "redirect:" + redirectUrl;
@@ -2127,9 +2240,25 @@ public class TimelineController {
     }
 
     @RequestMapping(value = {RouteWeb.TimelineChangeStatusURL}, method = RequestMethod.POST)
-    public String TimelineChangeStatus(Model model, HttpServletRequest request, HttpServletResponse response) {
+    public String TimelineChangeStatus(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String idTimelineStr = request.getParameter("id").toString();
+
+        List<Account> account = accountService.findAllUser();
+        List<UserTimelineJS> userTimelineJS = new ArrayList<>();
+
+        HttpSession session = request.getSession();
+//        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
+        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
+
+        for (int i = 0; i < account.size(); i++) {
+            if (account.get(i).getIdStore().getId() == Id_Store) {
+            } else {
+                account.remove(account.get(i));
+                i -= 1;
+
+            }
+        }
 
         Timeline timeline = timelineServices.FindOne(Integer.parseInt(idTimelineStr));
 
@@ -2139,13 +2268,74 @@ public class TimelineController {
 
         if (Status == 0) {
 
-            changeSatuss = 1;
+            for (Account item: account ) {
+                changeSatuss = 1;
+                timeline.setStatus(changeSatuss);
+                timelineServices.Edit(timeline);
+
+                Notification n = new Notification();
+                    Date date = new Date();
+                    n.setTitle("Thông báo thêm lịch làm việc");
+                    n.setContent("Admin vừa cập nhật lịch làm việc mới đó là "+timeline.getTimename()+" mời các bạn " +
+                            "có thời gian bắt đầu là ngày "+timeline.getStartdate()+" và thời gian kết thúc là "+timeline.getEnddate() +
+                            ". Mời các bạn cập nhật lịch làm việc trong tuần đó"
+                    );
+                    n.setDateCreate(date);
+                    Notification ni = ns.AddNotification(n);
+                    List<AccountToken> listToken = accToken.GetTokenByMail(item.getMail());
+                    List<String> listtokenstring = new ArrayList<>();
+                    for (AccountToken accountToken : listToken) {
+                        if(accountToken.getToken()!=null){
+                        listtokenstring.add(accountToken.getToken());
+                        }
+                        ;
+                    }
+
+
+                    AccountNotification accountNotification = new AccountNotification();
+                    accountNotification.setIdnotification(ni);
+                    accountNotification.setMail(item);
+                    accountNotification.setStatus(false);
+                    AccountNotification s = ns.AddAccountNotification(accountNotification);
+                if (listtokenstring.size()>0){
+                    firebaseMessagingService.sendMorePeople(s, listtokenstring);
+                }
+
+            }
+
+
         } else {
             changeSatuss = 0;
-        }
-        timeline.setStatus(changeSatuss);
+            timeline.setStatus(changeSatuss);
+            timelineServices.Edit(timeline);
+            for (Account item: account ) {
+                Notification n = new Notification();
+                Date date = new Date();
+                n.setTitle("Đóng chức năng thêm lịch làm việc của "+timeline.getTimename());
+                n.setContent("Admin xin phép đóng chức năng thêm lịch làm việc để có thể sắp xếp công việc cho bạn"
+                );
+                n.setDateCreate(date);
+                Notification ni = ns.AddNotification(n);
+                List<AccountToken> listToken = accToken.GetTokenByMail(item.getMail());
+                List<String> listtokenstring = new ArrayList<>();
+                for (AccountToken accountToken : listToken) {
+                    listtokenstring.add(accountToken.getToken());
+                }
+                AccountNotification accountNotification = new AccountNotification();
+                accountNotification.setIdnotification(ni);
+                accountNotification.setMail(item);
+                accountNotification.setStatus(false);
+                AccountNotification s = ns.AddAccountNotification(accountNotification);
+                if (listtokenstring.size()>0){
+                    firebaseMessagingService.sendMorePeople(s, listtokenstring);
+                }
+            }
 
-        timelineServices.Edit(timeline);
+
+
+        }
+
+
 
         JsonServices.dd(changeSatuss, response);
 
@@ -2344,7 +2534,7 @@ public class TimelineController {
     }
 
     @RequestMapping(value = {RouteWeb.DetailTrans}, method = RequestMethod.POST)
-    public String PostDetailTrans(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String Id_trans, @RequestParam String Status, @RequestParam String response_content) {
+    public String PostDetailTrans(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String Id_trans, @RequestParam String Status, @RequestParam String response_content) throws Exception {
 
 
         TransferData transferData = transferService.FindOne(Integer.parseInt(Id_trans));
@@ -2353,6 +2543,52 @@ public class TimelineController {
             transferData.setStatus(4);
             transferData.setResponse(response_content);
             transferService.Edit(transferData);
+
+            Notification n = new Notification();
+            Date date = new Date();
+            n.setTitle( "Admin đã từ chối đổi");
+            n.setContent( "Admin đã từ chối đổi với nội dung là "+transferData.getResponse()
+            );
+            n.setDateCreate(date);
+            Notification ni = ns.AddNotification(n);
+            List<AccountToken> listToken = accToken.GetTokenByMail(transferData.getMailfrom());
+            List<String> listtokenstring = new ArrayList<>();
+            for (AccountToken accountToken : listToken) {
+                listtokenstring.add(accountToken.getToken());
+            }
+            AccountNotification accountNotification = new AccountNotification();
+            accountNotification.setIdnotification(ni);
+            accountNotification.setMail(new Account(transferData.getMailfrom()));
+            accountNotification.setStatus(false);
+            AccountNotification s = ns.AddAccountNotification(accountNotification);
+            if (listtokenstring.size()>0){
+                firebaseMessagingService.sendMorePeople(s, listtokenstring);
+            }
+
+
+
+
+            n.setTitle( "Admin đã từ chối đổi");
+            n.setContent( "Admin đã từ chối đổi với nội dung là "+transferData.getResponse()
+            );
+            n.setDateCreate(date);
+            ni = ns.AddNotification(n);
+            listToken = accToken.GetTokenByMail(transferData.getMailto());
+           listtokenstring = new ArrayList<>();
+            for (AccountToken accountToken : listToken) {
+                listtokenstring.add(accountToken.getToken());
+            }
+            accountNotification = new AccountNotification();
+            accountNotification.setIdnotification(ni);
+            accountNotification.setMail(new Account(transferData.getMailto()));
+            accountNotification.setStatus(false);
+              s = ns.AddAccountNotification(accountNotification);
+            if (listtokenstring.size()>0){
+                firebaseMessagingService.sendMorePeople(s, listtokenstring);
+            }
+
+
+
 
         }else if (Status.equals("3")){
             transferData.setStatus(3);
@@ -2375,6 +2611,53 @@ public class TimelineController {
                     break;
                 }
             }
+
+
+            Notification n = new Notification();
+            Date date = new Date();
+            n.setTitle( "Admin đã chấp nhận đổi");
+            n.setContent( "Admin đã chấp nhận đỏi ca, bạn vui lòng vào lại lịch làm việc để xem có đổi chưa nhé "
+            );
+            n.setDateCreate(date);
+            Notification ni = ns.AddNotification(n);
+            List<AccountToken> listToken = accToken.GetTokenByMail(transferData.getMailfrom());
+            List<String> listtokenstring = new ArrayList<>();
+            for (AccountToken accountToken : listToken) {
+                listtokenstring.add(accountToken.getToken());
+            }
+            AccountNotification accountNotification = new AccountNotification();
+            accountNotification.setIdnotification(ni);
+            accountNotification.setMail(new Account(transferData.getMailfrom()));
+            accountNotification.setStatus(false);
+            AccountNotification s = ns.AddAccountNotification(accountNotification);
+            if (listtokenstring.size()>0){
+                firebaseMessagingService.sendMorePeople(s, listtokenstring);
+            }
+
+
+
+
+            n.setTitle( "Admin đã chấp nhận đổi");
+            n.setContent( "Admin đã chấp nhận đỏi ca, bạn vui lòng vào lại lịch làm việc để xem có đổi chưa nhé"
+            );
+            n.setDateCreate(date);
+            ni = ns.AddNotification(n);
+            listToken = accToken.GetTokenByMail(transferData.getMailto());
+            listtokenstring = new ArrayList<>();
+            for (AccountToken accountToken : listToken) {
+                listtokenstring.add(accountToken.getToken());
+            }
+            accountNotification = new AccountNotification();
+            accountNotification.setIdnotification(ni);
+            accountNotification.setMail(new Account(transferData.getMailto()));
+            accountNotification.setStatus(false);
+            s = ns.AddAccountNotification(accountNotification);
+            if (listtokenstring.size()>0){
+                firebaseMessagingService.sendMorePeople(s, listtokenstring);
+            }
+
+
+
 
         }
 

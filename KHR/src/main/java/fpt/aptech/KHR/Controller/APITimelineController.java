@@ -5,10 +5,12 @@
  */
 package fpt.aptech.KHR.Controller;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import fpt.aptech.KHR.Entities.*;
 import fpt.aptech.KHR.ImpServices.*;
 import fpt.aptech.KHR.Routes.RouteAPI;
 import fpt.aptech.KHR.Routes.RouteWeb;
+import fpt.aptech.KHR.Services.IAccountToken;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,8 +57,18 @@ public class APITimelineController {
     @Autowired
     TimelineAcceptService timelineAcceptService;
 
+    @Autowired
+    NotificationService ns;
+
+    @Autowired
+    IAccountToken accToken;
+
+    @Autowired
+    FirebaseMessagingService firebaseMessagingService;
+
     @RequestMapping(value = {RouteAPI.Timelinecheckmytimeline}, method = RequestMethod.GET)
     public void page(Model model, HttpServletRequest request, HttpServletResponse response) {
+
 
 
         String idUser = request.getParameter("id").toString();
@@ -66,7 +78,18 @@ public class APITimelineController {
         String year = request.getParameter("year").toString();
 
 
-        List<Integer> data = timelineAcceptService.GetIdTimeline(idUser);
+        List<TimeAccept> data1111 = timelineAcceptService.FindAl();
+        List<Integer> data= new ArrayList<>();
+        for (TimeAccept item111: data1111 ) {
+            if(item111.getIduser().equals(idUser)){
+                data.add(item111.getIdtimeline());
+            }
+
+        }
+
+
+
+
 
         List<ModelString> data1 = new ArrayList<>();
 
@@ -80,52 +103,41 @@ public class APITimelineController {
 //            data.get(i)
             Timeline tmptimeline = timelineServices.FindOne(data.get(i));
 
-            if (tmptimeline.getStatus() == 0) {
+            if (tmptimeline != null){
+
+                if (tmptimeline.getStatus() == 0) {
 
 
-                if ((month.equals("00")) && (!year.equals("00"))) {
+                    if ((month.equals("00")) && (!year.equals("00"))) {
 
-                    tmpYear = tmptimeline.getStartdate().toString().substring(0, 4);
-                    if (tmpYear.equals(year)) {
+                        tmpYear = tmptimeline.getStartdate().toString().substring(0, 4);
+                        if (tmpYear.equals(year)) {
 
-                        ModelString tmpdata = new ModelString();
-                        tmpdata.setData1(data.get(i).toString());
-                        tmpdata.setData2(tmptimeline.getTimename());
-                        data1.add(tmpdata);
-                    }
-
-                }
-
-                if ((!month.equals("00")) && (year.equals("00"))) {
-
-                    tmpYear = tmptimeline.getStartdate().toString().substring(0, 4);
-                    if (tmpYear.equals(year)) {
-                        ModelString tmpdata = new ModelString();
-                        tmpdata.setData1(data.get(i).toString());
-                        tmpdata.setData2(tmptimeline.getTimename());
-                        data1.add(tmpdata);
-
+                            ModelString tmpdata = new ModelString();
+                            tmpdata.setData1(data.get(i).toString());
+                            tmpdata.setData2(tmptimeline.getTimename());
+                            data1.add(tmpdata);
+                        }
 
                     }
 
-                }
+                    if ((!month.equals("00")) && (year.equals("00"))) {
 
-                if ((month.equals("00")) && (year.equals("00"))) {
+                        tmpYear = tmptimeline.getStartdate().toString().substring(0, 4);
+                        if (tmpYear.equals(year)) {
+                            ModelString tmpdata = new ModelString();
+                            tmpdata.setData1(data.get(i).toString());
+                            tmpdata.setData2(tmptimeline.getTimename());
+                            data1.add(tmpdata);
 
 
-                    ModelString tmpdata = new ModelString();
-                    tmpdata.setData1(data.get(i).toString());
-                    tmpdata.setData2(tmptimeline.getTimename());
-                    data1.add(tmpdata);
+                        }
+
+                    }
+
+                    if ((month.equals("00")) && (year.equals("00"))) {
 
 
-                }
-
-                if ((!month.equals("00")) && (!year.equals("00"))) {
-
-                    tmpYear = tmptimeline.getStartdate().toString().substring(0, 4);
-                    tmpMonth = String.valueOf(tmptimeline.getStartdate().getMonth() + 1);
-                    if (tmpYear.equals(year) && tmpMonth.equals(month)) {
                         ModelString tmpdata = new ModelString();
                         tmpdata.setData1(data.get(i).toString());
                         tmpdata.setData2(tmptimeline.getTimename());
@@ -134,12 +146,25 @@ public class APITimelineController {
 
                     }
 
+                    if ((!month.equals("00")) && (!year.equals("00"))) {
+
+                        tmpYear = tmptimeline.getStartdate().toString().substring(0, 4);
+                        tmpMonth = String.valueOf(tmptimeline.getStartdate().getMonth() + 1);
+                        if (tmpYear.equals(year) && tmpMonth.equals(month)) {
+                            ModelString tmpdata = new ModelString();
+                            tmpdata.setData1(data.get(i).toString());
+                            tmpdata.setData2(tmptimeline.getTimename());
+                            data1.add(tmpdata);
+
+
+                        }
+
+                    }
+
+
                 }
 
-
-            }
-
-
+        }
         }
 
 
@@ -674,7 +699,7 @@ public class APITimelineController {
 
 
     @RequestMapping(value = {RouteAPI.PostReportSendata}, method = RequestMethod.POST)
-    public void PostReportSendata(Model model, HttpServletRequest request, HttpServletResponse response) {
+    public void PostReportSendata(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String mycode = request.getParameter("mycode").toString();
         String yourcode = request.getParameter("yourcode").toString();
@@ -713,6 +738,28 @@ public class APITimelineController {
         transferData.setStatus(0);
 
         transferService.Create(transferData);
+
+
+        Notification n = new Notification();
+        Date date = new Date();
+        n.setTitle(mymail + " Xin đổi ca ");
+        n.setContent(mymail + " Xin đổi ca với nội dung là: "+content
+        );
+        n.setDateCreate(date);
+        Notification ni = ns.AddNotification(n);
+        List<AccountToken> listToken = accToken.GetTokenByMail(yourmail);
+        List<String> listtokenstring = new ArrayList<>();
+        for (AccountToken accountToken : listToken) {
+            listtokenstring.add(accountToken.getToken());
+        }
+        AccountNotification accountNotification = new AccountNotification();
+        accountNotification.setIdnotification(ni);
+        accountNotification.setMail(new Account(yourmail));
+        accountNotification.setStatus(false);
+        AccountNotification s = ns.AddAccountNotification(accountNotification);
+        if (listtokenstring.size()>0){
+            firebaseMessagingService.sendMorePeople(s, listtokenstring);
+        }
 
 //        JsonServices.dd(JsonServices.ParseToJson(modelStringList), response);
     }
@@ -822,7 +869,7 @@ public class APITimelineController {
 
 
     @RequestMapping(value = {RouteAPI.GetConfirm}, method = RequestMethod.GET)
-    public void GetConfirm(Model model, HttpServletRequest request, HttpServletResponse response) {
+    public void GetConfirm(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         String id = request.getParameter("id").toString();
         String status = request.getParameter("status").toString();
@@ -833,6 +880,54 @@ public class APITimelineController {
         transferData.setStatus(Integer.parseInt(status));
         transferData.setResponse(response1);
         transferService.Edit(transferData);
+
+            if(Integer.parseInt(status)==1){
+
+                Notification n = new Notification();
+                Date date = new Date();
+                n.setTitle(transferData.getMailto() + " đã chấp nhận đổi");
+                n.setContent(transferData.getMailto() + " đã chấp nhận đổi vui lòng đợi sự đồng ý của admin"
+                );
+                n.setDateCreate(date);
+                Notification ni = ns.AddNotification(n);
+                List<AccountToken> listToken = accToken.GetTokenByMail(transferData.getMailfrom());
+                List<String> listtokenstring = new ArrayList<>();
+                for (AccountToken accountToken : listToken) {
+                    listtokenstring.add(accountToken.getToken());
+                }
+                AccountNotification accountNotification = new AccountNotification();
+                accountNotification.setIdnotification(ni);
+                accountNotification.setMail(new Account(transferData.getMailfrom()));
+                accountNotification.setStatus(false);
+                AccountNotification s = ns.AddAccountNotification(accountNotification);
+                if (listtokenstring.size()>0){
+                    firebaseMessagingService.sendMorePeople(s, listtokenstring);
+                }
+            }else {
+
+                Notification n = new Notification();
+                Date date = new Date();
+                n.setTitle(transferData.getMailto() + " đã không chấp nhận đổi");
+                n.setContent(transferData.getMailto() + " đã chấp nhận đổi vì lý do là "+transferData.getResponse()
+                );
+                n.setDateCreate(date);
+                Notification ni = ns.AddNotification(n);
+                List<AccountToken> listToken = accToken.GetTokenByMail(transferData.getMailfrom());
+                List<String> listtokenstring = new ArrayList<>();
+                for (AccountToken accountToken : listToken) {
+                    listtokenstring.add(accountToken.getToken());
+                }
+                AccountNotification accountNotification = new AccountNotification();
+                accountNotification.setIdnotification(ni);
+                accountNotification.setMail(new Account(transferData.getMailfrom()));
+                accountNotification.setStatus(false);
+                AccountNotification s = ns.AddAccountNotification(accountNotification);
+                if (listtokenstring.size()>0){
+                    firebaseMessagingService.sendMorePeople(s, listtokenstring);
+                }
+
+            }
+
 
         JsonServices.dd("Done", response);
     }
