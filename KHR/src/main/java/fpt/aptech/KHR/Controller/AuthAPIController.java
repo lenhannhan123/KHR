@@ -8,10 +8,13 @@ package fpt.aptech.KHR.Controller;
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.AccountPosition;
 import fpt.aptech.KHR.Entities.Mail;
+import fpt.aptech.KHR.Entities.ModelString;
 import fpt.aptech.KHR.Entities.SmsPojo;
 import fpt.aptech.KHR.ImpServices.AccountService;
+import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.ImpServices.SmsService;
 import fpt.aptech.KHR.Reponsitory.AccountPositionRepository;
+import fpt.aptech.KHR.Routes.RouteAPI;
 import fpt.aptech.KHR.Services.AccountServiceImp;
 import fpt.aptech.KHR.Services.SendMailService;
 import java.io.IOException;
@@ -32,9 +35,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -159,7 +164,7 @@ public class AuthAPIController {
 //        List<AccountPosition> listAccountPositions = accountPositionRepository.findByEmail(account.getMail());
 //    }
     @PostMapping(path = "api/change-profile-info")
-    public ResponseEntity<Account> changeBasicInfo(@RequestBody Account account) {
+    public ResponseEntity<Account> changeProfileInfo(@RequestBody Account account) {
         accountServiceImp.updateBasicInfoMobile(account.getFullname(), account.getPhone(), account.getBirthdate(), account.getGender(), account.getMail());
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
@@ -169,7 +174,34 @@ public class AuthAPIController {
         accountServiceImp.checkGoogleId(account.getMail(), account.getGoogleid());
         Account account1 = accountService.findByMail(account.getMail());
         return new ResponseEntity<>(account1, HttpStatus.OK);
+    }
 
+//    @PostMapping(path = "api/get-profile-info")
+//    public ResponseEntity<Account> getProfileInfo(@RequestBody Account account) {
+//        accountServiceImp.findByMail(account.getMail());
+//        return new ResponseEntity<>(account, HttpStatus.OK);
+//    }
+    
+    @RequestMapping(value = {RouteAPI.GetProfileInfo}, method = RequestMethod.GET)
+    public void getProfileInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        String mail = request.getParameter("mail");
+        
+        Account account = new Account();
+        
+        account = accountServiceImp.findByMail(mail);
+
+
+        ModelString modelString = new ModelString();
+        modelString.setData1(account.getFullname());
+        modelString.setData2(account.getMail());
+        modelString.setData3(account.getPhone());
+        modelString.setData4(account.getBirthdate().toString());
+        modelString.setData5(String.valueOf(account.getGender()));
+        modelString.setData6(account.getAvatar());
+
+
+        JsonServices.dd(JsonServices.ParseToJson(modelString), response);
     }
 
 }
