@@ -269,11 +269,6 @@ public class AddTimelineDetailActivity extends AppCompatActivity implements AddT
                     }
                 }
 
-                if(check1 == true){
-                    Toast.makeText(AddTimelineDetailActivity.this,"Vui lòng chọn 1 ca nghỉ trong tuần",Toast.LENGTH_LONG).show();
-                }else {
-
-
                     String mail = configData.userId(AddTimelineDetailActivity.this);;
                     APITimeline.api.CreateTimeline(mail,idSelect,
                             String.valueOf(data12[1]),
@@ -326,7 +321,7 @@ public class AddTimelineDetailActivity extends AppCompatActivity implements AddT
                     Intent intent = new Intent(AddTimelineDetailActivity.this, AddTimeLineActivity.class);
                     startActivity(intent);
 //                    Toast.makeText(AddTimelineDetailActivity.this,"Thêm thành công!!",Toast.LENGTH_SHORT).show();
-                }
+
 
 
             }

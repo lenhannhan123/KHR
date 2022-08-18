@@ -36,6 +36,9 @@
             android:name=".MainRequestTransferActivity"
             android:exported="false" />
         <activity
+            android:name=".WorkScheduleDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainTransferActivity"
             android:exported="false" />
         <activity

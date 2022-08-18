@@ -45,7 +45,7 @@ public class Notification implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 500)
     @Column(name = "Title")
     private String title;
     @Basic(optional = false)

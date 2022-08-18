@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lich lam viec</title>
+
+    <!--CND VueJs-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link href="css/icon.css" rel="stylesheet">
+
+    <style>
+        .main-sidebar {
+            background-color: #6667AB;
+        }
+        
+        .nav-item-color {
+            color: white
+        }
+        
+        .nav-item {
+            margin: 8% 0px;
+        }
+        
+        .sd {
+            margin-left: 15%;
+            font-size: 14pt;
+        }
+        
+        .active-link {
+            background-color: white;
+            border-radius: 20px;
+        }
+        
+        .nav-item-color-active {
+            color: #6667AB;
+        }
+        
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+        
+        .background-table {
+            background-color: white;
+            padding: 2%;
+            border-radius: 15px;
+        }
+        
+        .input {
+            height: 2.5rem;
+            border-radius: 10px;
+            border-color: #6667AB;
+            color: black;
+        }
+        
+        .button-defualt {
+            background-color: #6667AB;
+            border-color: #6667AB;
+        }
+        
+        .button-defualt:hover {
+            background-color: #7879b6;
+            border-color: #7879b6;
+        }
+        
+        .button-envent {
+            border: none;
+            width: 35px;
+            height: 35px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px #b9b8b8;
+        }
+        
+        #dropdownMenuButton::after {
+            border-top: none;
+            content: none;
+        }
+        
+        .modal-title {
+            margin: 0px auto;
+            padding-left: 15%;
+            font-weight: bold;
+        }
+        
+        .white {
+            background-color: white;
+            color: black;
+        }
+        
+        .red {
+            background-color: rgb(220, 40, 40);
+            color: white;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div id="myApp">
+
+        <h1 style="text-align: center ;">Xếp lịch làm việc</h1>
+
+
+        <div class="row" style="margin-top: 2%;">
+
+
+            <div class="col-sm-3">
+                <input type="text" placeholder="Nhập Mail" v-model="mail" class="form-control" required>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" placeholder="Nhập TimelineID" v-model="timelineid" class="form-control" required>
+            </div>
+            <div class="col-sm-1">
+                <input type="button" class="btn btn-success" value="Check thông tin" v-on:click="checkaccount()">
+            </div>
+
+            <div class="col-sm-1" style="text-align: center;">
+
+                <input type="button" value="Lưu thông tin" class="btn btn-success" v-on:click="sendtimeline()">
+            </div>
+
+        </div>
+        <div class="row" style="margin-top: 2%;">
+
+            <div class="col" style="text-align:center ;">
+
+                <span id="thongbao" style="font-size:12pt ;">
+
+                </span>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 2</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data1 ?  'red':'white' ]" id="data1" v-on:click="data1=!data1">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (6:00 - 10:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data2 ?  'red':'white' ]" id="data2" v-on:click="data2=!data2">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca trưa (10:00 - 14:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data3 ?  'red':'white' ]" id="data3" v-on:click="data3=!data3">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca chiều (14:30 - 18:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data4 ?  'red':'white' ]" id="data4" v-on:click="data4=!data4">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca tối (18:00 - 22:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data5 ?  'red':'white' ]" id="data5" v-on:click="data5=!data5">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca đêm (22:00 - 06:00)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 3</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data6 ?  'red':'white' ]" id="data6" v-on:click="data6=!data6">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (6:00 - 10:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data7 ?  'red':'white' ]" id="data7" v-on:click="data7=!data7">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca trưa (10:00 - 14:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data8 ?  'red':'white' ]" id="data8" v-on:click="data8=!data8">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca chiều (14:30 - 18:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data9 ?  'red':'white' ]" id="data9" v-on:click="data9=!data9">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca tối (18:00 - 22:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data10 ?  'red':'white' ]" id="data10" v-on:click="data10=!data10">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca đêm (22:00 - 06:00)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 4</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data11 ?  'red':'white' ]" id="data11" v-on:click="data11=!data11">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (6:00 - 10:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data12 ?  'red':'white' ]" id="data12" v-on:click="data12=!data12">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca trưa (10:00 - 14:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data13 ?  'red':'white' ]" id="data13" v-on:click="data13=!data13">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca chiều (14:30 - 18:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data14 ?  'red':'white' ]" id="data14" v-on:click="data14=!data14">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca tối (18:00 - 22:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data15 ?  'red':'white' ]" id="data15" v-on:click="data15=!data15">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca đêm (22:00 - 06:00)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 5</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data16 ?  'red':'white' ]" id="data16" v-on:click="data16=!data16">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (6:00 - 10:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data17 ?  'red':'white' ]" id="data17" v-on:click="data17=!data17">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca trưa (10:00 - 14:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data18 ?  'red':'white' ]" id="data18" v-on:click="data18=!data18">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca chiều (14:30 - 18:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data19 ?  'red':'white' ]" id="data19" v-on:click="data19=!data19">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca tối (18:00 - 22:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data20 ?  'red':'white' ]" id="data20" v-on:click="data20=!data20">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca đêm (22:00 - 06:00)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 6</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data21 ?  'red':'white' ]" id="data21" v-on:click="data21=!data21">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (6:00 - 10:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data22 ?  'red':'white' ]" id="data22" v-on:click="data22=!data22">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca trưa (10:00 - 14:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data23 ?  'red':'white' ]" id="data23" v-on:click="data23=!data23">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca chiều (14:30 - 18:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data24 ?  'red':'white' ]" id="data24" v-on:click="data24=!data24">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca tối (18:00 - 22:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data25 ?  'red':'white' ]" id="data25" v-on:click="data25=!data25">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca đêm (22:00 - 06:00)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Thứ 7</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data26 ?  'red':'white' ]" id="data26" v-on:click="data26=!data26">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (6:00 - 10:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data27 ?  'red':'white' ]" id="data27" v-on:click="data27=!data27">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca trưa (10:00 - 14:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data28 ?  'red':'white' ]" id="data28" v-on:click="data28=!data28">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca chiều (14:30 - 18:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data29 ?  'red':'white' ]" id="data29" v-on:click="data29=!data29">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca tối (18:00 - 22:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data30 ?  'red':'white' ]" id="data30" v-on:click="data30=!data30">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca đêm (22:00 - 06:00)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-sm-4" style="margin-top: 3%;">
+
+                <table class="table table-bordered" style="width:80% ; margin:0px auto">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; padding:1.5rem">
+
+                                <b>Chủ nhật</b>
+                                <br>
+                                <b> </b>
+
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="[data31 ?  'red':'white' ]" id="data31" v-on:click="data31=!data31">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca sáng (6:00 - 10:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data32 ?  'red':'white' ]" id="data32" v-on:click="data32=!data32">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca trưa (10:00 - 14:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data33 ?  'red':'white' ]" id="data33" v-on:click="data33=!data33">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca chiều (14:30 - 18:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data34 ?  'red':'white' ]" id="data34" v-on:click="data34=!data34">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca tối (18:00 - 22:00)
+                                <br>
+
+                            </td>
+                        </tr>
+                        <tr :class="[data35 ?  'red':'white' ]" id="data35" v-on:click="data35=!data35">
+                            <td style="text-align:center ; padding:1.5rem">
+                                Ca đêm (22:00 - 06:00)
+                                <br>
+
+                            </td>
+                        </tr>
+
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+    </div>
+
+
+    <script>
+        var App = new Vue({
+            el: "#myApp",
+            created() {
+                this.load();
+            },
+            data() {
+                return {
+
+                    token: "",
+                    timelineid: 0,
+                    mail: "",
+                    user: [],
+                    cout: 0,
+                    data1: false,
+                    data2: false,
+                    data3: false,
+                    data4: false,
+                    data5: false,
+                    data6: false,
+                    data7: false,
+                    data8: false,
+                    data9: false,
+                    data10: false,
+                    data11: false,
+                    data12: false,
+                    data13: false,
+                    data14: false,
+                    data15: false,
+                    data16: false,
+                    data17: false,
+                    data18: false,
+                    data19: false,
+                    data20: false,
+                    data21: false,
+                    data22: false,
+                    data23: false,
+                    data24: false,
+                    data25: false,
+                    data26: false,
+                    data27: false,
+                    data28: false,
+                    data29: false,
+                    data30: false,
+                    data20: false,
+                    data31: false,
+                    data32: false,
+                    data33: false,
+                    data34: false,
+                    data35: false,
+
+
+
+                }
+
+            },
+            methods: {
+                load: function() {
+
+
+
+
+                    str = "http://localhost:7777/api/get/datauser?id=2"
+
+                    // str = "http://google.com/"
+                    // let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${KEY}`;
+
+                    var request = new XMLHttpRequest();
+                    request.open('GET', str, false); // `false` makes the request synchronous
+                    // request.withCredentials = true;
+                    request.send(null);
+
+                    if (request.status === 200) { // That's HTTP for 'ok'
+                        // return request.responseText
+
+                        this.user = JSON.parse(request.responseText);
+
+                        this.mail = this.user[this.cout];
+
+
+                    }
+
+
+
+
+
+
+                },
+                addtoken: function() {
+
+                    token = document.getElementById("token").value;
+                    this.token = token;
+                },
+                checkaccount: function() {
+
+
+
+                    str = "http://localhost:7777/api/timeline/checkaccount?mail=" + this.mail + "&idTimeline=" + this.timelineid
+
+                    // str = "http://google.com/"
+                    // let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${KEY}`;
+
+                    var request = new XMLHttpRequest();
+                    request.open('POST', str, false); // `false` makes the request synchronous
+                    // request.withCredentials = true;
+                    request.send(null);
+
+                    if (request.status === 200) { // That's HTTP for 'ok'
+                        // return request.responseText
+                        document.getElementById("thongbao").innerText = request.responseText
+
+
+                        for (i = 1; i <= 35; i++) {
+                            if (document.getElementById("data" + i).classList[0] == "red") {
+                                document.getElementById("data" + i).click();
+                            }
+                        }
+
+                        soca = Math.floor(Math.random() * 8);
+
+                        console.log(soca);
+
+                        for (i = 1; i <= soca; i++) {
+
+
+                            while (true) {
+
+                                calam = Math.floor(Math.random() * 36);
+
+                                if (document.getElementById("data" + calam).classList[0] == "white") {
+                                    console.log("nhan");
+                                    document.getElementById("data" + calam).click();
+                                    break;
+                                }
+                            }
+
+
+
+
+                        }
+
+
+                    }
+
+
+                },
+                sendtimeline: function() {
+
+
+                    str = "http://localhost:7777/api/timeline/createtimeuser?mail=" + this.mail +
+                        "&idTimeline=" + this.timelineid +
+                        "&data1=" + this.data1 +
+                        "&data2=" + this.data2 +
+                        "&data3=" + this.data3 +
+                        "&data4=" + this.data4 +
+                        "&data5=" + this.data5 +
+                        "&data6=" + this.data6 +
+                        "&data7=" + this.data7 +
+                        "&data8=" + this.data8 +
+                        "&data9=" + this.data9 +
+                        "&data10=" + this.data10 +
+                        "&data11=" + this.data11 +
+                        "&data12=" + this.data12 +
+                        "&data13=" + this.data13 +
+                        "&data14=" + this.data14 +
+                        "&data15=" + this.data15 +
+                        "&data16=" + this.data16 +
+                        "&data17=" + this.data17 +
+                        "&data18=" + this.data18 +
+                        "&data19=" + this.data19 +
+                        "&data20=" + this.data20 +
+                        "&data21=" + this.data21 +
+                        "&data22=" + this.data22 +
+                        "&data23=" + this.data23 +
+                        "&data24=" + this.data24 +
+                        "&data25=" + this.data25 +
+                        "&data26=" + this.data26 +
+                        "&data27=" + this.data27 +
+                        "&data28=" + this.data28 +
+                        "&data29=" + this.data29 +
+                        "&data30=" + this.data30 +
+                        "&data31=" + this.data31 +
+                        "&data32=" + this.data32 +
+                        "&data33=" + this.data33 +
+                        "&data34=" + this.data34 +
+                        "&data35=" + this.data35
+                        // str = "http://google.com/"
+                        // let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${KEY}`;
+
+                    var request = new XMLHttpRequest();
+                    request.open('POST', str, false); // `false` makes the request synchronous
+                    // request.withCredentials = true;
+
+                    request.send(null);
+
+                    if (request.status === 200) { // That's HTTP for 'ok'
+                        // return request.responseText
+                        document.getElementById("thongbao").innerText = request.responseText
+
+                        this.cout += 1;
+
+                        this.mail = this.user[this.cout];
+                    }
+
+
+                }
+
+
+
+            }
+
+        })
+    </script>
+
+
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="dist/js/pages/dashboard.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="dist/js/demo.js"></script>
+
+</body>
+
+</html>

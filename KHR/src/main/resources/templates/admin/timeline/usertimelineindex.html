@@ -56,10 +56,10 @@
                     <div class="col-sm-5">
                         <div class="row">
                             <div class="col-sm-2"></div>
-                            <div class="col-sm-7">
+                            <div class="col-sm-7" v-if="check1==true">
                                 Cho phép nhân viên thêm timeline
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3" v-if="check1==true">
 
                                 <img src="/images/icon/toggleturnoff.svg" v-if="checkstatus==false"
 
@@ -127,7 +127,7 @@
 
         <textarea th:text="${data}" hidden id="data"></textarea>
         <textarea th:text="${status}" hidden id="status"></textarea>
-
+        <textarea th:text="${status1}" hidden id="status1"></textarea>
         <textarea th:text="${idTimeline}" hidden id="idTimeline"></textarea>
 
     </div>
@@ -145,7 +145,8 @@
                 return {
                     data: [],
                     idTimeline: 0,
-                    checkstatus: false
+                    checkstatus: false,
+                    check1 : true
 
 
                 }
@@ -166,6 +167,9 @@
                     this.idTimeline = idTimeline;
 
                     this.checkstatus = statuss
+
+                    this.check1 =( document.getElementById("status1").value == "true")?true : false;
+
                     this.reloaddata();
                     // console.log(statuss);
 
