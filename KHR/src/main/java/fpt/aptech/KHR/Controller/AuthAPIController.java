@@ -236,8 +236,8 @@ public class AuthAPIController {
     public void uploadFile(@RequestParam("file") MultipartFile file) throws IOException{
         out.println(file.getOriginalFilename());
         out.println(file.getContentType());
-        String uploadDir = "src/main/resources/static/images/user-photos/";
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String uploadDir = "src/main/resources/static/images/user-photos/";
         FileUploadUtil.saveFile(uploadDir, fileName, file);
     }
 
