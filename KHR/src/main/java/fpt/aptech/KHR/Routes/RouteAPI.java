@@ -82,4 +82,6 @@ public class RouteAPI {
 
     public final static String AccountLogin= "api/accountLogin";
     
+    public final static String UpdatePhotoProfile= "api/update-photo-profile";
+    
 }
