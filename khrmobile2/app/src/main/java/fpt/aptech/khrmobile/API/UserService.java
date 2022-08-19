@@ -19,6 +19,11 @@ public interface UserService {
     @POST("/api/auth")
     Call<Account> loginUser(@Body LoginRequest loginRequest);
 
+    @POST("api/accountLogin")
+    Call<ModelString>  LoginAPI (@Query("mail") String mail,
+                                 @Query("pass") String pass);
+
+
     @POST("/api/recover-code-mail")
     Call<Account> sendRecoverCodeMail(@Body String mail);
 

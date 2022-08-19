@@ -79,9 +79,7 @@ public class RouteAPI {
     public final static String GetAccountPositions= "api/get-account-position";
     
     public final static String UploadFile= "api/upload-file";
-    
-    public final static String UpdatePhotoProfile= "api/update-photo-profile";
-    
-    
+
+    public final static String AccountLogin= "api/accountLogin";
     
 }
