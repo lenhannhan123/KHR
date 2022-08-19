@@ -84,6 +84,8 @@ public class MessageAccountActivity extends AppCompatActivity {
                     recyclerMessage.setLayoutManager(mLayoutManager);
                     recyclerMessage.setItemAnimator(new DefaultItemAnimator());
                     recyclerMessage.setAdapter(messingAccountAdapter);
+
+
                 }else {
                     Toast.makeText(MessageAccountActivity.this, "faill!", Toast.LENGTH_SHORT).show();
                 }

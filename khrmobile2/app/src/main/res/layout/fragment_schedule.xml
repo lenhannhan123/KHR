@@ -28,7 +28,7 @@
                 android:paddingTop="10dp"
                 android:text="\n 06:00 - 10:00"
                 android:textSize="5pt"
-                app:backgroundTint="#9A9B9F"
+                app:backgroundTint="#7388D4"
 
 
                 />
@@ -45,7 +45,7 @@
                 android:paddingTop="10dp"
                 android:text="\n 10:00 - 14:00"
                 android:textSize="5pt"
-                app:backgroundTint="#9A9B9F" />
+                app:backgroundTint="#7388D4" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,7 +66,7 @@
                 android:paddingTop="10dp"
                 android:text="\n 14:00 - 18:00"
                 android:textSize="5pt"
-                app:backgroundTint="#9A9B9F"
+                app:backgroundTint="#7388D4"
 
 
                 />
@@ -83,7 +83,7 @@
                 android:paddingTop="10dp"
                 android:text="\n 18:00 - 22:00"
                 android:textSize="5pt"
-                app:backgroundTint="#9A9B9F" />
+                app:backgroundTint="#7388D4" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                 android:paddingTop="10dp"
                 android:text="\n 22:00 - 06:00"
                 android:textSize="5pt"
-                app:backgroundTint="#9A9B9F"
+                app:backgroundTint="#7388D4"
 
 
                 />

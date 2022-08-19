@@ -1,14 +1,13 @@
 package fpt.aptech.khrmobile.Entities;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Account  implements Serializable {
     private String mail;
     private String password;
     private String fullname;
     private String phone;
-    private Date birthdate;
+    private String birthdate;
     private boolean gender;
     private String code;
     private short role;
@@ -17,7 +16,10 @@ public class Account  implements Serializable {
     private String avatar;
     private String googleid;
 
-    public Account(String mail, String password, String fullname, String phone, Date birthdate, boolean gender, String code, short role, String recoverycode, boolean status, String avatar) {
+    public static final String Key_mail = "mail";
+    public static final String Key_avatar = "avatar";
+
+    public Account(String mail, String password, String fullname, String phone, String birthdate, boolean gender, String code, short role, String recoverycode, boolean status, String avatar) {
         this.mail = mail;
         this.password = password;
         this.fullname = fullname;
@@ -66,11 +68,11 @@ public class Account  implements Serializable {
         this.phone = phone;
     }
 
-    public Date getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 

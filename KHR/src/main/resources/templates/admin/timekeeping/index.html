@@ -72,11 +72,11 @@
                                 </div>
                             </form>
 
-                            <div class="col-sm-6">
-                            </div>
-                            <div class="col-sm-2">
-                                <a th:href="@{/timekeeping/create}" class="btn btn-success form-control button-defualt" style="color: white;">Thêm mới</a>
-                            </div>
+                            <!--                            <div class="col-sm-6">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <a th:href="@{/timekeeping/create}" class="btn btn-success form-control button-defualt" style="color: white;">Thêm mới</a>
+                                                        </div>-->
 
                         </div>
 
@@ -89,6 +89,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Họ và tên</th>
+                                    <th scope="col">Ca</th>
                                     <th scope="col">Thời gian checkin</th>
                                     <th scope="col">Thời gian checkout</th>
                                     <th scope="col">Số giờ làm</th>
@@ -104,7 +105,11 @@
                             <div th:each="user:${accountList}">
                                 <td th:if="${user.getMail() == item.getMail().getMail()}" th:text="${user.getFullname()}"></td>
                             </div>
-
+                            <td th:if="${item.getShiftCode() % 5 == 0}" th:text="Sáng"></td> 
+                            <td th:if="${item.getShiftCode() % 5 == 1}" th:text="Trưa"></td> 
+                            <td th:if="${item.getShiftCode() % 5 == 2}" th:text="Chiều"></td> 
+                            <td th:if="${item.getShiftCode() % 5 == 3}" th:text="Tối"></td> 
+                            <td th:if="${item.getShiftCode() % 5 == 4}" th:text="Đêm"></td> 
                             <td th:text="${#dates.format(item.getTimestart(), 'HH:mm dd-MM-yyyy')}"></td>
                             <td th:text="${#dates.format(item.getTimeend(), 'HH:mm dd-MM-yyyy')}"></td>
                             <td th:text="${item.getTime()}"></td>

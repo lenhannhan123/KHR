@@ -45,7 +45,6 @@ public class TimekeepingServices implements ITimekeepingServices {
         return timekeepingRepository.findByMail(mail);
     }
 
-
     @Override
     public void checkin(Timekeeping timekeeping) {
         timekeepingRepository.save(timekeeping);
@@ -73,7 +72,8 @@ public class TimekeepingServices implements ITimekeepingServices {
 
     @Override
     public List<TimelineDetail> findTimelineDetailList(Account mail, int id, Position Id_Position, Timeline idTimeline) {
-        return timekeepingRepository.findTimelineDetailList(mail, id, Id_Position, idTimeline);
+        //return timekeepingRepository.findTimelineDetailList(mail, id, Id_Position, idTimeline);
+        return null;
     }
 
     @Override
@@ -103,7 +103,28 @@ public class TimekeepingServices implements ITimekeepingServices {
 
     @Override
     public Integer detailId(int id) {
-        return timekeepingRepository.detailId(id);
+        return null;
+//        return timekeepingRepository.detailId(id);
+    }
+
+    @Override
+    public List<Timeline> findTimelineList() {
+        return timekeepingRepository.findTimelineList();
+    }
+
+    @Override
+    public Timeline findTimelineByDate(Date date) {
+        return timekeepingRepository.findTimelineByDate(date);
     }
     
+    @Override
+    public TimelineDetail findTimelineDetail(Account mail, int id, Timeline idTimeline) {
+        return timekeepingRepository.findTimelineDetail(mail, id, idTimeline);
+    }
+    
+    @Override
+    public int findMaxShiftCodeInTimelineDetail() {
+        return timekeepingRepository.findMaxShiftCodeInTimelineDetail();
+    }
+
 }

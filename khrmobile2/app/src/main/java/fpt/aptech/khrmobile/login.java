@@ -27,10 +27,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.List;
+
+import fpt.aptech.khrmobile.API.APITimeline;
 import fpt.aptech.khrmobile.API.ApiClient;
 import fpt.aptech.khrmobile.Entities.Account;
 import fpt.aptech.khrmobile.Entities.AccountToken;
 import fpt.aptech.khrmobile.Entities.LoginRequest;
+import fpt.aptech.khrmobile.Entities.ModelString;
 import fpt.aptech.khrmobile.Services.TokenServices;
 import fpt.aptech.khrmobile.ServicesImp.TokenUtilAPI;
 import retrofit2.Call;
@@ -146,34 +150,90 @@ public class login extends AppCompatActivity {
     }
 
     public void loginUser(LoginRequest loginRequest){
-        Call<Account> accountCall = ApiClient.getService().loginUser(loginRequest);
-        accountCall.enqueue(new Callback<Account>() {
+//        Call<Account> accountCall = ApiClient.getService().loginUser(loginRequest);
+//        accountCall.enqueue(new Callback<Account>() {
+//            @Override
+//            public void onResponse(Call<Account> call, Response<Account> response) {
+//                if(response.isSuccessful()){
+//                    Account account = response.body();
+//                    sendRegistrationToServer(account);
+//                    if(String.valueOf(account.getRole()).equals("2")){
+//                        startActivity(new Intent(login.this, ScannerActivity.class));
+//                        finish();
+//                    }else{
+//                        startActivity(new Intent(login.this, MainActivity.class).putExtra("data",account));
+//                        finish();
+//                    }
+//
+//                }
+//                else{
+//                    String message="An error occured, please try again later..";
+//                    Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Account> call, Throwable t) {
+//                String message = t.getLocalizedMessage();
+//                Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
+        ApiClient.getService().LoginAPI(loginRequest.getMail(),loginRequest.getPassword()).enqueue(new Callback<ModelString>() {
             @Override
-            public void onResponse(Call<Account> call, Response<Account> response) {
-                if(response.isSuccessful()){
-                    Account account = response.body();
-                    sendRegistrationToServer(account);
-                    if(String.valueOf(account.getRole()).equals("2")){
-                        startActivity(new Intent(login.this, ScannerActivity.class));
-                        finish();
-                    }else{
-                        startActivity(new Intent(login.this, MainActivity.class).putExtra("data",account));
-                        finish();
-                    }
+            public void onResponse(Call<ModelString> call, Response<ModelString> response) {
+                ModelString data = response.body();
+                Toast.makeText(login.this, ""+data.getData1(), Toast.LENGTH_SHORT).show();
+
+                if(data.getData1().toString().equals("Done")){
+
+                    Call<ModelString> accountCall = ApiClient.getService().getProfileInfo(data.getData2());
+                    accountCall.enqueue(new Callback<ModelString>() {
+                        @Override
+                        public void onResponse(Call<ModelString> call, Response<ModelString> response) {
+                            ModelString modelString = response.body();
+                            Account account = new Account();
+                            account.setMail(modelString.getData2());
+                            account.setFullname(modelString.getData1());
+                            account.setPhone(modelString.getData3());
+                            account.setBirthdate(modelString.getData4());
+
+                            sendRegistrationToServer(account);
+                            switch (data.getData4()){
+
+                                case "0":
+                                    startActivity(new Intent(login.this, MainActivity.class).putExtra("data",account));
+                                    finish();
+                                    break;
+                                case "2":
+                                    startActivity(new Intent(login.this, ScannerActivity.class));
+                                    finish();
+                                    break;
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ModelString> call, Throwable t) {
+
+                        }
+                    });
+
+
+
 
                 }
-                else{
-                    String message="An error occured, please try again later..";
-                    Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
-                }
+
             }
 
             @Override
-            public void onFailure(Call<Account> call, Throwable t) {
-                String message = t.getLocalizedMessage();
-                Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ModelString> call, Throwable t) {
+                Toast.makeText(login.this,"Lỗi mạng",Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
     private void sendRegistrationToServer(Account account) {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {

@@ -19,8 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.text.DateFormat;
-
 import fpt.aptech.khrmobile.API.ApiClient;
 import fpt.aptech.khrmobile.Entities.Account;
 import retrofit2.Call;
@@ -81,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString(Mail, account.getMail());
             editor.putString(Name, account.getFullname());
             editor.putString(Phone, account.getPhone());
-            editor.putString(Birthday, DateFormat.getDateInstance().format(account.getBirthdate()));
+            editor.putString(Birthday, account.getBirthdate());
             editor.putString(Avatar, account.getAvatar());
             editor.putString(Code, account.getCode());
             editor.putString(Gender, String.valueOf(account.isGender()));
@@ -110,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         buttonMessage();
         Home_btnTransfer();
         timekeepingBtn();
+        salaryBtn();
     }
 
     private void checkGoogleId(Account account){
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString(Mail, account.getMail());
                     editor.putString(Name, account.getFullname());
                     editor.putString(Phone, account.getPhone());
-                    editor.putString(Birthday, DateFormat.getDateInstance().format(account.getBirthdate()));
+                    editor.putString(Birthday, account.getBirthdate());
                     editor.putString(Avatar, account.getAvatar());
                     editor.putString(Code, account.getCode());
                     editor.putString(Gender, String.valueOf(account.isGender()));
@@ -206,6 +205,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void salaryBtn(){
+        Button button1 = findViewById(R.id.Home_btnSalary);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SalaryActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
     private void Home_btnTransfer(){
         Button button1 = findViewById(R.id.Home_btnTransfer);
 

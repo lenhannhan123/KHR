@@ -1,17 +1,14 @@
 package fpt.aptech.khrmobile;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,6 +32,7 @@ public class MenuChangeAccountActivity extends AppCompatActivity {
 
         buttonBack();
         buttonChangeInfo();
+        buttonChangeAvatar();
     }
 
     private void buttonBack(){
@@ -57,6 +55,18 @@ public class MenuChangeAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuChangeAccountActivity.this, ChangeInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void buttonChangeAvatar(){
+        Button button = findViewById(R.id.Accoun_change_btnAvt);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuChangeAccountActivity.this, UploadImageActivity.class);
                 startActivity(intent);
             }
         });

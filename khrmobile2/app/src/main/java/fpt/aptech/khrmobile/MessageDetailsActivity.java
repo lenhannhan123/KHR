@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,7 +104,7 @@ public class MessageDetailsActivity extends AppCompatActivity {
 
     }
     private void sendMessage(){
-        Button button = findViewById(R.id.btn_sent);
+        ImageButton button = findViewById(R.id.btn_sent);
         TextView textView =findViewById(R.id.tvcontentmess);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

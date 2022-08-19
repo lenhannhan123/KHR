@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".SalaryActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_scrollUp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinnerMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:padding="15dp"
+                android:textColor="#808080" />
+
+            <Spinner
+                android:id="@+id/spinnerYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+
+                android:layout_weight="1"
+                android:padding="15dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSearchSalary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:layout_marginRight="120dp"
+            android:background="@xml/duongvien_gocbo"
+            android:text="Tìm kiếm" />
+
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".TimekeepingDetail">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:padding="10dp"
+                    android:text="Số ca làm:"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tvNumberOfTimekeeping"
+                    android:gravity="right"
+                    android:padding="10dp"
+                    android:text=""
+                    android:textSize="20dp" />
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:text="Vị trí làm:"
+                    android:textSize="20dp"
+                    android:padding="10dp" />
+                <TextView
+
+                    android:text=""
+                    android:gravity="right"
+                    android:textSize="20dp"
+                    android:padding="10dp" />
+
+
+
+            </TableRow>
+
+            <ListView
+                android:id="@+id/listViewSalary"
+                android:layout_width="match_parent"
+                android:layout_height="258dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:text="Tổng lương:"
+                    android:textSize="20dp"
+                    android:padding="10dp" />
+                <TextView
+
+                    android:text=""
+                    android:gravity="right"
+                    android:textSize="20dp"
+                    android:padding="10dp" />
+
+
+
+            </TableRow>
+
+        </TableLayout>
+
+
+    </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@xml/duongvien_goctron"
+        android:paddingTop="10dp"
+        app:menu="@xml/bottom_navigation_menu" />
+
+
+</LinearLayout>

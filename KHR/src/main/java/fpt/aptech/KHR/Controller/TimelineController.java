@@ -2637,7 +2637,7 @@ public class TimelineController {
 
 
 
-            n.setTitle( "Admin đã chấp nhận đổi");
+            n.setTitle( "Admin đã chấp nhận đổi ");
             n.setContent( "Admin đã chấp nhận đỏi ca, bạn vui lòng vào lại lịch làm việc để xem có đổi chưa nhé"
             );
             n.setDateCreate(date);
