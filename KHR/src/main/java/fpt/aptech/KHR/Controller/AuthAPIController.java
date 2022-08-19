@@ -241,4 +241,51 @@ public class AuthAPIController {
         FileUploadUtil.saveFile(uploadDir, fileName, file);
     }
 
+
+    @RequestMapping(value = {RouteAPI.AccountLogin}, method = RequestMethod.POST)
+    public void AccountLogin(Model model, HttpServletRequest request, HttpServletResponse response){
+        String mail  = request.getParameter("mail");
+        String pass = request.getParameter("pass");
+        ModelString modelString = new ModelString();
+        Account account = accountService.findByMail(mail);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if(account !=null){
+            if(encoder.matches(pass,account.getPassword())){
+
+                if(account.getStatus() == true){
+                    modelString.setData1("Done");
+                    modelString.setData2(account.getMail());
+                    modelString.setData3(pass);
+                    modelString.setData4(account.getRole());
+                    JsonServices.dd(JsonServices.ParseToJson(modelString),response);
+                    return;
+
+                }else {
+                    modelString.setData1("Tài khoản đã bị khóa!");
+                    JsonServices.dd(JsonServices.ParseToJson(modelString),response);
+                    return;
+                }
+
+            }
+            else {
+                modelString.setData1("Tài khoản hoặc mật khẩu không đúng");
+                JsonServices.dd(JsonServices.ParseToJson(modelString),response);
+                return;
+
+            }
+
+
+        }
+        else {
+            modelString.setData1("Tài khoản hoặc mật khẩu không đúng");
+            JsonServices.dd(JsonServices.ParseToJson(modelString),response);
+            return;
+
+        }
+
+
+    }
+
+
 }
