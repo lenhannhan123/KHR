@@ -42,8 +42,8 @@ public class SalaryServices implements ISalaryServices {
     }
 
     @Override
-    public List<Shift> findShiftByDate(Date timestart, Date timeend) {
-        return salaryRepository.findShiftByDate(timestart, timeend);
+    public List<Timekeeping> findTimekeepingByDate(Date timestart, Date timeend, Account mail) {
+        return salaryRepository.findTimekeepingByDate(timestart, timeend, mail);
     }
 
     @Override

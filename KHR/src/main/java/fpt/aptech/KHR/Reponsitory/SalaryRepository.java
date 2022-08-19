@@ -25,8 +25,8 @@ public interface SalaryRepository extends JpaRepository<Salary, Integer> {
     @Query("select s from Salary s WHERE s.mail = :mail")
     List<Salary> findByEmail(@PathVariable("mail") Account mail);
 
-    @Query("select s from Shift s where DATE(s.timestart) >= :timestart and DATE(s.timestart) < :timeend")
-    public List<Shift> findShiftByDate(@RequestParam("value") Date timestart, @RequestParam("value") Date timeend);
+    @Query("select t from Timekeeping t where DATE(t.timestart) >= :timestart and DATE(t.timestart) < :timeend and t.mail = :mail")
+    public List<Timekeeping> findTimekeepingByDate(@RequestParam("value") Date timestart, @RequestParam("value") Date timeend, @RequestParam("mail") Account mail);
 
     @Query("select distinct mail from Timekeeping")
     public List<Account> findAccountByTimekeeping();

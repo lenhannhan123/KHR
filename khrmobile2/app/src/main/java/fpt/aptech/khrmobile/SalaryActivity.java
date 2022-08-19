@@ -23,6 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ import fpt.aptech.khrmobile.Entities.ModelString;
 import fpt.aptech.khrmobile.Entities.Timekeeping;
 import fpt.aptech.khrmobile.ListBaseAdapter.SalaryBaseAdapter;
 import fpt.aptech.khrmobile.ListBaseAdapter.TimekeepingBaseAdapter;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,11 +50,12 @@ public class SalaryActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     Button btnSearch;
     ListView listView;
-    List<ModelString> data;
+    List<ModelString> modelStrings;
     int month = 0;
     int year = 0;
     TextView tvNumberOfTimekeeping;
     SalaryBaseAdapter salaryBaseAdapter;
+    TextView tvTotalMoney;
 
     private void setSpinnerMonth() {
         spinnerMonth = findViewById(R.id.spinnerMonth);
@@ -133,10 +136,11 @@ public class SalaryActivity extends AppCompatActivity {
         spinnerMonth = findViewById(R.id.spinnerMonth);
         spinnerYear = findViewById(R.id.spinnerYear);
         listView = findViewById(R.id.listViewSalary);
-        data = new ArrayList<>();
         month = 0;
         year = 0;
         tvNumberOfTimekeeping = findViewById(R.id.tvNumberOfTimekeeping);
+        tvTotalMoney = findViewById(R.id.tvTotalMoney);
+        modelStrings = new ArrayList<>();
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,17 +173,19 @@ public class SalaryActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<List<ModelString>> call, Response<List<ModelString>> response) {
                         if (response.isSuccessful() && month != 0 && year != 0) {
-                            for (int i = 0; i < data.size(); i++){
-                                if(data.get(i).getData1().equals("numberOfTimekeeping")){
-                                    tvNumberOfTimekeeping.setText(data.get(i).getData2());
-                                }
-                            }
+                            String numberOfShift = "";
+                            String totalMoney = "";
+                            modelStrings.addAll(response.body());
+                            numberOfShift = modelStrings.get(0).getData2();
+                            totalMoney = modelStrings.get(0).getData4();
+                            tvNumberOfTimekeeping.setText(numberOfShift);
+                            tvTotalMoney.setText(totalMoney + " VNĐ");
+                            modelStrings.remove(modelStrings.get(0));
 
-//                            listView = findViewById(R.id.listViewSalary);
-//                            data.addAll(response.body());
-//                            salaryBaseAdapter = new SalaryBaseAdapter( getApplicationContext(), data, SalaryActivity.this);
-//                            salaryBaseAdapter.notifyDataSetChanged();
-//                            listView.setAdapter(salaryBaseAdapter);
+                            listView = findViewById(R.id.listViewSalary);
+                            salaryBaseAdapter = new SalaryBaseAdapter( getApplicationContext(), modelStrings, SalaryActivity.this);
+                            salaryBaseAdapter.notifyDataSetChanged();
+                            listView.setAdapter(salaryBaseAdapter);
 
                         } else if (month == 0) {
                             Toast.makeText(getApplicationContext(), "Vui lòng chọn tháng", Toast.LENGTH_LONG).show();
