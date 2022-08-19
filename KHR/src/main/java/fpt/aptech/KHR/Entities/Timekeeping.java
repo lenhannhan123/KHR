@@ -5,11 +5,6 @@
  */
 package fpt.aptech.KHR.Entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -30,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Admin
+ * @author backs
  */
 @Entity
 @Table(name = "timekeeping")
@@ -40,7 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Timekeeping.findById", query = "SELECT t FROM Timekeeping t WHERE t.id = :id"),
     @NamedQuery(name = "Timekeeping.findByTimestart", query = "SELECT t FROM Timekeeping t WHERE t.timestart = :timestart"),
     @NamedQuery(name = "Timekeeping.findByTimeend", query = "SELECT t FROM Timekeeping t WHERE t.timeend = :timeend"),
-    @NamedQuery(name = "Timekeeping.findByTime", query = "SELECT t FROM Timekeeping t WHERE t.time = :time")})
+    @NamedQuery(name = "Timekeeping.findByTime", query = "SELECT t FROM Timekeeping t WHERE t.time = :time"),
+    @NamedQuery(name = "Timekeeping.findByShiftCode", query = "SELECT t FROM Timekeeping t WHERE t.shiftCode = :shiftCode")})
 public class Timekeeping implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,16 +59,16 @@ public class Timekeeping implements Serializable {
     @NotNull
     @Column(name = "Time")
     private int time;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "Shift_Code")
+    private int shiftCode;
     @JoinColumn(name = "Mail", referencedColumnName = "Mail")
     @ManyToOne(optional = false)
-    //@JsonBackReference
-    @JsonIgnore
     private Account mail;
-    @JoinColumn(name = "shift_id", referencedColumnName = "Id")
+    @JoinColumn(name = "Id_Timeline", referencedColumnName = "Id")
     @ManyToOne(optional = false)
-    @JsonIgnore
-    //@JsonBackReference
-    private Shift shiftId;
+    private Timeline idTimeline;
 
     public Timekeeping() {
     }
@@ -81,11 +77,12 @@ public class Timekeeping implements Serializable {
         this.id = id;
     }
 
-    public Timekeeping(Integer id, Date timestart, Date timeend, int time) {
+    public Timekeeping(Integer id, Date timestart, Date timeend, int time, int shiftCode) {
         this.id = id;
         this.timestart = timestart;
         this.timeend = timeend;
         this.time = time;
+        this.shiftCode = shiftCode;
     }
 
     public Integer getId() {
@@ -120,6 +117,14 @@ public class Timekeeping implements Serializable {
         this.time = time;
     }
 
+    public int getShiftCode() {
+        return shiftCode;
+    }
+
+    public void setShiftCode(int shiftCode) {
+        this.shiftCode = shiftCode;
+    }
+
     public Account getMail() {
         return mail;
     }
@@ -128,12 +133,12 @@ public class Timekeeping implements Serializable {
         this.mail = mail;
     }
 
-    public Shift getShiftId() {
-        return shiftId;
+    public Timeline getIdTimeline() {
+        return idTimeline;
     }
 
-    public void setShiftId(Shift shiftId) {
-        this.shiftId = shiftId;
+    public void setIdTimeline(Timeline idTimeline) {
+        this.idTimeline = idTimeline;
     }
 
     @Override

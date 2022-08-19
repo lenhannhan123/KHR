@@ -46,18 +46,28 @@ public interface TimekeepingRepository extends JpaRepository<Timekeeping, Intege
     @Query("select t from Timekeeping t where t.mail = :mail and MONTH(t.timestart) = :month and YEAR(t.timestart) = :year")
     public List<Timekeeping> findAllByDate(@RequestParam("value") Account mail, @RequestParam("value") int month, @RequestParam("value") int year);
 
-    @Query("select t from TimelineDetail t where t.mail = :mail and t.shiftCode = :id and t.idPosition = :Id_Position and t.idTimeline = :idTimeline")
-    public List<TimelineDetail> findTimelineDetailList(@RequestParam("value") Account mail, @RequestParam("value") int id, @RequestParam("value") Position Id_Position, @RequestParam("value") Timeline idTimeline);
-
+//    @Query("select t from TimelineDetail t where t.mail = :mail and t.shiftCode = :id and t.idPosition = :Id_Position and t.idTimeline = :idTimeline")
+//    public List<TimelineDetail> findTimelineDetailList(@RequestParam("value") Account mail, @RequestParam("value") int id, @RequestParam("value") Position Id_Position, @RequestParam("value") Timeline idTimeline);
     @Query("SELECT s FROM Shift s WHERE s.shiftcode = :shiftcode and DATE(s.timestart) = :date and s.idPosition = :idPosition")
     Shift findShiftByShiftCode(@PathVariable("shiftcode") int shiftcode, Date date, Position idPosition);
-    
-    @Query("SELECT t.shiftId.id FROM Timekeeping t WHERE t.id = :id")
-    Integer detailId(@PathVariable("value") int id);
 
+//    @Query("SELECT t.shiftId.id FROM Timekeeping t WHERE t.id = :id")
+//    Integer detailId(@PathVariable("value") int id);
     @Query("SELECT p FROM Position p WHERE p.id = :id")
     Position findPositionAccountById(@PathVariable("value") int id);
-    
-     @Query("select s from Shift s where s.id = :id")
+
+    @Query("select s from Shift s where s.id = :id")
     public Shift findShiftByTimekeeping(@RequestParam("value") int id);
+
+    @Query("select t from Timeline t")
+    public List<Timeline> findTimelineList();
+
+    @Query("select t from Timeline t where DATE(t.startdate) <= :date and DATE(t.enddate) >= :date")
+    public Timeline findTimelineByDate(@RequestParam("value") Date date);
+
+    @Query("select t from TimelineDetail t where t.mail = :mail and t.shiftCode = :id and t.idTimeline = :idTimeline")
+    public TimelineDetail findTimelineDetail(@RequestParam("value") Account mail, @RequestParam("value") int id, @RequestParam("value") Timeline idTimeline);
+
+    @Query("select MAX(t.shiftCode) from TimelineDetail t")
+    public int findMaxShiftCodeInTimelineDetail();
 }

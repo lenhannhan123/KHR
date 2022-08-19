@@ -32,7 +32,6 @@ public class KhrApplication {
     }
     public static void main(String[] args) {
         SpringApplication.run(KhrApplication.class, args);
-        
     }
 
     @Bean

@@ -50,4 +50,12 @@ public interface ITimekeepingServices {
     public Shift findShiftByTimekeeping(int id);
     
     public Integer detailId(int id);
+    
+    public List<Timeline> findTimelineList();
+    
+    public Timeline findTimelineByDate(Date date);
+    
+    public TimelineDetail findTimelineDetail(Account mail, int id, Timeline idTimeline);
+    
+    public int findMaxShiftCodeInTimelineDetail();
 }

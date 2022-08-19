@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         buttonMessage();
         Home_btnTransfer();
         timekeepingBtn();
+        salaryBtn();
     }
 
     private void checkGoogleId(Account account){
@@ -204,6 +205,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void salaryBtn(){
+        Button button1 = findViewById(R.id.Home_btnSalary);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SalaryActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
     private void Home_btnTransfer(){
         Button button1 = findViewById(R.id.Home_btnTransfer);
 
