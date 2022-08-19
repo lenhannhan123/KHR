@@ -17,7 +17,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -27,9 +26,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.List;
-
-import fpt.aptech.khrmobile.API.APITimeline;
 import fpt.aptech.khrmobile.API.ApiClient;
 import fpt.aptech.khrmobile.Entities.Account;
 import fpt.aptech.khrmobile.Entities.AccountToken;
@@ -194,10 +190,17 @@ public class login extends AppCompatActivity {
                         public void onResponse(Call<ModelString> call, Response<ModelString> response) {
                             ModelString modelString = response.body();
                             Account account = new Account();
-                            account.setMail(modelString.getData2());
                             account.setFullname(modelString.getData1());
+                            account.setMail(modelString.getData2());
                             account.setPhone(modelString.getData3());
                             account.setBirthdate(modelString.getData4());
+                            if(modelString.getData5().equals("true")){
+                                account.setGender(true);
+                            }
+                            else if (modelString.getData5().equals("false")){
+                                account.setGender(false);
+                            }
+                            account.setCode(modelString.getData6());
 
                             sendRegistrationToServer(account);
                             switch (data.getData4()){

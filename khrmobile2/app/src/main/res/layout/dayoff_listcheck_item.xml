@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="1dp">
+
+        <ImageView
+            android:id="@+id/imgAd1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@xml/mess_home_item">
+
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linenearaddayoff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvAd1"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:padding="1dp"
+                    android:text="Le Nguyễn Thành Nhân"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
+                        android:padding="4dp"
+                        android:text="Lý do:"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/tvAd2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="sans-serif-condensed"
+                        android:padding="4dp"
+                        android:text="Hôm nay mọi người khỏe không"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+            </LinearLayout>
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_marginLeft="10dp"
+                android:id="@+id/relateaddayoff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:padding="4dp"
+                            android:text="Từ:"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tvAd3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="sans-serif-condensed"
+                            android:padding="4dp"
+                            android:text="Hôm nay mọi người khỏe không"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:padding="4dp"
+                            android:text="Đến:"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tvAd4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="sans-serif-condensed"
+                            android:padding="4dp"
+                            android:text="Hôm nay mọi người khỏe không"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:padding="4dp"
+                            android:text="Tổng:"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tvAd5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:fontFamily="sans-serif-condensed"
+                            android:padding="4dp"
+                            android:text="10"
+                            android:textColor="@color/black"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnDadmin1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="oke" />
+
+                        <Button
+                            android:id="@+id/btnDadmin2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -248,7 +248,7 @@ public class AuthAPIController {
 //    }
 
     @RequestMapping(value = {RouteAPI.UpdatePhotoProfile}, method = RequestMethod.POST)
-    public ResponseEntity<Account> updatePhotoProfile(@RequestParam("file") MultipartFile file, @RequestParam("mail") String mail) throws IOException {
+    public ResponseEntity<Account> updatePhotoProfile(@RequestParam("avatar") MultipartFile file, @RequestParam("mail") String mail) throws IOException {
         //Upload file to source static image
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String uploadDir = "src/main/resources/static/images/user-photos/";

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 import java.util.List;
@@ -96,5 +97,16 @@ public class MessageAccountActivity extends AppCompatActivity {
                 Toast.makeText(MessageAccountActivity.this, "Connect error, unable to find classes!", Toast.LENGTH_SHORT).show();
             }
         });
+        refresh(3000);
+    }
+    private void refresh(int miliseconds){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                showContact();
+            }
+        };
+        handler.postDelayed(runnable,miliseconds);
     }
 }

@@ -5,10 +5,12 @@
  */
 package fpt.aptech.KHR.Controller;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import fpt.aptech.KHR.Entities.Account;
 import fpt.aptech.KHR.Entities.AccountNotification;
 import fpt.aptech.KHR.Entities.AccountToken;
 import fpt.aptech.KHR.Entities.DayOff;
+import fpt.aptech.KHR.Entities.ModelString;
 import fpt.aptech.KHR.Entities.Notification;
 import fpt.aptech.KHR.ImpServices.AccountService;
 import fpt.aptech.KHR.ImpServices.JsonServices;
@@ -70,9 +72,9 @@ public class DayOffController {
         List<DayOff> listdayoff = new ArrayList<DayOff>();
         HttpSession session = request.getSession();
         int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
-        for(int i = list.size()-1;i>=0;i--){
-            if(list.get(i).getMail().getIdStore().getId()==IdStore){
-            listdayoff.add(list.get(i));
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getMail().getIdStore().getId() == IdStore) {
+                listdayoff.add(list.get(i));
             }
         }
 //        JsonServices.dd(JsonServices.ParseToJson(list), response);
@@ -84,12 +86,13 @@ public class DayOffController {
                 break;
             }
         }
-        
+
         model.addAttribute("listdateoff", listdayoff);
         model.addAttribute("check", check);
         return "admin/dayoff/index";
     }
-        @RequestMapping(value = {"dayoff/list/search"}, method = RequestMethod.POST)
+
+    @RequestMapping(value = {"dayoff/list/search"}, method = RequestMethod.POST)
     public String ApprovedList(Model model, HttpServletRequest request, HttpServletResponse response) {
             request.setAttribute("sidebar","8");
 //        List<DayOff> list = idos.findApproveList();
@@ -97,18 +100,18 @@ public class DayOffController {
 //        for(int i = list.size()-1;i>=0;i--){
 //            listdayoff.add(list.get(i));
 //        }
-           String start = request.getParameter("startdate");
-           String end = request.getParameter("enddate");
-           List<DayOff> list = idos.findByDate(start, end);
-                   List<DayOff> listdayoff = new ArrayList<DayOff>();
+        String start = request.getParameter("startdate");
+        String end = request.getParameter("enddate");
+        List<DayOff> list = idos.findByDate(start, end);
+        List<DayOff> listdayoff = new ArrayList<DayOff>();
         HttpSession session = request.getSession();
         int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
-        for(int i = list.size()-1;i>=0;i--){
-            if(list.get(i).getMail().getIdStore().getId()==IdStore){
-            listdayoff.add(list.get(i));
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getMail().getIdStore().getId() == IdStore) {
+                listdayoff.add(list.get(i));
             }
         }
-           //JsonServices.dd(JsonServices.ParseToJson(list), response);
+        //JsonServices.dd(JsonServices.ParseToJson(list), response);
 //        JsonServices.ParseToJson(list);
         boolean check = false;
         for (DayOff item : listdayoff) {
@@ -131,9 +134,9 @@ public class DayOffController {
         List<DayOff> listdayoff = new ArrayList<DayOff>();
         HttpSession session = request.getSession();
         int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
-        for(int i = list.size()-1;i>=0;i--){
-            if(list.get(i).getMail().getIdStore().getId()==IdStore){
-            listdayoff.add(list.get(i));
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getMail().getIdStore().getId() == IdStore) {
+                listdayoff.add(list.get(i));
             }
         }
 //        JsonServices.dd(JsonServices.ParseToJson(list), response);
@@ -145,12 +148,11 @@ public class DayOffController {
                 break;
             }
         }
-        
+
         model.addAttribute("listdateoff", listdayoff);
         model.addAttribute("check", check);
         return "admin/dayoff/index";
     }
-    
 
     @RequestMapping(value = {"/dayoff/list/denying"}, method = RequestMethod.GET)
     public String DenyingList(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -160,9 +162,9 @@ public class DayOffController {
         List<DayOff> listdayoff = new ArrayList<DayOff>();
         HttpSession session = request.getSession();
         int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
-        for(int i = list.size()-1;i>=0;i--){
-            if(list.get(i).getMail().getIdStore().getId()==IdStore){
-            listdayoff.add(list.get(i));
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getMail().getIdStore().getId() == IdStore) {
+                listdayoff.add(list.get(i));
             }
         }
 //        JsonServices.dd(JsonServices.ParseToJson(list), response);
@@ -184,12 +186,12 @@ public class DayOffController {
         request.setAttribute("sidebar","8");
 
         List<DayOff> list = idos.findNotCheck();
-                List<DayOff> listdayoff = new ArrayList<DayOff>();
+        List<DayOff> listdayoff = new ArrayList<DayOff>();
         HttpSession session = request.getSession();
         int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
-        for(int i = list.size()-1;i>=0;i--){
-            if(list.get(i).getMail().getIdStore().getId()==IdStore){
-            listdayoff.add(list.get(i));
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getMail().getIdStore().getId() == IdStore) {
+                listdayoff.add(list.get(i));
             }
         }
 //        JsonServices.dd(JsonServices.ParseToJson(list), response);
@@ -218,28 +220,28 @@ public class DayOffController {
 
         DayOff di = idos.findById(id);
         idos.approve(id);
-        if(di!=null){
-        Notification n = new Notification();
-        Date date = new Date();
-        n.setTitle("Thông báo chấp thuận yêu cầu xin nghĩ");
-        n.setContent("Đơn xin nghĩ phép của bạn "+di.getMail().getFullname()+" đã được xét duyệt cho phép nghĩ với thời gian "+di.getStartdate().toString()+" đến "+di.getEnddate()+"/n"
-        +"Với lý do "+di.getContent()+" Bạn được nghỉ tổng cộng "+di.getDaynumber()+" (ngày)."+"\n"
-        +"Chúng tôi rất cảm thông và hi vọng bạn có thể quay lại làm việc vào ngày sớm nhất ."+"\n"
-        +" Xin cảm ơn"
-        );
-        n.setDateCreate(date);
-        Notification ni = ns.AddNotification(n); 
-        List<AccountToken> listToken = accToken.GetTokenByMail(di.getMail().getMail());
-        List<String> listtokenstring = new ArrayList<>();
-        for (AccountToken accountToken : listToken) {
+        if (di != null) {
+            Notification n = new Notification();
+            Date date = new Date();
+            n.setTitle("Thông báo chấp thuận yêu cầu xin nghĩ");
+            n.setContent("Đơn xin nghĩ phép của bạn " + di.getMail().getFullname() + " đã được xét duyệt cho phép nghĩ với thời gian " + di.getStartdate().toString() + " đến " + di.getEnddate() + "/n"
+                    + "Với lý do " + di.getContent() + " Bạn được nghỉ tổng cộng " + di.getDaynumber() + " (ngày)." + "\n"
+                    + "Chúng tôi rất cảm thông và hi vọng bạn có thể quay lại làm việc vào ngày sớm nhất ." + "\n"
+                    + " Xin cảm ơn"
+            );
+            n.setDateCreate(date);
+            Notification ni = ns.AddNotification(n);
+            List<AccountToken> listToken = accToken.GetTokenByMail(di.getMail().getMail());
+            List<String> listtokenstring = new ArrayList<>();
+            for (AccountToken accountToken : listToken) {
                 listtokenstring.add(accountToken.getToken());
             }
-        AccountNotification accountNotification = new AccountNotification();
-        accountNotification.setIdnotification(ni);
-        accountNotification.setMail(di.getMail());
-        accountNotification.setStatus(false);
-        AccountNotification s = ns.AddAccountNotification(accountNotification);
-        firebaseMessagingService.sendMorePeople(s, listtokenstring);
+            AccountNotification accountNotification = new AccountNotification();
+            accountNotification.setIdnotification(ni);
+            accountNotification.setMail(di.getMail());
+            accountNotification.setStatus(false);
+            AccountNotification s = ns.AddAccountNotification(accountNotification);
+            firebaseMessagingService.sendMorePeople(s, listtokenstring);
         }
 
         //       AccountNotification an = ins.CreateNotificationOnMail(di.getMail().getMail(), "Chấp nhận");
@@ -248,7 +250,6 @@ public class DayOffController {
 //        firebaseService.sendAllNotification(an);
 //        firebaseService.sendNotification(tken.getToken(), "Thông báo ngày nghĩ", "Nhân viên"+di.getMail().getFullname()+"Đã được chấp nhận");
 //        }
-
         String redirectUrl = "/dayoff";
         return "redirect:" + redirectUrl;
     }
@@ -259,32 +260,32 @@ public class DayOffController {
 
         int id = Integer.valueOf(request.getParameter("id"));
         DayOff di = idos.findById(id);
-        if(di!=null){
-        idos.denying(id);
-        Notification n = new Notification();
-        Date date = new Date();
-        n.setTitle("Thông báo từ chối yêu cầu xin nghĩ");
-        n.setContent("Đơn xin nghĩ phép của bạn "+di.getMail().getFullname()+" đã bị từ chối xét duyệt cho phép nghĩ với thời gian "+di.getStartdate().toString()+" đến "+di.getEnddate()
-        +"\n"
-        +"Với lý do "+di.getContent()+"\n"
-        +"Thời gian nghĩ của bạn hoặc lý do nghỉ không phù hợp !"        
-        +"Chúng tôi rất cảm thông với yêu cầu cảu bạn."+"\n"
-        +"Chúc bạn một ngày tốt lành."+"\n"
-        +"Xin cảm ơn."
-        );
-        n.setDateCreate(date);
-        Notification ni = ns.AddNotification(n); 
-        List<AccountToken> listToken = accToken.GetTokenByMail(di.getMail().getMail());
-        List<String> listtokenstring = new ArrayList<>();
-        for (AccountToken accountToken : listToken) {
+        if (di != null) {
+            idos.denying(id);
+            Notification n = new Notification();
+            Date date = new Date();
+            n.setTitle("Thông báo từ chối yêu cầu xin nghĩ");
+            n.setContent("Đơn xin nghĩ phép của bạn " + di.getMail().getFullname() + " đã bị từ chối xét duyệt cho phép nghĩ với thời gian " + di.getStartdate().toString() + " đến " + di.getEnddate()
+                    + "\n"
+                    + "Với lý do " + di.getContent() + "\n"
+                    + "Thời gian nghĩ của bạn hoặc lý do nghỉ không phù hợp !"
+                    + "Chúng tôi rất cảm thông với yêu cầu cảu bạn." + "\n"
+                    + "Chúc bạn một ngày tốt lành." + "\n"
+                    + "Xin cảm ơn."
+            );
+            n.setDateCreate(date);
+            Notification ni = ns.AddNotification(n);
+            List<AccountToken> listToken = accToken.GetTokenByMail(di.getMail().getMail());
+            List<String> listtokenstring = new ArrayList<>();
+            for (AccountToken accountToken : listToken) {
                 listtokenstring.add(accountToken.getToken());
             }
-        AccountNotification accountNotification = new AccountNotification();
-        accountNotification.setIdnotification(ni);
-        accountNotification.setMail(di.getMail());
-        accountNotification.setStatus(false);
-        AccountNotification s = ns.AddAccountNotification(accountNotification);
-        firebaseMessagingService.sendMorePeople(s, listtokenstring);
+            AccountNotification accountNotification = new AccountNotification();
+            accountNotification.setIdnotification(ni);
+            accountNotification.setMail(di.getMail());
+            accountNotification.setStatus(false);
+            AccountNotification s = ns.AddAccountNotification(accountNotification);
+            firebaseMessagingService.sendMorePeople(s, listtokenstring);
         }
         String redirectUrl = "/dayoff";
         return "redirect:" + redirectUrl;
@@ -302,7 +303,7 @@ public class DayOffController {
             DayOff newdf = idos.findById(df.getId());
             if (newdf != null) {
                 return new ResponseEntity<DayOff>(newdf, HttpStatus.OK);
-            } else {    
+            } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
@@ -343,10 +344,10 @@ public class DayOffController {
             List<DayOff> listbyyear = new ArrayList<DayOff>();
             for (DayOff dayOff : list) {
                 Date a = dayOff.getStartdate();
-                if ((a.getYear()+1900)==year) {
-                   listbyyear.add(dayOff); 
+                if ((a.getYear() + 1900) == year) {
+                    listbyyear.add(dayOff);
                 }
-                
+
             }
             if (list != null) {
                 return new ResponseEntity<List<DayOff>>(listbyyear, HttpStatus.OK);
@@ -357,5 +358,133 @@ public class DayOffController {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
     }
-    
+
+    @RequestMapping(value = {"api/dayoff/list/notcheck"}, method = RequestMethod.GET)
+    public void NotCheckListAPI(Model model, HttpServletRequest request, HttpServletResponse response) {
+        List<DayOff> list = idos.findNotCheck();
+        List<DayOff> listdayoff = new ArrayList<DayOff>();
+        int IdStore = Integer.parseInt(request.getParameter("id"));
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getMail().getIdStore().getId() == IdStore) {
+                listdayoff.add(list.get(i));
+            }
+        }
+//        JsonServices.dd(JsonServices.ParseToJson(list), response);
+//        JsonServices.ParseToJson(list);
+        List<ModelString> modelStringsout = new ArrayList<>();
+        ModelString modelStringin = new ModelString();
+        for (DayOff dayoff : listdayoff) {
+            ModelString out = new ModelString();
+            out.setData1(dayoff.getId().toString());
+            out.setData2(dayoff.getMail().getFullname());
+            out.setData3(dayoff.getStartdate().toString());
+            out.setData4(dayoff.getEnddate().toString());
+            out.setData5(String.valueOf(dayoff.getDaynumber()));
+            out.setData6(String.valueOf(dayoff.getContent()));
+            out.setData7(String.valueOf(dayoff.getMail().getAvatar()));
+            out.setData8(String.valueOf(false));
+            modelStringsout.add(out);
+
+        }
+        if (modelStringsout != null) {
+            JsonServices.dd(JsonServices.ParseToJson(modelStringsout), response);
+
+        } else {
+            modelStringin.setData1("Unsusssess");
+            JsonServices.dd(JsonServices.ParseToJson(modelStringin), response);
+        }
+
+    }
+    @RequestMapping(value = {"api/dayoff/list/approved"}, method = RequestMethod.GET)
+    public void ApprovedAPI(Model model, HttpServletRequest request, HttpServletResponse response) throws FirebaseMessagingException {
+        List<ModelString> modelStringsout = new ArrayList<>();
+        int id = Integer.valueOf(request.getParameter("id"));
+        //String mail = request.getParameter("mail").toString();
+//        fpt.aptech.KHR.Entities.Notification notification = new fpt.aptech.KHR.Entities.Notification();
+//        notification.setTitle("Thông báo chấp nhận nghĩ phép");
+//        notification.setContent("Quản trị viên đã xem và đã chấp nhận yêu cầu xin nghĩ phép của");
+
+        DayOff di = idos.findById(id);
+        if (di != null) {
+            idos.approve(id);
+            Notification n = new Notification();
+            Date date = new Date();
+            n.setTitle("Thông báo chấp thuận yêu cầu xin nghĩ");
+            n.setContent("Đơn xin nghĩ phép của bạn " + di.getMail().getFullname() + " đã được xét duyệt cho phép nghĩ với thời gian " + di.getStartdate().toString() + " đến " + di.getEnddate() + "/n"
+                    + "Với lý do " + di.getContent() + " Bạn được nghỉ tổng cộng " + di.getDaynumber() + " (ngày)." + "\n"
+                    + "Chúng tôi rất cảm thông và hi vọng bạn có thể quay lại làm việc vào ngày sớm nhất ." + "\n"
+                    + " Xin cảm ơn"
+            );
+            n.setDateCreate(date);
+            Notification ni = ns.AddNotification(n);
+            List<AccountToken> listToken = accToken.GetTokenByMail(di.getMail().getMail());
+            List<String> listtokenstring = new ArrayList<>();
+            for (AccountToken accountToken : listToken) {
+                listtokenstring.add(accountToken.getToken());
+            }
+            AccountNotification accountNotification = new AccountNotification();
+            accountNotification.setIdnotification(ni);
+            accountNotification.setMail(di.getMail());
+            accountNotification.setStatus(false);
+            AccountNotification s = ns.AddAccountNotification(accountNotification);
+            if(listtokenstring.size()>0){
+            firebaseMessagingService.sendMorePeople(s, listtokenstring);
+            }
+        }
+        if (modelStringsout != null) {
+            JsonServices.dd(JsonServices.ParseToJson(modelStringsout), response);
+
+        } else {
+            JsonServices.dd(JsonServices.ParseToJson("Faill"), response);
+        }
+
+    }
+    @RequestMapping(value = {"api/dayoff/list/denying"}, method = RequestMethod.GET)
+    public void DenyingAPI(Model model, HttpServletRequest request, HttpServletResponse response) throws FirebaseMessagingException {
+        List<ModelString> modelStringsout = new ArrayList<>();
+        int id = Integer.valueOf(request.getParameter("id"));
+        //String mail = request.getParameter("mail").toString();
+//        fpt.aptech.KHR.Entities.Notification notification = new fpt.aptech.KHR.Entities.Notification();
+//        notification.setTitle("Thông báo chấp nhận nghĩ phép");
+//        notification.setContent("Quản trị viên đã xem và đã chấp nhận yêu cầu xin nghĩ phép của");
+
+        DayOff di = idos.findById(id);
+        if (di != null) {
+            idos.denying(id);
+            Notification n = new Notification();
+            Date date = new Date();
+            n.setTitle("Thông báo từ chối yêu cầu xin nghĩ");
+            n.setContent("Đơn xin nghĩ phép của bạn " + di.getMail().getFullname() + " đã bị từ chối xét duyệt cho phép nghĩ với thời gian " + di.getStartdate().toString() + " đến " + di.getEnddate()
+                    + "\n"
+                    + "Với lý do " + di.getContent() + "\n"
+                    + "Thời gian nghĩ của bạn hoặc lý do nghỉ không phù hợp !"
+                    + "Chúng tôi rất cảm thông với yêu cầu cảu bạn." + "\n"
+                    + "Chúc bạn một ngày tốt lành." + "\n"
+                    + "Xin cảm ơn."
+            );
+            n.setDateCreate(date);
+            Notification ni = ns.AddNotification(n);
+            List<AccountToken> listToken = accToken.GetTokenByMail(di.getMail().getMail());
+            List<String> listtokenstring = new ArrayList<>();
+            for (AccountToken accountToken : listToken) {
+                listtokenstring.add(accountToken.getToken());
+            }
+            AccountNotification accountNotification = new AccountNotification();
+            accountNotification.setIdnotification(ni);
+            accountNotification.setMail(di.getMail());
+            accountNotification.setStatus(false);
+            AccountNotification s = ns.AddAccountNotification(accountNotification);
+            if(listtokenstring.size()>0){
+            firebaseMessagingService.sendMorePeople(s, listtokenstring);
+            }
+        }
+        if (modelStringsout != null) {
+            JsonServices.dd(JsonServices.ParseToJson(modelStringsout), response);
+
+        } else {
+            JsonServices.dd(JsonServices.ParseToJson("Faill"), response);
+        }
+
+    }
+
 }
