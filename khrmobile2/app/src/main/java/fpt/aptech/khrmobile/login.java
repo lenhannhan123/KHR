@@ -194,6 +194,12 @@ public class login extends AppCompatActivity {
                             account.setMail(modelString.getData2());
                             account.setPhone(modelString.getData3());
                             account.setBirthdate(modelString.getData4());
+                            if(modelString.getData5().equals("true")){
+                                account.setGender(true);
+                            }
+                            else if (modelString.getData5().equals("false")){
+                                account.setGender(false);
+                            }
                             account.setCode(modelString.getData6());
 
                             sendRegistrationToServer(account);
