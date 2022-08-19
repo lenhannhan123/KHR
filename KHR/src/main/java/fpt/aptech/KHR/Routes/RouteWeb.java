@@ -65,7 +65,7 @@ public class RouteWeb {
 //    String AccountControllerString = accountController.AccountList(model.model);
 
     public final static String AccountGetCreateURL = "/account/create";
-    String AccountGetCreateController = accountController.GetCreate(model.model);
+
 
     public final static String AccountGetUpdateURL = "/account/update";
 
@@ -75,10 +75,10 @@ public class RouteWeb {
 
     //Route Position
     public final static String positionManageURL = "/position/index";
-    String PositionControllerString = positionController.PositionList(model.model);
+
 
     public final static String PositionGetCreateURL = "/position/create";
-    String PositionGetCreateController = positionController.GetCreate(model.model);
+
 
     public final static String PositionGetUpdateURL = "/position/update";
 
@@ -124,7 +124,7 @@ public class RouteWeb {
 
     //route Timekeeping
     public final static String TimekeepingIndexURL = "/timekeeping/index";
-    String TimeKeepingIndex = timekeepingController.index(model.model);
+
 
     public final static String TimelineDetailsURL = "/timeline/detail";
     String TimelineDetailsControler = timelineController.GetCreate(model.model);

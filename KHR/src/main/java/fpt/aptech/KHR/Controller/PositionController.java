@@ -33,7 +33,9 @@ public class PositionController {
     private PositionServices positionServices;
 
     @RequestMapping("position/index")
-    public String PositionList(Model model) {
+    public String PositionList(Model model,HttpServletRequest request) {
+        request.setAttribute("sidebar","3");
+
         List<Position> list = positionServices.findAll();
         boolean check = false;
         for (Position item : list) {
@@ -48,12 +50,14 @@ public class PositionController {
     }
 
     @RequestMapping(value = {RouteWeb.PositionGetCreateURL}, method = RequestMethod.GET)
-    public String GetCreate(Model model) {
+    public String GetCreate(Model model,HttpServletRequest request) {
+        request.setAttribute("sidebar","3");
         return "admin/position/create";
     }
 
     @RequestMapping(value = {RouteWeb.PositionGetCreateURL}, method = RequestMethod.POST)
     public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response) throws ParseException {
+        request.setAttribute("sidebar","3");
         String positionName = request.getParameter("txtPositionName");
         String currency = request.getParameter("txtSalaryDefault");
         String newStr = currency.replace("vnd", "").replace(",", "").replace(" ", "");
@@ -66,6 +70,7 @@ public class PositionController {
     @RequestMapping(value = {RouteWeb.PositionGetUpdateURL}, method = RequestMethod.GET)
     public String GetUpdate(Model model, HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("sidebar","3");
         Position position = positionServices.FindOne(id);
         model.addAttribute("Position", position);
         return "admin/position/update";
@@ -73,6 +78,7 @@ public class PositionController {
 
     @RequestMapping(value = {RouteWeb.PositionGetUpdateURL}, method = RequestMethod.POST)
     public String PostUpdate(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","3");
         int id = Integer.parseInt(request.getParameter("txtPositionId"));
         String positionName = request.getParameter("txtPositionName");
         String currency = request.getParameter("txtSalaryDefault");
