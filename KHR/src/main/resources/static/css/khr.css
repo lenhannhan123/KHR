@@ -50,6 +50,12 @@
     border-radius: 10px;
     font-weight: bolder;
 }
+.button-defualt1 {
+    background-color: #17dfd3;
+    border-color: #17dfd3;
+    border-radius: 10px;
+    font-weight: bolder;
+}
 
 .button-defualt:hover {
     background-color: #7879b6;

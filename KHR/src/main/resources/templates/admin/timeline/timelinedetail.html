@@ -57,6 +57,20 @@
                     <div class="col background-table">
 
                         <div class="row">
+                            <div class="col-sm-9"></div>
+                            <div class="col-sm-2">
+                                <a th:href="'/timeline/timelinereport?id='+${IdTimeline}">
+                                    <input type="button"
+                                           class="btn btn-success form-control button-defualt1"
+                                           style="background-color: #17dfd3" value="Xem báo cáo" >
+                                </a>
+
+                            </div>
+
+                        </div>
+                        <br>
+
+                        <div class="row">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-1" id="Timelinedetail-button-active">
                                 <button class="btn btn-light"
@@ -308,6 +322,7 @@
                     Userlist = JSON.parse(document.getElementById("TimeLineUser").value);
                     ListAccountposition = JSON.parse(document.getElementById("ListAccountposition").value);
 
+                    console.log(DataList);
 
                     this.DataList = DataList;
                     this.PositionList = PositionList;

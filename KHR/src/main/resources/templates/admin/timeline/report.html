@@ -1,0 +1,370 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<head>
+    <title>Báo cáo</title>
+
+    <style>
+
+        .title-card {
+            padding-top: 11%;
+            padding-bottom: 11%;
+            margin-left: 4%;
+            font-weight: bold
+        }
+
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+
+        #btncolor {
+            background-color: rgb(102, 103, 171);
+            color: white;
+        }
+
+        .edit_shift {
+            font-weight: normal;
+            color: deepskyblue;
+        }
+
+        .edit_shift:hover {
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <!--CND VueJs-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+
+    <h3 class="title-page">Thống kê</h3>
+
+    <div id="myApp">
+        <div class="row">
+
+            <div class="col background-table">
+                <div class="row">
+                    <!-- <div class="col-sm-1"></div> -->
+                    <div class="col background-table">
+
+
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-9">
+
+                                <div style="text-align: center"><b>Biểu đồ số lượng người làm được trong 1 ca</b></div>
+
+                                <canvas id="myChart" width="200" height="100"></canvas>
+
+                                <!-- /.card-body -->
+                            </div>
+
+
+                        </div>
+
+                        <br/>
+                        <br/>
+
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-9">
+
+                                <div style="text-align: center"><b>Biểu đồ thống kê vị trí user</b></div>
+
+                                <canvas id="myChart1" width="200" height="100"></canvas>
+
+                                <!-- /.card-body -->
+                            </div>
+
+
+                        </div>
+
+
+                        <br/>
+                        <br/>
+
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-9">
+
+                                <div style="text-align: center"><b>Bảng số ca làm của nhân viên trong 1 tuần</b></div>
+
+
+                                <table class="table">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Emaiil</th>
+                                        <th scope="col">Họ và tên</th>
+                                        <th scope="col">Số ca làm trên 1 tuần</th>
+
+
+                                    </tr>
+                                    </thead>
+
+
+                                    <tbody >
+                                    <tr th:each="item,stt:${listuser}">
+                                        <th scope="row" th:text="${stt.Count}"></th>
+                                        <th scope="row" th:text="${item.getData1()}"></th>
+                                        <td th:text="${item.getData3()}"></td>
+                                        <td   style="text-align: center" th:text="${ item.getData2()} + '/35'"  ></td>
+<!--                                        <td th:if="${item.getData2() <3}" style="text-align: center; color: red" th:text="${ item.getData2()} + '/35'"  ></td>-->
+
+                                    </tr>
+
+                                    </tbody>
+
+
+
+                                    </tbody>
+                                </table>
+
+                                <!-- /.card-body -->
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- jQuery -->
+
+        <textarea id="listtime" hidden th:text="${listtime}"></textarea>
+        <textarea id="listpos" hidden th:text="${listpos}"></textarea>
+
+
+    </div>
+
+    <script>
+        listtime = JSON.parse(document.getElementById("listtime").innerText);
+
+        listpos = JSON.parse(document.getElementById("listpos").innerText);
+        console.log(listpos);
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Ca 1', 'Ca 2', 'Ca 3', 'Ca 4', 'Ca 5 ', 'Ca 6', 'Ca 7', 'Ca 8', 'Ca 9', 'Ca 10',
+                    'Ca 11', 'Ca 12', 'Ca 13', 'Ca 14', 'Ca 15 ', 'Ca 16', 'Ca 17', 'Ca 18', 'Ca 19', 'Ca 20',
+                    'Ca 21', 'Ca 22', 'Ca 23', 'Ca 24', 'Ca 25 ', 'Ca 26', 'Ca 27', 'Ca 28', 'Ca 29', 'Ca 30',
+                    'Ca 31', 'Ca 32', 'Ca 33', 'Ca 34', 'Ca 35 '
+                ],
+                datasets: [{
+                    label: 'Số người làm được',
+                    data: listtime,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+
+        const ctx1 = document.getElementById('myChart1').getContext('2d');
+        datanamemytime2 = [];
+        datanamemydata =[];
+        for (let i = 0; i <listpos.length ; i++) {
+            datanamemydata[i] =listpos[i]["data3"];
+            datanamemytime2[i] = listpos[i]["data2"];
+        }
+
+
+
+        const myChart1 = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: datanamemydata,
+                datasets: [{
+                    label: 'Số người làm được',
+                    data: datanamemytime2,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+
+    </script>
+
+
+</div>
+</div>
+
+
+</body>
+
+</html>
