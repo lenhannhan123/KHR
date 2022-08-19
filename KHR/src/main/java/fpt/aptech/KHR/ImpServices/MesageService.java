@@ -22,7 +22,8 @@ public class MesageService implements IMessageservices{
     MesageAccountRepository mesageAccountRepository;
     @Override
     public List<MessageAccount> findSendTo(String to, String send) {
-     return mesageAccountRepository.findMesage(to, send);
+
+        return mesageAccountRepository.findMesage(to, send);
     }
 
     @Override
@@ -38,6 +39,11 @@ public class MesageService implements IMessageservices{
     @Override
     public List<MessageAccount> findSendAccount(String send) {
         return mesageAccountRepository.findMessageAccount(send);
+    }
+
+    @Override
+    public List<MessageAccount> PrivaiteSendTo(String to, String send) {
+        return mesageAccountRepository.findMesageSento(to, send);
     }
     
 }

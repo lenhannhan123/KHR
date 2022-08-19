@@ -23,5 +23,7 @@ public interface MesageAccountRepository extends JpaRepository<MessageAccount, I
     List<MessageAccount> findMessageStore(@PathVariable("idReceive") String idReceive);
     @Query("SELECT m FROM MessageAccount m WHERE m.mailSend = :mailSend")
     List<MessageAccount> findMessageAccount(@PathVariable("mailSend") String mailSend);
+    @Query("SELECT m FROM MessageAccount m WHERE (m.idReceive = :idReceive AND m.mailSend = :mailSend) OR (m.idReceive = :mailSend AND m.mailSend = :idReceive)")
+    List<MessageAccount> findMesageSento(@PathVariable("idReceive") String idReceive,@PathVariable("mailSend") String mailSend);
     
 }

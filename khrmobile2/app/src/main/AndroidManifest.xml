@@ -16,8 +16,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MessageDetailsActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MessageAccountActivity"
             android:exported="false" />
@@ -114,6 +114,9 @@
             android:exported="false" /> <!-- <activity -->
         <!-- android:name=".StartPage" -->
         <!-- android:exported="false" /> -->
+        <activity
+            android:name=".AdminDayOffActivity"
+            android:exported="false" />
         <activity
             android:name=".StartPage"
             android:exported="true">

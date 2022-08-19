@@ -16,4 +16,5 @@ public interface IMessageservices {
     List<MessageAccount> findSendToStore(String to);
     List<MessageAccount> findSendAccount(String send);
     void AddMessageAccount(MessageAccount newMessageAccount);
+    List<MessageAccount> PrivaiteSendTo(String to,String send);
 }

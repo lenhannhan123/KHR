@@ -100,7 +100,7 @@ public class MessageDetailsActivity extends AppCompatActivity {
                 Toast.makeText(MessageDetailsActivity.this, "Connect error, unable to find classes!", Toast.LENGTH_SHORT).show();
             }
         });
-        refresh(3000);
+
     }
     private void sendMessage(){
         Button button = findViewById(R.id.btn_sent);
