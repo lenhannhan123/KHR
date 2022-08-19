@@ -103,7 +103,8 @@ public class UploadImageActivity extends AppCompatActivity {
         progressDialog.show();
         SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.profilePreferences, Context.MODE_PRIVATE);
         String mailkey = sharedpreferences.getString(MainActivity.Mail,null);
-        RequestBody requestBodyMail = RequestBody.create(MediaType.parse("multipart/form-data"), mailkey);
+
+//        RequestBody requestBodyMail = RequestBody.create(MediaType.parse("multipart/form-data"), mailkey);
 
         String strRealPath = RealPathUtil.getRealPath(this,mUri);
 
@@ -112,7 +113,7 @@ public class UploadImageActivity extends AppCompatActivity {
         RequestBody requestAvt = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part multipartBodyAvt = MultipartBody.Part.createFormData(Account.Key_avatar, file.getName(), requestAvt);
 
-        Call<Account> call = ApiClient.getService().uploadImage(multipartBodyAvt, requestBodyMail);
+        Call<Account> call = ApiClient.getService().uploadImage(multipartBodyAvt, mailkey);
         call.enqueue(new Callback<Account>() {
             @Override
             public void onResponse(Call<Account> call, Response<Account> response) {
