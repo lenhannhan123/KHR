@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
@@ -26,7 +27,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
+
+import fpt.aptech.khrmobile.API.ApiClient;
+import fpt.aptech.khrmobile.Entities.Account;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChangeInfoActivity extends AppCompatActivity {
     MaterialTextView tvDate;
@@ -34,6 +40,8 @@ public class ChangeInfoActivity extends AppCompatActivity {
     EditText editTextFullName;
     EditText editTextPhone;
     Spinner spnCategory;
+    Button btnUpdateProfile;
+    boolean convertGender;
 
 
     @Override
@@ -64,13 +72,75 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
         editTextFullName.setText(namekey);
         editTextPhone.setText(phonekey);
-//        tvDate.setText(birthdaykey);
         tvDate.setText(birthdaykey);
 
 
         pickDate();
         buttonBack();
         ChangeSpinner();
+
+
+        btnUpdateProfile = findViewById(R.id.BtnUpdateProfile);
+        btnUpdateProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Account account = new Account();
+
+                Spinner spinner = (Spinner)findViewById(R.id.Info_spinner_gender);
+                String gender = spinner.getSelectedItem().toString();
+
+                if (gender == "Nam"){
+                    convertGender = true;
+                }
+                else if (gender == "Nữ"){
+                    convertGender = false;
+                }
+                account.setFullname(editTextFullName.getText().toString());
+                account.setPhone(editTextPhone.getText().toString());
+                account.setBirthdate(tvDate.getText().toString());
+                account.setGender(convertGender);
+                account.setMail(mailkey);
+                submitUpdate(account);
+            }
+        });
+
+
+    }
+
+    private void submitUpdate(Account account){
+        Spinner spinner = (Spinner)findViewById(R.id.Info_spinner_gender);
+
+        if(editTextFullName.getText().toString().isEmpty()
+                || editTextPhone.getText().toString().isEmpty()
+                || tvDate.getText().toString().isEmpty()
+                || spinner.getSelectedItem().toString().isEmpty()
+        ){
+            String message="Item must not be empty..";
+            Toast.makeText(ChangeInfoActivity.this,message,Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Call<Account> call = ApiClient.getService().changeProfileInfo(account);
+            call.enqueue(new Callback<Account>() {
+                @Override
+                public void onResponse(Call<Account> call, Response<Account> response) {
+                    if(response.isSuccessful()){
+                        Intent intent = new Intent(ChangeInfoActivity.this, MainAccountActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else{
+
+                        String message="Input is invalid.. ";
+                        Toast.makeText(ChangeInfoActivity.this,message,Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Account> call, Throwable t) {
+                    String message="An error occured, please try again later..";
+                    Toast.makeText(ChangeInfoActivity.this,message,Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
     }
 
@@ -88,22 +158,18 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
     private void showDatePickerDialog() {
         tvDate = findViewById(R.id.tv_Date);
-
         MaterialDatePicker<Long> materialDatePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build();
-
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long selection) {
-                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(selection);
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                String formattedDate  = format.format(calendar.getTime());
+                SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate  = formatDate.format(calendar.getTime());
                 tvDate.setText(formattedDate);
             }
         });
         materialDatePicker.show(getSupportFragmentManager(),"TAG");
-
-
     }
 
 
@@ -132,7 +198,6 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(ChangeInfoActivity.this, spnCategory.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -49,4 +49,9 @@ public class AccountPositionService implements IAccountPositionServices {
         return accountPositionRepository.findByMailAndPosition(mail, id);
     }
 
+    @Override
+    public List<AccountPosition> findByEmailString(String mail) {
+        return accountPositionRepository.findByEmailString(mail);
+    }
+
 }

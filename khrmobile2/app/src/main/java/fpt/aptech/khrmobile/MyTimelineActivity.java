@@ -232,12 +232,15 @@ public class MyTimelineActivity extends AppCompatActivity {
         String mail =configData.userId(this);;
 
         listView = findViewById(R.id.My_timeline_list_view);
+//        Toast.makeText(MyTimelineActivity.this, "mail: "+mail + " month: "+month+" year: "+year, Toast.LENGTH_SHORT).show();
 
 
         APITimeline.api.getMyTimeline(mail,month,year).enqueue(new Callback<List<ModelString>>() {
             @Override
             public void onResponse(Call<List<ModelString>> call, Response<List<ModelString>> response) {
                 List<ModelString> data =response.body();
+
+//                Toast.makeText(MyTimelineActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
                     MyTimelineAdapter baseAdapter = new MyTimelineAdapter(MyTimelineActivity.this,data,MyTimelineActivity.this);
                     listView.setAdapter(baseAdapter);
                     baseAdapter.notifyDataSetChanged();

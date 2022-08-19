@@ -1,9 +1,5 @@
 package fpt.aptech.khrmobile;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -12,12 +8,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import fpt.aptech.khrmobile.API.ApiClient;
 import fpt.aptech.khrmobile.Entities.Account;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class ForgetPassPage extends AppCompatActivity {
 
@@ -78,7 +75,6 @@ public class ForgetPassPage extends AppCompatActivity {
     }
 
     private void sendRecoverCodeSms(Account account){
-
         Call<Account> call = ApiClient.getService().sendRecoverCodeSms(account);
         call.enqueue(new Callback<Account>() {
             @Override

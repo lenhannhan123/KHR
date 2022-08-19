@@ -209,8 +209,9 @@ ConfigData configData = new ConfigData();
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                     data = response.body();
+
                      innitFragment();
-//                    Toast.makeText(MyTimelineDetailActivity.this,"Number "+data.size() ,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyTimelineDetailActivity.this,"Number "+data.size() ,Toast.LENGTH_SHORT).show();
             }
 
             @Override

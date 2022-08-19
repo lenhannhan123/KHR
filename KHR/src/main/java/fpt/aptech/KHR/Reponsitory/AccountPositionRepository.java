@@ -24,6 +24,11 @@ public interface AccountPositionRepository extends JpaRepository<AccountPosition
 
     @Query("SELECT a FROM AccountPosition a WHERE a.mail = :mail AND a.idPosition = :idPosition")
     AccountPosition findByMailAndPosition(@PathVariable("mail") Account mail, @PathVariable("idPosition") Position idPosition);
+    
+    @Query("SELECT a FROM AccountPosition a WHERE a.mail = :mail")
+    List<AccountPosition> findByEmailString(@PathVariable("mail") String mail);
+    
+
 
 
 }
