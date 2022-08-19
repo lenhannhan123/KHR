@@ -50,30 +50,41 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_message_item_details"
                 android:layout_width="match_parent"
-                android:layout_height="519dp"
+                android:layout_height="494dp"
                 android:layout_margin="10dp"
                 android:background="#F5F5F5" />
 
-            <EditText
-                android:id="@+id/tvcontentmess"
-                android:layout_width="259dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:fontFamily="sans-serif-black"
-                android:hint="Enter message...."
-                android:padding="1dp"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_sent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-black"
-                android:hint="Send"
-                android:padding="1dp"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/tvcontentmess"
+                    android:layout_width="233dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="30dp"
+                    android:fontFamily="sans-serif-black"
+                    android:hint="Enter message...."
+                    android:padding="1dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/btn_sent"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@xml/duongvien_gocbo"
+                    app:backgroundTint="@color/notifacation_item"
+                    app:srcCompat="@drawable/iconsend" />
+
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
