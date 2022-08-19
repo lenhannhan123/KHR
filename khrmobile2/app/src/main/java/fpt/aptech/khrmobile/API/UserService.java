@@ -3,11 +3,15 @@ package fpt.aptech.khrmobile.API;
 import fpt.aptech.khrmobile.Entities.Account;
 import fpt.aptech.khrmobile.Entities.LoginRequest;
 import fpt.aptech.khrmobile.Entities.ModelString;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface UserService {
@@ -32,4 +36,8 @@ public interface UserService {
 
     @GET("/api/get-profile-info")
     Call<ModelString> getProfileInfo(@Query("mail") String mail);
+
+    @Multipart
+    @POST("api/update-photo-profile")
+    Call<Account> uploadImage(@Part MultipartBody.Part file, @Part(Account.Key_mail) RequestBody mail);
 }

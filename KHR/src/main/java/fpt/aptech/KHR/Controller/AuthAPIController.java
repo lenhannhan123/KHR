@@ -232,13 +232,34 @@ public class AuthAPIController {
         JsonServices.dd(JsonServices.ParseToJson(modelStrings), response);
     }
 
-    @RequestMapping(value = {RouteAPI.UploadFile}, method = RequestMethod.POST)
-    public void uploadFile(@RequestParam("file") MultipartFile file) throws IOException{
-        out.println(file.getOriginalFilename());
-        out.println(file.getContentType());
+//    @RequestMapping(value = {RouteAPI.UpdatePhotoProfile}, method = RequestMethod.POST)
+//    public void updatePhotoProfile(@RequestParam("file") MultipartFile file, @RequestParam("mail") String mail) throws IOException {
+//        //Upload file to source static image
+//        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+//        String uploadDir = "src/main/resources/static/images/user-photos/";
+//        FileUploadUtil.saveFile(uploadDir, fileName, file);
+//
+//        //update user photo
+//        Account account = new Account();
+//        account = accountServiceImp.findByMail(mail);
+//        account.setAvatar(fileName);
+//        accountServiceImp.save(account);
+//
+//    }
+
+    @RequestMapping(value = {RouteAPI.UpdatePhotoProfile}, method = RequestMethod.POST)
+    public ResponseEntity<Account> updatePhotoProfile(@RequestParam("file") MultipartFile file, @RequestParam("mail") String mail) throws IOException {
+        //Upload file to source static image
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String uploadDir = "src/main/resources/static/images/user-photos/";
         FileUploadUtil.saveFile(uploadDir, fileName, file);
+
+        //update user photo
+        Account account = new Account();
+        account = accountServiceImp.findByMail(mail);
+        account.setAvatar(fileName);
+        accountServiceImp.save(account);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
 }
