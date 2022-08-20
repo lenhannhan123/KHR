@@ -1,0 +1,169 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{Boss/layout/_layout}">
+
+<head>
+    <title>Quản lý chuỗi cửa hàng</title>
+    
+    <style>
+
+        .title-card {
+            padding-top: 11%;
+            padding-bottom: 11%;
+            margin-left: 4%;
+            font-weight: bold
+        }
+
+        .title-page {
+            text-align: center;
+            margin-top: 2%;
+            margin-bottom: 3%;
+            font-weight: bold
+        }
+
+
+    </style>
+    
+</head>
+
+<body>
+
+<div layout:fragment="content">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <h3 class="title-page">Quản lý lịch làm việc</h3>
+
+   
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col background-table">
+
+            <div class="row" style="margin-bottom:2% ;">
+                <div class="col-sm-6">
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+                <div class="col-sm-6">
+                        <canvas id="myChart2" width="400" height="400"></canvas>
+                </div>
+                
+            </div>
+            <input id="size" type="text" th:value="${size}" hidden="hidden" > 
+            <input id="name" th:value="${name}" hidden="hidden" >
+<!--           <p id="size" type="text" th:text="${size}"> 
+           <p id="name" th:text="${name}">-->
+
+
+
+            
+        </div>
+        <div class="col-sm-1"></div>
+         
+    </div>
+    <script>
+        var arr,arr2;
+        arr  = document.getElementById("size").value;   
+        arr2  = document.getElementById("name").value;
+        acb = JSON.parse(arr)
+        acc =JSON.parse(arr2);
+        
+const ctx = document.getElementById('myChart').getContext('2d');
+const ctx2 = document.getElementById('myChart2').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: acc,
+        datasets: [{
+            label: 'Số lượng nhân viên hiện tại',
+            data: acb,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'Tổng lương',
+            data: [4,7,17],
+            backgroundColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }
+    ]
+    
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+const myChart2 = new Chart(ctx2, {
+    type: 'bar  ',
+    data: {
+        labels: acc,
+        datasets: [{
+            label: 'Số h làm trong ngày',
+            data: acb,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }
+        
+    ]
+    
+    },
+ 
+});
+</script>
+
+
+
+
+   
+</div>
+
+
+</body>
+
+</html>

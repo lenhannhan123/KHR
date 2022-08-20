@@ -90,6 +90,7 @@ public class MessageDetailsActivity extends AppCompatActivity {
                     recyclerMessage.setLayoutManager(mLayoutManager);
                     recyclerMessage.setItemAnimator(new DefaultItemAnimator());
                     recyclerMessage.setAdapter(messingAccountAdapter);
+                    recyclerMessage.scrollToPosition(MessageList.size()-1);
                 }else {
                     Toast.makeText(MessageDetailsActivity.this, "faill!", Toast.LENGTH_SHORT).show();
                 }
@@ -101,6 +102,8 @@ public class MessageDetailsActivity extends AppCompatActivity {
                 Toast.makeText(MessageDetailsActivity.this, "Connect error, unable to find classes!", Toast.LENGTH_SHORT).show();
             }
         });
+        refresh(2000);
+
 
     }
     private void sendMessage(){
