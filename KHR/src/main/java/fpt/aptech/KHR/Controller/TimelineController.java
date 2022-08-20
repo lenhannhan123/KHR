@@ -1152,9 +1152,9 @@ public class TimelineController {
 
         }
 
-        for (TimeAccept item: timeAcceptList ) {
+        for ( Account item2: account) {
              check1 =false;
-            for (Account item2: account  ) {
+            for (   TimeAccept item: timeAcceptList) {
                 if(item2.getMail().equals(item.getIduser()) ){
                     check1 =true;
 
@@ -1172,9 +1172,12 @@ public class TimelineController {
         }
 
 
-//        request.setAttribute("Texterror","Done");
-//        request.setAttribute("Backlink","/timeline/index");
-//        return "admin/timeline/error" ;
+
+
+
+        request.setAttribute("Texterror","Done");
+        request.setAttribute("Backlink","/timeline/index");
+        return "admin/timeline/error" ;
 
 
         if (Listtimeline.size() == 0) {
