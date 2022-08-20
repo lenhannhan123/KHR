@@ -84,6 +84,7 @@ public class Transferdetail2Activity extends AppCompatActivity {
         GetData();
         noAcceptClick();
         AcceptClick();
+        senResClick();
     }
 
     private void noAcceptClick() {

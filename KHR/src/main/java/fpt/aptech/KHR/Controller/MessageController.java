@@ -117,36 +117,35 @@ public class MessageController {
                 Account accc = accountRepository.findByMail(account.getMailSend());
                 Account accc1 = accountRepository.findByMail(account.getIdReceive());
                 if (account.getMailSend().equals(accc.getMail())) {
-                   out.setData1(accc.getAvatar());
-                out.setData2(accc.getFullname());
-                out.setData3(list.get(i).getMesssageContent());
-                Date date = new Date();
-                Date dateStart = new SimpleDateFormat("yyyy-MM-dd").parse(list.get(i).getCreateDate().toString());
-                int num = Numday(dateStart, date);
-                if (num <= 0) {
-                    out.setData4("Hôm nay");
+                    out.setData1(accc.getAvatar());
+                    out.setData2(accc.getFullname());
+                    out.setData3(list.get(i).getMesssageContent());
+                    Date date = new Date();
+                    Date dateStart = new SimpleDateFormat("yyyy-MM-dd").parse(list.get(i).getCreateDate().toString());
+                    int num = Numday(dateStart, date);
+                    if (num <= 0) {
+                        out.setData4("Hôm nay");
+                    } else {
+                        out.setData4(String.valueOf(num) + "Ngày trước");
+                    }
+                    //out.setData4(list.get(i).getRole());
+                    modelStringout.add(out);
                 } else {
-                    out.setData4(String.valueOf(num) + "Ngày trước");
+
+                    out.setData1(accc1.getAvatar());
+                    out.setData2(accc1.getFullname());
+                    out.setData3(list.get(i).getMesssageContent());
+                    Date date = new Date();
+                    Date dateStart = new SimpleDateFormat("yyyy-MM-dd").parse(list.get(i).getCreateDate().toString());
+                    int num = Numday(dateStart, date);
+                    if (num <= 0) {
+                        out.setData4("Hôm nay");
+                    } else {
+                        out.setData4(String.valueOf(num) + "Ngày trước");
+                    }
+                    //out.setData4(list.get(i).getRole());
+                    modelStringout.add(out);
                 }
-                //out.setData4(list.get(i).getRole());
-                modelStringout.add(out); 
-                }else{
-                
-                out.setData1(accc1.getAvatar());
-                out.setData2(accc1.getFullname());
-                out.setData3(list.get(i).getMesssageContent());
-                Date date = new Date();
-                Date dateStart = new SimpleDateFormat("yyyy-MM-dd").parse(list.get(i).getCreateDate().toString());
-                int num = Numday(dateStart, date);
-                if (num <= 0) {
-                    out.setData4("Hôm nay");
-                } else {
-                    out.setData4(String.valueOf(num) + "Ngày trước");
-                }
-                //out.setData4(list.get(i).getRole());
-                modelStringout.add(out);
-                }
-                
 
             }
         } else {
@@ -258,7 +257,7 @@ public class MessageController {
             if (numt <= 0) {
                 t.setData4("Hôm nay");
             } else {
-                t.setData4(String.valueOf(num) + "Ngày trước");
+                t.setData4(String.valueOf(numt) + "Ngày trước");
             }
             modelStringout.add(t);
         }
@@ -325,37 +324,44 @@ public class MessageController {
         accountNotification.setIdnotification(n);
         accountNotification.setMail(account1);
         accountNotification.setStatus(false);
-//        if (listtokenstring != null) {
-//            firebaseMessagingService.sendMorePeople(accountNotification, listtokenstring);
-//        }    
-//        } else {
-//             Account acc = accountRepository.findByMail(modelString.getData2());
-//            List<Account> list = accountRepository.findByStore(acc.getIdStore());
-//            list.remove(acc);
-//            for (Account account2 : list) {
-//                if (account2.getRole().equals("2")){
-//                    list.remove(account2);
-//                }
-//            }
-//            List<String> listtokenstrings = new ArrayList<>();
-//            for (int i = 0; i < list.size(); i++) {
-//                List<AccountToken> listTokens = accToken.GetTokenByMail(list.get(i).getMail());
-//                for (AccountToken accountToken : listTokens) {
-//                    listtokenstrings.add(accountToken.getToken());
-//                }
-//            }
-//            if (listtokenstrings != null) {
-//                firebaseMessagingService.sendMorePeople(accountNotification, listtokenstrings);
-//            }
-//        }
+        if (listtokenstring.size() > 0) {
+            firebaseMessagingService.sendMorePeople(accountNotification, listtokenstring);
+        }
+        else
+        {
+            Account acc = accountRepository.findByMail(modelString.getData2());
+        List<Account> list = accountRepository.findByStore(acc.getIdStore());
+        list.remove(acc);
+        for (Account account2 : list) {
+            if (account2.getRole().equals("2")) {
+                list.remove(account2);
+            }
+        }
+        List<String> listtokenstrings = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            List<AccountToken> listTokens = accToken.GetTokenByMail(list.get(i).getMail());
+            for (AccountToken accountToken : listTokens) {
+                listtokenstrings.add(accountToken.getToken());
+            }
+        }
+        if (listtokenstrings != null) {
+            firebaseMessagingService.sendMorePeople(accountNotification, listtokenstrings);
+        }
+    }
 
-        if (modelStringout != null) {
+    if (modelStringout
+
+    
+        != null) {
             JsonServices.dd(JsonServices.ParseToJson(modelStringout), response);
 
-        } else {
-            modelString.setData5("Unsusssess");
-            JsonServices.dd(JsonServices.ParseToJson(modelString), response);
-        }
-
     }
+
+    
+        else {
+            modelString.setData5("Unsusssess");
+        JsonServices.dd(JsonServices.ParseToJson(modelString), response);
+    }
+
+}
 }

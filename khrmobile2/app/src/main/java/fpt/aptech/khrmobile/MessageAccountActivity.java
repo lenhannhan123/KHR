@@ -45,9 +45,41 @@ public class MessageAccountActivity extends AppCompatActivity {
         recyclerContact = findViewById(R.id.rcv_message_avata);
         recyclerMessage = findViewById(R.id.rcv_message_item);
        // sharedPreferencesProfile = getSharedPreferences("profilepref", MODE_PRIVATE);
+        ShowlistChanel();
         showContact();
     }
         ConfigData data = new ConfigData();
+    private  void ShowlistChanel(){
+        String email = data.userId(MessageAccountActivity.this);
+        MessingAPI.api.getMessageList(email).enqueue(new Callback<List<ModelString>>() {
+
+            @Override
+            public void onResponse(Call<List<ModelString>> call, Response<List<ModelString>> response) {
+                if(response.isSuccessful()){
+                    MessageList = response.body();
+                    //Toast.makeText(MessageAccountActivity.this, ContacList.toString(), Toast.LENGTH_SHORT).show();
+                    MessageListItemAdapter messingAccountAdapter = new MessageListItemAdapter(MessageList,MessageAccountActivity.this);
+                    context = getApplicationContext();
+                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                    recyclerMessage.setLayoutManager(mLayoutManager);
+                    recyclerMessage.setItemAnimator(new DefaultItemAnimator());
+                    recyclerMessage.setAdapter(messingAccountAdapter);
+
+
+                }else {
+                    Toast.makeText(MessageAccountActivity.this, "faill!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ModelString>> call, Throwable t) {
+                Toast.makeText(MessageAccountActivity.this, "Connect error, unable to find classes!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        refresh(2000);
+    }
     private void showContact(){
 //        sharedPreferencesProfile = getSharedPreferences("login", MODE_PRIVATE);
 //        String email = sharedPreferencesProfile.getString("user",null);
@@ -82,41 +114,15 @@ public class MessageAccountActivity extends AppCompatActivity {
                 Toast.makeText(MessageAccountActivity.this, "Connect error, unable to find classes!", Toast.LENGTH_SHORT).show();
             }
         });
-        MessingAPI.api.getMessageList(email).enqueue(new Callback<List<ModelString>>() {
-
-            @Override
-            public void onResponse(Call<List<ModelString>> call, Response<List<ModelString>> response) {
-                if(response.isSuccessful()){
-                    MessageList = response.body();
-                    //Toast.makeText(MessageAccountActivity.this, ContacList.toString(), Toast.LENGTH_SHORT).show();
-                    MessageListItemAdapter messingAccountAdapter = new MessageListItemAdapter(MessageList,MessageAccountActivity.this);
-                    context = getApplicationContext();
-                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-                    mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                    recyclerMessage.setLayoutManager(mLayoutManager);
-                    recyclerMessage.setItemAnimator(new DefaultItemAnimator());
-                    recyclerMessage.setAdapter(messingAccountAdapter);
 
 
-                }else {
-                    Toast.makeText(MessageAccountActivity.this, "faill!", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<ModelString>> call, Throwable t) {
-                Toast.makeText(MessageAccountActivity.this, "Connect error, unable to find classes!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        refresh(3000);
     }
     private void refresh(int miliseconds){
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                showContact();
+                ShowlistChanel();
             }
         };
         handler.postDelayed(runnable,miliseconds);
