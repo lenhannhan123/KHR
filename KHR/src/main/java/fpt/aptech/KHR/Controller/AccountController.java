@@ -69,7 +69,7 @@ public class AccountController {
 
     @RequestMapping(value = {RouteWeb.accountManageURL}, method = RequestMethod.GET)
     public String AccountList(Model model, @Param("keyword") String keyword ,HttpServletResponse response, HttpServletRequest request) {
-
+        request.setAttribute("sidebar","2");
         HttpSession session = request.getSession();
         int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
 
@@ -107,7 +107,8 @@ public class AccountController {
     }
 
     @RequestMapping(value = {RouteWeb.AccountGetCreateURL}, method = RequestMethod.GET)
-    public String GetCreate(Model model) {
+    public String GetCreate(Model model,HttpServletRequest request) {
+        request.setAttribute("sidebar","2");
         List<Position> positions = positionServices.findAll();
         model.addAttribute("positions", positions);
         return "admin/account/create";
@@ -116,9 +117,10 @@ public class AccountController {
     @RequestMapping(value = {RouteWeb.AccountGetCreateURL}, method = RequestMethod.POST)
     public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam("image") MultipartFile multipartFile) throws IOException {
 
+        request.setAttribute("sidebar","2");
+
         HttpSession session = request.getSession();
         int IdStore = Integer.parseInt(session.getAttribute("IdStore").toString());
-
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String mail = request.getParameter("txtAccountMail");
         String name = request.getParameter("txtFullName");
@@ -167,6 +169,7 @@ public class AccountController {
 
     @RequestMapping(value = {RouteWeb.AccountGetUpdateURL}, method = RequestMethod.GET)
     public String GetUpdate(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","2");
         String id = request.getParameter("id");
         Account account = accountRepository.findByMail(id);
         model.addAttribute("Account", account);
@@ -205,6 +208,7 @@ public class AccountController {
 
     @RequestMapping(value = {RouteWeb.AccountGetUpdateURL}, method = RequestMethod.POST)
     public String PostUpdate(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","2");
         String mail = request.getParameter("txtAccountMail");
         String name = request.getParameter("txtFullName");
         String phone = request.getParameter("txtPhone");
@@ -295,6 +299,7 @@ public class AccountController {
 
     @RequestMapping(value = {RouteWeb.AccountGetBlockURL}, method = RequestMethod.GET)
     public String GetBlockAccount(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","2");
         String mail = request.getParameter("id");
         Account account = accountRepository.findByMail(mail);
         if (account.getStatus() == true) {
@@ -310,6 +315,7 @@ public class AccountController {
 
     @RequestMapping(value = {RouteWeb.AccountResetPassURL}, method = RequestMethod.GET)
     public String ResetPass(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","2");
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String mail = request.getParameter("id");
         Account account = accountRepository.findByMail(mail);
@@ -321,7 +327,8 @@ public class AccountController {
 
 
     @RequestMapping(value = {RouteWeb.BossAccountIndex}, method = RequestMethod.GET)
-    public String BossAccountList(Model model, HttpServletResponse response) {
+    public String BossAccountList(Model model, HttpServletResponse response,HttpServletRequest request) {
+        request.setAttribute("sidebar","2");
         List<Account> list1 = accountRepository.findAll();
 
         List<Account> list = new ArrayList<>();
@@ -349,7 +356,8 @@ public class AccountController {
     }
 
     @RequestMapping(value = {RouteWeb.BossAccountCreate}, method = RequestMethod.GET)
-    public String GetCreateBoss(Model model) {
+    public String GetCreateBoss(Model model, HttpServletRequest request) {
+
         List<Store> stores = storeService.FindAl();
         model.addAttribute("stores", stores);
         return "Boss/account/create";
@@ -409,6 +417,7 @@ public class AccountController {
 
     @RequestMapping(value = {RouteWeb.BossAccountEdit}, method = RequestMethod.GET)
     public String GetUpdateBoss(Model model, HttpServletRequest request, HttpServletResponse response) {
+
         String id = request.getParameter("id");
 
         Account account = accountRepository.findByMail(id);
@@ -477,6 +486,7 @@ public class AccountController {
 
     @RequestMapping(value = {RouteWeb.BossAccountBlock}, method = RequestMethod.GET)
     public String GetBlockAccountBoss(Model model, HttpServletRequest request, HttpServletResponse response) {
+
         String mail = request.getParameter("id");
         Account account = accountRepository.findByMail(mail);
         if (account.getStatus() == true) {
@@ -492,6 +502,7 @@ public class AccountController {
 
     @RequestMapping(value = {RouteWeb.BossAccountReset}, method = RequestMethod.GET)
     public String ResetPassBoss(Model model, HttpServletRequest request, HttpServletResponse response) {
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String mail = request.getParameter("id");
         Account account = accountRepository.findByMail(mail);

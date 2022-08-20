@@ -9,7 +9,8 @@ public class Timekeeping implements Serializable {
     private Date timeend;
     private int time;
     private Account mail;
-    private Shift shiftId;
+    private int shiftCode;
+    private int idTimeline;
 
     public Timekeeping() {
     }
@@ -54,11 +55,19 @@ public class Timekeeping implements Serializable {
         this.time = time;
     }
 
-    public Shift getShiftId() {
-        return shiftId;
+    public int getShiftCode() {
+        return shiftCode;
     }
 
-    public void setShiftId(Shift shiftId) {
-        this.shiftId = shiftId;
+    public void setShiftCode(int shiftCode) {
+        this.shiftCode = shiftCode;
+    }
+
+    public int getIdTimeline() {
+        return idTimeline;
+    }
+
+    public void setIdTimeline(int idTimeline) {
+        this.idTimeline = idTimeline;
     }
 }

@@ -20,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -45,11 +46,11 @@ public class Salary implements Serializable {
     @Column(name = "Id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "Thời gian không được để trống!")
     @Column(name = "total_time")
     private int totalTime;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message = "Lương không được để trống")
     @Column(name = "salary")
     private int salary;
     @Basic(optional = false)
@@ -139,5 +140,5 @@ public class Salary implements Serializable {
     public String toString() {
         return "fpt.aptech.KHR.Entities.Salary[ id=" + id + " ]";
     }
-    
+
 }

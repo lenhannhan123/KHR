@@ -1,9 +1,11 @@
 package fpt.aptech.khrmobile.API;
 
+import java.util.Date;
 import java.util.List;
 
 import fpt.aptech.khrmobile.Entities.Account;
 import fpt.aptech.khrmobile.Entities.Timekeeping;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -16,6 +18,9 @@ import retrofit2.http.Query;
 public interface TimekeepingService {
     @GET("/api/timekeeping/findAllByDate")
     Call<List<Timekeeping>> findAllByDate(@Query("mail") String mail, @Query("month") int month, @Query("year") int year);
+
+    @GET("/api/timekeeping/action/{mail}")
+    Call<Integer> action(@Path("mail") String mail);
 
     @GET("/api/timekeeping/accountList")
     Call<List<Account>> accountList();
@@ -32,9 +37,7 @@ public interface TimekeepingService {
     @POST("/api/timekeeping/checkout/{mail}")
     Call<Timekeeping> checkout(@Body Timekeeping timekeeping, @Path("mail") String mail);
 
-    @GET("/api/timekeeping/detailId")
-    Call<Integer> detailId(@Query("id") int id);
-
     @GET("/api/timekeeping/detail")
-    Call<List<String>> detail(@Query("shiftId") int id);
+    Call<ResponseBody> detail(@Query("id") int id);
+
 }

@@ -30,13 +30,13 @@
 
         <div layout:fragment="content">
 
-            <h3 class="title-page">Chỉnh sửa chấm công</h3>
+            <h3 class="title-page">Chỉnh sửa tiền lương</h3>
 
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col background-table">
 
-                    <form th:action="@{'/timekeeping/edit/' + ${timekeeping.getId()}}" method="post" name="_form">  
+                    <form th:action="@{'/salary/edit/' + ${object.getId()}}"  method="post" name="_form">  
 
                         <div class="row" style="margin-top: 3%;">
                             <div class="col-sm-1"></div>
@@ -49,7 +49,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="text" class="form-control input" th:value="${timekeeping.getMail().getMail()}" id="" name="" readonly="">
+                                <input type="text" class="form-control input"  id="" name="" th:value="${object.getMail().getMail()}" readonly="">
                             </div>
                             <div class="col-sm-1"></div>
                         </div>
@@ -62,7 +62,7 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col">
-                                <input type="text" class="form-control input" id="" name="" th:value="${user.getFullname()}" readonly="">
+                                <input type="text" class="form-control input" id="" name="" th:value="${object.getMail().getFullname()}" readonly="">
                             </div>
                             <div class="col-sm-1"></div>
                         </div>
@@ -70,10 +70,10 @@
                         <div class="row" style="margin-top: 3%;">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5">
-                                Thời gian vào
+                                Tháng
                             </div>
                             <div class="col-sm-5">
-                                Ngày
+                                Tổng thời gian làm
                             </div>
                         </div>
 
@@ -81,54 +81,39 @@
                         <div class="row" style="margin-top: 1%;">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Thời gian vào" oninput="validateTimeStart();" id="timeStart" th:value="${#dates.format(timekeeping.getTimestart(), 'HH:mm')}"
-                                       name="timeStart">
+                                <input type="text" class="form-control input" placeholder="Tháng" oninput="validateDateStart();" id="dateStart"
+                                       name="date" th:value="${#dates.format(object.getDate(), 'dd-MM-yyyy')}">
                             </div>
                             <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Ngày" oninput="validateDateStart();" id="dateStart" th:value="${#dates.format(timekeeping.getTimestart(), 'dd-MM-yyyy')}"
-                                       name="dateStart">
-                            </div>
-                            <div class="col-sm-1"></div>
-                        </div>
-
-                        <div class="row" style="margin-top: 3%;">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-5">
-                                Thời gian ra
-                            </div>
-                            <div class="col-sm-5">
-                                Ngày
-                            </div>
-                        </div>
-
-                        <div class="row" style="margin-top: 1%;">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Thời gian ra" id="timeEnd" oninput="validateTimeEnd();" th:value="${#dates.format(timekeeping.getTimeend(), 'HH:mm')}"
-                                       name="timeEnd">
-                            </div>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control input" placeholder="Ngày" oninput="validateDateEnd();" id="dateEnd" th:value="${#dates.format(timekeeping.getTimeend(), 'dd-MM-yyyy')}"
-                                       name="dateEnd">
-                            </div>
-                            <div class="col-sm-1"></div>
-                        </div>
-
-                        <div class="row" style="margin-top: 3%;">
-                            <div class="col-sm-1"></div>
-                            <div class="col">
-                                Thời gian làm việc
-                            </div>
-                        </div>
-
-                        <div class="row" style="margin-top: 1%;">
-                            <div class="col-sm-1"></div>
-                            <div class="col input-group mb-3">
-                                <input type="text" class="form-control input" placeholder="Thời gian làm việc" id="time" th:value="${timekeeping.getTime()}"
-                                       name="time" readonly="">
+                                <div class="col input-group mb-3">
+                                    <input type="text" class="form-control input" placeholder="Thời gian làm việc" id="time" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required=""
+                                       name="time" th:value="${object.getTotalTime()}" >
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">Giờ</span>
                                 </div>
+                            </div>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+                        <div class="row" style="margin-top: 3%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10">
+                                Lương
+                            </div>
+               
+                        </div>
+
+                        <div class="row" style="margin-top: 1%;">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10">
+                                <div class="col input-group mb-3">
+                                <input type="text" class="form-control input" placeholder="Lương" id="salary" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                       name="salary" th:value="${object.getSalary()}" required="">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">VNĐ</span>
+                                </div>
+                            </div>
                             </div>
                             <div class="col-sm-1"></div>
                         </div>
@@ -173,58 +158,16 @@
 
 <script th:src="@{/script/cleave.js}"></script>
 <script>
-    var timeStartFormat = new Cleave('#timeStart', {
-        time: true,
-        timePattern: ['h', 'm']
-    });
-    
+
     var dateStartFormat = new Cleave('#dateStart', {
         date: true,
         delimiter: '-',
         datePattern: ['d', 'm', 'Y']
     });
 
-    var timeEndFormat = new Cleave('#timeEnd', {
-        time: true,
-        timePattern: ['h', 'm']
-    });
-    
-    var dateEndFormat = new Cleave('#dateEnd', {
-        date: true,
-        delimiter: '-',
-        datePattern: ['d', 'm', 'Y']
-    });
 
     var btnSubmit = document.getElementById('btnSubmit');
 
-    function validateTimeStart() {
-        var val = document.getElementById('timeStart').value;
-        if (val.length < 5) {
-            document.getElementById('timeStart').style.borderColor = '#cc0000';
-            btnSubmit.disabled = true;
-            btnSubmit.style.cursor = "pointer";
-            btnSubmit.style.background = '#cc0000';
-        } else {
-            document.getElementById('timeStart').style.borderColor = 'green';
-            btnSubmit.disabled = false;
-            btnSubmit.style.background = '#6667AB';
-        }
-    }
-
-    function validateTimeEnd() {
-        var val = document.getElementById('timeEnd').value;
-        if (val.length < 5) {
-            document.getElementById('timeEnd').style.borderColor = '#cc0000';
-            btnSubmit.disabled = true;
-            btnSubmit.style.cursor = "pointer";
-            btnSubmit.style.background = '#cc0000';
-        } else {
-            document.getElementById('timeEnd').style.borderColor = 'green';
-            btnSubmit.disabled = false;
-            btnSubmit.style.background = '#6667AB';
-        }
-    }
-    
     function validateDateStart() {
         var val = document.getElementById('dateStart').value;
         if (val.length < 10) {
@@ -239,18 +182,5 @@
         }
     }
     
-    function validateDateEnd() {
-        var val = document.getElementById('dateEnd').value;
-        if (val.length < 10) {
-            document.getElementById('dateEnd').style.borderColor = '#cc0000';
-            btnSubmit.disabled = true;
-            btnSubmit.style.cursor = "pointer";
-            btnSubmit.style.background = '#cc0000';
-        } else {
-            document.getElementById('dateEnd').style.borderColor = 'green';
-            btnSubmit.disabled = false;
-            btnSubmit.style.background = '#6667AB';
-        }
-    }
 
 </script>
