@@ -208,6 +208,7 @@ public class AuthAPIController {
         modelString.setData4(account.getBirthdate().toString());
         modelString.setData5(String.valueOf(account.getGender()));
         modelString.setData6(account.getAvatar());
+        modelString.setData7(account.getCode());
 
         JsonServices.dd(JsonServices.ParseToJson(modelString), response);
     }

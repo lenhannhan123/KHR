@@ -171,7 +171,7 @@ public class login extends AppCompatActivity {
                             else if (modelString.getData5().equals("false")){
                                 account.setGender(false);
                             }
-                            account.setCode(modelString.getData6());
+                            account.setCode(modelString.getData7());
 
                             sendRegistrationToServer(account);
                             switch (data.getData4()){

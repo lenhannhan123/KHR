@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
             editor.commit();
             String name = sharedPreferences.getString(MainActivity.Name,null);
             username.setText("Xin chào " + name);
+
+
         }
 
 

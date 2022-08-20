@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -27,6 +28,7 @@ public class QRDisplay extends AppCompatActivity {
         SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.profilePreferences, Context.MODE_PRIVATE);
         String nameKey = sharedpreferences.getString(MainActivity.Name, null);
         String codeKey = sharedpreferences.getString(MainActivity.Code, null);
+ 
 
         tvQRName = findViewById(R.id.tvQRName);
         qrImage = findViewById(R.id.qr_image);
