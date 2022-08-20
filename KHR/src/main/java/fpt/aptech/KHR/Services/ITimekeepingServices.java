@@ -42,20 +42,22 @@ public interface ITimekeepingServices {
     public List<Timekeeping> findAllByDate(Account mail, int month, int year);
 
     public List<TimelineDetail> findTimelineDetailList(Account mail, int id, Position Id_Position, Timeline idTimeline);
-    
+
     public Shift findShiftByShiftCode(int id, Date date, Position idPosition);
-    
+
     public Position findPositionAccountById(int id);
-    
+
     public Shift findShiftByTimekeeping(int id);
-    
+
     public Integer detailId(int id);
-    
+
     public List<Timeline> findTimelineList();
-    
+
     public Timeline findTimelineByDate(Date date);
-    
+
     public TimelineDetail findTimelineDetail(Account mail, int id, Timeline idTimeline);
-    
+
     public int findMaxShiftCodeInTimelineDetail();
+
+    public void delete(Timekeeping timekeeping);
 }

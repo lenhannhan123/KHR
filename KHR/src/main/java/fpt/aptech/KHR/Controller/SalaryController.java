@@ -16,19 +16,24 @@ import fpt.aptech.KHR.ImpServices.JsonServices;
 import fpt.aptech.KHR.Services.IAccountRepository;
 import fpt.aptech.KHR.Services.ISalaryServices;
 import fpt.aptech.KHR.Services.ITimekeepingServices;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -250,8 +255,49 @@ public class SalaryController {
         return "admin/salary/index";
     }
 
+    @RequestMapping(value = "/salary/update/{id}", method = RequestMethod.GET)
+    public String update(@PathVariable("id") int id, HttpServletRequest request, Model model) {
+        model.addAttribute("object", salaryServices.findOne(id));
+        List<Account> users = accountRepository.findAll();
+        model.addAttribute("salary", salaryServices.findOne(id));
+        //Account user = accountRepository.findByMail();
+        //model.addAttribute("user",  user);
+        return "admin/salary/update";
+    }
+
+    @RequestMapping(value = "/salary/edit/{id}", method = RequestMethod.POST)
+    public String edit(@PathVariable("id") int id, HttpServletRequest request, Model model, HttpServletResponse response) {
+        Salary salary = salaryServices.findOne(id);
+        
+        if (request.getParameter("action").equals("Trở lại")) {
+            return index(model, response);
+        } else {
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat hour = new SimpleDateFormat("HH");
+                SimpleDateFormat minute = new SimpleDateFormat("mm");
+                String day, month, year;
+                day = request.getParameter("date").substring(0, 2);
+                month = request.getParameter("date").substring(3, 5);
+                year = request.getParameter("date").substring(6, 10);
+                String dateString = year + "-" + month + "-" + day;
+//            String date = dateStart + " " + request.getParameter("timeStart") + ":00";
+                //JsonServices.dd(JsonServices.ParseToJson(request.getParameter("date")), response);
+                salary.setDate(dateFormat.parse(dateString));
+                salary.setSalary(Integer.parseInt(request.getParameter("salary")));
+                salary.setTotalTime(Integer.parseInt(request.getParameter("time")));
+                salaryServices.save(salary);
+            } catch (ParseException ex) {
+                Logger.getLogger(SalaryController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return update(salary.getId(), request, model);
+        }
+    }
+
     @RequestMapping(value = "/api/salary/year/{mail}", method = RequestMethod.GET)
-    public ResponseEntity<List<String>> getYear(@PathVariable("mail") String mail, HttpServletResponse response) {
+    public ResponseEntity<List<String>> getYear(@PathVariable("mail") String mail, HttpServletResponse response
+    ) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
         Account account = accountRepository.findByMail(mail);
         List<Salary> salarys = salaryServices.findSalaryListByMail(mail);
@@ -271,7 +317,10 @@ public class SalaryController {
     }
 
     @RequestMapping(value = "/api/salary/findOneByDate", method = RequestMethod.GET)
-    public ResponseEntity<List<ModelString>> findOneByDate(@RequestParam("mail") String mail, @RequestParam("month") int month, @RequestParam("year") int year, HttpServletResponse response) {
+    public ResponseEntity<List<ModelString>> findOneByDate(@RequestParam("mail") String mail,
+            @RequestParam("month") int month,
+            @RequestParam("year") int year, HttpServletResponse response
+    ) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Salary salary = salaryServices.findOneByDate(mail, month, year);
@@ -330,8 +379,8 @@ public class SalaryController {
             _modelString.setData2(val);
             modelStrings.add(_modelString);
         }
-        
-         //JsonServices.dd(JsonServices.ParseToJson(modelStrings), response);
+
+        //JsonServices.dd(JsonServices.ParseToJson(modelStrings), response);
 //
 //        int count = 0;
 //        for (Map.Entry<String, String> item : _hashMap.entrySet()) {
@@ -343,7 +392,14 @@ public class SalaryController {
 //            modelString.setData2(value);
 //            stringList.add(modelString);
 //        }
-
         return new ResponseEntity<List<ModelString>>(modelStrings, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/salary/delete/{id}", method = RequestMethod.GET)
+    public String delete(@PathVariable int id, Model model, HttpServletRequest request) {
+        Salary salary = salaryServices.findOne(id);
+        salaryServices.delete(salary);
+        String redirectUrl = "/api/salary/index";
+        return "redirect:" + redirectUrl;
     }
 }
