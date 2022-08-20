@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
@@ -60,6 +61,11 @@ public class MessageDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_details);
+
+        BottomNavigationView bottom_navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        CallNav callNav = new CallNav();
+        callNav.call(bottom_navigation,R.id.page_1,MessageDetailsActivity.this);
+
         getSupportActionBar().hide();
         Intent intent = getIntent();
         email = data.userId(MessageDetailsActivity.this);

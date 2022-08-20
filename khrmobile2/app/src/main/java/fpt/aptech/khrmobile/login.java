@@ -146,35 +146,6 @@ public class login extends AppCompatActivity {
     }
 
     public void loginUser(LoginRequest loginRequest){
-//        Call<Account> accountCall = ApiClient.getService().loginUser(loginRequest);
-//        accountCall.enqueue(new Callback<Account>() {
-//            @Override
-//            public void onResponse(Call<Account> call, Response<Account> response) {
-//                if(response.isSuccessful()){
-//                    Account account = response.body();
-//                    sendRegistrationToServer(account);
-//                    if(String.valueOf(account.getRole()).equals("2")){
-//                        startActivity(new Intent(login.this, ScannerActivity.class));
-//                        finish();
-//                    }else{
-//                        startActivity(new Intent(login.this, MainActivity.class).putExtra("data",account));
-//                        finish();
-//                    }
-//
-//                }
-//                else{
-//                    String message="An error occured, please try again later..";
-//                    Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Account> call, Throwable t) {
-//                String message = t.getLocalizedMessage();
-//                Toast.makeText(login.this,message,Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
 
         ApiClient.getService().LoginAPI(loginRequest.getMail(),loginRequest.getPassword()).enqueue(new Callback<ModelString>() {
             @Override

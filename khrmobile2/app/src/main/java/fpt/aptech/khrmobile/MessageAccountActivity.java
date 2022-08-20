@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.List;
 
 import fpt.aptech.khrmobile.API.MessingAPI;
@@ -33,8 +35,13 @@ public class MessageAccountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_message_account);
+        BottomNavigationView bottom_navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        CallNav callNav = new CallNav();
+        callNav.call(bottom_navigation,R.id.page_1,MessageAccountActivity.this);
+
+        getSupportActionBar().hide();
+
         recyclerContact = findViewById(R.id.rcv_message_avata);
         recyclerMessage = findViewById(R.id.rcv_message_item);
        // sharedPreferencesProfile = getSharedPreferences("profilepref", MODE_PRIVATE);
@@ -81,6 +88,11 @@ public class MessageAccountActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call<List<ModelString>> call, Response<List<ModelString>> response) {
+
+
+
+
+
                 if(response.isSuccessful()){
                     ContacList = response.body();
                     //Toast.makeText(MessageAccountActivity.this, ContacList.toString(), Toast.LENGTH_SHORT).show();
