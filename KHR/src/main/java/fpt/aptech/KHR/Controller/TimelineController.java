@@ -1171,14 +1171,7 @@ public class TimelineController {
             }
         }
 
-
-
-
-
-        request.setAttribute("Texterror","Done");
-        request.setAttribute("Backlink","/timeline/index");
-        return "admin/timeline/error" ;
-
+        
 
         if (Listtimeline.size() == 0) {
 
