@@ -119,8 +119,8 @@
                                         <th scope="row" th:text="${stt.Count}"></th>
                                         <th scope="row" th:text="${item.getData1()}"></th>
                                         <td th:text="${item.getData3()}"></td>
-                                        <td   style="text-align: center" th:text="${ item.getData2()} + '/35'"  ></td>
-<!--                                        <td th:if="${item.getData2() <3}" style="text-align: center; color: red" th:text="${ item.getData2()} + '/35'"  ></td>-->
+                                        <td th:if="${ item.getData4()=='true'}"   style="text-align: center" th:text="${ item.getData2()} + '/35'"  ></td>
+                                        <td th:if="${ item.getData4()=='false'}" style="text-align: center; color: red" th:text="${ item.getData2()} + '/35'"  ></td>
 
                                     </tr>
 

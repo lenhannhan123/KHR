@@ -2592,6 +2592,7 @@ public class TimelineController {
         }
 
 
+
         for (int i = 0; i < modelStringList.size(); i++) {
             for (int j = i; j <modelStringList.size() ; j++) {
                 if(Integer.parseInt(modelStringList.get(j).getData2()) < Integer.parseInt(modelStringList.get(i).getData2())){
@@ -2602,8 +2603,8 @@ public class TimelineController {
 
 
                     modelStringList.get(j).setData1(modelStringList.get(i).getData1());
-                    modelStringList.get(j).setData1(modelStringList.get(i).getData1());
-                    modelStringList.get(j).setData1(modelStringList.get(i).getData1());
+                    modelStringList.get(j).setData2(modelStringList.get(i).getData2());
+                    modelStringList.get(j).setData3(modelStringList.get(i).getData3());
 
 
                     modelStringList.get(i).setData1(modelString.getData1());
@@ -2611,6 +2612,17 @@ public class TimelineController {
                     modelStringList.get(i).setData3(modelString.getData3());
                 }
 
+            }
+
+        }
+
+
+        for (int i = 0; i < modelStringList.size(); i++) {
+
+            if(Integer.parseInt(modelStringList.get(i).getData2())>3){
+                modelStringList.get(i).setData4("true");
+            }else {
+                modelStringList.get(i).setData4("false");
             }
 
         }
