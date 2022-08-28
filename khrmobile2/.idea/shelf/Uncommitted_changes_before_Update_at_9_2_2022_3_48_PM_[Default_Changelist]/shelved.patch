@@ -1,0 +1,19 @@
+Index: app/src/main/java/fpt/aptech/khrmobile/Config/ConfigData.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package fpt.aptech.khrmobile.Config;\r\n\r\nimport android.content.Context;\r\nimport android.content.SharedPreferences;\r\n\r\npublic class ConfigData {\r\n\r\n\r\n    public static String IP =\"192.168.1.19\";\r\n\r\n    public static final String profilePreferences = \"profilepref\";\r\n    public static final String Mail = \"mailKey\";\r\n\r\n    public String userId(Context context){\r\n        SharedPreferences sharedPreferences;\r\n        sharedPreferences = context.getSharedPreferences(profilePreferences, Context.MODE_PRIVATE);\r\n        SharedPreferences.Editor editor = sharedPreferences.edit();\r\n       return sharedPreferences.getString(Mail,null);\r\n    }\r\n\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/fpt/aptech/khrmobile/Config/ConfigData.java b/app/src/main/java/fpt/aptech/khrmobile/Config/ConfigData.java
+--- a/app/src/main/java/fpt/aptech/khrmobile/Config/ConfigData.java	
++++ b/app/src/main/java/fpt/aptech/khrmobile/Config/ConfigData.java	
+@@ -6,7 +6,7 @@
+ public class ConfigData {
+ 
+ 
+-    public static String IP ="192.168.1.19";
++    public static String IP ="192.168.1.10";
+ 
+     public static final String profilePreferences = "profilepref";
+     public static final String Mail = "mailKey";

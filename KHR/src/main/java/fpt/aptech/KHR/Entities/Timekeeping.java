@@ -5,6 +5,7 @@
  */
 package fpt.aptech.KHR.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -68,6 +69,7 @@ public class Timekeeping implements Serializable {
     private Account mail;
     @JoinColumn(name = "Id_Timeline", referencedColumnName = "Id")
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Timeline idTimeline;
 
     public Timekeeping() {

@@ -39,15 +39,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ScannerActivity extends AppCompatActivity {
     TimekeepingService service;
     private CodeScanner mCodeScanner;
-    public static final String profilePreferences = "profilepref";
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    String EMAIL_KEY = "user";
+    String COUNT_KEY = "password";
+    private static final int count = 0;
+    public static final String profilePreferences = "profilepref";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
 
-        sharedPreferences = getSharedPreferences(profilePreferences, Context.MODE_PRIVATE);
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
 //        mCodeScanner.setCamera(1);
@@ -82,10 +85,10 @@ public class ScannerActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    private void hashHandle(String hash){
+    private void hashHandle(String hash) {
         final Gson gson = new GsonBuilder().create();
         Retrofit retrofit = new Retrofit.Builder().
-                baseUrl("http://" +  ConfigData.IP + ":7777/").
+                baseUrl("http://" + ConfigData.IP + ":7777/").
                 addConverterFactory(GsonConverterFactory.create(gson)).
                 build();
         service = retrofit.create(TimekeepingService.class);
@@ -93,26 +96,51 @@ public class ScannerActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Account>>() {
             @Override
             public void onResponse(Call<List<Account>> call, Response<List<Account>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     List<Account> accountList = response.body();
                     String bcryptHashString = BCrypt.withDefaults().hashToString(12, hash.toCharArray());
-                    for (Account account: accountList) {
+                    for (Account account : accountList) {
                         BCrypt.Result _result = BCrypt.verifyer().verify(account.getCode().toCharArray(), bcryptHashString);
-                        if(_result.verified){
+                        if (_result.verified) {
                             Timekeeping timekeeping = new Timekeeping();
                             String _hash = account.getMail();
 //                            AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
 //                            builder.setTitle("Information");
 //                            builder.setMessage(_hash);
 //                            builder.show();
-                            checkin(new Timekeeping(), _hash);
+                            Call<Integer> _call = service.action(_hash);
+                            _call.enqueue(new Callback<Integer>() {
+                                @Override
+                                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
+                                    builder.setTitle("Information");
+                                    builder.setMessage(String.valueOf(response.body()) + " " + _hash);
+                                    builder.show();
+                                    if (response.body() == 0) {
+//                                        AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
+//                                        builder.setTitle("Information");
+//                                        builder.setMessage(_hash);
+//                                        builder.show();
+                                        checkin(timekeeping, _hash);
+                                    }else if(response.body() == 1){
+                                        checkout(timekeeping, _hash);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Integer> call, Throwable t) {
+
+                                }
+                            });
+                            //checkin(new Timekeeping(), _hash);
                             //checkout(timekeeping, _hash);
                         }
                     }
-                }else{
+                } else {
                     Toast.makeText(ScannerActivity.this, "Kết nối server thất bại!", Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Call<List<Account>> call, Throwable t) {
                 Toast.makeText(ScannerActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
@@ -134,12 +162,12 @@ public class ScannerActivity extends AppCompatActivity {
         }
     }
 
-    private void checkin(Timekeeping timekeeping, String mail){
+    private void checkin(Timekeeping timekeeping, String mail) {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
         Retrofit retrofit = new Retrofit.Builder().
-                baseUrl("http://" +  ConfigData.IP + ":7777/").
+                baseUrl("http://" + ConfigData.IP + ":7777/").
                 addConverterFactory(new NullOnEmptyConverterFactory()).
                 addConverterFactory(GsonConverterFactory.create(gson)).
                 build();
@@ -148,9 +176,9 @@ public class ScannerActivity extends AppCompatActivity {
         call.enqueue(new Callback<Timekeeping>() {
             @Override
             public void onResponse(Call<Timekeeping> call, Response<Timekeeping> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Toast.makeText(ScannerActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
-                }else{
+                } else {
                     Toast.makeText(ScannerActivity.this, "Không tìm thấy ca của bạn!", Toast.LENGTH_LONG).show();
                 }
             }
@@ -167,7 +195,7 @@ public class ScannerActivity extends AppCompatActivity {
                 .setLenient()
                 .create();
         Retrofit retrofit = new Retrofit.Builder().
-                baseUrl("http://" +  ConfigData.IP + ":7777/").
+                baseUrl("http://" + ConfigData.IP + ":7777/").
                 addConverterFactory(new NullOnEmptyConverterFactory()).
                 addConverterFactory(GsonConverterFactory.create(gson)).
                 build();
@@ -176,19 +204,19 @@ public class ScannerActivity extends AppCompatActivity {
         call.enqueue(new Callback<Timekeeping>() {
             @Override
             public void onResponse(Call<Timekeeping> call, Response<Timekeeping> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Toast.makeText(ScannerActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
-                }else{
+                } else {
                     Toast.makeText(ScannerActivity.this, "Không tìm thấy ca của bạn!", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Timekeeping> call, Throwable t) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
-                builder.setTitle("Error");
-                builder.setMessage(t.getMessage());
-                builder.show();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
+//                builder.setTitle("Error");
+//                builder.setMessage(t.getMessage());
+//                builder.show();
                 //Toast.makeText(ScannerActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

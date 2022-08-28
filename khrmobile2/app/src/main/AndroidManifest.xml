@@ -68,7 +68,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/string.default_notification_channel_id" />
-
+        <activity
+            android:name=".SalaryActivity"
+            android:exported="false" />
         <activity
             android:name=".TimekeepingActivity"
             android:exported="false" />

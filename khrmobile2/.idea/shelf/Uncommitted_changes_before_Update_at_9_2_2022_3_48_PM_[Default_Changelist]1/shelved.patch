@@ -1,0 +1,1057 @@
+Index: app/src/main/java/fpt/aptech/khrmobile/Entities/Timekeeping.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package fpt.aptech.khrmobile.Entities;\r\n\r\nimport java.io.Serializable;\r\nimport java.util.Date;\r\n\r\npublic class Timekeeping implements Serializable {\r\n    private int id;\r\n    private Date timestart;\r\n    private Date timeend;\r\n    private int time;\r\n    private Account mail;\r\n    private Shift shiftId;\r\n\r\n    public Timekeeping() {\r\n    }\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public Account getMail() {\r\n        return mail;\r\n    }\r\n\r\n    public void setMail(Account mail) {\r\n        this.mail = mail;\r\n    }\r\n\r\n    public Date getTimestart() {\r\n        return timestart;\r\n    }\r\n\r\n    public void setTimestart(Date timestart) {\r\n        this.timestart = timestart;\r\n    }\r\n\r\n    public Date getTimeend() {\r\n        return timeend;\r\n    }\r\n\r\n    public void setTimeend(Date timeend) {\r\n        this.timeend = timeend;\r\n    }\r\n\r\n    public int getTime() {\r\n        return time;\r\n    }\r\n\r\n    public void setTime(int time) {\r\n        this.time = time;\r\n    }\r\n\r\n    public Shift getShiftId() {\r\n        return shiftId;\r\n    }\r\n\r\n    public void setShiftId(Shift shiftId) {\r\n        this.shiftId = shiftId;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/fpt/aptech/khrmobile/Entities/Timekeeping.java b/app/src/main/java/fpt/aptech/khrmobile/Entities/Timekeeping.java
+--- a/app/src/main/java/fpt/aptech/khrmobile/Entities/Timekeeping.java	
++++ b/app/src/main/java/fpt/aptech/khrmobile/Entities/Timekeeping.java	
+@@ -9,7 +9,8 @@
+     private Date timeend;
+     private int time;
+     private Account mail;
+-    private Shift shiftId;
++    private int shiftCode;
++    private int idTimeline;
+ 
+     public Timekeeping() {
+     }
+@@ -54,11 +55,19 @@
+         this.time = time;
+     }
+ 
+-    public Shift getShiftId() {
+-        return shiftId;
++    public int getShiftCode() {
++        return shiftCode;
++    }
++
++    public void setShiftCode(int shiftCode) {
++        this.shiftCode = shiftCode;
++    }
++
++    public int getIdTimeline() {
++        return idTimeline;
+     }
+ 
+-    public void setShiftId(Shift shiftId) {
+-        this.shiftId = shiftId;
++    public void setIdTimeline(int idTimeline) {
++        this.idTimeline = idTimeline;
+     }
+ }
+Index: app/src/main/java/fpt/aptech/khrmobile/TimekeepingDetail.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package fpt.aptech.khrmobile;\r\n\r\nimport androidx.appcompat.app.ActionBar;\r\nimport androidx.appcompat.app.AlertDialog;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.ImageButton;\r\nimport android.widget.ScrollView;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.google.android.material.bottomnavigation.BottomNavigationView;\r\nimport com.google.gson.Gson;\r\nimport com.google.gson.GsonBuilder;\r\n\r\nimport java.text.SimpleDateFormat;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport fpt.aptech.khrmobile.API.TimekeepingService;\r\nimport fpt.aptech.khrmobile.Config.ConfigData;\r\nimport fpt.aptech.khrmobile.Entities.Account;\r\nimport fpt.aptech.khrmobile.Entities.ModelString;\r\nimport fpt.aptech.khrmobile.Entities.Timekeeping;\r\nimport retrofit2.Call;\r\nimport retrofit2.Callback;\r\nimport retrofit2.Response;\r\nimport retrofit2.Retrofit;\r\nimport retrofit2.converter.gson.GsonConverterFactory;\r\n\r\npublic class TimekeepingDetail extends AppCompatActivity {\r\n    TextView txtTimekeepingName, txtTimekeepingDate, txtAccountPosition, txtTimeStart, txtTimeEnd;\r\n    Timekeeping timekeeping;\r\n    TimekeepingService service;\r\n\r\n    private void setDetail() {\r\n        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(\"dd/MM/yyyy\");\r\n        SimpleDateFormat dateFormat = new SimpleDateFormat(\"HH:mm dd/MM/yyyy\");\r\n        Intent intent = getIntent();\r\n        if (intent.getExtras() != null) {\r\n            timekeeping = (Timekeeping) intent.getSerializableExtra(\"data\");\r\n        }\r\n        txtTimekeepingDate = findViewById(R.id.txtTimekeepingDate);\r\n        String date = simpleDateFormat.format(timekeeping.getTimestart());\r\n        txtTimekeepingDate.setText(date);\r\n        txtTimeStart = findViewById(R.id.txtTimeStart);\r\n        String timeStart = dateFormat.format(timekeeping.getTimestart());\r\n        txtTimeStart.setText(timeStart);\r\n        txtTimeEnd = findViewById(R.id.txtTimeEnd);\r\n        String timeEnd = dateFormat.format(timekeeping.getTimeend());\r\n        txtTimeEnd.setText(timeEnd);\r\n\r\n        Retrofit retrofit = new Retrofit.Builder().\r\n                baseUrl(\"http://\" + ConfigData.IP + \":7777/\").\r\n                addConverterFactory(GsonConverterFactory.create()).\r\n                build();\r\n        service = retrofit.create(TimekeepingService.class);\r\n        Call<Integer> call = service.detailId(timekeeping.getId());\r\n        call.enqueue(new Callback<Integer>() {\r\n            @Override\r\n            public void onResponse(Call<Integer> call, Response<Integer> response) {\r\n                if (response.isSuccessful()) {\r\n                    Retrofit retrofit = new Retrofit.Builder().\r\n                            baseUrl(\"http://\" + ConfigData.IP + \":7777/\").\r\n                            addConverterFactory(GsonConverterFactory.create()).\r\n                            build();\r\n                    service = retrofit.create(TimekeepingService.class);\r\n                    Call<List<String>> _call = service.detail(response.body());\r\n                    _call.enqueue(new Callback<List<String>>() {\r\n                        @Override\r\n                        public void onResponse(Call<List<String>> call, Response<List<String>> response) {\r\n                            if (response.isSuccessful()) {\r\n                                if (response.body().get(1).equals(\"06\")) {\r\n                                    txtTimekeepingName.setText(\"Ca sáng\");\r\n                                } else if (response.body().get(1).equals(\"10\")) {\r\n                                    txtTimekeepingName.setText(\"Ca trưa\");\r\n                                } else if (response.body().get(1).equals(\"14\")) {\r\n                                    txtTimekeepingName.setText(\"Ca chiều\");\r\n                                } else if (response.body().get(1).equals(\"18\")) {\r\n                                    txtTimekeepingName.setText(\"Ca tối\");\r\n                                } else if (response.body().get(1).equals(\"22\")) {\r\n                                    txtTimekeepingName.setText(\"Ca đêm\");\r\n                                }\r\n                                txtAccountPosition.setText(response.body().get(2));\r\n                            }\r\n                        }\r\n\r\n                        @Override\r\n                        public void onFailure(Call<List<String>> call, Throwable t) {\r\n\r\n                        }\r\n                    });\r\n\r\n                }\r\n            }\r\n\r\n            @Override\r\n            public void onFailure(Call<Integer> call, Throwable t) {\r\n\r\n            }\r\n        });\r\n\r\n        txtTimekeepingName = findViewById(R.id.txtTimekeepingName);\r\n        txtAccountPosition = findViewById(R.id.txtAccountPosition);\r\n\r\n\r\n    }\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_timekeeping_detail);\r\n\r\n        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);\r\n        getSupportActionBar().setCustomView(R.layout.action_bar_timekeeping_detail);\r\n\r\n        ImageButton historyBackBtnInTimekeeping = findViewById(R.id.historyBackBtnInTimekeepingDetail);\r\n        historyBackBtnInTimekeeping.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                startActivity(new Intent(TimekeepingDetail.this, TimekeepingActivity.class));\r\n\r\n            }\r\n        });\r\n\r\n        setDetail();\r\n\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/fpt/aptech/khrmobile/TimekeepingDetail.java b/app/src/main/java/fpt/aptech/khrmobile/TimekeepingDetail.java
+--- a/app/src/main/java/fpt/aptech/khrmobile/TimekeepingDetail.java	
++++ b/app/src/main/java/fpt/aptech/khrmobile/TimekeepingDetail.java	
+@@ -55,58 +55,38 @@
+         String timeEnd = dateFormat.format(timekeeping.getTimeend());
+         txtTimeEnd.setText(timeEnd);
+ 
++        Toast.makeText(TimekeepingDetail.this, String.valueOf(timekeeping.getIdTimeline()), Toast.LENGTH_LONG).show();
++
++        int shiftCode = timekeeping.getShiftCode();
++
+         Retrofit retrofit = new Retrofit.Builder().
+                 baseUrl("http://" + ConfigData.IP + ":7777/").
+                 addConverterFactory(GsonConverterFactory.create()).
+                 build();
+         service = retrofit.create(TimekeepingService.class);
+-        Call<Integer> call = service.detailId(timekeeping.getId());
+-        call.enqueue(new Callback<Integer>() {
++        Call<String> call = service.detail(timekeeping.getShiftCode(), timekeeping.getMail().getMail(), timekeeping.getIdTimeline());
++        call.enqueue(new Callback<String>() {
+             @Override
+-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+-                if (response.isSuccessful()) {
+-                    Retrofit retrofit = new Retrofit.Builder().
+-                            baseUrl("http://" + ConfigData.IP + ":7777/").
+-                            addConverterFactory(GsonConverterFactory.create()).
+-                            build();
+-                    service = retrofit.create(TimekeepingService.class);
+-                    Call<List<String>> _call = service.detail(response.body());
+-                    _call.enqueue(new Callback<List<String>>() {
+-                        @Override
+-                        public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+-                            if (response.isSuccessful()) {
+-                                if (response.body().get(1).equals("06")) {
+-                                    txtTimekeepingName.setText("Ca sáng");
+-                                } else if (response.body().get(1).equals("10")) {
+-                                    txtTimekeepingName.setText("Ca trưa");
+-                                } else if (response.body().get(1).equals("14")) {
+-                                    txtTimekeepingName.setText("Ca chiều");
+-                                } else if (response.body().get(1).equals("18")) {
+-                                    txtTimekeepingName.setText("Ca tối");
+-                                } else if (response.body().get(1).equals("22")) {
+-                                    txtTimekeepingName.setText("Ca đêm");
+-                                }
+-                                txtAccountPosition.setText(response.body().get(2));
+-                            }
+-                        }
++            public void onResponse(Call<String> call, Response<String> response) {
++                if (shiftCode % 5 == 0) {
++                    txtTimekeepingName.setText("Ca sáng");
++                } else if (shiftCode % 5 == 1) {
++                    txtTimekeepingName.setText("Ca trưa");
++                } else if (shiftCode % 5 == 2) {
++                    txtTimekeepingName.setText("Ca chiều");
++                } else if (shiftCode % 5 == 3) {
++                    txtTimekeepingName.setText("Ca tối");
++                } else if (shiftCode % 5 == 4) {
++                    txtTimekeepingName.setText("Ca đêm");
++                }
++                Toast.makeText(TimekeepingDetail.this, response.body(), Toast.LENGTH_LONG).show();
++            }
+ 
+-                        @Override
+-                        public void onFailure(Call<List<String>> call, Throwable t) {
+-
+-                        }
+-                    });
+-
+-                }
+-            }
+-
+             @Override
+-            public void onFailure(Call<Integer> call, Throwable t) {
++            public void onFailure(Call<String> call, Throwable t) {
+ 
+             }
+         });
+-
+-        txtTimekeepingName = findViewById(R.id.txtTimekeepingName);
+-        txtAccountPosition = findViewById(R.id.txtAccountPosition);
+ 
+ 
+     }
+Index: app/src/main/java/fpt/aptech/khrmobile/ScannerActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package fpt.aptech.khrmobile;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AlertDialog;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.budiyev.android.codescanner.CodeScanner;\r\nimport com.budiyev.android.codescanner.CodeScannerView;\r\nimport com.budiyev.android.codescanner.DecodeCallback;\r\nimport com.google.gson.Gson;\r\nimport com.google.gson.GsonBuilder;\r\nimport com.google.zxing.Result;\r\n\r\nimport java.io.IOException;\r\nimport java.lang.annotation.Annotation;\r\nimport java.lang.reflect.Type;\r\nimport java.util.List;\r\n\r\nimport at.favre.lib.crypto.bcrypt.BCrypt;\r\nimport fpt.aptech.khrmobile.API.TimekeepingService;\r\nimport fpt.aptech.khrmobile.Config.ConfigData;\r\nimport fpt.aptech.khrmobile.Entities.Account;\r\nimport fpt.aptech.khrmobile.Entities.Timekeeping;\r\nimport okhttp3.ResponseBody;\r\nimport retrofit2.Call;\r\nimport retrofit2.Callback;\r\nimport retrofit2.Converter;\r\nimport retrofit2.Response;\r\nimport retrofit2.Retrofit;\r\nimport retrofit2.converter.gson.GsonConverterFactory;\r\n\r\npublic class ScannerActivity extends AppCompatActivity {\r\n    TimekeepingService service;\r\n    private CodeScanner mCodeScanner;\r\n    public static final String profilePreferences = \"profilepref\";\r\n    SharedPreferences sharedPreferences;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_scanner);\r\n\r\n        sharedPreferences = getSharedPreferences(profilePreferences, Context.MODE_PRIVATE);\r\n        CodeScannerView scannerView = findViewById(R.id.scanner_view);\r\n        mCodeScanner = new CodeScanner(this, scannerView);\r\n//        mCodeScanner.setCamera(1);\r\n        mCodeScanner.setDecodeCallback(new DecodeCallback() {\r\n            @Override\r\n            public void onDecoded(@NonNull Result result) {\r\n                runOnUiThread(new Runnable() {\r\n                    @Override\r\n                    public void run() {\r\n                        hashHandle(result.getText());\r\n                    }\r\n                });\r\n            }\r\n        });\r\n        scannerView.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                mCodeScanner.startPreview();\r\n            }\r\n        });\r\n    }\r\n\r\n    @Override\r\n    protected void onResume() {\r\n        super.onResume();\r\n        mCodeScanner.startPreview();\r\n    }\r\n\r\n    @Override\r\n    protected void onPause() {\r\n        mCodeScanner.releaseResources();\r\n        super.onPause();\r\n    }\r\n\r\n    private void hashHandle(String hash){\r\n        final Gson gson = new GsonBuilder().create();\r\n        Retrofit retrofit = new Retrofit.Builder().\r\n                baseUrl(\"http://\" +  ConfigData.IP + \":7777/\").\r\n                addConverterFactory(GsonConverterFactory.create(gson)).\r\n                build();\r\n        service = retrofit.create(TimekeepingService.class);\r\n        Call<List<Account>> call = service.accountList();\r\n        call.enqueue(new Callback<List<Account>>() {\r\n            @Override\r\n            public void onResponse(Call<List<Account>> call, Response<List<Account>> response) {\r\n                if(response.isSuccessful()){\r\n                    List<Account> accountList = response.body();\r\n                    String bcryptHashString = BCrypt.withDefaults().hashToString(12, hash.toCharArray());\r\n                    for (Account account: accountList) {\r\n                        BCrypt.Result _result = BCrypt.verifyer().verify(account.getCode().toCharArray(), bcryptHashString);\r\n                        if(_result.verified){\r\n                            Timekeeping timekeeping = new Timekeeping();\r\n                            String _hash = account.getMail();\r\n//                            AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);\r\n//                            builder.setTitle(\"Information\");\r\n//                            builder.setMessage(_hash);\r\n//                            builder.show();\r\n                            checkin(new Timekeeping(), _hash);\r\n                            //checkout(timekeeping, _hash);\r\n                        }\r\n                    }\r\n                }else{\r\n                    Toast.makeText(ScannerActivity.this, \"Kết nối server thất bại!\", Toast.LENGTH_LONG).show();\r\n                }\r\n            }\r\n            @Override\r\n            public void onFailure(Call<List<Account>> call, Throwable t) {\r\n                Toast.makeText(ScannerActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();\r\n            }\r\n        });\r\n    }\r\n\r\n    public class NullOnEmptyConverterFactory extends Converter.Factory {\r\n        @Override\r\n        public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {\r\n            final Converter<ResponseBody, ?> delegate = retrofit.nextResponseBodyConverter(this, type, annotations);\r\n            return new Converter<ResponseBody, Object>() {\r\n                @Override\r\n                public Object convert(ResponseBody body) throws IOException {\r\n                    if (body.contentLength() == 0) return null;\r\n                    return delegate.convert(body);\r\n                }\r\n            };\r\n        }\r\n    }\r\n\r\n    private void checkin(Timekeeping timekeeping, String mail){\r\n        Gson gson = new GsonBuilder()\r\n                .setLenient()\r\n                .create();\r\n        Retrofit retrofit = new Retrofit.Builder().\r\n                baseUrl(\"http://\" +  ConfigData.IP + \":7777/\").\r\n                addConverterFactory(new NullOnEmptyConverterFactory()).\r\n                addConverterFactory(GsonConverterFactory.create(gson)).\r\n                build();\r\n        service = retrofit.create(TimekeepingService.class);\r\n        Call<Timekeeping> call = service.checkin(timekeeping, mail);\r\n        call.enqueue(new Callback<Timekeeping>() {\r\n            @Override\r\n            public void onResponse(Call<Timekeeping> call, Response<Timekeeping> response) {\r\n                if(response.isSuccessful()){\r\n                    Toast.makeText(ScannerActivity.this, \"Điểm danh thành công!\", Toast.LENGTH_LONG).show();\r\n                }else{\r\n                    Toast.makeText(ScannerActivity.this, \"Không tìm thấy ca của bạn!\", Toast.LENGTH_LONG).show();\r\n                }\r\n            }\r\n\r\n            @Override\r\n            public void onFailure(Call<Timekeeping> call, Throwable t) {\r\n                Toast.makeText(ScannerActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();\r\n            }\r\n        });\r\n    }\r\n\r\n    private void checkout(Timekeeping timekeeping, String mail) {\r\n        Gson gson = new GsonBuilder()\r\n                .setLenient()\r\n                .create();\r\n        Retrofit retrofit = new Retrofit.Builder().\r\n                baseUrl(\"http://\" +  ConfigData.IP + \":7777/\").\r\n                addConverterFactory(new NullOnEmptyConverterFactory()).\r\n                addConverterFactory(GsonConverterFactory.create(gson)).\r\n                build();\r\n        service = retrofit.create(TimekeepingService.class);\r\n        Call<Timekeeping> call = service.checkout(timekeeping, mail);\r\n        call.enqueue(new Callback<Timekeeping>() {\r\n            @Override\r\n            public void onResponse(Call<Timekeeping> call, Response<Timekeeping> response) {\r\n                if(response.isSuccessful()){\r\n                    Toast.makeText(ScannerActivity.this, \"Điểm danh thành công!\", Toast.LENGTH_LONG).show();\r\n                }else{\r\n                    Toast.makeText(ScannerActivity.this, \"Không tìm thấy ca của bạn!\", Toast.LENGTH_LONG).show();\r\n                }\r\n            }\r\n\r\n            @Override\r\n            public void onFailure(Call<Timekeeping> call, Throwable t) {\r\n                AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);\r\n                builder.setTitle(\"Error\");\r\n                builder.setMessage(t.getMessage());\r\n                builder.show();\r\n                //Toast.makeText(ScannerActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();\r\n            }\r\n        });\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/fpt/aptech/khrmobile/ScannerActivity.java b/app/src/main/java/fpt/aptech/khrmobile/ScannerActivity.java
+--- a/app/src/main/java/fpt/aptech/khrmobile/ScannerActivity.java	
++++ b/app/src/main/java/fpt/aptech/khrmobile/ScannerActivity.java	
+@@ -39,15 +39,18 @@
+ public class ScannerActivity extends AppCompatActivity {
+     TimekeepingService service;
+     private CodeScanner mCodeScanner;
+-    public static final String profilePreferences = "profilepref";
+     SharedPreferences sharedPreferences;
++    SharedPreferences.Editor editor;
++    String EMAIL_KEY = "user";
++    String COUNT_KEY = "password";
++    private static final int count = 0;
++    public static final String profilePreferences = "profilepref";
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_scanner);
+ 
+-        sharedPreferences = getSharedPreferences(profilePreferences, Context.MODE_PRIVATE);
+         CodeScannerView scannerView = findViewById(R.id.scanner_view);
+         mCodeScanner = new CodeScanner(this, scannerView);
+ //        mCodeScanner.setCamera(1);
+@@ -82,10 +85,10 @@
+         super.onPause();
+     }
+ 
+-    private void hashHandle(String hash){
++    private void hashHandle(String hash) {
+         final Gson gson = new GsonBuilder().create();
+         Retrofit retrofit = new Retrofit.Builder().
+-                baseUrl("http://" +  ConfigData.IP + ":7777/").
++                baseUrl("http://" + ConfigData.IP + ":7777/").
+                 addConverterFactory(GsonConverterFactory.create(gson)).
+                 build();
+         service = retrofit.create(TimekeepingService.class);
+@@ -93,26 +96,51 @@
+         call.enqueue(new Callback<List<Account>>() {
+             @Override
+             public void onResponse(Call<List<Account>> call, Response<List<Account>> response) {
+-                if(response.isSuccessful()){
++                if (response.isSuccessful()) {
+                     List<Account> accountList = response.body();
+                     String bcryptHashString = BCrypt.withDefaults().hashToString(12, hash.toCharArray());
+-                    for (Account account: accountList) {
++                    for (Account account : accountList) {
+                         BCrypt.Result _result = BCrypt.verifyer().verify(account.getCode().toCharArray(), bcryptHashString);
+-                        if(_result.verified){
++                        if (_result.verified) {
+                             Timekeeping timekeeping = new Timekeeping();
+                             String _hash = account.getMail();
+ //                            AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
+ //                            builder.setTitle("Information");
+ //                            builder.setMessage(_hash);
+ //                            builder.show();
+-                            checkin(new Timekeeping(), _hash);
++                            Call<Integer> _call = service.action(_hash);
++                            _call.enqueue(new Callback<Integer>() {
++                                @Override
++                                public void onResponse(Call<Integer> call, Response<Integer> response) {
++                                    AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
++                                    builder.setTitle("Information");
++                                    builder.setMessage(String.valueOf(response.body()) + " " + _hash);
++                                    builder.show();
++                                    if (response.body() == 0) {
++//                                        AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
++//                                        builder.setTitle("Information");
++//                                        builder.setMessage(_hash);
++//                                        builder.show();
++                                        checkin(timekeeping, _hash);
++                                    }else if(response.body() == 1){
++                                        checkout(timekeeping, _hash);
++                                    }
++                                }
++
++                                @Override
++                                public void onFailure(Call<Integer> call, Throwable t) {
++
++                                }
++                            });
++                            //checkin(new Timekeeping(), _hash);
+                             //checkout(timekeeping, _hash);
+                         }
+                     }
+-                }else{
++                } else {
+                     Toast.makeText(ScannerActivity.this, "Kết nối server thất bại!", Toast.LENGTH_LONG).show();
+                 }
+             }
++
+             @Override
+             public void onFailure(Call<List<Account>> call, Throwable t) {
+                 Toast.makeText(ScannerActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+@@ -134,12 +162,12 @@
+         }
+     }
+ 
+-    private void checkin(Timekeeping timekeeping, String mail){
++    private void checkin(Timekeeping timekeeping, String mail) {
+         Gson gson = new GsonBuilder()
+                 .setLenient()
+                 .create();
+         Retrofit retrofit = new Retrofit.Builder().
+-                baseUrl("http://" +  ConfigData.IP + ":7777/").
++                baseUrl("http://" + ConfigData.IP + ":7777/").
+                 addConverterFactory(new NullOnEmptyConverterFactory()).
+                 addConverterFactory(GsonConverterFactory.create(gson)).
+                 build();
+@@ -148,9 +176,9 @@
+         call.enqueue(new Callback<Timekeeping>() {
+             @Override
+             public void onResponse(Call<Timekeeping> call, Response<Timekeeping> response) {
+-                if(response.isSuccessful()){
++                if (response.isSuccessful()) {
+                     Toast.makeText(ScannerActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
+-                }else{
++                } else {
+                     Toast.makeText(ScannerActivity.this, "Không tìm thấy ca của bạn!", Toast.LENGTH_LONG).show();
+                 }
+             }
+@@ -167,7 +195,7 @@
+                 .setLenient()
+                 .create();
+         Retrofit retrofit = new Retrofit.Builder().
+-                baseUrl("http://" +  ConfigData.IP + ":7777/").
++                baseUrl("http://" + ConfigData.IP + ":7777/").
+                 addConverterFactory(new NullOnEmptyConverterFactory()).
+                 addConverterFactory(GsonConverterFactory.create(gson)).
+                 build();
+@@ -176,19 +204,19 @@
+         call.enqueue(new Callback<Timekeeping>() {
+             @Override
+             public void onResponse(Call<Timekeeping> call, Response<Timekeeping> response) {
+-                if(response.isSuccessful()){
++                if (response.isSuccessful()) {
+                     Toast.makeText(ScannerActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
+-                }else{
++                } else {
+                     Toast.makeText(ScannerActivity.this, "Không tìm thấy ca của bạn!", Toast.LENGTH_LONG).show();
+                 }
+             }
+ 
+             @Override
+             public void onFailure(Call<Timekeeping> call, Throwable t) {
+-                AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
+-                builder.setTitle("Error");
+-                builder.setMessage(t.getMessage());
+-                builder.show();
++//                AlertDialog.Builder builder = new AlertDialog.Builder(ScannerActivity.this);
++//                builder.setTitle("Error");
++//                builder.setMessage(t.getMessage());
++//                builder.show();
+                 //Toast.makeText(ScannerActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+             }
+         });
+Index: app/src/main/java/fpt/aptech/khrmobile/API/TimekeepingService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package fpt.aptech.khrmobile.API;\r\n\r\nimport java.util.List;\r\n\r\nimport fpt.aptech.khrmobile.Entities.Account;\r\nimport fpt.aptech.khrmobile.Entities.Timekeeping;\r\nimport retrofit2.Call;\r\nimport retrofit2.Response;\r\nimport retrofit2.http.Body;\r\nimport retrofit2.http.GET;\r\nimport retrofit2.http.Headers;\r\nimport retrofit2.http.POST;\r\nimport retrofit2.http.Path;\r\nimport retrofit2.http.Query;\r\n\r\npublic interface TimekeepingService {\r\n    @GET(\"/api/timekeeping/findAllByDate\")\r\n    Call<List<Timekeeping>> findAllByDate(@Query(\"mail\") String mail, @Query(\"month\") int month, @Query(\"year\") int year);\r\n\r\n    @GET(\"/api/timekeeping/accountList\")\r\n    Call<List<Account>> accountList();\r\n\r\n    @GET(\"/api/timekeeping/year/{mail}\")\r\n    Call<List<String>> getYear(@Path(\"mail\") String mail);\r\n\r\n    @GET(\"/api/timekeeping/findByAccount/{mail}\")\r\n    Call<List<Timekeeping>> findByAccount(@Path(\"mail\") String mail);\r\n\r\n    @POST(\"/api/timekeeping/checkin/{mail}\")\r\n    Call<Timekeeping> checkin(@Body Timekeeping timekeeping, @Path(\"mail\") String mail);\r\n\r\n    @POST(\"/api/timekeeping/checkout/{mail}\")\r\n    Call<Timekeeping> checkout(@Body Timekeeping timekeeping, @Path(\"mail\") String mail);\r\n\r\n    @GET(\"/api/timekeeping/detailId\")\r\n    Call<Integer> detailId(@Query(\"id\") int id);\r\n\r\n    @GET(\"/api/timekeeping/detail\")\r\n    Call<List<String>> detail(@Query(\"shiftId\") int id);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/fpt/aptech/khrmobile/API/TimekeepingService.java b/app/src/main/java/fpt/aptech/khrmobile/API/TimekeepingService.java
+--- a/app/src/main/java/fpt/aptech/khrmobile/API/TimekeepingService.java	
++++ b/app/src/main/java/fpt/aptech/khrmobile/API/TimekeepingService.java	
+@@ -1,5 +1,6 @@
+ package fpt.aptech.khrmobile.API;
+ 
++import java.util.Date;
+ import java.util.List;
+ 
+ import fpt.aptech.khrmobile.Entities.Account;
+@@ -17,6 +18,9 @@
+     @GET("/api/timekeeping/findAllByDate")
+     Call<List<Timekeeping>> findAllByDate(@Query("mail") String mail, @Query("month") int month, @Query("year") int year);
+ 
++    @GET("/api/timekeeping/action/{mail}")
++    Call<Integer> action(@Path("mail") String mail);
++
+     @GET("/api/timekeeping/accountList")
+     Call<List<Account>> accountList();
+ 
+@@ -32,9 +36,7 @@
+     @POST("/api/timekeeping/checkout/{mail}")
+     Call<Timekeeping> checkout(@Body Timekeeping timekeeping, @Path("mail") String mail);
+ 
+-    @GET("/api/timekeeping/detailId")
+-    Call<Integer> detailId(@Query("id") int id);
+-
+     @GET("/api/timekeeping/detail")
+-    Call<List<String>> detail(@Query("shiftId") int id);
++    Call<String> detail(@Query("id") int id, @Query("mail") String mail,  @Query("idTimeline") int idTimeline);
++
+ }
+Index: ../KHR/src/main/java/fpt/aptech/KHR/Controller/TimekeepingController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/*\r\n * To change this license header, choose License Headers in Project Properties.\r\n * To change this template file, choose Tools | Templates\r\n * and open the template in the editor.\r\n */\r\npackage fpt.aptech.KHR.Controller;\r\n\r\nimport com.fasterxml.jackson.core.JsonProcessingException;\r\nimport com.fasterxml.jackson.databind.ObjectMapper;\r\nimport com.google.api.client.util.DateTime;\r\nimport fpt.aptech.KHR.Entities.Account;\r\nimport fpt.aptech.KHR.Entities.AccountPosition;\r\nimport fpt.aptech.KHR.Entities.Position;\r\nimport fpt.aptech.KHR.Entities.Shift;\r\nimport fpt.aptech.KHR.Entities.Timekeeping;\r\nimport fpt.aptech.KHR.Entities.Timeline;\r\nimport fpt.aptech.KHR.Entities.TimelineDetail;\r\nimport fpt.aptech.KHR.ImpServices.JsonServices;\r\nimport fpt.aptech.KHR.Routes.RouteAPI;\r\nimport fpt.aptech.KHR.Routes.RouteWeb;\r\nimport fpt.aptech.KHR.Services.IAccountRepository;\r\nimport fpt.aptech.KHR.Services.IShiftServices;\r\nimport fpt.aptech.KHR.Services.ITimekeepingServices;\r\nimport java.sql.Timestamp;\r\n\r\nimport java.text.ParseException;\r\nimport java.text.SimpleDateFormat;\r\nimport java.time.Duration;\r\nimport java.time.Instant;\r\nimport java.time.LocalDate;\r\nimport java.util.ArrayList;\r\nimport java.util.Calendar;\r\nimport java.util.Collections;\r\nimport java.util.Comparator;\r\nimport java.util.Date;\r\nimport java.util.HashMap;\r\nimport java.util.LinkedHashMap;\r\nimport java.util.List;\r\nimport java.util.Map;\r\nimport java.util.Map.Entry;\r\nimport java.util.NavigableMap;\r\nimport java.util.Optional;\r\nimport java.util.Set;\r\nimport java.util.TreeMap;\r\nimport java.util.concurrent.TimeUnit;\r\nimport java.util.logging.Level;\r\nimport java.util.logging.Logger;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport org.apache.commons.lang3.time.DateUtils;\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\n\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.hateoas.EntityModel;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.http.MediaType;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;\r\nimport org.springframework.security.crypto.password.PasswordEncoder;\r\nimport org.springframework.stereotype.Controller;\r\nimport org.springframework.ui.Model;\r\nimport org.springframework.web.bind.annotation.PathVariable;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RequestMapping;\r\nimport org.springframework.web.bind.annotation.RequestMethod;\r\nimport org.springframework.web.bind.annotation.RequestParam;\r\nimport org.springframework.web.bind.annotation.ResponseBody;\r\nimport springfox.documentation.spring.web.json.Json;\r\n\r\n/**\r\n * @author backs\r\n */\r\n@Controller\r\npublic class TimekeepingController {\r\n\r\n    @Autowired\r\n    ITimekeepingServices timekeepingServices;\r\n\r\n    @Autowired\r\n    IAccountRepository accountRepository;\r\n\r\n    @Autowired\r\n    IShiftServices shiftServices;\r\n\r\n    @RequestMapping(value = \"/timekeeping/index\", method = RequestMethod.GET)\r\n    public String index(Model model) {\r\n        model.addAttribute(\"accountList\", accountRepository.findAll());\r\n        model.addAttribute(\"list\", timekeepingServices.findAll());\r\n        return \"admin/timekeeping/index\";\r\n    }\r\n\r\n    @RequestMapping(value = \"/timekeeping/autocomplete\", method = RequestMethod.GET)\r\n    public ResponseEntity<List<String>> autocomplete(@RequestParam(\"value\") String input, HttpServletRequest request) {\r\n        return new ResponseEntity<List<String>>(timekeepingServices.autocomplete(input), HttpStatus.OK);\r\n    }\r\n\r\n    @RequestMapping(value = \"/timekeeping/search\", method = RequestMethod.GET)\r\n    public String search(HttpServletRequest request, Model model) {\r\n        model.addAttribute(\"accountList\", accountRepository.findAll());\r\n        if (request.getParameter(\"mail\").equals(\"\")) {\r\n            return index(model);\r\n        } else {\r\n            model.addAttribute(\"list\", timekeepingServices.search(request.getParameter(\"mail\")));\r\n        }\r\n        return \"admin/timekeeping/index\";\r\n    }\r\n\r\n    @RequestMapping(value = \"/timekeeping/create\", method = RequestMethod.GET)\r\n    public String create(Model model) {\r\n        return \"admin/timekeeping/create\";\r\n    }\r\n\r\n//    @RequestMapping(value = \"/timekeeping//{id}\", method = RequestMethod.GET)\r\n//    public ResponseEntity<String> getShifts(@PathVariable(\"id\") String id) {\r\n//        //Shift shift = shiftServices.FindOne(id);\r\n//        Account account = accountRepository.findByMail(id);\r\n//        return new ResponseEntity<String>(account.getFullname(), HttpStatus.OK);\r\n//    }\r\n//    @RequestMapping(value = \"/timekeeping/save\", method = RequestMethod.POST)\r\n//    public String save(Model model, HttpServletRequest request, HttpServletResponse response) {\r\n//        try {\r\n//            SimpleDateFormat dateFormat = new SimpleDateFormat(\"yyyy-MM-dd\");\r\n//            SimpleDateFormat hourFormat = new SimpleDateFormat(\"HH:mm:ss\");\r\n//            Timekeeping timekeeping = new Timekeeping();\r\n//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\");\r\n//            SimpleDateFormat hour = new SimpleDateFormat(\"HH\");\r\n//            SimpleDateFormat minute = new SimpleDateFormat(\"mm\");\r\n//            String dateStartString = request.getParameter(\"dateStart\");\r\n//            String day, month, year;\r\n//            day = dateStartString.substring(0, 2);\r\n//            month = dateStartString.substring(3, 5);\r\n//            year = dateStartString.substring(6, 10);\r\n//            String dateStart = year + \"-\" + month + \"-\" + day;\r\n//            String checkinTime = dateStart + \" \" + request.getParameter(\"timeStart\") + \":00\";\r\n//            String dateEndString = request.getParameter(\"dateEnd\");\r\n//            day = dateEndString.substring(0, 2);\r\n//            month = dateEndString.substring(3, 5);\r\n//            year = dateEndString.substring(6, 10);\r\n//            String dateEnd = year + \"-\" + month + \"-\" + day;\r\n//            String checkoutTime = dateEnd + \" \" + request.getParameter(\"timeEnd\") + \":00\";\r\n////          Account account = accountRepository.findByMail(_mail);\r\n////          timekeeping.setMail(account);\r\n//            Account account = new Account();\r\n//            account.setMail(request.getParameter(\"mail\"));\r\n//            timekeeping.setMail(account);\r\n//            timekeeping.setTimestart(java.sql.Timestamp.valueOf(checkinTime));\r\n//            timekeeping.setTimeend(java.sql.Timestamp.valueOf(checkoutTime));\r\n//\r\n//            List<Shift> shiftList = timekeepingServices.findShiftByDate(timekeeping.getTimestart());\r\n//            Date date = dateFormat.parse(timekeeping.getTimestart().toString());\r\n//            Calendar calendar = Calendar.getInstance();\r\n//            calendar.setTime(date);\r\n//            calendar.add(Calendar.DATE, -1);\r\n//            Date yesterday = calendar.getTime();\r\n//\r\n//            List<Shift> shiftListDateBefore = timekeepingServices.findShiftByDate(simpleDateFormat.parse(simpleDateFormat.format(yesterday)));\r\n//            shiftList.addAll(shiftListDateBefore);\r\n//\r\n//            List<TimelineDetail> timelineDetailList = new ArrayList<>();\r\n//            for (int i = 0; i < shiftList.size(); i++) {\r\n//                List<TimelineDetail> _timelineDetailList = new ArrayList<>();\r\n//                String shiftCode = shiftList.get(i).getShiftcode().toString();\r\n//                if (shiftCode.length() == 4) {\r\n//                    _timelineDetailList = timekeepingServices.findTimelineDetailList(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 1000, shiftList.get(i).getIdPosition(), shiftList.get(i).getIdTimeline());\r\n//                } else {\r\n//                    _timelineDetailList = timekeepingServices.findTimelineDetailList(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 100, shiftList.get(i).getIdPosition(), shiftList.get(i).getIdTimeline());\r\n//                }\r\n//\r\n//                for (TimelineDetail item : _timelineDetailList) {\r\n//                    if (!timelineDetailList.contains(item)) {\r\n//                        timelineDetailList.add(item);\r\n//                    }\r\n//                }\r\n//            }\r\n//\r\n//            List<Shift> tempList = new ArrayList<>();\r\n//            for (int i = 0; i < timelineDetailList.size(); i++) {\r\n//                String shiftCode = String.valueOf(timelineDetailList.get(i).getShiftCode());\r\n//                if (shiftCode.length() > 1) {\r\n//                    Shift shift = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 1000, timekeeping.getTimestart(), timelineDetailList.get(i).getIdPosition());\r\n//                    if (shift != null) {\r\n//                        tempList.add(shift);\r\n//                    }\r\n//                } else {\r\n//                    Shift shift = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 100, timekeeping.getTimestart(), timelineDetailList.get(i).getIdPosition());\r\n//                    if (shift != null) {\r\n//                        tempList.add(shift);\r\n//                    }\r\n//                }\r\n//\r\n//            }\r\n//\r\n//            //JsonServices.dd(JsonServices.ParseToJson(timelineDetailList.toString() + \" \" + tempList.toString()), response);\r\n//            for (int i = 0; i < timelineDetailList.size(); i++) {\r\n//                Shift shiftDateBefore = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 100, simpleDateFormat.parse(simpleDateFormat.format(yesterday)), timelineDetailList.get(i).getIdPosition());\r\n//                if (shiftDateBefore != null) {\r\n//                    tempList.add(shiftDateBefore);\r\n//                }\r\n//            }\r\n//\r\n//            List<Timekeeping> timekeepings = timekeepingServices.findAll();\r\n//            for (int i = 0; i < timekeepings.size(); i++) {\r\n//                for (int j = 0; j < tempList.size(); j++) {\r\n//                    if (timekeepings.get(i).getShiftId().equals(tempList.get(j)) && timekeepings.get(i).getMail().equals(timekeeping.getMail())) {\r\n//                        tempList.remove(tempList.get(j));\r\n//                    }\r\n//                }\r\n//            }\r\n//\r\n//            //JsonServices.dd(JsonServices.ParseToJson(tempList.toString()), response);\r\n//            return index(model);\r\n//        } catch (ParseException ex) {\r\n//            Logger.getLogger(TimekeepingController.class.getName()).log(Level.SEVERE, null, ex);\r\n//        }\r\n//        return null;\r\n//    }\r\n    @RequestMapping(value = \"/api/timekeeping/year/{mail}\", method = RequestMethod.GET)\r\n    public ResponseEntity<List<String>> getYear(@PathVariable(\"mail\") String mail, HttpServletResponse response) {\r\n        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(\"yyyy\");\r\n        Account account = accountRepository.findByMail(mail);\r\n        List<Timekeeping> timekeepings = timekeepingServices.findByAccount(account);\r\n        List<String> years = new ArrayList<>();\r\n\r\n        for (int i = 0; i < timekeepings.size(); i++) {\r\n            if (!years.contains(simpleDateFormat.format(timekeepings.get(i).getTimestart()))) {\r\n                years.add(simpleDateFormat.format(timekeepings.get(i).getTimestart()));\r\n            }\r\n        }\r\n        //JsonServices.dd(JsonServices.ParseToJson(years.toString()), response);\r\n        if (timekeepings.isEmpty()) {\r\n            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);\r\n        } else {\r\n            return new ResponseEntity<List<String>>(years, HttpStatus.OK);\r\n        }\r\n    }\r\n\r\n    @RequestMapping(value = \"/api/timekeeping/findByAccount/{mail}\", method = RequestMethod.GET)\r\n    public ResponseEntity<List<Timekeeping>> findByAccount(@PathVariable(\"mail\") String mail, HttpServletResponse response) {\r\n        Account account = accountRepository.findByMail(mail);\r\n        List<Timekeeping> timekeepings = timekeepingServices.findByAccount(account);\r\n        Timekeeping timekeeping = timekeepingServices.findByMail(account);\r\n        //JsonServices.dd(JsonServices.ParseToJson(timekeepings.toString()), response);\r\n        return new ResponseEntity<List<Timekeeping>>(timekeepings, HttpStatus.OK);\r\n    }\r\n\r\n    @RequestMapping(value = \"/api/timekeeping/accountList\", method = RequestMethod.GET)\r\n    public ResponseEntity<List<Account>> accountList() {\r\n        List<Account> accountList = accountRepository.findAll();\r\n        if (accountList.isEmpty()) {\r\n            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);\r\n        } else {\r\n            return new ResponseEntity<List<Account>>(accountList, HttpStatus.OK);\r\n        }\r\n    }\r\n\r\n    @RequestMapping(value = \"/api/timekeeping/findAllByDate\", method = RequestMethod.GET)\r\n    public ResponseEntity<List<Timekeeping>> findAllByDate(@RequestParam(\"mail\") Account mail, @RequestParam(\"month\") int month, @RequestParam(\"year\") int year) {\r\n        List<Timekeeping> timekeepingList = timekeepingServices.findAllByDate(mail, month, year);\r\n        if (timekeepingList.isEmpty()) {\r\n            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);\r\n        } else {\r\n            return new ResponseEntity<List<Timekeeping>>(timekeepingList, HttpStatus.OK);\r\n        }\r\n    }\r\n\r\n    @RequestMapping(value = \"/api/timekeeping/detailId\", method = RequestMethod.GET)\r\n    public ResponseEntity<Integer> detailId(@RequestParam(\"id\") int id, HttpServletResponse response) {\r\n        return new ResponseEntity<Integer>(timekeepingServices.detailId(id), HttpStatus.OK);\r\n    }\r\n\r\n    @RequestMapping(value = \"/api/timekeeping/detail\", method = RequestMethod.GET)\r\n    public ResponseEntity<List<String>> detail(@RequestParam(\"shiftId\") int id, HttpServletResponse response) {\r\n        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(\"HH:mm dd/MM/yyyy\");\r\n        SimpleDateFormat hourFormat = new SimpleDateFormat(\"HH\");\r\n        Shift shift = timekeepingServices.findShiftByTimekeeping(id);\r\n        List<String> dataList = new ArrayList<>();\r\n        dataList.add(simpleDateFormat.format(shift.getTimestart()));\r\n        dataList.add(hourFormat.format(shift.getTimestart()));\r\n        Position position = timekeepingServices.findPositionAccountById(shift.getIdPosition().getId());\r\n        dataList.add(position.getPositionname());\r\n//        JsonServices.dd(JsonServices.ParseToJson(dataList.toString()), response);\r\n        if (dataList.isEmpty()) {\r\n            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);\r\n        } else {\r\n            return new ResponseEntity<List<String>>(dataList, HttpStatus.OK);\r\n        }\r\n    }\r\n\r\n    @RequestMapping(value = \"/api/timekeeping/checkin/{mail}\", method = RequestMethod.POST)\r\n    public ResponseEntity<Timekeeping> checkin(@RequestBody Timekeeping timekeeping, @PathVariable(\"mail\") String _mail, HttpServletResponse response) {\r\n        Account account = accountRepository.findByMail(_mail);\r\n        timekeeping.setMail(account);\r\n        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(\"yyyy-MM-dd HH:mm\");\r\n        SimpleDateFormat hour = new SimpleDateFormat(\"HH\");\r\n        SimpleDateFormat minute = new SimpleDateFormat(\"mm\");\r\n        SimpleDateFormat hourFormat = new SimpleDateFormat(\"HH:mm:ss\");\r\n        SimpleDateFormat dateFormat = new SimpleDateFormat(\"yyyy-MM-dd\");\r\n        Date date = new Date();\r\n        String dateOfToday = dateFormat.format(date);\r\n        String timeOfToday = hourFormat.format(date);\r\n        timekeeping.setTimestart(java.sql.Timestamp.valueOf(dateOfToday + \" \" + timeOfToday));\r\n\r\n//        dateOfToday = dateFormat.format(dateBefore);\r\n//        JsonServices.dd(JsonServices.ParseToJson(simpleDateFormat.format(dateBefore)), response);\r\n//        List<Timeline> timelineList = timekeepingServices.findTimelineList();\r\n//        List<Timeline> tempList = timekeepingServices.findTimelineList();\r\n        Timeline timeline = timekeepingServices.findTimelineByDate(timekeeping.getTimestart());\r\n\r\n        timekeeping.setIdTimeline(timeline);\r\n        int day = timekeeping.getTimestart().getDay();\r\n\r\n        List<Integer> shiftCodeOnDay = new ArrayList<>();\r\n        int maxShiftCodeOnday = 0;\r\n\r\n        switch (day) {\r\n            case 1:\r\n                maxShiftCodeOnday = 5;\r\n                break;\r\n            case 2:\r\n                maxShiftCodeOnday = 10;\r\n                break;\r\n            case 3:\r\n                maxShiftCodeOnday = 15;\r\n                break;\r\n            case 4:\r\n                maxShiftCodeOnday = 20;\r\n                break;\r\n            case 5:\r\n                maxShiftCodeOnday = 25;\r\n                break;\r\n            case 6:\r\n                maxShiftCodeOnday = 30;\r\n                break;\r\n            case 0:\r\n                maxShiftCodeOnday = 35;\r\n                break;\r\n            default:\r\n                break;\r\n        }\r\n\r\n        for (int i = maxShiftCodeOnday - 5; i < maxShiftCodeOnday; i++) {\r\n            shiftCodeOnDay.add(i);\r\n        }\r\n\r\n        List<TimelineDetail> timelineDetailList = new ArrayList<>();\r\n        for (int i = 0; i < shiftCodeOnDay.size(); i++) {\r\n            TimelineDetail timelineDetail = timekeepingServices.findTimelineDetail(account, shiftCodeOnDay.get(i), timeline);\r\n            if (timelineDetail != null) {\r\n                timelineDetailList.add(timelineDetail);\r\n            }\r\n        }\r\n\r\n//        JsonServices.dd(JsonServices.ParseToJson(simpleDateFormat.format(timekeeping.getTimestart())), response);\r\n        //JsonServices.dd(JsonServices.ParseToJson(timelineDetailList.toString()), response);\r\n        HashMap<Date, Integer> shiftOnDay = new HashMap<Date, Integer>();\r\n        HashMap<Date, Date> hashMap = new HashMap<Date, Date>();\r\n        for (int i = 0; i < timelineDetailList.size(); i++) {\r\n            if (timelineDetailList.get(i).getShiftCode() % 5 == 0) {\r\n                String timeBeginWork = \"06:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"10:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), timelineDetailList.get(i).getShiftCode());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 1) {\r\n                String timeBeginWork = \"10:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"14:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), timelineDetailList.get(i).getShiftCode());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 2) {\r\n                String timeBeginWork = \"14:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"18:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), timelineDetailList.get(i).getShiftCode());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 3) {\r\n                String timeBeginWork = \"18:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"22:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), timelineDetailList.get(i).getShiftCode());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 4) {\r\n                String timeBeginWork = \"22:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"06:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart().getTime() + (1000 * 60 * 60 * 24));\r\n                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), timelineDetailList.get(i).getShiftCode());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            }\r\n        }\r\n\r\n        int root = 0;\r\n        switch (day) {\r\n            case 0:\r\n                root = 29;\r\n                break;\r\n            case 1:\r\n                root = 34;\r\n                break;\r\n            case 2:\r\n                root = 4;\r\n                break;\r\n            case 3:\r\n                root = 9;\r\n                break;\r\n            case 4:\r\n                root = 14;\r\n                break;\r\n            case 5:\r\n                root = 19;\r\n                break;\r\n            case 6:\r\n                root = 24;\r\n                break;\r\n            default:\r\n                break;\r\n        }\r\n\r\n        TimelineDetail timelineDetail = null;\r\n        Calendar calendar = Calendar.getInstance();\r\n        calendar.add(Calendar.DATE, -1);\r\n        Date yesterday = calendar.getTime();\r\n        Timeline beforeTimeline = timekeepingServices.findTimelineByDate(yesterday);\r\n        //JsonServices.dd(JsonServices.ParseToJson(beforeTimeline.toString()), response);\r\n        if (day == 1) {\r\n            timelineDetail = timekeepingServices.findTimelineDetail(account, root, beforeTimeline);\r\n        } else {\r\n            timelineDetail = timekeepingServices.findTimelineDetail(account, root, timeline);\r\n        }\r\n\r\n        if (timelineDetail != null) {\r\n            String timeBeginWork = \"22:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart().getTime() - (1000 * 60 * 60 * 24));\r\n            String timeEndWork = \"06:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n            shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), root);\r\n            hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        }\r\n\r\n        List<Timekeeping> timekeepings = timekeepingServices.findAll();\r\n        for (int i = 0; i < timekeepings.size(); i++) {\r\n            for (Map.Entry<Date, Integer> entry : shiftOnDay.entrySet()) {\r\n                if (timekeepings.get(i).getMail().equals(account) && timekeepings.get(i).getIdTimeline().equals(timeline) && timekeepings.get(i).getShiftCode() == entry.getValue()\r\n                        || timekeepings.get(i).getMail().equals(account) && timekeepings.get(i).getIdTimeline().equals(beforeTimeline) && timekeepings.get(i).getShiftCode() == entry.getValue()) {\r\n                    for (Map.Entry<Date, Date> _entry : hashMap.entrySet()) {\r\n                        if (_entry.getKey().compareTo(entry.getKey()) == 0) {\r\n                            hashMap.remove(_entry.getKey());\r\n                            break;\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n\r\n        }\r\n\r\n        //JsonServices.dd(JsonServices.ParseToJson(hashMap.toString()), response);\r\n        int realMinute = timekeeping.getTimestart().getMinutes();\r\n        int realSecond = timekeeping.getTimestart().getSeconds();\r\n//        JsonServices.dd(JsonServices.ParseToJson(hashMap.toString()), response);\r\n\r\n        List<String> viewList = new ArrayList<>();\r\n        for (Map.Entry<Date, Date> entry : hashMap.entrySet()) {\r\n            Date key = entry.getKey();\r\n            Date value = entry.getValue();\r\n\r\n            Date beginTime = timekeeping.getTimestart();\r\n            dateOfToday = dateFormat.format(key);\r\n            timeOfToday = hourFormat.format(key);\r\n            Date endTime = java.sql.Timestamp.valueOf(dateOfToday + \" \" + timeOfToday);\r\n            Long time = endTime.getTime() - beginTime.getTime();\r\n            int checkinMinute = (int) TimeUnit.MILLISECONDS.toMinutes(time);\r\n            //viewList.add(simpleDateFormat.format(key) + \" \" + simpleDateFormat.format(value));\r\n            timekeeping.getTimestart().setMinutes(0);\r\n            timekeeping.getTimestart().setSeconds(0);\r\n            if (realMinute > 15) {\r\n                time = value.getTime() - timekeeping.getTimestart().getTime() - 3600 * 1000;\r\n            } else {\r\n                time = value.getTime() - timekeeping.getTimestart().getTime();\r\n            }\r\n            int diff = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;\r\n            //viewList.add(String.valueOf(checkinMinute));\r\n            //JsonServices.dd(JsonServices.ParseToJson(diff), response);\r\n            //JsonServices.dd(JsonServices.ParseToJson(realMinute), response);\r\n            Long today = timekeeping.getTimestart().getTime();\r\n            Long _beginTime = key.getTime();\r\n            Long _afterTime = value.getTime();\r\n            viewList.add(dateFormat.format(key) + \" \" + dateFormat.format(value));\r\n\r\n            if (today >= _beginTime && today <= _afterTime && diff >= 1) {\r\n                for (Map.Entry<Date, Integer> _entry : shiftOnDay.entrySet()) {\r\n                    if (simpleDateFormat.format(_entry.getKey()).compareTo(simpleDateFormat.format(entry.getKey())) == 0) {\r\n                        timekeeping.setShiftCode(_entry.getValue());\r\n                        if (dateFormat.format(key).compareTo(dateFormat.format(value)) < 0 && beforeTimeline != null) {\r\n                            timekeeping.setIdTimeline(beforeTimeline);\r\n\r\n                        } else {\r\n                            timekeeping.setIdTimeline(timeline);\r\n                        }\r\n                        String timeEnd = dateFormat.format(value) + \" \" + \"00:00:00\";\r\n                        timekeeping.setTimeend(java.sql.Timestamp.valueOf(timeEnd));\r\n                        timekeeping.setTime(0);\r\n                        timekeeping.getTimestart().setMinutes(realMinute);\r\n                        timekeeping.getTimestart().setSeconds(realSecond);\r\n                        timekeepingServices.checkin(timekeeping);\r\n                        return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);\r\n                    }\r\n                }\r\n\r\n            } else if (checkinMinute <= 15 && today <= _afterTime && diff >= 1) {\r\n                for (Map.Entry<Date, Integer> _entry : shiftOnDay.entrySet()) {\r\n                    if (simpleDateFormat.format(_entry.getKey()).compareTo(simpleDateFormat.format(entry.getKey())) == 0) {\r\n                        timekeeping.setShiftCode(_entry.getValue());\r\n                        if (dateFormat.format(key).compareTo(dateFormat.format(value)) < 0 && beforeTimeline != null) {\r\n                            timekeeping.setIdTimeline(beforeTimeline);\r\n\r\n                        } else {\r\n                            timekeeping.setIdTimeline(timeline);\r\n                        }\r\n                        String timeEnd = dateFormat.format(value) + \" \" + \"00:00:00\";\r\n                        timekeeping.setTimeend(java.sql.Timestamp.valueOf(timeEnd));\r\n                        timekeeping.setTime(0);\r\n                        timekeeping.getTimestart().setMinutes(realMinute);\r\n                        timekeeping.getTimestart().setSeconds(realSecond);\r\n                        timekeepingServices.checkin(timekeeping);\r\n                        return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);\r\n                    }\r\n                }\r\n            }\r\n            timekeeping.getTimestart().setMinutes(realMinute);\r\n            timekeeping.getTimestart().setSeconds(realSecond);\r\n        }\r\n        JsonServices.dd(JsonServices.ParseToJson(hashMap.toString()), response);\r\n        return new ResponseEntity<>(timekeeping, HttpStatus.CREATED);\r\n\r\n    }\r\n\r\n    @RequestMapping(value = \"/api/timekeeping/checkout/{mail}\", method = RequestMethod.POST)\r\n    public ResponseEntity<Timekeeping> checkout(@RequestBody Timekeeping timekeeping, @PathVariable(\"mail\") String _mail, HttpServletResponse response\r\n    ) {\r\n        SimpleDateFormat hour = new SimpleDateFormat(\"HH\");\r\n        SimpleDateFormat minute = new SimpleDateFormat(\"mm\");\r\n        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\");\r\n        SimpleDateFormat _simpleDateFormat = new SimpleDateFormat(\"yyyy-MM-dd HH:mm\");\r\n        SimpleDateFormat hourFormat = new SimpleDateFormat(\"HH:mm:ss\");\r\n        SimpleDateFormat dateFormat = new SimpleDateFormat(\"yyyy-MM-dd\");\r\n        Account account = accountRepository.findByMail(_mail);\r\n        timekeeping = timekeepingServices.findByMail(account);\r\n        Date date = new Date();\r\n        String dateOfToday = dateFormat.format(date);\r\n        String timeOfToday = hourFormat.format(date);\r\n        timekeeping.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + \" \" + timeOfToday));\r\n\r\n        Timeline timeline = timekeepingServices.findTimelineByDate(timekeeping.getTimestart());\r\n        int day = timekeeping.getTimestart().getDay();\r\n\r\n        List<Integer> shiftCodeOnDay = new ArrayList<>();\r\n        int maxShiftCodeOnday = 0;\r\n\r\n        switch (day) {\r\n            case 1:\r\n                maxShiftCodeOnday = 5;\r\n                break;\r\n            case 2:\r\n                maxShiftCodeOnday = 10;\r\n                break;\r\n            case 3:\r\n                maxShiftCodeOnday = 15;\r\n                break;\r\n            case 4:\r\n                maxShiftCodeOnday = 20;\r\n                break;\r\n            case 5:\r\n                maxShiftCodeOnday = 25;\r\n                break;\r\n            case 6:\r\n                maxShiftCodeOnday = 30;\r\n                break;\r\n            case 0:\r\n                maxShiftCodeOnday = 35;\r\n                break;\r\n            default:\r\n                break;\r\n        }\r\n\r\n        for (int i = maxShiftCodeOnday - 5; i < maxShiftCodeOnday; i++) {\r\n            shiftCodeOnDay.add(i);\r\n        }\r\n\r\n        List<TimelineDetail> timelineDetailList = new ArrayList<>();\r\n        for (int i = 0; i < shiftCodeOnDay.size(); i++) {\r\n            TimelineDetail timelineDetail = timekeepingServices.findTimelineDetail(account, shiftCodeOnDay.get(i), timeline);\r\n            if (timelineDetail != null) {\r\n                timelineDetailList.add(timelineDetail);\r\n            }\r\n        }\r\n\r\n//        JsonServices.dd(JsonServices.ParseToJson(simpleDateFormat.format(timekeeping.getTimestart())), response);\r\n        //JsonServices.dd(JsonServices.ParseToJson(timelineDetailList.toString()), response);\r\n        HashMap<Date, Integer> shiftOnDay = new HashMap<Date, Integer>();\r\n        HashMap<Date, Date> hashMap = new HashMap<Date, Date>();\r\n        for (int i = 0; i < timelineDetailList.size(); i++) {\r\n            if (timelineDetailList.get(i).getShiftCode() % 5 == 0) {\r\n                String timeBeginWork = \"06:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"10:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), timelineDetailList.get(i).getShiftCode());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 1) {\r\n                String timeBeginWork = \"10:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"14:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), timelineDetailList.get(i).getShiftCode());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 2) {\r\n                String timeBeginWork = \"14:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"18:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), timelineDetailList.get(i).getShiftCode());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 3) {\r\n                String timeBeginWork = \"18:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"22:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), timelineDetailList.get(i).getShiftCode());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 4) {\r\n                String timeBeginWork = \"22:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"06:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart().getTime() + (1000 * 60 * 60 * 24));\r\n                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), timelineDetailList.get(i).getShiftCode());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            }\r\n        }\r\n\r\n        int root = 0;\r\n        switch (day) {\r\n            case 0:\r\n                root = 29;\r\n                break;\r\n            case 1:\r\n                root = 34;\r\n                break;\r\n            case 2:\r\n                root = 4;\r\n                break;\r\n            case 3:\r\n                root = 9;\r\n                break;\r\n            case 4:\r\n                root = 14;\r\n                break;\r\n            case 5:\r\n                root = 19;\r\n                break;\r\n            case 6:\r\n                root = 24;\r\n                break;\r\n            default:\r\n                break;\r\n        }\r\n\r\n        TimelineDetail timelineDetail = null;\r\n        Calendar calendar = Calendar.getInstance();\r\n        calendar.add(Calendar.DATE, -1);\r\n        Date yesterday = calendar.getTime();\r\n        Timeline beforeTimeline = timekeepingServices.findTimelineByDate(yesterday);\r\n        //JsonServices.dd(JsonServices.ParseToJson(beforeTimeline.toString()), response);\r\n        if (day == 1) {\r\n            timelineDetail = timekeepingServices.findTimelineDetail(account, root, beforeTimeline);\r\n        } else {\r\n            timelineDetail = timekeepingServices.findTimelineDetail(account, root, timeline);\r\n        }\r\n\r\n        if (timelineDetail != null) {\r\n            String timeBeginWork = \"22:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart().getTime() - (1000 * 60 * 60 * 24));\r\n            String timeEndWork = \"06:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n            shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), root);\r\n            hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        }\r\n\r\n        //JsonServices.dd(JsonServices.ParseToJson(hashMap.toString()), response); \r\n        List<String> viewList = new ArrayList<>();\r\n        List<Integer> shiftCodeList = new ArrayList<>();\r\n        Map<Integer, Integer> shiftMap = new HashMap<Integer, Integer>();\r\n        for (int i = 0; i < timelineDetailList.size(); i++) {\r\n            if (i + 1 < timelineDetailList.size()) {\r\n                if (timelineDetailList.get(i).getShiftCode() + 1 == timelineDetailList.get(i + 1).getShiftCode()) {\r\n                    shiftMap.put(timelineDetailList.get(i).getShiftCode(), timelineDetailList.get(i + 1).getShiftCode());\r\n                }\r\n            }\r\n\r\n        }\r\n\r\n        List<Date> dates = new ArrayList<>();\r\n        for (Entry<Integer, Integer> entry : shiftMap.entrySet()) {\r\n            int key = entry.getKey();\r\n            int val = entry.getValue();\r\n            shiftCodeList.add(key);\r\n            shiftCodeList.add(val);\r\n        }\r\n\r\n        for (int i = 0; i < shiftCodeList.size(); i++) {\r\n            if (i + 1 < shiftCodeList.size()) {\r\n                if (shiftCodeList.get(i) == shiftCodeList.get(i + 1)) {\r\n                    shiftCodeList.remove(shiftCodeList.get(i + 1));\r\n                }\r\n            }\r\n        }\r\n\r\n        for (int i = 0; i < shiftCodeList.size(); i++) {\r\n            dates.addAll(getTimeOfWork(shiftCodeList.get(i), timekeeping));\r\n        }\r\n\r\n        Map<Integer, Integer> handleMap = new HashMap<Integer, Integer>();\r\n        int count = timekeeping.getShiftCode();\r\n        for (int i = 0; i < dates.size(); i++) {\r\n            if (i + 1 < dates.size()) {\r\n                if (simpleDateFormat.format(dates.get(i)).compareTo(simpleDateFormat.format(dates.get(i + 1))) == 0) {\r\n                    //viewList.add(String.valueOf(diff));\r\n                    //viewList.add(simpleDateFormat.format(dates.get(i)) + \" \" + simpleDateFormat.format(dates.get(i)));\r\n                    if (simpleDateFormat.format(timekeeping.getTimeend()).compareTo(simpleDateFormat.format(dates.get(i + 1))) >= 0) {\r\n                        //viewList.add(simpleDateFormat.format(dates.get(i)));\r\n                        Long time = timekeeping.getTimeend().getTime() - dates.get(i).getTime();\r\n                        int diff = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;\r\n                        //viewList.add(simpleDateFormat.format(dates.get(i + 1)) + \" \" + simpleDateFormat.format(dates.get(i)));                    \r\n                        //viewList.add(String.valueOf(diff));\r\n\r\n                        if (diff >= 1) {\r\n                            handleMap.put(++count, diff);\r\n\r\n                        }\r\n\r\n                    }\r\n\r\n                }\r\n            }\r\n        }\r\n\r\n        if (handleMap.size() >= 1) {\r\n            for (Entry<Integer, Integer> entry : handleMap.entrySet()) {\r\n                List<Date> dateList = getTimeOfWork(entry.getKey(), timekeeping);\r\n                timekeeping.setTimeend(dateList.get(0));\r\n                timeHandle(timekeeping.getId(), response);\r\n                Timekeeping item = new Timekeeping();\r\n                item.setMail(timekeeping.getMail());\r\n                item.setIdTimeline(timekeeping.getIdTimeline());\r\n                item.setShiftCode(entry.getKey());\r\n                item.setTimestart(dateList.get(1));\r\n                item.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + \" \" + timeOfToday));\r\n                item.setTime(entry.getValue());\r\n                timekeepingServices.checkin(item);\r\n                timeHandle(timekeeping.getId(), response);\r\n                //viewList.add(String.valueOf(entry.getKey()) + \" \" + String.valueOf(entry.getValue()));\r\n                //JsonServices.dd(JsonServices.ParseToJson(dateList.toString()), response);\r\n            }\r\n\r\n            List<Timekeeping> timekeepings = timekeepingServices.findAll();\r\n            List<Timekeeping> tempList = new ArrayList<>();\r\n            for (int i = 0; i < timekeepings.size(); i++) {\r\n                for (int j = 0; j < shiftCodeList.size(); j++) {\r\n                    if (timekeepings.get(i).getMail().equals(timekeeping.getMail()) && timekeepings.get(i).getIdTimeline().equals(timekeeping.getIdTimeline()) && timekeepings.get(i).getShiftCode() == shiftCodeList.get(j)) {\r\n                        tempList.add(timekeepings.get(i));\r\n                    }\r\n                }\r\n            }\r\n\r\n            for (int i = 0; i < shiftCodeList.size(); i++) {\r\n                for (int j = 0; j < tempList.size(); j++) {\r\n                    if (tempList.get(j).getShiftCode() == shiftCodeList.get(i)) {\r\n                        List<Date> dateList = getTimeOfWork(shiftCodeList.get(i), timekeeping);\r\n                        if (j == tempList.size() - 1) {\r\n                            tempList.get(j).setTimestart(dateList.get(0));\r\n                            tempList.get(j).setTimeend(java.sql.Timestamp.valueOf(dateOfToday + \" \" + timeOfToday));\r\n                            timeHandle(tempList.get(j).getId(), response);\r\n                        } else {\r\n                            tempList.get(j).setTimestart(dateList.get(0));\r\n                            tempList.get(j).setTimeend(dateList.get(1));\r\n                            timeHandle(tempList.get(j).getId(), response);\r\n                            Long time = dateList.get(1).getTime() - dateList.get(0).getTime();\r\n                        }\r\n\r\n//                    int workingHours = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;\r\n//                    viewList.add(String.valueOf(tempList.get(j).getTime()));\r\n//                    if (tempList.get(j).getTime() > workingHours) {\r\n//                        tempList.get(j).setTime(workingHours);\r\n//                    }else{\r\n//                        \r\n//                    }\r\n                    }\r\n                }\r\n            }\r\n        }\r\n\r\n        //timekeepingServices.checkout(timekeeping);\r\n        JsonServices.dd(JsonServices.ParseToJson(String.valueOf(handleMap.size())), response);\r\n        //timekeeping.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + \" \" + timeOfToday));\r\n        timeHandle(timekeeping.getId(), response);\r\n        return new ResponseEntity<>(timekeeping, HttpStatus.OK);\r\n    }\r\n\r\n    public List<Date> getTimeOfWork(int id, Timekeeping timekeeping) {\r\n        SimpleDateFormat dateFormat = new SimpleDateFormat(\"yyyy-MM-dd\");\r\n        List<Date> dates = new ArrayList<>();\r\n        if (id % 5 == 0) {\r\n            String timeBeginWork = \"06:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n            String timeEndWork = \"10:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n            dates.add(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork));\r\n            dates.add(java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        } else if (id % 5 == 1) {\r\n            String timeBeginWork = \"10:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n            String timeEndWork = \"14:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n            dates.add(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork));\r\n            dates.add(java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        } else if (id % 5 == 2) {\r\n            String timeBeginWork = \"14:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n            String timeEndWork = \"18:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n            dates.add(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork));\r\n            dates.add(java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        } else if (id % 5 == 3) {\r\n            String timeBeginWork = \"18:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n            String timeEndWork = \"22:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n            dates.add(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork));\r\n            dates.add(java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        } else if (id % 5 == 4) {\r\n            String timeBeginWork = \"22:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n            String timeEndWork = \"06:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart().getTime() + (1000 * 60 * 60 * 24));\r\n            dates.add(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork));\r\n            dates.add(java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        }\r\n        return dates;\r\n    }\r\n\r\n    public void timeHandle(int id, HttpServletResponse response) {\r\n        SimpleDateFormat hour = new SimpleDateFormat(\"HH\");\r\n        SimpleDateFormat minute = new SimpleDateFormat(\"mm\");\r\n        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\");\r\n        SimpleDateFormat hourFormat = new SimpleDateFormat(\"HH:mm:ss\");\r\n        SimpleDateFormat dateFormat = new SimpleDateFormat(\"yyyy-MM-dd\");\r\n        Timekeeping timekeeping = timekeepingServices.findOne(id);\r\n\r\n        HashMap<Date, Date> hashMap = new HashMap<Date, Date>();\r\n        if (timekeeping.getShiftCode() % 5 == 0) {\r\n            String timeBeginWork = \"06:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n            String timeEndWork = \"10:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n            hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        } else if (timekeeping.getShiftCode() % 5 == 1) {\r\n            String timeBeginWork = \"10:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n            String timeEndWork = \"14:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n            hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        } else if (timekeeping.getShiftCode() % 5 == 2) {\r\n            String timeBeginWork = \"14:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n            String timeEndWork = \"18:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n            hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        } else if (timekeeping.getShiftCode() % 5 == 3) {\r\n            String timeBeginWork = \"18:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n            String timeEndWork = \"22:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n            hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n        } else if (timekeeping.getShiftCode() % 5 == 4) {\r\n            String timeBeginWork = \"22:00:00\";\r\n            String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n            String timeEndWork = \"06:00:00\";\r\n            String dateEndWork = dateFormat.format(timekeeping.getTimestart().getTime() + (1000 * 60 * 60 * 24));\r\n            hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n        }\r\n\r\n        int checkinHour = Integer.parseInt(hour.format(timekeeping.getTimestart()));\r\n\r\n        int checkinMinute = Integer.parseInt(minute.format(timekeeping.getTimestart()));\r\n        int checkoutHour = Integer.parseInt(hour.format(timekeeping.getTimeend()));\r\n\r\n        for (Map.Entry<Date, Date> entry : hashMap.entrySet()) {\r\n            if (dateFormat.format(entry.getKey()).compareTo(dateFormat.format(entry.getValue())) == 0) {\r\n                if (checkinMinute > 15 && checkinHour >= Integer.parseInt(hour.format(entry.getKey()))) {\r\n                    checkinHour += 1;\r\n                } else if (simpleDateFormat.format(timekeeping.getTimestart()).compareTo(simpleDateFormat.format(entry.getKey())) <= 0) {\r\n                    checkinHour = Integer.parseInt(hour.format(entry.getKey()));\r\n                    //JsonServices.dd(JsonServices.ParseToJson(String.valueOf(checkinHour)), response);\r\n                }\r\n\r\n                //JsonServices.dd(JsonServices.ParseToJson(String.valueOf(Integer.parseInt(hour.format(entry.getKey()))) + \" hi\"), response);\r\n                if (timekeeping.getTimeend().compareTo(entry.getValue()) >= 0) {\r\n                    timekeeping.setTime(Integer.parseInt(hour.format(entry.getValue())) - checkinHour);\r\n                } else {\r\n                    timekeeping.setTime(checkoutHour - checkinHour);\r\n                    //JsonServices.dd(JsonServices.ParseToJson(String.valueOf(\"hwo\")), response);\r\n                }\r\n                //JsonServices.dd(JsonServices.ParseToJson(String.valueOf(checkinHour) + \" \" + String.valueOf(checkoutHour) + \" \" + String.valueOf(timekeeping.getTime())), response);\r\n            } else if (dateFormat.format(entry.getKey()).compareTo(dateFormat.format(entry.getValue())) < 0) {\r\n                Date _beginTime = timekeeping.getTimestart();\r\n                int minuteTimeStart = _beginTime.getMinutes();\r\n                int secondTimeStart = _beginTime.getSeconds();\r\n                _beginTime.setMinutes(0);\r\n                _beginTime.setSeconds(0);\r\n                Date beginTime = _beginTime;\r\n                Date endTime = timekeeping.getTimeend();\r\n                Long time = null;\r\n                if (checkinMinute > 15) {\r\n                    time = endTime.getTime() - (beginTime.getTime() + TimeUnit.HOURS.toMillis(1));\r\n                } else {\r\n                    time = endTime.getTime() - beginTime.getTime();\r\n                }\r\n                int workingHours = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;\r\n                //JsonServices.dd(JsonServices.ParseToJson(workingHours), response);\r\n                timekeeping.getTimestart().setMinutes(minuteTimeStart);\r\n                timekeeping.getTimestart().setSeconds(secondTimeStart);\r\n                timekeeping.setTime(workingHours);\r\n            }\r\n        }\r\n        timekeepingServices.checkout(timekeeping);\r\n    }\r\n\r\n    @RequestMapping(value = \"/timekeeping/update/{id}\", method = RequestMethod.GET)\r\n    public String update(@PathVariable int id, Model model\r\n    ) {\r\n        Timekeeping timekeeping = timekeepingServices.findOne(id);\r\n        Account user = accountRepository.findByMail(timekeeping.getMail().getMail());\r\n        model.addAttribute(\"timekeeping\", timekeeping);\r\n        model.addAttribute(\"user\", user);\r\n        return \"admin/timekeeping/update\";\r\n    }\r\n//\r\n\r\n    @RequestMapping(value = \"/timekeeping/edit/{id}\", method = RequestMethod.POST)\r\n    public String edit(@PathVariable int id, Model model,\r\n            HttpServletRequest request, HttpServletResponse response\r\n    ) {\r\n        Timekeeping timekeeping = timekeepingServices.findOne(id);\r\n        if (request.getParameter(\"action\").equals(\"Trở lại\")) {\r\n            return index(model);\r\n        } else {\r\n            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\");\r\n            SimpleDateFormat dateFormat = new SimpleDateFormat(\"yyyy-MM-dd\");\r\n            SimpleDateFormat hour = new SimpleDateFormat(\"HH\");\r\n            SimpleDateFormat minute = new SimpleDateFormat(\"mm\");\r\n            String dateStartString = request.getParameter(\"dateStart\");\r\n            String day, month, year;\r\n            day = dateStartString.substring(0, 2);\r\n            month = dateStartString.substring(3, 5);\r\n            year = dateStartString.substring(6, 10);\r\n            String dateStart = year + \"-\" + month + \"-\" + day;\r\n            String checkinTime = dateStart + \" \" + request.getParameter(\"timeStart\") + \":00\";\r\n\r\n            String dateEndString = request.getParameter(\"dateEnd\");\r\n            day = dateEndString.substring(0, 2);\r\n            month = dateEndString.substring(3, 5);\r\n            year = dateEndString.substring(6, 10);\r\n            String dateEnd = year + \"-\" + month + \"-\" + day;\r\n            String checkoutTime = dateEnd + \" \" + request.getParameter(\"timeEnd\") + \":00\";\r\n\r\n            HashMap<Date, Date> hashMap = new HashMap<Date, Date>();\r\n            if (timekeeping.getShiftCode() % 5 == 0) {\r\n                String timeBeginWork = \"06:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"10:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n            } else if (timekeeping.getShiftCode() % 5 == 1) {\r\n                String timeBeginWork = \"10:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"14:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n            } else if (timekeeping.getShiftCode() % 5 == 2) {\r\n                String timeBeginWork = \"14:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"18:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n            } else if (timekeeping.getShiftCode() % 5 == 3) {\r\n                String timeBeginWork = \"18:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"22:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart());\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n\r\n            } else if (timekeeping.getShiftCode() % 5 == 4) {\r\n                String timeBeginWork = \"22:00:00\";\r\n                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());\r\n                String timeEndWork = \"06:00:00\";\r\n                String dateEndWork = dateFormat.format(timekeeping.getTimestart().getTime() + (1000 * 60 * 60 * 24));\r\n                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + \" \" + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + \" \" + timeEndWork));\r\n            }\r\n\r\n            timekeeping.setTimestart(java.sql.Timestamp.valueOf(checkinTime));\r\n            timekeeping.setTimeend(java.sql.Timestamp.valueOf(checkoutTime));\r\n            int checkinHour = Integer.parseInt(hour.format(timekeeping.getTimestart()));\r\n            int checkinMinute = Integer.parseInt(minute.format(timekeeping.getTimestart()));\r\n            int checkoutHour = Integer.parseInt(hour.format(timekeeping.getTimeend()));\r\n            for (Map.Entry<Date, Date> entry : hashMap.entrySet()) {\r\n                if (dateFormat.format(entry.getKey()).compareTo(dateFormat.format(entry.getValue())) == 0) {\r\n                    if (checkinMinute > 15 && checkinHour >= Integer.parseInt(hour.format(entry.getKey()))) {\r\n                        checkinHour += 1;\r\n                    } else if (simpleDateFormat.format(timekeeping.getTimestart()).compareTo(simpleDateFormat.format(entry.getKey())) <= 0) {\r\n                        checkinHour = Integer.parseInt(hour.format(entry.getKey()));\r\n                        //JsonServices.dd(JsonServices.ParseToJson(String.valueOf(checkinHour)), response);\r\n                    }\r\n\r\n                    if (timekeeping.getTimeend().compareTo(entry.getValue()) >= 0) {\r\n                        timekeeping.setTime(Integer.parseInt(hour.format(entry.getValue())) - checkinHour);\r\n                    } else {\r\n                        timekeeping.setTime(checkoutHour - checkinHour);\r\n                    }\r\n                    //JsonServices.dd(JsonServices.ParseToJson(String.valueOf(checkinHour) + \" \" + String.valueOf(checkoutHour) + \" \" + String.valueOf(timekeeping.getTime())), response);\r\n                } else if (dateFormat.format(entry.getKey()).compareTo(dateFormat.format(entry.getValue())) < 0) {\r\n                    Date _beginTime = timekeeping.getTimestart();\r\n                    int minuteTimeStart = _beginTime.getMinutes();\r\n                    int secondTimeStart = _beginTime.getSeconds();\r\n                    _beginTime.setMinutes(0);\r\n                    _beginTime.setSeconds(0);\r\n                    Date beginTime = _beginTime;\r\n                    Date endTime = timekeeping.getTimeend();\r\n                    Long time = null;\r\n                    if (checkinMinute > 15) {\r\n                        time = endTime.getTime() - (beginTime.getTime() + TimeUnit.HOURS.toMillis(1));\r\n                    } else {\r\n                        time = endTime.getTime() - beginTime.getTime();\r\n                    }\r\n                    int workingHours = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;\r\n                    //JsonServices.dd(JsonServices.ParseToJson(workingHours), response);\r\n                    timekeeping.getTimestart().setMinutes(minuteTimeStart);\r\n                    timekeeping.getTimestart().setSeconds(secondTimeStart);\r\n                    timekeeping.setTime(workingHours);\r\n                }\r\n            }\r\n            timekeepingServices.checkout(timekeeping);\r\n        }\r\n        return update(timekeeping.getId(), model);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../KHR/src/main/java/fpt/aptech/KHR/Controller/TimekeepingController.java b/../KHR/src/main/java/fpt/aptech/KHR/Controller/TimekeepingController.java
+--- a/../KHR/src/main/java/fpt/aptech/KHR/Controller/TimekeepingController.java	
++++ b/../KHR/src/main/java/fpt/aptech/KHR/Controller/TimekeepingController.java	
+@@ -21,6 +21,7 @@
+ import fpt.aptech.KHR.Services.IAccountRepository;
+ import fpt.aptech.KHR.Services.IShiftServices;
+ import fpt.aptech.KHR.Services.ITimekeepingServices;
++import fpt.aptech.KHR.Services.ITimelineServices;
+ import java.sql.Timestamp;
+ 
+ import java.text.ParseException;
+@@ -82,6 +83,9 @@
+ 
+     @Autowired
+     IShiftServices shiftServices;
++    
++    @Autowired
++    ITimelineServices timelineServices;
+ 
+     @RequestMapping(value = "/timekeeping/index", method = RequestMethod.GET)
+     public String index(Model model) {
+@@ -111,110 +115,41 @@
+         return "admin/timekeeping/create";
+     }
+ 
+-//    @RequestMapping(value = "/timekeeping//{id}", method = RequestMethod.GET)
+-//    public ResponseEntity<String> getShifts(@PathVariable("id") String id) {
+-//        //Shift shift = shiftServices.FindOne(id);
+-//        Account account = accountRepository.findByMail(id);
+-//        return new ResponseEntity<String>(account.getFullname(), HttpStatus.OK);
+-//    }
+-//    @RequestMapping(value = "/timekeeping/save", method = RequestMethod.POST)
+-//    public String save(Model model, HttpServletRequest request, HttpServletResponse response) {
+-//        try {
+-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+-//            SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+-//            Timekeeping timekeeping = new Timekeeping();
+-//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+-//            SimpleDateFormat hour = new SimpleDateFormat("HH");
+-//            SimpleDateFormat minute = new SimpleDateFormat("mm");
+-//            String dateStartString = request.getParameter("dateStart");
+-//            String day, month, year;
+-//            day = dateStartString.substring(0, 2);
+-//            month = dateStartString.substring(3, 5);
+-//            year = dateStartString.substring(6, 10);
+-//            String dateStart = year + "-" + month + "-" + day;
+-//            String checkinTime = dateStart + " " + request.getParameter("timeStart") + ":00";
+-//            String dateEndString = request.getParameter("dateEnd");
+-//            day = dateEndString.substring(0, 2);
+-//            month = dateEndString.substring(3, 5);
+-//            year = dateEndString.substring(6, 10);
+-//            String dateEnd = year + "-" + month + "-" + day;
+-//            String checkoutTime = dateEnd + " " + request.getParameter("timeEnd") + ":00";
+-////          Account account = accountRepository.findByMail(_mail);
+-////          timekeeping.setMail(account);
+-//            Account account = new Account();
+-//            account.setMail(request.getParameter("mail"));
+-//            timekeeping.setMail(account);
+-//            timekeeping.setTimestart(java.sql.Timestamp.valueOf(checkinTime));
+-//            timekeeping.setTimeend(java.sql.Timestamp.valueOf(checkoutTime));
+-//
+-//            List<Shift> shiftList = timekeepingServices.findShiftByDate(timekeeping.getTimestart());
+-//            Date date = dateFormat.parse(timekeeping.getTimestart().toString());
+-//            Calendar calendar = Calendar.getInstance();
+-//            calendar.setTime(date);
+-//            calendar.add(Calendar.DATE, -1);
+-//            Date yesterday = calendar.getTime();
+-//
+-//            List<Shift> shiftListDateBefore = timekeepingServices.findShiftByDate(simpleDateFormat.parse(simpleDateFormat.format(yesterday)));
+-//            shiftList.addAll(shiftListDateBefore);
+-//
+-//            List<TimelineDetail> timelineDetailList = new ArrayList<>();
+-//            for (int i = 0; i < shiftList.size(); i++) {
+-//                List<TimelineDetail> _timelineDetailList = new ArrayList<>();
+-//                String shiftCode = shiftList.get(i).getShiftcode().toString();
+-//                if (shiftCode.length() == 4) {
+-//                    _timelineDetailList = timekeepingServices.findTimelineDetailList(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 1000, shiftList.get(i).getIdPosition(), shiftList.get(i).getIdTimeline());
+-//                } else {
+-//                    _timelineDetailList = timekeepingServices.findTimelineDetailList(timekeeping.getMail(), shiftList.get(i).getShiftcode() - 100, shiftList.get(i).getIdPosition(), shiftList.get(i).getIdTimeline());
+-//                }
+-//
+-//                for (TimelineDetail item : _timelineDetailList) {
+-//                    if (!timelineDetailList.contains(item)) {
+-//                        timelineDetailList.add(item);
+-//                    }
+-//                }
+-//            }
+-//
+-//            List<Shift> tempList = new ArrayList<>();
+-//            for (int i = 0; i < timelineDetailList.size(); i++) {
+-//                String shiftCode = String.valueOf(timelineDetailList.get(i).getShiftCode());
+-//                if (shiftCode.length() > 1) {
+-//                    Shift shift = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 1000, timekeeping.getTimestart(), timelineDetailList.get(i).getIdPosition());
+-//                    if (shift != null) {
+-//                        tempList.add(shift);
+-//                    }
+-//                } else {
+-//                    Shift shift = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 100, timekeeping.getTimestart(), timelineDetailList.get(i).getIdPosition());
+-//                    if (shift != null) {
+-//                        tempList.add(shift);
+-//                    }
+-//                }
+-//
+-//            }
+-//
+-//            //JsonServices.dd(JsonServices.ParseToJson(timelineDetailList.toString() + " " + tempList.toString()), response);
+-//            for (int i = 0; i < timelineDetailList.size(); i++) {
+-//                Shift shiftDateBefore = timekeepingServices.findShiftByShiftCode(timelineDetailList.get(i).getShiftCode() + 100, simpleDateFormat.parse(simpleDateFormat.format(yesterday)), timelineDetailList.get(i).getIdPosition());
+-//                if (shiftDateBefore != null) {
+-//                    tempList.add(shiftDateBefore);
+-//                }
+-//            }
+-//
+-//            List<Timekeeping> timekeepings = timekeepingServices.findAll();
+-//            for (int i = 0; i < timekeepings.size(); i++) {
+-//                for (int j = 0; j < tempList.size(); j++) {
+-//                    if (timekeepings.get(i).getShiftId().equals(tempList.get(j)) && timekeepings.get(i).getMail().equals(timekeeping.getMail())) {
+-//                        tempList.remove(tempList.get(j));
+-//                    }
+-//                }
+-//            }
+-//
+-//            //JsonServices.dd(JsonServices.ParseToJson(tempList.toString()), response);
+-//            return index(model);
+-//        } catch (ParseException ex) {
+-//            Logger.getLogger(TimekeepingController.class.getName()).log(Level.SEVERE, null, ex);
+-//        }
+-//        return null;
+-//    }
++    @RequestMapping(value = "/api/timekeeping/action/{mail}", method = RequestMethod.GET)
++    public ResponseEntity<Integer> action(@PathVariable("mail") String mail, HttpServletRequest request, HttpServletResponse response) {
++           SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
++        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
++        SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
++        Account account = accountRepository.findByMail(mail);
++        Date date = new Date();
++        Date systemDate = new Date();
++        systemDate.setHours(0);
++        systemDate.setMinutes(0);
++        systemDate.setSeconds(0);
++        Timekeeping timekeeping = timekeepingServices.findByMail(account);
++        if (timekeeping != null) {
++            //JsonServices.dd(JsonServices.ParseToJson(simpleDateFormat.format(date)), response);
++            List<Date> dates = getTimeOfWork(timekeeping.getShiftCode(), timekeeping);
++            //JsonServices.dd(JsonServices.ParseToJson(dates.toString()), response);
++            Long time = date.getTime() - dates.get(1).getTime();
++            int diff = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;
++            if(dateFormat.format(date).compareTo(dateFormat.format(dates.get(0))) > 0 && dateFormat.format(date).compareTo(dateFormat.format(dates.get(1))) > 0){
++                return new ResponseEntity<Integer>(0, HttpStatus.OK);
++            }else if(dateFormat.format(date).compareTo(dateFormat.format(dates.get(0))) >= 0 && hourFormat.format(timekeeping.getTimeend()).compareTo(hourFormat.format(systemDate)) == 0 && diff <= 1){
++                return new ResponseEntity<Integer>(1, HttpStatus.OK);
++            } else if(diff > 1){
++                return new ResponseEntity<Integer>(0, HttpStatus.OK);
++            } else {
++                 return new ResponseEntity<Integer>(0, HttpStatus.OK);
++            }
++            //return new ResponseEntity<Integer>(7, HttpStatus.OK);
++        } else {
++            return new ResponseEntity<Integer>(0, HttpStatus.OK);
++        }
++        //JsonServices.dd(JsonServices.ParseToJson(timekeeping), response);
++        //return new ResponseEntity<>(null, HttpStatus.OK);
++    }
++
+     @RequestMapping(value = "/api/timekeeping/year/{mail}", method = RequestMethod.GET)
+     public ResponseEntity<List<String>> getYear(@PathVariable("mail") String mail, HttpServletResponse response) {
+         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+@@ -264,27 +199,13 @@
+         }
+     }
+ 
+-    @RequestMapping(value = "/api/timekeeping/detailId", method = RequestMethod.GET)
+-    public ResponseEntity<Integer> detailId(@RequestParam("id") int id, HttpServletResponse response) {
+-        return new ResponseEntity<Integer>(timekeepingServices.detailId(id), HttpStatus.OK);
+-    }
+-
+     @RequestMapping(value = "/api/timekeeping/detail", method = RequestMethod.GET)
+-    public ResponseEntity<List<String>> detail(@RequestParam("shiftId") int id, HttpServletResponse response) {
+-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+-        SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+-        Shift shift = timekeepingServices.findShiftByTimekeeping(id);
+-        List<String> dataList = new ArrayList<>();
+-        dataList.add(simpleDateFormat.format(shift.getTimestart()));
+-        dataList.add(hourFormat.format(shift.getTimestart()));
+-        Position position = timekeepingServices.findPositionAccountById(shift.getIdPosition().getId());
+-        dataList.add(position.getPositionname());
+-//        JsonServices.dd(JsonServices.ParseToJson(dataList.toString()), response);
+-        if (dataList.isEmpty()) {
+-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+-        } else {
+-            return new ResponseEntity<List<String>>(dataList, HttpStatus.OK);
+-        }
++    public void detail(@RequestParam("id") int id, @RequestParam("mail") String mail, @RequestParam("idTimeline") int idTimeline, HttpServletResponse response) {
++        Timeline timeline = timelineServices.FindOne(idTimeline);
++        Account account = accountRepository.findByMail(mail);
++        TimelineDetail timelineDetail = timekeepingServices.findTimelineDetail(account, id, timeline);
++        JsonServices.dd(JsonServices.ParseToJson(timelineDetail), response);
++        //return new ResponseEntity<String>(timelineDetail.getIdPosition().getPositionname(), HttpStatus.OK);
+     }
+ 
+     @RequestMapping(value = "/api/timekeeping/checkin/{mail}", method = RequestMethod.POST)
+@@ -563,258 +484,262 @@
+         Timeline timeline = timekeepingServices.findTimelineByDate(timekeeping.getTimestart());
+         int day = timekeeping.getTimestart().getDay();
+ 
+-        List<Integer> shiftCodeOnDay = new ArrayList<>();
+-        int maxShiftCodeOnday = 0;
+-
+-        switch (day) {
+-            case 1:
+-                maxShiftCodeOnday = 5;
+-                break;
+-            case 2:
+-                maxShiftCodeOnday = 10;
+-                break;
+-            case 3:
+-                maxShiftCodeOnday = 15;
+-                break;
+-            case 4:
+-                maxShiftCodeOnday = 20;
+-                break;
+-            case 5:
+-                maxShiftCodeOnday = 25;
+-                break;
+-            case 6:
+-                maxShiftCodeOnday = 30;
+-                break;
+-            case 0:
+-                maxShiftCodeOnday = 35;
+-                break;
+-            default:
+-                break;
+-        }
+-
+-        for (int i = maxShiftCodeOnday - 5; i < maxShiftCodeOnday; i++) {
+-            shiftCodeOnDay.add(i);
+-        }
+-
+-        List<TimelineDetail> timelineDetailList = new ArrayList<>();
+-        for (int i = 0; i < shiftCodeOnDay.size(); i++) {
+-            TimelineDetail timelineDetail = timekeepingServices.findTimelineDetail(account, shiftCodeOnDay.get(i), timeline);
+-            if (timelineDetail != null) {
+-                timelineDetailList.add(timelineDetail);
+-            }
+-        }
+-
+-//        JsonServices.dd(JsonServices.ParseToJson(simpleDateFormat.format(timekeeping.getTimestart())), response);
+-        //JsonServices.dd(JsonServices.ParseToJson(timelineDetailList.toString()), response);
+-        HashMap<Date, Integer> shiftOnDay = new HashMap<Date, Integer>();
+-        HashMap<Date, Date> hashMap = new HashMap<Date, Date>();
+-        for (int i = 0; i < timelineDetailList.size(); i++) {
+-            if (timelineDetailList.get(i).getShiftCode() % 5 == 0) {
+-                String timeBeginWork = "06:00:00";
+-                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());
+-                String timeEndWork = "10:00:00";
+-                String dateEndWork = dateFormat.format(timekeeping.getTimestart());
+-                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), timelineDetailList.get(i).getShiftCode());
+-                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
+-
+-            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 1) {
+-                String timeBeginWork = "10:00:00";
+-                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());
+-                String timeEndWork = "14:00:00";
+-                String dateEndWork = dateFormat.format(timekeeping.getTimestart());
+-                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), timelineDetailList.get(i).getShiftCode());
+-                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
+-
+-            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 2) {
+-                String timeBeginWork = "14:00:00";
+-                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());
+-                String timeEndWork = "18:00:00";
+-                String dateEndWork = dateFormat.format(timekeeping.getTimestart());
+-                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), timelineDetailList.get(i).getShiftCode());
+-                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
+-
+-            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 3) {
+-                String timeBeginWork = "18:00:00";
+-                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());
+-                String timeEndWork = "22:00:00";
+-                String dateEndWork = dateFormat.format(timekeeping.getTimestart());
+-                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), timelineDetailList.get(i).getShiftCode());
+-                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
+-
+-            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 4) {
+-                String timeBeginWork = "22:00:00";
+-                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());
+-                String timeEndWork = "06:00:00";
+-                String dateEndWork = dateFormat.format(timekeeping.getTimestart().getTime() + (1000 * 60 * 60 * 24));
+-                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), timelineDetailList.get(i).getShiftCode());
+-                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
+-
+-            }
+-        }
+-
+-        int root = 0;
+-        switch (day) {
+-            case 0:
+-                root = 29;
+-                break;
+-            case 1:
+-                root = 34;
+-                break;
+-            case 2:
+-                root = 4;
+-                break;
+-            case 3:
+-                root = 9;
+-                break;
+-            case 4:
+-                root = 14;
+-                break;
+-            case 5:
+-                root = 19;
+-                break;
+-            case 6:
+-                root = 24;
+-                break;
+-            default:
+-                break;
+-        }
+-
+-        TimelineDetail timelineDetail = null;
+-        Calendar calendar = Calendar.getInstance();
+-        calendar.add(Calendar.DATE, -1);
+-        Date yesterday = calendar.getTime();
+-        Timeline beforeTimeline = timekeepingServices.findTimelineByDate(yesterday);
+-        //JsonServices.dd(JsonServices.ParseToJson(beforeTimeline.toString()), response);
+-        if (day == 1) {
+-            timelineDetail = timekeepingServices.findTimelineDetail(account, root, beforeTimeline);
+-        } else {
+-            timelineDetail = timekeepingServices.findTimelineDetail(account, root, timeline);
+-        }
+-
+-        if (timelineDetail != null) {
+-            String timeBeginWork = "22:00:00";
+-            String dateBeginWork = dateFormat.format(timekeeping.getTimestart().getTime() - (1000 * 60 * 60 * 24));
+-            String timeEndWork = "06:00:00";
+-            String dateEndWork = dateFormat.format(timekeeping.getTimestart());
+-            shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), root);
+-            hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
+-        }
+-
+-        //JsonServices.dd(JsonServices.ParseToJson(hashMap.toString()), response); 
+-        List<String> viewList = new ArrayList<>();
+-        List<Integer> shiftCodeList = new ArrayList<>();
+-        Map<Integer, Integer> shiftMap = new HashMap<Integer, Integer>();
+-        for (int i = 0; i < timelineDetailList.size(); i++) {
+-            if (i + 1 < timelineDetailList.size()) {
+-                if (timelineDetailList.get(i).getShiftCode() + 1 == timelineDetailList.get(i + 1).getShiftCode()) {
+-                    shiftMap.put(timelineDetailList.get(i).getShiftCode(), timelineDetailList.get(i + 1).getShiftCode());
+-                }
+-            }
+-
+-        }
+-
+-        List<Date> dates = new ArrayList<>();
+-        for (Entry<Integer, Integer> entry : shiftMap.entrySet()) {
+-            int key = entry.getKey();
+-            int val = entry.getValue();
+-            shiftCodeList.add(key);
+-            shiftCodeList.add(val);
+-        }
+-
+-        for (int i = 0; i < shiftCodeList.size(); i++) {
+-            if (i + 1 < shiftCodeList.size()) {
+-                if (shiftCodeList.get(i) == shiftCodeList.get(i + 1)) {
+-                    shiftCodeList.remove(shiftCodeList.get(i + 1));
+-                }
+-            }
+-        }
+-
+-        for (int i = 0; i < shiftCodeList.size(); i++) {
+-            dates.addAll(getTimeOfWork(shiftCodeList.get(i), timekeeping));
+-        }
+-
+-        Map<Integer, Integer> handleMap = new HashMap<Integer, Integer>();
+-        int count = timekeeping.getShiftCode();
+-        for (int i = 0; i < dates.size(); i++) {
+-            if (i + 1 < dates.size()) {
+-                if (simpleDateFormat.format(dates.get(i)).compareTo(simpleDateFormat.format(dates.get(i + 1))) == 0) {
+-                    //viewList.add(String.valueOf(diff));
+-                    //viewList.add(simpleDateFormat.format(dates.get(i)) + " " + simpleDateFormat.format(dates.get(i)));
+-                    if (simpleDateFormat.format(timekeeping.getTimeend()).compareTo(simpleDateFormat.format(dates.get(i + 1))) >= 0) {
+-                        //viewList.add(simpleDateFormat.format(dates.get(i)));
+-                        Long time = timekeeping.getTimeend().getTime() - dates.get(i).getTime();
+-                        int diff = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;
+-                        //viewList.add(simpleDateFormat.format(dates.get(i + 1)) + " " + simpleDateFormat.format(dates.get(i)));                    
+-                        //viewList.add(String.valueOf(diff));
+-
+-                        if (diff >= 1) {
+-                            handleMap.put(++count, diff);
+-
+-                        }
+-
+-                    }
+-
+-                }
+-            }
+-        }
+-
+-        if (handleMap.size() >= 1) {
+-            for (Entry<Integer, Integer> entry : handleMap.entrySet()) {
+-                List<Date> dateList = getTimeOfWork(entry.getKey(), timekeeping);
+-                timekeeping.setTimeend(dateList.get(0));
+-                timeHandle(timekeeping.getId(), response);
+-                Timekeeping item = new Timekeeping();
+-                item.setMail(timekeeping.getMail());
+-                item.setIdTimeline(timekeeping.getIdTimeline());
+-                item.setShiftCode(entry.getKey());
+-                item.setTimestart(dateList.get(1));
+-                item.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
+-                item.setTime(entry.getValue());
+-                timekeepingServices.checkin(item);
+-                timeHandle(timekeeping.getId(), response);
+-                //viewList.add(String.valueOf(entry.getKey()) + " " + String.valueOf(entry.getValue()));
+-                //JsonServices.dd(JsonServices.ParseToJson(dateList.toString()), response);
+-            }
+-
+-            List<Timekeeping> timekeepings = timekeepingServices.findAll();
+-            List<Timekeeping> tempList = new ArrayList<>();
+-            for (int i = 0; i < timekeepings.size(); i++) {
+-                for (int j = 0; j < shiftCodeList.size(); j++) {
+-                    if (timekeepings.get(i).getMail().equals(timekeeping.getMail()) && timekeepings.get(i).getIdTimeline().equals(timekeeping.getIdTimeline()) && timekeepings.get(i).getShiftCode() == shiftCodeList.get(j)) {
+-                        tempList.add(timekeepings.get(i));
+-                    }
+-                }
+-            }
+-
+-            for (int i = 0; i < shiftCodeList.size(); i++) {
+-                for (int j = 0; j < tempList.size(); j++) {
+-                    if (tempList.get(j).getShiftCode() == shiftCodeList.get(i)) {
+-                        List<Date> dateList = getTimeOfWork(shiftCodeList.get(i), timekeeping);
+-                        if (j == tempList.size() - 1) {
+-                            tempList.get(j).setTimestart(dateList.get(0));
+-                            tempList.get(j).setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
+-                            timeHandle(tempList.get(j).getId(), response);
+-                        } else {
+-                            tempList.get(j).setTimestart(dateList.get(0));
+-                            tempList.get(j).setTimeend(dateList.get(1));
+-                            timeHandle(tempList.get(j).getId(), response);
+-                            Long time = dateList.get(1).getTime() - dateList.get(0).getTime();
+-                        }
+-
+-//                    int workingHours = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;
+-//                    viewList.add(String.valueOf(tempList.get(j).getTime()));
+-//                    if (tempList.get(j).getTime() > workingHours) {
+-//                        tempList.get(j).setTime(workingHours);
+-//                    }else{
+-//                        
++//        List<Integer> shiftCodeOnDay = new ArrayList<>();
++//        int maxShiftCodeOnday = 0;
++//
++//        switch (day) {
++//            case 1:
++//                maxShiftCodeOnday = 5;
++//                break;
++//            case 2:
++//                maxShiftCodeOnday = 10;
++//                break;
++//            case 3:
++//                maxShiftCodeOnday = 15;
++//                break;
++//            case 4:
++//                maxShiftCodeOnday = 20;
++//                break;
++//            case 5:
++//                maxShiftCodeOnday = 25;
++//                break;
++//            case 6:
++//                maxShiftCodeOnday = 30;
++//                break;
++//            case 0:
++//                maxShiftCodeOnday = 35;
++//                break;
++//            default:
++//                break;
++//        }
++//
++//        for (int i = maxShiftCodeOnday - 5; i < maxShiftCodeOnday; i++) {
++//            shiftCodeOnDay.add(i);
++//        }
++//
++//        List<TimelineDetail> timelineDetailList = new ArrayList<>();
++//        for (int i = 0; i < shiftCodeOnDay.size(); i++) {
++//            TimelineDetail timelineDetail = timekeepingServices.findTimelineDetail(account, shiftCodeOnDay.get(i), timeline);
++//            if (timelineDetail != null) {
++//                timelineDetailList.add(timelineDetail);
++//            }
++//        }
++//
++////        JsonServices.dd(JsonServices.ParseToJson(simpleDateFormat.format(timekeeping.getTimestart())), response);
++//        //JsonServices.dd(JsonServices.ParseToJson(timelineDetailList.toString()), response);
++//        HashMap<Date, Integer> shiftOnDay = new HashMap<Date, Integer>();
++//        HashMap<Date, Date> hashMap = new HashMap<Date, Date>();
++//        for (int i = 0; i < timelineDetailList.size(); i++) {
++//            if (timelineDetailList.get(i).getShiftCode() % 5 == 0) {
++//                String timeBeginWork = "06:00:00";
++//                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());
++//                String timeEndWork = "10:00:00";
++//                String dateEndWork = dateFormat.format(timekeeping.getTimestart());
++//                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), timelineDetailList.get(i).getShiftCode());
++//                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
++//
++//            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 1) {
++//                String timeBeginWork = "10:00:00";
++//                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());
++//                String timeEndWork = "14:00:00";
++//                String dateEndWork = dateFormat.format(timekeeping.getTimestart());
++//                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), timelineDetailList.get(i).getShiftCode());
++//                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
++//
++//            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 2) {
++//                String timeBeginWork = "14:00:00";
++//                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());
++//                String timeEndWork = "18:00:00";
++//                String dateEndWork = dateFormat.format(timekeeping.getTimestart());
++//                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), timelineDetailList.get(i).getShiftCode());
++//                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
++//
++//            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 3) {
++//                String timeBeginWork = "18:00:00";
++//                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());
++//                String timeEndWork = "22:00:00";
++//                String dateEndWork = dateFormat.format(timekeeping.getTimestart());
++//                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), timelineDetailList.get(i).getShiftCode());
++//                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
++//
++//            } else if (timelineDetailList.get(i).getShiftCode() % 5 == 4) {
++//                String timeBeginWork = "22:00:00";
++//                String dateBeginWork = dateFormat.format(timekeeping.getTimestart());
++//                String timeEndWork = "06:00:00";
++//                String dateEndWork = dateFormat.format(timekeeping.getTimestart().getTime() + (1000 * 60 * 60 * 24));
++//                shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), timelineDetailList.get(i).getShiftCode());
++//                hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
++//
++//            }
++//        }
++//
++//        int root = 0;
++//        switch (day) {
++//            case 0:
++//                root = 29;
++//                break;
++//            case 1:
++//                root = 34;
++//                break;
++//            case 2:
++//                root = 4;
++//                break;
++//            case 3:
++//                root = 9;
++//                break;
++//            case 4:
++//                root = 14;
++//                break;
++//            case 5:
++//                root = 19;
++//                break;
++//            case 6:
++//                root = 24;
++//                break;
++//            default:
++//                break;
++//        }
++//
++//        TimelineDetail timelineDetail = null;
++//        Calendar calendar = Calendar.getInstance();
++//        calendar.add(Calendar.DATE, -1);
++//        Date yesterday = calendar.getTime();
++//        Timeline beforeTimeline = timekeepingServices.findTimelineByDate(yesterday);
++//        //JsonServices.dd(JsonServices.ParseToJson(beforeTimeline.toString()), response);
++//        if (day == 1) {
++//            timelineDetail = timekeepingServices.findTimelineDetail(account, root, beforeTimeline);
++//        } else {
++//            timelineDetail = timekeepingServices.findTimelineDetail(account, root, timeline);
++//        }
++//
++//        if (timelineDetail != null) {
++//            String timeBeginWork = "22:00:00";
++//            String dateBeginWork = dateFormat.format(timekeeping.getTimestart().getTime() - (1000 * 60 * 60 * 24));
++//            String timeEndWork = "06:00:00";
++//            String dateEndWork = dateFormat.format(timekeeping.getTimestart());
++//            shiftOnDay.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), root);
++//            hashMap.put(java.sql.Timestamp.valueOf(dateBeginWork + " " + timeBeginWork), java.sql.Timestamp.valueOf(dateEndWork + " " + timeEndWork));
++//        }
++//
++//        //JsonServices.dd(JsonServices.ParseToJson(hashMap.toString()), response); 
++//        List<String> viewList = new ArrayList<>();
++//        List<Integer> shiftCodeList = new ArrayList<>();
++//        Map<Integer, Integer> shiftMap = new HashMap<Integer, Integer>();
++//        for (int i = 0; i < timelineDetailList.size(); i++) {
++//            if (i + 1 < timelineDetailList.size()) {
++//                if (timelineDetailList.get(i).getShiftCode() == timekeeping.getShiftCode() && timelineDetailList.get(i).getShiftCode() + 1 == timelineDetailList.get(i + 1).getShiftCode()) {
++//                    shiftMap.put(timelineDetailList.get(i).getShiftCode(), timelineDetailList.get(i + 1).getShiftCode());
++//                }
++//            }
++//
++//        }
++//
++//        List<Date> dates = new ArrayList<>();
++//        for (Entry<Integer, Integer> entry : shiftMap.entrySet()) {
++//            int key = entry.getKey();
++//            int val = entry.getValue();
++//            shiftCodeList.add(key);
++//            shiftCodeList.add(val);
++//        }
++//
++//        for (int i = 0; i < shiftCodeList.size(); i++) {
++//            if (i + 1 < shiftCodeList.size()) {
++//                if (shiftCodeList.get(i) == shiftCodeList.get(i + 1)) {
++//                    shiftCodeList.remove(shiftCodeList.get(i + 1));
++//                }
++//            }
++//        }
++//
++//        for (int i = 0; i < shiftCodeList.size(); i++) {
++////            JsonServices.dd(JsonServices.ParseToJson(dates.toString()), response);
++//
++//            dates.addAll(getTimeOfWork(shiftCodeList.get(i), timekeeping));
++//
++//        }
++//
++//        JsonServices.dd(JsonServices.ParseToJson(shiftMap.toString()), response);
++//
++//        Map<Integer, Integer> handleMap = new HashMap<Integer, Integer>();
++//        int count = timekeeping.getShiftCode();
++//        for (int i = 0; i < dates.size(); i++) {
++//            if (i + 1 < dates.size()) {
++//                if (simpleDateFormat.format(dates.get(i)).compareTo(simpleDateFormat.format(dates.get(i + 1))) == 0) {
++//                    //viewList.add(String.valueOf(diff));
++//                    //viewList.add(simpleDateFormat.format(dates.get(i)) + " " + simpleDateFormat.format(dates.get(i)));
++//                    if (simpleDateFormat.format(timekeeping.getTimeend()).compareTo(simpleDateFormat.format(dates.get(i + 1))) >= 0) {
++//                        //viewList.add(simpleDateFormat.format(dates.get(i)));
++//                        Long time = timekeeping.getTimeend().getTime() - dates.get(i).getTime();
++//                        int diff = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;
++//                        //viewList.add(simpleDateFormat.format(dates.get(i + 1)) + " " + simpleDateFormat.format(dates.get(i)));                    
++//                        //viewList.add(String.valueOf(diff));
++//                        //JsonServices.dd(JsonServices.ParseToJson(String.valueOf(diff)), response);
++//                        if (diff >= 1) {
++//                            handleMap.put(++count, diff);
++//                        }
++//
++//                    }
++//
++//                }
++//            }
++//        }
++//
++//        if (handleMap.size() >= 1) {
++//            for (Entry<Integer, Integer> entry : handleMap.entrySet()) {
++//                List<Date> dateList = getTimeOfWork(entry.getKey(), timekeeping);
++//                timekeeping.setTimeend(dateList.get(0));
++//                timeHandle(timekeeping.getId(), response);
++//                Timekeeping item = new Timekeeping();
++//                item.setMail(timekeeping.getMail());
++//                item.setIdTimeline(timekeeping.getIdTimeline());
++//                item.setShiftCode(entry.getKey());
++//                item.setTimestart(dateList.get(1));
++//                item.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
++//                item.setTime(entry.getValue());
++//                timekeepingServices.checkin(item);
++//                timeHandle(timekeeping.getId(), response);
++//                //viewList.add(String.valueOf(entry.getKey()) + " " + String.valueOf(entry.getValue()));
++//
++//            }
++//
++//            List<Timekeeping> timekeepings = timekeepingServices.findAll();
++//            List<Timekeeping> tempList = new ArrayList<>();
++//            for (int i = 0; i < timekeepings.size(); i++) {
++//                for (int j = 0; j < shiftCodeList.size(); j++) {
++//                    if (timekeepings.get(i).getMail().equals(timekeeping.getMail()) && timekeepings.get(i).getIdTimeline().equals(timekeeping.getIdTimeline()) && timekeepings.get(i).getShiftCode() == shiftCodeList.get(j)) {
++//                        tempList.add(timekeepings.get(i));
++//                    }
++//                }
++//            }
++//
++//            JsonServices.dd(JsonServices.ParseToJson(tempList.toString() + " " + handleMap.toString()), response);
++//            for (int i = 0; i < shiftCodeList.size(); i++) {
++//                for (int j = 0; j < tempList.size(); j++) {
++//                    if (tempList.get(j).getShiftCode() == shiftCodeList.get(i)) {
++//                        List<Date> dateList = getTimeOfWork(shiftCodeList.get(i), timekeeping);
++//                        if (j == tempList.size() - 1) {
++//                            tempList.get(j).setTimestart(dateList.get(0));
++//                            tempList.get(j).setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
++//                            timeHandle(tempList.get(j).getId(), response);
++//                        } else {
++//                            tempList.get(j).setTimestart(dateList.get(0));
++//                            tempList.get(j).setTimeend(dateList.get(1));
++//                            timeHandle(tempList.get(j).getId(), response);
++//                            Long time = dateList.get(1).getTime() - dateList.get(0).getTime();
++//                        }
++//
++////                    int workingHours = (int) TimeUnit.MILLISECONDS.toMinutes(time) / 60;
++////                    viewList.add(String.valueOf(tempList.get(j).getTime()));
++////                    if (tempList.get(j).getTime() > workingHours) {
++////                        tempList.get(j).setTime(workingHours);
++////                    }else{
++////                        
++////                    }
+ //                    }
+-                    }
+-                }
+-            }
+-        }
+-
++//                }
++//            }
++//        }
+         //timekeepingServices.checkout(timekeeping);
+-        JsonServices.dd(JsonServices.ParseToJson(String.valueOf(handleMap.size())), response);
++        //JsonServices.dd(JsonServices.ParseToJson(String.valueOf(handleMap.size())), response);
+         //timekeeping.setTimeend(java.sql.Timestamp.valueOf(dateOfToday + " " + timeOfToday));
+         timeHandle(timekeeping.getId(), response);
+         return new ResponseEntity<>(timekeeping, HttpStatus.OK);

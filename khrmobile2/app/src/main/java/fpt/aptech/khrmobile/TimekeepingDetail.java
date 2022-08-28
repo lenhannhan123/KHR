@@ -17,16 +17,21 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.transform.Result;
 
 import fpt.aptech.khrmobile.API.TimekeepingService;
 import fpt.aptech.khrmobile.Config.ConfigData;
 import fpt.aptech.khrmobile.Entities.Account;
 import fpt.aptech.khrmobile.Entities.ModelString;
 import fpt.aptech.khrmobile.Entities.Timekeeping;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,58 +60,55 @@ public class TimekeepingDetail extends AppCompatActivity {
         String timeEnd = dateFormat.format(timekeeping.getTimeend());
         txtTimeEnd.setText(timeEnd);
 
+        txtTimekeepingName = findViewById(R.id.txtTimekeepingName);
+        if (timekeeping.getShiftCode() % 5 == 0) {
+            txtTimekeepingName.setText("Ca sáng");
+        } else if (timekeeping.getShiftCode() % 5 == 1) {
+            txtTimekeepingName.setText("Ca trưa");
+        } else if (timekeeping.getShiftCode() % 5 == 2) {
+            txtTimekeepingName.setText("Ca chiều");
+        } else if (timekeeping.getShiftCode() % 5 == 3) {
+            txtTimekeepingName.setText("Ca tối");
+        } else if (timekeeping.getShiftCode() % 5 == 4) {
+            txtTimekeepingName.setText("Ca đêm");
+        }
+
+        int shiftCode = timekeeping.getShiftCode();
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
         Retrofit retrofit = new Retrofit.Builder().
                 baseUrl("http://" + ConfigData.IP + ":7777/").
-                addConverterFactory(GsonConverterFactory.create()).
+                addConverterFactory(GsonConverterFactory.create(gson)).
                 build();
         service = retrofit.create(TimekeepingService.class);
-        Call<Integer> call = service.detailId(timekeeping.getId());
-        call.enqueue(new Callback<Integer>() {
+        Call<ResponseBody> call = service.detail(timekeeping.getId());
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Retrofit retrofit = new Retrofit.Builder().
-                            baseUrl("http://" + ConfigData.IP + ":7777/").
-                            addConverterFactory(GsonConverterFactory.create()).
-                            build();
-                    service = retrofit.create(TimekeepingService.class);
-                    Call<List<String>> _call = service.detail(response.body());
-                    _call.enqueue(new Callback<List<String>>() {
-                        @Override
-                        public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                            if (response.isSuccessful()) {
-                                if (response.body().get(1).equals("06")) {
-                                    txtTimekeepingName.setText("Ca sáng");
-                                } else if (response.body().get(1).equals("10")) {
-                                    txtTimekeepingName.setText("Ca trưa");
-                                } else if (response.body().get(1).equals("14")) {
-                                    txtTimekeepingName.setText("Ca chiều");
-                                } else if (response.body().get(1).equals("18")) {
-                                    txtTimekeepingName.setText("Ca tối");
-                                } else if (response.body().get(1).equals("22")) {
-                                    txtTimekeepingName.setText("Ca đêm");
-                                }
-                                txtAccountPosition.setText(response.body().get(2));
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<String>> call, Throwable t) {
-
-                        }
-                    });
-
+                    //JsonObject item = new JsonObject().get(response.body().toString()).getAsJsonObject();
+                    txtAccountPosition = findViewById(R.id.txtAccountPosition);
+                    try {
+                        txtAccountPosition.setText(response.body().string().replaceAll("\"", ""));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+//                    Toast.makeText(TimekeepingDetail.this, res, Toast.LENGTH_LONG).show();
+                    //txtTimekeepingName.setText(res);
+                } else {
+                    Toast.makeText(TimekeepingDetail.this, "that bai", Toast.LENGTH_LONG).show();
                 }
+
+
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                //Toast.makeText(TimekeepingDetail.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
-        txtTimekeepingName = findViewById(R.id.txtTimekeepingName);
-        txtAccountPosition = findViewById(R.id.txtAccountPosition);
 
 
     }

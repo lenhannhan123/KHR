@@ -25,7 +25,7 @@ public interface ISalaryServices {
     
     public List<Account> findAccountByTimekeeping();
     
-    public List<Shift> findShiftByDate(Date timestart, Date timeend);
+    public List<Timekeeping> findTimekeepingByDate(Date timestart, Date timeend, Account mail);
     
     public Timekeeping findTimekeepingByMailAndShiftId(Account mail, Shift shiftId);
     
