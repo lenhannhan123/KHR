@@ -88,7 +88,8 @@ public class TimekeepingController {
     ITimelineServices timelineServices;
 
     @RequestMapping(value = "/timekeeping/index", method = RequestMethod.GET)
-    public String index(Model model) {
+    public String index(Model model, HttpServletRequest request) {
+        request.setAttribute("sidebar","5");
         model.addAttribute("accountList", accountRepository.findAll());
         model.addAttribute("list", timekeepingServices.findAll());
         return "admin/timekeeping/index";
@@ -96,14 +97,16 @@ public class TimekeepingController {
 
     @RequestMapping(value = "/timekeeping/autocomplete", method = RequestMethod.GET)
     public ResponseEntity<List<String>> autocomplete(@RequestParam("value") String input, HttpServletRequest request) {
+        request.setAttribute("sidebar","5");
         return new ResponseEntity<List<String>>(timekeepingServices.autocomplete(input), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/timekeeping/search", method = RequestMethod.GET)
     public String search(HttpServletRequest request, Model model) {
         model.addAttribute("accountList", accountRepository.findAll());
+        request.setAttribute("sidebar","5");
         if (request.getParameter("mail").equals("")) {
-            return index(model);
+            return index(model, request);
         } else {
             model.addAttribute("list", timekeepingServices.search(request.getParameter("mail")));
         }
@@ -111,7 +114,8 @@ public class TimekeepingController {
     }
 
     @RequestMapping(value = "/timekeeping/create", method = RequestMethod.GET)
-    public String create(Model model) {
+    public String create(Model model, HttpServletRequest request) {
+        request.setAttribute("sidebar","5");
         return "admin/timekeeping/create";
     }
 
@@ -891,7 +895,7 @@ public class TimekeepingController {
     ) {
         Timekeeping timekeeping = timekeepingServices.findOne(id);
         if (request.getParameter("action").equals("Trở lại")) {
-            return index(model);
+            return index(model, request);
         } else {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

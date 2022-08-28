@@ -80,57 +80,13 @@ public class TimelineController {
     @Autowired
     FirebaseMessagingService firebaseMessagingService;
 
-    public  void sendtoMail(String Title, String content, HttpServletRequest request, List<Account> account){
 
-
-
-        List<UserTimelineJS> userTimelineJS = new ArrayList<>();
-
-        HttpSession session = request.getSession();
-//        JsonServices.dd(userTimelineServices.CheckUser(756, "user1@gmail.com"), response);
-        int Id_Store = Integer.parseInt(session.getAttribute("IdStore").toString());
-
-        for (int i = 0; i < account.size(); i++) {
-            if (account.get(i).getIdStore().getId() == Id_Store) {
-            } else {
-                account.remove(account.get(i));
-                i -= 1;
-
-            }
-        }
-
-        for (Account item: account ) {
-
-            Notification n = new Notification();
-            Date date = new Date();
-            n.setTitle(Title);
-            n.setContent(content);
-            n.setDateCreate(date);
-            Notification ni = ns.AddNotification(n);
-            List<AccountToken> listToken = accToken.GetTokenByMail(item.getMail());
-            List<String> listtokenstring = new ArrayList<>();
-            for (AccountToken accountToken : listToken) {
-                listtokenstring.add(accountToken.getToken());
-            }
-            AccountNotification accountNotification = new AccountNotification();
-            accountNotification.setIdnotification(ni);
-            accountNotification.setMail(item);
-            accountNotification.setStatus(false);
-            AccountNotification s = ns.AddAccountNotification(accountNotification);
-            try {
-                firebaseMessagingService.sendMorePeople(s, listtokenstring);
-            } catch (FirebaseMessagingException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-    }
 
 
     @RequestMapping(value = {RouteWeb.TimelineIndexURL}, method = RequestMethod.GET)
     public String IndexTimeline(Model model, HttpServletRequest request, HttpServletResponse response) {
 
-
+        request.setAttribute("sidebar","4");
         List<Timeline> list = timelineServices.findAll();
 
         HttpSession session = request.getSession();
@@ -173,8 +129,8 @@ public class TimelineController {
 
 
     @RequestMapping(value = {RouteWeb.TimelineGetCreateURL}, method = RequestMethod.GET)
-    public String GetCreate(Model model) {
-
+    public String GetCreate(Model model, HttpServletRequest request) {
+        request.setAttribute("sidebar","4");
 
         List<Position> ListPosition = positionServices.findAll();
 
@@ -186,6 +142,7 @@ public class TimelineController {
 
     @RequestMapping(value = RouteWeb.TimelineGetCreateURL, method = RequestMethod.POST)
     public String PostCreate(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","4");
         int NumberofPosition = positionServices.CountPosition();
         HttpSession session = request.getSession();
 
@@ -225,6 +182,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineConfirmURL}, method = RequestMethod.GET)
     public String GetCofirm(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","4");
 
         List<Position> positionList = positionServices.findAll();
         HttpSession session = request.getSession();
@@ -304,7 +262,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineConfirmURL}, method = RequestMethod.POST)
     public String PostCofirm(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String data) {
-
+        request.setAttribute("sidebar","4");
 //        JsonServices.dd(data, response);
 
         List<ShiftJS> ListShiftJS = new ArrayList<>();
@@ -580,7 +538,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineCheckStartdayURL}, method = RequestMethod.POST)
     public String CheckStartDay(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String data = request.getParameter("timelinedtartday").toString();
 
         Date TimelineStartDayParse;
@@ -607,7 +565,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineCheckEnddayURL}, method = RequestMethod.POST)
     public String CheckEndDay(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String data = request.getParameter("timelineendday").toString();
 
         Date TimelineEndDayParse;
@@ -635,7 +593,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineDeleteURL}, method = RequestMethod.GET)
     public String DeleteTimeLine(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String id = request.getParameter("id").toString();
 
         timelineServices.Delete(Integer.parseInt(id));
@@ -647,7 +605,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineEditNameURL}, method = RequestMethod.POST)
     public String TimelineEditName(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String id = request.getParameter("id").toString();
 
         String Name = request.getParameter("TimelineName").toString();
@@ -664,7 +622,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineEditTimelineURL}, method = RequestMethod.GET)
     public String TimelineGetEdit(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String idTimelineStr = request.getParameter("id").toString();
 
         int idTimeline = Integer.parseInt(idTimelineStr);
@@ -901,7 +859,7 @@ public class TimelineController {
     @RequestMapping(value = {RouteWeb.TimelineEditTimelineURL}, method = RequestMethod.POST)
     public String TimelinePostEdit(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String data, @RequestParam int idtimelineform) {
         List<ShiftJS> ListShiftJS = new ArrayList<>();
-
+        request.setAttribute("sidebar","4");
 
         JSONArray jsonArr;
         try {
@@ -1138,7 +1096,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineSortRedirectURL}, method = RequestMethod.GET)
     public String TimelineSortRedirectURL(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         int id = Integer.parseInt(request.getParameter("id"));
 
         List<TimelineDetail> Listtimeline = timelineDetailServices.FindbyIdTimeline(id);
@@ -1233,7 +1191,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineSortCreateURL}, method = RequestMethod.GET)
     public String TimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
 
         String idTimelineStr = request.getParameter("id").toString();
 
@@ -1937,7 +1895,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.GET)
     public String GetTimelineSort(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         int id = Integer.parseInt(request.getParameter("id"));
         List<TimelineDetail> Listtimeline = timelineDetailServices.FindbyIdTimeline(id);
 
@@ -1980,7 +1938,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineSortURL}, method = RequestMethod.POST)
     public String PostTimelineSort(Model model, HttpServletRequest request, HttpServletResponse response,@RequestParam String data) throws Exception {
-
+        request.setAttribute("sidebar","4");
 
 //        JsonServices.dd(data,response);
 //        JsonServices.dd(data,response);
@@ -2152,7 +2110,7 @@ public class TimelineController {
     @RequestMapping(value = {RouteWeb.TimelineUsertURL}, method = RequestMethod.GET)
     public String TimelineUser(Model model, HttpServletRequest request, HttpServletResponse response) {
         String idTimelineStr = request.getParameter("id").toString();
-
+        request.setAttribute("sidebar","4");
         List<Account> account = accountService.findAllUser();
         List<UserTimelineJS> userTimelineJS = new ArrayList<>();
 
@@ -2241,7 +2199,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineChangeStatusURL}, method = RequestMethod.POST)
     public String TimelineChangeStatus(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+        request.setAttribute("sidebar","4");
         String idTimelineStr = request.getParameter("id").toString();
 
         List<Account> account = accountService.findAllUser();
@@ -2345,7 +2303,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineReloadTimeURL}, method = RequestMethod.POST)
     public String TimelineUserReload(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
 
         String idTimelineStr = request.getParameter("id").toString();
 
@@ -2420,7 +2378,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.TimelineDetailsURL}, method = RequestMethod.GET)
     public String DetailTimelineUser(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","4");
         String mail = request.getParameter("mail");
         int idTimeline = Integer.parseInt(request.getParameter("id"));
 
@@ -2472,10 +2430,16 @@ public class TimelineController {
         return "admin/timeline/usertimelinedetail";
     }
 
+
+
+
+
+
+    // Trans
     @RequestMapping(value = {RouteWeb.IndexTrans}, method = RequestMethod.GET)
     public String IndexTrans(Model model, HttpServletRequest request, HttpServletResponse response) {
 
-
+        request.setAttribute("sidebar","9");
 
             List<TransferData> transferDataList= transferService.findAll();
             request.setAttribute("list",transferDataList);
@@ -2495,7 +2459,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.DetailTrans}, method = RequestMethod.GET)
     public String DetailTrans(Model model, HttpServletRequest request, HttpServletResponse response) {
-
+        request.setAttribute("sidebar","9");
         String Id= request.getParameter("id");
 
 
@@ -2535,7 +2499,7 @@ public class TimelineController {
 
     @RequestMapping(value = {RouteWeb.DetailTrans}, method = RequestMethod.POST)
     public String PostDetailTrans(Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam String Id_trans, @RequestParam String Status, @RequestParam String response_content) throws Exception {
-
+        request.setAttribute("sidebar","9");
 
         TransferData transferData = transferService.FindOne(Integer.parseInt(Id_trans));
 

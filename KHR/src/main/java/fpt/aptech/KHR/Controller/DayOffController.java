@@ -67,6 +67,7 @@ public class DayOffController {
 
     @RequestMapping(value = {RouteWeb.dayoffURL}, method = RequestMethod.GET)
     public String Index(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","8");
         List<DayOff> list = idos.findAll();
         List<DayOff> listdayoff = new ArrayList<DayOff>();
         HttpSession session = request.getSession();
@@ -93,6 +94,7 @@ public class DayOffController {
 
     @RequestMapping(value = {"dayoff/list/search"}, method = RequestMethod.POST)
     public String ApprovedList(Model model, HttpServletRequest request, HttpServletResponse response) {
+            request.setAttribute("sidebar","8");
 //        List<DayOff> list = idos.findApproveList();
 //        List<DayOff> listdayoff = new ArrayList<DayOff>();
 //        for(int i = list.size()-1;i>=0;i--){
@@ -126,6 +128,8 @@ public class DayOffController {
 
     @RequestMapping(value = {"/dayoff/list/approved"}, method = RequestMethod.GET)
     public String SearchdList(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","8");
+
         List<DayOff> list = idos.findApproveList();
         List<DayOff> listdayoff = new ArrayList<DayOff>();
         HttpSession session = request.getSession();
@@ -152,6 +156,8 @@ public class DayOffController {
 
     @RequestMapping(value = {"/dayoff/list/denying"}, method = RequestMethod.GET)
     public String DenyingList(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","8");
+
         List<DayOff> list = idos.findDenyingList();
         List<DayOff> listdayoff = new ArrayList<DayOff>();
         HttpSession session = request.getSession();
@@ -177,6 +183,8 @@ public class DayOffController {
 
     @RequestMapping(value = {"/dayoff/list/notcheck"}, method = RequestMethod.GET)
     public String NotCheckList(Model model, HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","8");
+
         List<DayOff> list = idos.findNotCheck();
         List<DayOff> listdayoff = new ArrayList<DayOff>();
         HttpSession session = request.getSession();
@@ -203,6 +211,8 @@ public class DayOffController {
     @RequestMapping(value = {RouteWeb.dayoffapproveURL}, method = RequestMethod.GET)
     public String approved(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         int id = Integer.valueOf(request.getParameter("id"));
+        request.setAttribute("sidebar","8");
+
         //String mail = request.getParameter("mail").toString();
 //        fpt.aptech.KHR.Entities.Notification notification = new fpt.aptech.KHR.Entities.Notification();
 //        notification.setTitle("Thông báo chấp nhận nghĩ phép");
@@ -246,6 +256,8 @@ public class DayOffController {
 
     @RequestMapping(value = {RouteWeb.dayoffdenyingURL}, method = RequestMethod.GET)
     public String denying(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setAttribute("sidebar","8");
+
         int id = Integer.valueOf(request.getParameter("id"));
         DayOff di = idos.findById(id);
         if (di != null) {
@@ -282,6 +294,8 @@ public class DayOffController {
     @RequestMapping(value = {"api/dayoff/add"}, method = RequestMethod.POST)
     public ResponseEntity<DayOff> APIAddDayOff(@RequestBody DayOff dayOff, HttpServletRequest request, HttpServletResponse response) {
         // Account acc = request.getParameter("mail")
+        request.setAttribute("sidebar","8");
+
         try {
             Account account = accountService.findByMail(dayOff.getMail().getMail());
             dayOff.setMail(account);
@@ -299,6 +313,8 @@ public class DayOffController {
 
     @RequestMapping(value = {"api/dayoff/token"}, method = RequestMethod.GET)
     public ResponseEntity<List<DayOff>> APIgetDayOffByMail(HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","8");
+
         try {
             String mail = request.getParameter("token");
             AccountToken atk = accToken.GetToken(mail);
@@ -317,6 +333,8 @@ public class DayOffController {
 
     @RequestMapping(value = {"api/dayoff/token/search"}, method = RequestMethod.GET)
     public ResponseEntity<List<DayOff>> APIgetDayOffSearchMail(HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("sidebar","8");
+
         try {
             String mail = request.getParameter("token");
             int year = Integer.valueOf(request.getParameter("year"));
